@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D336E27E182B51A6009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D336E288182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E286182B51A6009271CD /* InfoPlist.strings */; };
 		D336E28C182B51A6009271CD /* CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E28B182B51A6009271CD /* CredUI.m */; };
 		D336E293182B51A6009271CD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
@@ -15,6 +14,8 @@
 		D336E297182B51A6009271CD /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D336E29D182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E29B182B51A6009271CD /* InfoPlist.strings */; };
 		D336E29F182B51A6009271CD /* CredUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E29E182B51A6009271CD /* CredUITests.m */; };
+		D336E2A8182B51D9009271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E280182B51A6009271CD /* Foundation.framework */; };
+		D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		D336E29A182B51A6009271CD /* CredUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUITests-Info.plist"; sourceTree = "<group>"; };
 		D336E29C182B51A6009271CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D336E29E182B51A6009271CD /* CredUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUITests.m; sourceTree = "<group>"; };
+		D336E2A9182B51DD009271CD /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +52,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D336E27E182B51A6009271CD /* Cocoa.framework in Frameworks */,
+				D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */,
+				D336E2A8182B51D9009271CD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +92,7 @@
 		D336E27C182B51A6009271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D336E2A9182B51DD009271CD /* GSS.framework */,
 				D336E27D182B51A6009271CD /* Cocoa.framework */,
 				D336E292182B51A6009271CD /* XCTest.framework */,
 				D336E27F182B51A6009271CD /* Other Frameworks */,
