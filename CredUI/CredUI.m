@@ -7,7 +7,3 @@
 //
 
 #import "CredUI.h"
-
-@implementation CredUI
-
-@end

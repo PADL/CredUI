@@ -14,8 +14,10 @@
 		D336E297182B51A6009271CD /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D336E29D182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E29B182B51A6009271CD /* InfoPlist.strings */; };
 		D336E29F182B51A6009271CD /* CredUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E29E182B51A6009271CD /* CredUITests.m */; };
-		D336E2A8182B51D9009271CD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E280182B51A6009271CD /* Foundation.framework */; };
 		D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D336E2AE182B6B0D009271CD /* CUIChooseIdentityPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = D336E2AC182B6B0D009271CD /* CUIChooseIdentityPanel.h */; };
+		D336E2AF182B6B0D009271CD /* CUIChooseIdentityPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E2AD182B6B0D009271CD /* CUIChooseIdentityPanel.m */; };
+		D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		D336E29C182B51A6009271CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D336E29E182B51A6009271CD /* CredUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUITests.m; sourceTree = "<group>"; };
 		D336E2A9182B51DD009271CD /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
+		D336E2AC182B6B0D009271CD /* CUIChooseIdentityPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIChooseIdentityPanel.h; sourceTree = "<group>"; };
+		D336E2AD182B6B0D009271CD /* CUIChooseIdentityPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIChooseIdentityPanel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */,
 				D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */,
-				D336E2A8182B51D9009271CD /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +118,8 @@
 			isa = PBXGroup;
 			children = (
 				D336E28A182B51A6009271CD /* CredUI.h */,
+				D336E2AC182B6B0D009271CD /* CUIChooseIdentityPanel.h */,
+				D336E2AD182B6B0D009271CD /* CUIChooseIdentityPanel.m */,
 				D336E28B182B51A6009271CD /* CredUI.m */,
 				D336E284182B51A6009271CD /* Supporting Files */,
 			);
@@ -155,6 +161,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D336E2AE182B6B0D009271CD /* CUIChooseIdentityPanel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E28C182B51A6009271CD /* CredUI.m in Sources */,
+				D336E2AF182B6B0D009271CD /* CUIChooseIdentityPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
