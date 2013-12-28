@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import "CUIIdentityPicker.h"
+#import "CredUI_Private.h"
 
 @implementation CUIIdentityPicker
 - init

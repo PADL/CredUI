@@ -19,6 +19,16 @@
 		D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */; };
 		D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D336E28A182B51A6009271CD /* CredUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D39EB006186ED2B200C43A24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
+		D39EB00C186ED2B200C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB00A186ED2B200C43A24 /* InfoPlist.strings */; };
+		D39EB010186ED2B200C43A24 /* CredUICore.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB00F186ED2B200C43A24 /* CredUICore.m */; };
+		D39EB016186ED2B200C43A24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
+		D39EB017186ED2B200C43A24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
+		D39EB01A186ED2B200C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D39EB020186ED2B200C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB01E186ED2B200C43A24 /* InfoPlist.strings */; };
+		D39EB022186ED2B200C43A24 /* CredUICoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB021186ED2B200C43A24 /* CredUICoreTests.m */; };
+		D39EB02F186ED50800C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
+		D39EB035186ED50800C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB033186ED50800C43A24 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +38,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D336E279182B51A6009271CD;
 			remoteInfo = CredUI;
+		};
+		D39EB018186ED2B200C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -50,6 +67,22 @@
 		D336E2A9182B51DD009271CD /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
 		D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityPicker.h; sourceTree = "<group>"; };
 		D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPicker.m; sourceTree = "<group>"; };
+		D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUI_Private.h; sourceTree = "<group>"; };
+		D39EB005186ED2B200C43A24 /* CredUICore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CredUICore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39EB009186ED2B200C43A24 /* CredUICore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUICore-Info.plist"; sourceTree = "<group>"; };
+		D39EB00B186ED2B200C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D39EB00D186ED2B200C43A24 /* CredUICore-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CredUICore-Prefix.pch"; sourceTree = "<group>"; };
+		D39EB00E186ED2B200C43A24 /* CredUICore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUICore.h; sourceTree = "<group>"; };
+		D39EB00F186ED2B200C43A24 /* CredUICore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUICore.m; sourceTree = "<group>"; };
+		D39EB015186ED2B200C43A24 /* CredUICoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CredUICoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39EB01D186ED2B200C43A24 /* CredUICoreTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUICoreTests-Info.plist"; sourceTree = "<group>"; };
+		D39EB01F186ED2B200C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D39EB021186ED2B200C43A24 /* CredUICoreTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUICoreTests.m; sourceTree = "<group>"; };
+		D39EB02D186ED50800C43A24 /* Password.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Password.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39EB02E186ED50800C43A24 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		D39EB032186ED50800C43A24 /* Password-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Password-Info.plist"; sourceTree = "<group>"; };
+		D39EB034186ED50800C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D39EB036186ED50800C43A24 /* Password-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Password-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +105,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D39EB001186ED2B200C43A24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB006186ED2B200C43A24 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB012186ED2B200C43A24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB017186ED2B200C43A24 /* Cocoa.framework in Frameworks */,
+				D39EB016186ED2B200C43A24 /* XCTest.framework in Frameworks */,
+				D39EB01A186ED2B200C43A24 /* CredUICore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB02A186ED50800C43A24 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB02F186ED50800C43A24 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -80,6 +139,9 @@
 			children = (
 				D336E283182B51A6009271CD /* CredUI */,
 				D336E298182B51A6009271CD /* CredUITests */,
+				D39EB007186ED2B200C43A24 /* CredUICore */,
+				D39EB01B186ED2B200C43A24 /* CredUICoreTests */,
+				D39EB030186ED50800C43A24 /* Password */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -90,6 +152,9 @@
 			children = (
 				D336E27A182B51A6009271CD /* CredUI.framework */,
 				D336E291182B51A6009271CD /* CredUITests.xctest */,
+				D39EB005186ED2B200C43A24 /* CredUICore.framework */,
+				D39EB015186ED2B200C43A24 /* CredUICoreTests.xctest */,
+				D39EB02D186ED50800C43A24 /* Password.credprovider */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -100,6 +165,7 @@
 				D336E2A9182B51DD009271CD /* GSS.framework */,
 				D336E27D182B51A6009271CD /* Cocoa.framework */,
 				D336E292182B51A6009271CD /* XCTest.framework */,
+				D39EB02E186ED50800C43A24 /* CoreFoundation.framework */,
 				D336E27F182B51A6009271CD /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -123,6 +189,7 @@
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D336E28B182B51A6009271CD /* CredUI.m */,
 				D336E284182B51A6009271CD /* Supporting Files */,
+				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 			);
 			path = CredUI;
 			sourceTree = "<group>";
@@ -155,6 +222,62 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D39EB007186ED2B200C43A24 /* CredUICore */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB00E186ED2B200C43A24 /* CredUICore.h */,
+				D39EB00F186ED2B200C43A24 /* CredUICore.m */,
+				D39EB008186ED2B200C43A24 /* Supporting Files */,
+			);
+			path = CredUICore;
+			sourceTree = "<group>";
+		};
+		D39EB008186ED2B200C43A24 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB009186ED2B200C43A24 /* CredUICore-Info.plist */,
+				D39EB00A186ED2B200C43A24 /* InfoPlist.strings */,
+				D39EB00D186ED2B200C43A24 /* CredUICore-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D39EB01B186ED2B200C43A24 /* CredUICoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB021186ED2B200C43A24 /* CredUICoreTests.m */,
+				D39EB01C186ED2B200C43A24 /* Supporting Files */,
+			);
+			path = CredUICoreTests;
+			sourceTree = "<group>";
+		};
+		D39EB01C186ED2B200C43A24 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB01D186ED2B200C43A24 /* CredUICoreTests-Info.plist */,
+				D39EB01E186ED2B200C43A24 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D39EB030186ED50800C43A24 /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB031186ED50800C43A24 /* Supporting Files */,
+			);
+			path = Password;
+			sourceTree = "<group>";
+		};
+		D39EB031186ED50800C43A24 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB032186ED50800C43A24 /* Password-Info.plist */,
+				D39EB033186ED50800C43A24 /* InfoPlist.strings */,
+				D39EB036186ED50800C43A24 /* Password-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -164,6 +287,13 @@
 			files = (
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
 				D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB002186ED2B200C43A24 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +336,59 @@
 			productReference = D336E291182B51A6009271CD /* CredUITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D39EB004186ED2B200C43A24 /* CredUICore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D39EB023186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICore" */;
+			buildPhases = (
+				D39EB000186ED2B200C43A24 /* Sources */,
+				D39EB001186ED2B200C43A24 /* Frameworks */,
+				D39EB002186ED2B200C43A24 /* Headers */,
+				D39EB003186ED2B200C43A24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CredUICore;
+			productName = CredUICore;
+			productReference = D39EB005186ED2B200C43A24 /* CredUICore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D39EB014186ED2B200C43A24 /* CredUICoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D39EB026186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICoreTests" */;
+			buildPhases = (
+				D39EB011186ED2B200C43A24 /* Sources */,
+				D39EB012186ED2B200C43A24 /* Frameworks */,
+				D39EB013186ED2B200C43A24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D39EB019186ED2B200C43A24 /* PBXTargetDependency */,
+			);
+			name = CredUICoreTests;
+			productName = CredUICoreTests;
+			productReference = D39EB015186ED2B200C43A24 /* CredUICoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D39EB02C186ED50800C43A24 /* Password */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D39EB037186ED50900C43A24 /* Build configuration list for PBXNativeTarget "Password" */;
+			buildPhases = (
+				D39EB029186ED50800C43A24 /* Sources */,
+				D39EB02A186ED50800C43A24 /* Frameworks */,
+				D39EB02B186ED50800C43A24 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Password;
+			productName = Password;
+			productReference = D39EB02D186ED50800C43A24 /* Password.credprovider */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -216,6 +399,9 @@
 				ORGANIZATIONNAME = "PADL Software Pty Ltd";
 				TargetAttributes = {
 					D336E290182B51A6009271CD = {
+						TestTargetID = D336E279182B51A6009271CD;
+					};
+					D39EB014186ED2B200C43A24 = {
 						TestTargetID = D336E279182B51A6009271CD;
 					};
 				};
@@ -234,6 +420,9 @@
 			targets = (
 				D336E279182B51A6009271CD /* CredUI */,
 				D336E290182B51A6009271CD /* CredUITests */,
+				D39EB004186ED2B200C43A24 /* CredUICore */,
+				D39EB014186ED2B200C43A24 /* CredUICoreTests */,
+				D39EB02C186ED50800C43A24 /* Password */,
 			);
 		};
 /* End PBXProject section */
@@ -252,6 +441,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E29D182B51A6009271CD /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB003186ED2B200C43A24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB00C186ED2B200C43A24 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB013186ED2B200C43A24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB020186ED2B200C43A24 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB02B186ED50800C43A24 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB035186ED50800C43A24 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +488,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D39EB000186ED2B200C43A24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB010186ED2B200C43A24 /* CredUICore.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB011186ED2B200C43A24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39EB022186ED2B200C43A24 /* CredUICoreTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39EB029186ED50800C43A24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -282,6 +518,11 @@
 			isa = PBXTargetDependency;
 			target = D336E279182B51A6009271CD /* CredUI */;
 			targetProxy = D336E295182B51A6009271CD /* PBXContainerItemProxy */;
+		};
+		D39EB019186ED2B200C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D39EB018186ED2B200C43A24 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -298,6 +539,30 @@
 			isa = PBXVariantGroup;
 			children = (
 				D336E29C182B51A6009271CD /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D39EB00A186ED2B200C43A24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D39EB00B186ED2B200C43A24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D39EB01E186ED2B200C43A24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D39EB01F186ED2B200C43A24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D39EB033186ED50800C43A24 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D39EB034186ED50800C43A24 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -443,6 +708,110 @@
 			};
 			name = Release;
 		};
+		D39EB024186ED2B200C43A24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CredUICore/CredUICore-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CredUICore/CredUICore-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		D39EB025186ED2B200C43A24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CredUICore/CredUICore-Prefix.pch";
+				INFOPLIST_FILE = "CredUICore/CredUICore-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		D39EB027186ED2B200C43A24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CredUI.framework/Versions/A/CredUI";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CredUICore/CredUICore-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "CredUICoreTests/CredUICoreTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		D39EB028186ED2B200C43A24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CredUI.framework/Versions/A/CredUI";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CredUICore/CredUICore-Prefix.pch";
+				INFOPLIST_FILE = "CredUICoreTests/CredUICoreTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		D39EB038186ED50900C43A24 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Password/Password-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Password/Password-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Debug;
+		};
+		D39EB039186ED50900C43A24 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Password/Password-Prefix.pch";
+				INFOPLIST_FILE = "Password/Password-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -472,6 +841,30 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D39EB023186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D39EB024186ED2B200C43A24 /* Debug */,
+				D39EB025186ED2B200C43A24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D39EB026186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D39EB027186ED2B200C43A24 /* Debug */,
+				D39EB028186ED2B200C43A24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D39EB037186ED50900C43A24 /* Build configuration list for PBXNativeTarget "Password" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D39EB038186ED50900C43A24 /* Debug */,
+				D39EB039186ED50900C43A24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
