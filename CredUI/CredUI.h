@@ -6,6 +6,4 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
-#import <CredUI/CUIChooseIdentityPanel.h>
+#import <CredUI/CUIIdentityPicker.h>
