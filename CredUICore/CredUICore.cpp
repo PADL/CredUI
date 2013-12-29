@@ -6,9 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CredUICore.h"
-
-
+#include "CredUICore_Private.h"
 
 __attribute__((constructor))
 static void

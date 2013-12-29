@@ -13,8 +13,6 @@
 extern "C" {
 #endif
     
-#include <CoreFoundation/CoreFoundation.h>
-    
 typedef struct __CUIField *CUIFieldRef;
 
 typedef CF_ENUM(CFIndex, CUIFieldClass) {
@@ -47,9 +45,6 @@ CUIFieldCreateCopy(
     
 extern CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field);
-
-extern CFTypeRef
-CUIFieldGetValue(CUIFieldRef field);
     
 extern CFTypeRef
 CUIFieldGetTitle(CUIFieldRef field);

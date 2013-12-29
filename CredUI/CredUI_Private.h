@@ -6,4 +6,6 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <GSS/GSS.h>
 #import <CredUI/CredUI.h>
+#import <CredUICore/CredUICore.h>

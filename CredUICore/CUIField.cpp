@@ -6,13 +6,12 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CredUICore.h"
+#include "CredUICore_Private.h"
 
 struct __CUIField {
     CFRuntimeBase _base;
     CUIFieldClass _class;
     CFStringRef _title;
-    CFTypeRef _value;
     void (^_delegate)(CUIFieldRef field, CFTypeRef value);
 
 };
@@ -34,8 +33,6 @@ static void _CUIFieldDeallocate(CFTypeRef cf)
     
     if (field->_title)
         CFRelease(field->_title);
-    if (field->_value)
-        CFRelease(field->_value);
     if (field->_delegate)
         _Block_release(field->_delegate);
 }
@@ -49,8 +46,7 @@ static Boolean _CUIFieldEqual(CFTypeRef cf1, CFTypeRef cf2)
     
     if (!equal) {
         equal = (f1->_class == f2->_class) &&
-            _nullSafeCFEqual(f1->_title, f2->_title) &&
-            _nullSafeCFEqual(f1->_value, f2->_value);
+        _nullSafeCFEqual(f1->_title, f2->_title);
     }
     
     return equal;
@@ -123,8 +119,6 @@ CUIFieldCreateCopy(
     if (f == NULL)
         return NULL;
     
-    CUIFieldSetValue(f, field->_value);
-    
     return f;
 }
 
@@ -132,12 +126,6 @@ CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field)
 {
     return field->_class;
-}
-
-CFTypeRef
-CUIFieldGetValue(CUIFieldRef field)
-{
-    return field->_value;
 }
 
 CFTypeRef
@@ -149,10 +137,5 @@ CUIFieldGetTitle(CUIFieldRef field)
 void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
-    if (field->_value != value) {
-        CFRelease(field->_value);
-        field->_value = CFRetain(value);
-        
-        field->_delegate(field, field->_value);
-    }
+    field->_delegate(field, value);
 }

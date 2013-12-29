@@ -33,11 +33,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
     CUIFlagsKeepUsername                = 0x100000
 };
 
-@interface CUIIdentityPicker : NSObject {
-    @private
-    id _reserved[2];
-}
-
+@interface CUIIdentityPicker : NSObject
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
 
@@ -51,7 +47,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 @property(nonatomic, assign) BOOL saveToKeychain;
 
 /* CredUI flags */
-@property(nonatomic, assign) CUIFlags flags;
+@property(nonatomic, readonly) CUIFlags flags;
 
 /* GSS-API context handle for NegoEx exchange */
 @property(nonatomic, retain) GSSContext *contextHandle;
@@ -59,6 +55,10 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 /* Target name to display to user */
 /* This can be a GSSName or a NSString */
 @property(nonatomic, copy) id target;
+
+- initWithFlags:(CUIFlags)flags;
+
+- initWithFlags:(CUIFlags)flags authIdentity:(NSDictionary *)authIdent;
 
 /* Run the IdentityPicker as an application-modal panel and return a authIdentity dictionary. Return NSOKButton or NSCancelButton. */
 - (NSInteger)runModal;

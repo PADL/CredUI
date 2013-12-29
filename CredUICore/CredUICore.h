@@ -11,9 +11,14 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFRuntime.h>
+#include <CoreFoundation/CFPlugInCOM.h>
+#include <dispatch/dispatch.h>
+#include <Availability.h>
 
-#include "CUIField.h"
-#include "CUICredential.h"
-#include "CUIPlugIn.h"
+#include <CredUICore/CUIField.h>
+#include <CredUICore/CUICredential.h>
+#include <CredUICore/CUIController.h>
+#include <CredUICore/CUIProvider.h>
+#include <CredUICore/CUIAuthIdentity.h>
 
 #endif /* __CredUI__CredUICore__ */
