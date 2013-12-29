@@ -11,7 +11,6 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFRuntime.h>
-#include <CoreFoundation/CFPlugInCOM.h>
 #include <dispatch/dispatch.h>
 #include <Availability.h>
 

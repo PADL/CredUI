@@ -7,9 +7,9 @@
 //
 
 #import "CUIIdentityPicker.h"
-#import "CUIIdentityTile.h"
 
 @interface CUIIdentityPicker () <NSWindowDelegate>
+@property (nonatomic, retain) NSMutableArray *creds;
 @end
 
 @implementation CUIIdentityPicker
@@ -18,6 +18,8 @@
     CUIControllerRef _controller;
     NSPanel *_panel;
 }
+
+#pragma mark - Implementation
 
 - (void)dealloc
 {
@@ -66,21 +68,72 @@
     return self;
 }
 
-- (NSWindow *)parentWindow
-{
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    return (__bridge NSWindow *)uic->parentWindow;
-}
-
-- (void)setParentWindow:(NSWindow *)aWindow
+- (void)_preparedToEnumerateCredentials
 {
     const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
     CUICredUIContext newUic = *uic;
     
-    newUic.parentWindow = (__bridge CFTypeRef)aWindow;
+    newUic.parentWindow = (__bridge CFTypeRef)_panel;
     CUIControllerSetCredUIContext(_controller, &newUic);
 }
 
+- (BOOL)_enumerateCredentials
+{
+    _creds = [[NSMutableArray alloc] init];
+    
+    return CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
+        [_creds addObject:(__bridge id)cred];
+    });
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [NSApp stopModalWithCode:NSModalResponseStop];
+}
+
+- (NSInteger)runModal
+{
+    NSCollectionView *collectionView;
+    
+    [self _preparedToEnumerateCredentials]; // fixes up parent window
+    if (![self _enumerateCredentials])
+        return NSModalResponseStop;
+    
+    collectionView = [[NSCollectionView alloc] initWithFrame:[[_panel contentView] frame]];
+    collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
+    collectionView.content = _creds;
+    collectionView.selectable = TRUE;
+    collectionView.autoresizingMask = (NSViewMinXMargin
+                                         | NSViewWidthSizable
+                                         | NSViewMaxXMargin
+                                         | NSViewMinYMargin
+                                         | NSViewHeightSizable
+                                         | NSViewMaxYMargin);
+
+    [_panel.contentView addSubview:collectionView];    
+
+    return [NSApp runModalForWindow:_panel];
+}
+
+- (void)runModalForWindow:(NSWindow *)window
+            modalDelegate:(id)delegate
+           didEndSelector:(SEL)didEndSelector
+              contextInfo:(void *)contextInfo
+{
+    NSInteger returnCode = [self runModal];
+    NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    void *selfPtr = (__bridge void *)self;
+    
+    [invocation setTarget:delegate];
+    [invocation setSelector:didEndSelector];
+    [invocation setArgument:&selfPtr atIndex:2];
+    [invocation setArgument:&returnCode atIndex:3];
+    [invocation setArgument:&contextInfo atIndex:4];
+    [invocation invoke];
+}
+
+#pragma mark - Accessors
 - (NSString *)title
 {
     const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
@@ -165,36 +218,5 @@
     } else {
         CUIControllerSetGssTargetName(_controller, (gss_name_t)cfTarget);
     }
-}
-
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
-        CUIIdentityTile *tile = [[CUIIdentityTile alloc] initWithCredential:cred];
-        
-        [[_panel contentView] addSubview:tile];
-    });
-}
-
-- (NSInteger)runModal
-{
-    return [NSApp runModalForWindow:_panel];
-}
-
-- (void)runModalForWindow:(NSWindow *)window
-            modalDelegate:(id)delegate
-           didEndSelector:(SEL)didEndSelector
-              contextInfo:(void *)contextInfo
-{
-    self.parentWindow = window;
-
-    NSInteger returnCode = [self runModal];
-    NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setTarget:delegate];
-    [invocation setSelector:didEndSelector];
-    [invocation setArgument:&returnCode atIndex:0];
-    [invocation setArgument:&contextInfo atIndex:1];
-    [invocation invoke];
 }
 @end

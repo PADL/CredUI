@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@interface CUIIdentityTile : NSView
+@interface CUICredentialTile : NSView
 
-- (id)initWithCredential:(CUICredentialRef)credential;
+@property (weak, nonatomic) id credential;
+@property (nonatomic, retain) NSTextField *textField;
 
 @end

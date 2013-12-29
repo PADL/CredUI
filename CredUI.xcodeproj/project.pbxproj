@@ -33,7 +33,6 @@
 		D39EB041186EF06D00C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB03F186EF06D00C43A24 /* CUICredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB044186EF07500C43A24 /* CUIField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB042186EF07500C43A24 /* CUIField.cpp */; };
 		D39EB045186EF07500C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB043186EF07500C43A24 /* CUIField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D39EB047186EFCBE00C43A24 /* CredUICore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB046186EFCBE00C43A24 /* CredUICore.cpp */; };
 		D39EB04A186F087A00C43A24 /* CPasswordCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB048186F087A00C43A24 /* CPasswordCredentialProvider.cpp */; };
 		D39EB04E186F0CC400C43A24 /* CPasswordCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB04C186F0CC400C43A24 /* CPasswordCredential.cpp */; };
 		D39EB04F186F111A00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
@@ -64,8 +63,10 @@
 		D39EB09E186FBB7F00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB0A0187016EE00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB0A1187016EE00C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
-		D39EB0A41870235F00C43A24 /* CUIIdentityTile.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */; };
-		D39EB0A51870235F00C43A24 /* CUIIdentityTile.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */; };
+		D39EB0A41870235F00C43A24 /* CUICredentialTile.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0A21870235F00C43A24 /* CUICredentialTile.h */; };
+		D39EB0A51870235F00C43A24 /* CUICredentialTile.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0A31870235F00C43A24 /* CUICredentialTile.m */; };
+		D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */; };
+		D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,55 @@
 			proxyType = 1;
 			remoteGlobalIDString = D39EB060186FB1DA00C43A24;
 			remoteInfo = CredUIPicker;
+		};
+		D39EB0A61870406500C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D336E279182B51A6009271CD;
+			remoteInfo = CredUI;
+		};
+		D39EB0A81870406900C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D39EB0AA1870407200C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D39EB0AC1870407600C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D39EB0AE1870408100C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D39EB0B01870408800C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB02C186ED50800C43A24;
+			remoteInfo = Password;
+		};
+		D39EB0B21870408E00C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB02C186ED50800C43A24;
+			remoteInfo = Password;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -144,7 +194,6 @@
 		D39EB03F186EF06D00C43A24 /* CUICredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredential.h; sourceTree = "<group>"; };
 		D39EB042186EF07500C43A24 /* CUIField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIField.cpp; sourceTree = "<group>"; };
 		D39EB043186EF07500C43A24 /* CUIField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIField.h; sourceTree = "<group>"; };
-		D39EB046186EFCBE00C43A24 /* CredUICore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CredUICore.cpp; sourceTree = "<group>"; };
 		D39EB048186F087A00C43A24 /* CPasswordCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CPasswordCredentialProvider.cpp; sourceTree = "<group>"; };
 		D39EB049186F087A00C43A24 /* CPasswordCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPasswordCredentialProvider.h; sourceTree = "<group>"; };
 		D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUICore_Private.h; sourceTree = "<group>"; };
@@ -171,8 +220,10 @@
 		D39EB092186FB90400C43A24 /* CredUIEnumerate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CredUIEnumerate; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB094186FB90400C43A24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D39EB09F186FE1EF00C43A24 /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
-		D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityTile.h; sourceTree = "<group>"; };
-		D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityTile.m; sourceTree = "<group>"; };
+		D39EB0A21870235F00C43A24 /* CUICredentialTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialTile.h; sourceTree = "<group>"; };
+		D39EB0A31870235F00C43A24 /* CUICredentialTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUICredentialTile.m; sourceTree = "<group>"; };
+		D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialTileController.h; sourceTree = "<group>"; };
+		D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUICredentialTileController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,8 +370,10 @@
 				D336E28A182B51A6009271CD /* CredUI.h */,
 				D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */,
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
-				D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */,
-				D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */,
+				D39EB0A21870235F00C43A24 /* CUICredentialTile.h */,
+				D39EB0A31870235F00C43A24 /* CUICredentialTile.m */,
+				D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */,
+				D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */,
 				D336E28B182B51A6009271CD /* CredUI.m */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D336E284182B51A6009271CD /* Supporting Files */,
@@ -365,7 +418,6 @@
 				D39EB055186F18E500C43A24 /* CUIController.cpp */,
 				D39EB056186F18E500C43A24 /* CUIController.h */,
 				D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */,
-				D39EB046186EFCBE00C43A24 /* CredUICore.cpp */,
 				D39EB03A186EED1900C43A24 /* CUIProvider.cpp */,
 				D39EB03B186EED1900C43A24 /* CUIProvider.h */,
 				D39EB03E186EF06D00C43A24 /* CUICredential.cpp */,
@@ -485,7 +537,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
-				D39EB0A41870235F00C43A24 /* CUIIdentityTile.h in Headers */,
+				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
+				D39EB0A41870235F00C43A24 /* CUICredentialTile.h in Headers */,
 				D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -518,6 +571,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D39EB0AD1870407600C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUI;
 			productName = CredUI;
@@ -589,6 +643,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D39EB0AB1870407200C43A24 /* PBXTargetDependency */,
 			);
 			name = Password;
 			productName = Password;
@@ -606,6 +661,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				D39EB0B11870408800C43A24 /* PBXTargetDependency */,
+				D39EB0AF1870408100C43A24 /* PBXTargetDependency */,
+				D39EB0A71870406500C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUIPicker;
 			productName = CredUIPicker;
@@ -641,6 +699,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				D39EB0B31870408E00C43A24 /* PBXTargetDependency */,
+				D39EB0A91870406900C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUIEnumerate;
 			productName = CredUIEnumerate;
@@ -761,7 +821,8 @@
 			files = (
 				D336E28C182B51A6009271CD /* CredUI.m in Sources */,
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
-				D39EB0A51870235F00C43A24 /* CUIIdentityTile.m in Sources */,
+				D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */,
+				D39EB0A51870235F00C43A24 /* CUICredentialTile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -778,7 +839,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D39EB057186F18E500C43A24 /* CUIController.cpp in Sources */,
-				D39EB047186EFCBE00C43A24 /* CredUICore.cpp in Sources */,
 				D39EB044186EF07500C43A24 /* CUIField.cpp in Sources */,
 				D39EB040186EF06D00C43A24 /* CUICredential.cpp in Sources */,
 				D39EB03C186EED1900C43A24 /* CUIProvider.cpp in Sources */,
@@ -844,6 +904,41 @@
 			isa = PBXTargetDependency;
 			target = D39EB060186FB1DA00C43A24 /* CredUIPicker */;
 			targetProxy = D39EB07E186FB1DA00C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0A71870406500C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D336E279182B51A6009271CD /* CredUI */;
+			targetProxy = D39EB0A61870406500C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0A91870406900C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D39EB0A81870406900C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0AB1870407200C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D39EB0AA1870407200C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0AD1870407600C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D39EB0AC1870407600C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0AF1870408100C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D39EB0AE1870408100C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0B11870408800C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB02C186ED50800C43A24 /* Password */;
+			targetProxy = D39EB0B01870408800C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0B31870408E00C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB02C186ED50800C43A24 /* Password */;
+			targetProxy = D39EB0B21870408E00C43A24 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -16,7 +16,7 @@
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    NSLog(@"Picker did end: %@", identityPicker);
+    NSLog(@"Picker did end: %@", [identityPicker attributes]);
 }
 
 - (IBAction)showIdentityPicker:(id)sender;
