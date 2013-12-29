@@ -36,9 +36,11 @@ int main(int argc, const char * argv[])
 {
     CUIControllerRef controller;
     NSDictionary *attributes = @{
-                                 (__bridge id)kGSSAttrClass: (__bridge NSString *)kGSSAttrClassKerberos,
+                                 (__bridge id)kGSSAttrClass: (__bridge id)kGSSAttrClassKerberos,
                                  (__bridge id)kGSSAttrStatusTransient: @YES,
-                                 (__bridge id)kGSSAttrStatusPersistant: @NO
+                                 (__bridge id)kGSSAttrStatusPersistant: @NO,
+                                 (__bridge id)kGSSAttrNameType: (__bridge id)kGSSAttrNameTypeGSSUsername,
+                                 (__bridge id)kGSSAttrName: @"lhoward@ATHENA.MIT.EDU"
                                 };
     controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsNoUI);
     if (controller == NULL) {
