@@ -9,3 +9,5 @@
 #import <GSS/GSS.h>
 #import <CredUI/CredUI.h>
 #import <CredUICore/CredUICore.h>
+
+#import "CUIIdentityTile.h"

@@ -66,8 +66,6 @@ int main(int argc, const char * argv[])
         if (field) {
             NSLog(@"[%lu] %@(%@)", (unsigned long)idx, (__bridge NSString *)CUIFieldGetTitle(field), (__bridge NSString *)CUIFieldGetDefaultValue(field2));
         }
-        
-        NSLog(@"Attrs: %@", CUICredentialGetAttributes((__bridge CUICredentialRef)cred));
     }];
     
     CUICredentialRef cred = NULL;

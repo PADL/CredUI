@@ -6,10 +6,17 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import "CUIIdentityPicker.h"
+#import "CUIIdentityTile.h"
+
+@interface CUIIdentityPicker () <NSWindowDelegate>
+@end
+
 @implementation CUIIdentityPicker
 {
     CUIFlags _flags;
     CUIControllerRef _controller;
+    NSPanel *_panel;
 }
 
 - (void)dealloc
@@ -46,8 +53,32 @@
     
     if (attributes)
         self.attributes = attributes;
+
+    NSRect frame = NSMakeRect(0, 0, 400, 600);
+    NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask | NSUtilityWindowMask;
+    NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
+
+    _panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
+    _panel.hidesOnDeactivate = YES;
+    _panel.worksWhenModal = YES;
+    _panel.delegate = self;
     
     return self;
+}
+
+- (NSWindow *)parentWindow
+{
+    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
+    return (__bridge NSWindow *)uic->parentWindow;
+}
+
+- (void)setParentWindow:(NSWindow *)aWindow
+{
+    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
+    CUICredUIContext newUic = *uic;
+    
+    newUic.parentWindow = (__bridge CFTypeRef)aWindow;
+    CUIControllerSetCredUIContext(_controller, &newUic);
 }
 
 - (NSString *)title
@@ -87,7 +118,7 @@
 
 - (void)setAttributes:(NSDictionary *)someAttributes
 {
-    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttribuets);
+    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttributes	);
 }
 
 - (BOOL)saveToKeychain
@@ -136,14 +167,18 @@
     }
 }
 
-- (BOOL)_enumerateCredentials:(void (^)(CUICredentialRef))cb
+- (void)windowDidBecomeKey:(NSNotification *)notification
 {
-    return CUIControllerEnumerateCredentials(_controller, cb);
+    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
+        CUIIdentityTile *tile = [[CUIIdentityTile alloc] initWithCredential:cred];
+        
+        [[_panel contentView] addSubview:tile];
+    });
 }
 
 - (NSInteger)runModal
 {
-    return NSCancelButton;
+    return [NSApp runModalForWindow:_panel];
 }
 
 - (void)runModalForWindow:(NSWindow *)window
@@ -151,5 +186,15 @@
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
+    self.parentWindow = window;
+
+    NSInteger returnCode = [self runModal];
+    NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setTarget:delegate];
+    [invocation setSelector:didEndSelector];
+    [invocation setArgument:&returnCode atIndex:0];
+    [invocation setArgument:&contextInfo atIndex:1];
+    [invocation invoke];
 }
 @end

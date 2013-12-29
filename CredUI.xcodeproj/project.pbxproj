@@ -62,6 +62,10 @@
 		D39EB09C186FB92900C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D39EB09D186FB97A00C43A24 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E280182B51A6009271CD /* Foundation.framework */; };
 		D39EB09E186FBB7F00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D39EB0A0187016EE00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
+		D39EB0A1187016EE00C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D39EB0A41870235F00C43A24 /* CUIIdentityTile.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */; };
+		D39EB0A51870235F00C43A24 /* CUIIdentityTile.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,6 +171,8 @@
 		D39EB092186FB90400C43A24 /* CredUIEnumerate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CredUIEnumerate; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB094186FB90400C43A24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D39EB09F186FE1EF00C43A24 /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
+		D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityTile.h; sourceTree = "<group>"; };
+		D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityTile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +230,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D39EB0A0187016EE00C43A24 /* CredUI.framework in Frameworks */,
+				D39EB0A1187016EE00C43A24 /* CredUICore.framework in Frameworks */,
 				D39EB062186FB1DA00C43A24 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,6 +319,8 @@
 				D336E28A182B51A6009271CD /* CredUI.h */,
 				D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */,
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
+				D39EB0A21870235F00C43A24 /* CUIIdentityTile.h */,
+				D39EB0A31870235F00C43A24 /* CUIIdentityTile.m */,
 				D336E28B182B51A6009271CD /* CredUI.m */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D336E284182B51A6009271CD /* Supporting Files */,
@@ -475,6 +485,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
+				D39EB0A41870235F00C43A24 /* CUIIdentityTile.h in Headers */,
 				D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -750,6 +761,7 @@
 			files = (
 				D336E28C182B51A6009271CD /* CredUI.m in Sources */,
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
+				D39EB0A51870235F00C43A24 /* CUIIdentityTile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
