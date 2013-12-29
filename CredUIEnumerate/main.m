@@ -59,15 +59,27 @@ int main(int argc, const char * argv[])
 
     [creds enumerateObjectsUsingBlock:^(id cred, NSUInteger idx, BOOL *stop) {
         CUIFieldRef field = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)cred, kCUIFieldClassLargeText);
-    
+        CUIFieldRef field2 = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)cred, kCUIFieldClassEditText);
+        
         if (field) {
-            NSLog(@"[%lu] %@", (unsigned long)idx, (__bridge NSString *)CUIFieldGetTitle(field));
+            NSLog(@"[%lu] %@(%@)", (unsigned long)idx, (__bridge NSString *)CUIFieldGetTitle(field), (__bridge NSString *)CUIFieldGetDefaultValue(field2));
         }
+        
+        NSLog(@"Attrs: %@", CUICredentialGetAttributes((__bridge CUICredentialRef)cred));
     }];
     
-    NSString *which = readFromConsole(@"Select credential", nil, true);
+    CUICredentialRef cred = NULL;
     
-    CUICredentialRef cred = (__bridge CUICredentialRef)[creds objectAtIndex:[which integerValue]];
+    if ([creds count] > 1) {
+        NSString *which = readFromConsole(@"Select credential", nil, true);
+        cred = (__bridge CUICredentialRef)[creds objectAtIndex:[which integerValue]];
+    } else if ([creds count] == 1) {
+        cred = (__bridge CUICredentialRef)[creds objectAtIndex:0];
+    } else {
+        NSLog(@"No credentials");
+        exit(1);
+    }
+    
     Boolean stop = false;
     
     CUICredentialDidBecomeSelected(cred);
@@ -94,24 +106,30 @@ int main(int argc, const char * argv[])
                 break;
         }
         
-        if (value)
+        if (value && [value length])
             CUIFieldSetValue(field, (__bridge CFTypeRef)value);
     }, &stop);
 
     CFDictionaryRef credAttributes = CUICredentialGetAttributes(cred);
+    
+    NSLog(@"Credential attributes: %@", credAttributes);
+    
     CFErrorRef error = NULL;
-    dispatch_queue_t q = dispatch_queue_create("com.padl.CredUIEnumerate", NULL);
-
-    GSSItemRef item = GSSItemAdd(credAttributes, &error);
-    CFBridgingRelease(item);
+    GSSItemRef item = CUICredentialCreateGSSItem(cred, true, &error);
     
     if (item) {
-        GSSItemOperation(item, kGSSOperationAcquire, NULL, q, ^(CFTypeRef result, CFErrorRef error) {
+        dispatch_queue_t q = dispatch_queue_create("com.padl.CredUIEnumerate", NULL);
+        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+        GSSItemOperation(item, kGSSOperationAcquire, credAttributes, q, ^(CFTypeRef result, CFErrorRef error) {
             if (error)
                 NSLog(@"Acquiring credential error: %@", error);
             else
                 NSLog(@"Acquired credential %@", result);
+            dispatch_semaphore_signal(semaphore);
         });
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        CFRelease(item);
     } else if (error) {
         NSLog(@"Failed to add item for attributes: %@", error);
     } else {

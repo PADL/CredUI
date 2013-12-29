@@ -37,7 +37,10 @@
 #ifndef CredUI_CUIAuthIdentity_h
 #define CredUI_CUIAuthIdentity_h
 
-
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 /*
  * Type is any of the kGSSAttrTypeNNN credential types below, type are
  * strings
@@ -127,6 +130,9 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFTypeRef kGSSAttrStatusTransient
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

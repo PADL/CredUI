@@ -49,17 +49,24 @@ public:
         CFRelease(interfaceID);
         return E_NOINTERFACE;
     }
-    
+  
+    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes) {
+        CPasswordCredential *passwordCred = new CPasswordCredential();
+        
+        if (!passwordCred->initWithAttributes(attributes)) {
+            passwordCred->Release();
+            return NULL;
+        }
+        
+        return passwordCred;
+    }
+
     Boolean initWithController(CUIControllerRef controller) {
         _controller = (CUIControllerRef)CFRetain(controller);
         return true;
     }
-
-    CUICredentialContext *getCredentialWithAttributes(CFDictionaryRef attributes) {
-        return createCredentialWithAttributes(attributes);
-    }
     
-    CFArrayRef getOtherCredentials(void) {
+    CFArrayRef createOtherCredentials(void) {
         return NULL;
     }
 
@@ -77,16 +84,6 @@ protected:
     }
     
 private:
-    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes) {
-        CPasswordCredential *passwordCred = new CPasswordCredential();
-        
-        if (!passwordCred->initWithAttributes(attributes)) {
-            passwordCred->Release();
-            return NULL;
-        }
-        
-        return passwordCred;
-    }
     
 };
 

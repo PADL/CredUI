@@ -15,6 +15,13 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
     CUIFieldRef fields[3] = { 0 };
     
     if (attributes) {
+        /*
+         * If this is a stored item (i.e. it has a UUID) and it's not a password credential, ignore it
+         */
+        if (CFDictionaryGetValue(attributes, kGSSAttrUUID) &&
+            !CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword))
+            return false;
+
         CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kGSSAttrNameType);
         
         if (nameType && CFEqual(nameType, kGSSAttrNameTypeGSSUsername))
@@ -27,13 +34,17 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
     
     fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), defaultUsername,
                                ^(CUIFieldRef field, CFTypeRef value) {
-        CFDictionarySetValue(_attributes, kGSSAttrNameType, kGSSAttrNameTypeGSSUsername);
-        CFDictionarySetValue(_attributes, kGSSAttrName, value);
+                                   if (value && CFStringGetLength((CFStringRef)value)) {
+                                       CFDictionarySetValue(_attributes, kGSSAttrNameType, kGSSAttrNameTypeGSSUsername);
+                                       CFDictionarySetValue(_attributes, kGSSAttrName, value);
+                                   }
     });
     
     fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), defaultPassword,
                                ^(CUIFieldRef field, CFTypeRef value) {
-        CFDictionarySetValue(_attributes, kGSSAttrCredentialPassword, value);
+                                   if (value && CFStringGetLength((CFStringRef)value)) {
+                                       CFDictionarySetValue(_attributes, kGSSAttrCredentialPassword, value);
+                                   }
     });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
@@ -45,5 +56,8 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
     else
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 
+    // delete any existing cached password, because GSSItem won't be able to acquire a credential otherwise
+    CFDictionaryRemoveValue(_attributes, kGSSAttrCredentialPassword);
+    
     return !!_attributes;
 }

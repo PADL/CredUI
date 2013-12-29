@@ -32,6 +32,11 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
 extern CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred);
     
+struct GSSItem;
+
+extern struct GSSItem *
+CUICredentialCreateGSSItem(CUICredentialRef cred, Boolean addIfNotExisting, CFErrorRef *pError);
+    
 extern void
 CUICredentialDidBecomeSelected(CUICredentialRef cred);
 

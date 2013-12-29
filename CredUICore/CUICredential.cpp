@@ -51,6 +51,7 @@ CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
 struct __CUICredential {
     CFRuntimeBase _base;
     CUICredentialContext *_context;
+    GSSItemRef _gssItem;
 };
 
 static CFTypeID _CUICredentialTypeID = _kCFRuntimeNotATypeID;
@@ -61,15 +62,21 @@ static void _CUICredentialDeallocate(CFTypeRef cf)
 
     if (cred->_context)
         _CUICredentialContextRelease(CFGetAllocator(cf), cred->_context);
+    if (cred->_gssItem)
+        CFRelease(cred->_gssItem);
 }
 
 static Boolean _CUICredentialEqual(CFTypeRef cf1, CFTypeRef cf2)
 {
     CUICredentialRef cred1 = (CUICredentialRef)cf1;
     CUICredentialRef cred2 = (CUICredentialRef)cf2;
+    Boolean equals;
     
-    return (cred1 == cred2 ||
-            _CUICredentialContextEqual(cred1->_context, cred2->_context));
+    equals = (cred1 == cred2);
+    if (!equals)
+        equals = _CUICredentialContextEqual(cred1->_context, cred2->_context);
+    
+    return equals;
 }
 
 static CFStringRef _CUICredentialCopyDescription(CFTypeRef cf)
@@ -227,4 +234,22 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
     }, &stop);
     
     return theField;
+}
+
+void
+__CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item)
+{
+    __CUISetter((CFTypeRef &)cred->_gssItem, item);
+}
+
+GSSItemRef
+CUICredentialCreateGSSItem(CUICredentialRef cred, Boolean addIfNotExisting, CFErrorRef *pError)
+{
+    if (cred->_gssItem == NULL && addIfNotExisting) {
+        CFDictionaryRef attributes = CUICredentialGetAttributes(cred);
+        if (attributes)
+            cred->_gssItem = GSSItemAdd(attributes, pError);
+    }
+
+    return cred->_gssItem;
 }

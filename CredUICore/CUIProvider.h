@@ -31,18 +31,18 @@ public:
     /*
      * Return a description for debugging purposes
      */
-    virtual CFStringRef copyDescription(void) = 0;
+    virtual CFStringRef copyDescription(void) CF_RETURNS_RETAINED = 0;
     
     /*
      * Get an array of CUIFieldRefs that can be used to populate the
      * auth identity.
      */
-    virtual CFArrayRef getFields(void) = 0;
+    virtual CFArrayRef getFields(void) CF_RETURNS_NOT_RETAINED = 0;
     
     /*
      * Pack the fields into a GSS auth identity.
      */
-    virtual CFDictionaryRef getAttributes(void) = 0;
+    virtual CFDictionaryRef getAttributes(void) CF_RETURNS_NOT_RETAINED = 0;
     
     /*
      * Called when the user selects.
@@ -61,13 +61,13 @@ public:
      * Get a CUICredentialRef for an authentication identity. attribuets may be
      * NULL in which case it should prompt the user.
      */
-    virtual CUICredentialContext *getCredentialWithAttributes(CFDictionaryRef attributes) = 0;
+    virtual CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes) = 0;
     
     /*
      * Get any additional CUICredentialContexts for users that the provider knows about,
      * for example inserted smartcards.
      */
-    virtual CFArrayRef getOtherCredentials(void) = 0; // array of CUICredentialRef
+    virtual CFArrayRef createOtherCredentials(void) CF_RETURNS_RETAINED = 0; // array of CUICredentialRef
 };
 
 #else
@@ -81,9 +81,9 @@ typedef struct CUICredentialContext {
 
 typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
-    HRESULT (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller);
-    CUICredentialRef (STDMETHODCALLTYPE *getCredentialWithAttributes)(CFDictionaryRef attributes);
-    CFArrayRef (STDMETHODCALLTYPE *getOtherCredentials)(void *thisPointer);
+    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller);
+    CUICredentialRef (STDMETHODCALLTYPE *createCredentialWithAttributes)(CFDictionaryRef attributes);
+    CFArrayRef (STDMETHODCALLTYPE *createOtherCredentials)(void *thisPointer);
 } CUIProvider;
 #endif /* defined(__cplusplus) */
 

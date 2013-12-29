@@ -69,6 +69,8 @@ public:
     
     CPasswordCredential() {
         _retainCount = 1;
+        _fields = NULL;
+        _attributes = NULL;
     }
 
 private:
