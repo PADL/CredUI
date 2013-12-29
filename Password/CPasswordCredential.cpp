@@ -8,42 +8,42 @@
 
 #include "CPasswordCredential.h"
 
-Boolean CPasswordCredential::initWithAuthIdentity(CFDictionaryRef authIdentity)
+Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
 {
     CFTypeRef defaultUsername = NULL;
     CFTypeRef defaultPassword = NULL;
     CUIFieldRef fields[3] = { 0 };
     
-    if (authIdentity) {
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(authIdentity, kGSSAttrNameType);
+    if (attributes) {
+        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kGSSAttrNameType);
         
         if (nameType && CFEqual(nameType, kGSSAttrNameTypeGSSUsername))
-            defaultUsername = CFDictionaryGetValue(authIdentity, kGSSAttrName);
+            defaultUsername = CFDictionaryGetValue(attributes, kGSSAttrName);
         
-        defaultPassword = CFDictionaryGetValue(authIdentity, kGSSAttrCredentialPassword);
+        defaultPassword = CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword);
     }
     
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Password Credential"), NULL, NULL);
     
     fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), defaultUsername,
                                ^(CUIFieldRef field, CFTypeRef value) {
-        CFDictionarySetValue(_authIdentity, kGSSAttrNameType, kGSSAttrNameTypeGSSUsername);
-        CFDictionarySetValue(_authIdentity, kGSSAttrName, value);
+        CFDictionarySetValue(_attributes, kGSSAttrNameType, kGSSAttrNameTypeGSSUsername);
+        CFDictionarySetValue(_attributes, kGSSAttrName, value);
     });
     
     fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), defaultPassword,
                                ^(CUIFieldRef field, CFTypeRef value) {
-        CFDictionarySetValue(_authIdentity, kGSSAttrCredentialPassword, value);
+        CFDictionarySetValue(_attributes, kGSSAttrCredentialPassword, value);
     });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
     if (_fields == NULL)
         return false;
     
-    if (authIdentity)
-        _authIdentity = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, authIdentity);
+    if (attributes)
+        _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     else
-        _authIdentity = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+        _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 
-    return !!_authIdentity;
+    return !!_attributes;
 }

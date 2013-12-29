@@ -145,10 +145,10 @@ CUICredentialGetFields(CUICredentialRef cred)
 }
 
 CFDictionaryRef
-CUICredentialGetAuthIdentity(CUICredentialRef cred)
+CUICredentialGetAttributes(CUICredentialRef cred)
 {
     if (cred->_context)
-        return cred->_context->getAuthIdentity();
+        return cred->_context->getAttributes();
     
     return NULL;
 }

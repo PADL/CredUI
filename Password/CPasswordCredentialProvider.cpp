@@ -55,8 +55,8 @@ public:
         return true;
     }
 
-    CUICredentialContext *getCredentialForAuthIdentity(CFDictionaryRef authIdentity) {
-        return createCredentialForAuthIdentity(authIdentity);
+    CUICredentialContext *getCredentialWithAttributes(CFDictionaryRef attributes) {
+        return createCredentialWithAttributes(attributes);
     }
     
     CFArrayRef getOtherCredentials(void) {
@@ -77,10 +77,10 @@ protected:
     }
     
 private:
-    CUICredentialContext *createCredentialForAuthIdentity(CFDictionaryRef authIdentity) {
+    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes) {
         CPasswordCredential *passwordCred = new CPasswordCredential();
         
-        if (!passwordCred->initWithAuthIdentity(authIdentity)) {
+        if (!passwordCred->initWithAttributes(attributes)) {
             passwordCred->Release();
             return NULL;
         }

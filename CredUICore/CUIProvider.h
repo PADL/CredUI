@@ -42,7 +42,7 @@ public:
     /*
      * Pack the fields into a GSS auth identity.
      */
-    virtual CFDictionaryRef getAuthIdentity(void) = 0;
+    virtual CFDictionaryRef getAttributes(void) = 0;
     
     /*
      * Called when the user selects.
@@ -58,10 +58,10 @@ public:
     virtual Boolean initWithController(CUIControllerRef controller) = 0;
     
     /*
-     * Get a CUICredentialRef for an authentication identity. authIdentity may be
+     * Get a CUICredentialRef for an authentication identity. attribuets may be
      * NULL in which case it should prompt the user.
      */
-    virtual CUICredentialContext *getCredentialForAuthIdentity(CFDictionaryRef authIdentity) = 0;
+    virtual CUICredentialContext *getCredentialWithAttributes(CFDictionaryRef attributes) = 0;
     
     /*
      * Get any additional CUICredentialContexts for users that the provider knows about,
@@ -75,14 +75,14 @@ typedef struct CUICredentialContext {
     IUNKNOWN_C_GUTS;
     CFStringRef (STDMETHODCALLTYPE *copyDescription)(void *thisPointer);
     CFArrayRef (STDMETHODCALLTYPE *getFields)(void *thisPointer);
-    CFDictionaryRef (STDMETHODCALLTYPE *getAuthIdentity)(void *thisPointer);
+    CFDictionaryRef (STDMETHODCALLTYPE *getAttributes)(void *thisPointer);
     void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer);
 } CUICredentialContext;
 
 typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
     HRESULT (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller);
-    CUICredentialRef (STDMETHODCALLTYPE *getCredentialForAuthIdentity)(CFDictionaryRef authIdentity);
+    CUICredentialRef (STDMETHODCALLTYPE *getCredentialWithAttributes)(CFDictionaryRef attributes);
     CFArrayRef (STDMETHODCALLTYPE *getOtherCredentials)(void *thisPointer);
 } CUIProvider;
 #endif /* defined(__cplusplus) */

@@ -16,7 +16,7 @@ struct __CUIController {
     CUIUsageScenario _usage;
     CUIUsageFlags _usageFlags;
     CUICredUIContext _uiContext;
-    CFMutableDictionaryRef _authIdentity;
+    CFMutableDictionaryRef _attributes;
     CFErrorRef _authError;
     CFIndex _flags;
     CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
@@ -32,8 +32,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
     
     if (controller->_providers)
         CFRelease(controller->_providers);
-    if (controller->_authIdentity)
-        CFRelease(controller->_authIdentity);
+    if (controller->_attributes)
+        CFRelease(controller->_attributes);
     if (controller->_authError)
         CFRelease(controller->_authError);
     if (controller->_gssContextHandle)
@@ -97,11 +97,11 @@ CUIControllerCreate(CFAllocatorRef allocator,
         return NULL;
     }
     
-    controller->_authIdentity = CFDictionaryCreateMutable(allocator,
-                                                          0,
-                                                          &kCFTypeDictionaryKeyCallBacks,
-                                                          &kCFTypeDictionaryValueCallBacks);
-    if (controller->_authIdentity == NULL) {
+    controller->_attributes = CFDictionaryCreateMutable(allocator,
+                                                        0,
+                                                        &kCFTypeDictionaryKeyCallBacks,
+                                                        &kCFTypeDictionaryValueCallBacks);
+    if (controller->_attributes == NULL) {
         CFRelease(controller);
         return NULL;
     }
@@ -112,13 +112,13 @@ CUIControllerCreate(CFAllocatorRef allocator,
 static Boolean
 CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller, CUIProvider *provider, void (^cb)(CUICredentialRef))
 {
-    CUICredentialContext *authIdentityCredContext;
+    CUICredentialContext *attrCredContext;
     CFArrayRef otherCredContexts;
     CFIndex index;
     
-    authIdentityCredContext = provider->getCredentialForAuthIdentity(controller->_authIdentity);
-    if (authIdentityCredContext) {
-        CUICredentialRef cred = CUICredentialCreate(CFGetAllocator(controller), authIdentityCredContext);
+    attrCredContext = provider->getCredentialWithAttributes(controller->_attributes);
+    if (attrCredContext) {
+        CUICredentialRef cred = CUICredentialCreate(CFGetAllocator(controller), attrCredContext);
         if (cred == NULL)
             return false;
         
@@ -158,22 +158,22 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
 }
 
 static void
-__CUICopyMutableAuthIdentityKeys(const void *key, const void *value, void *context)
+__CUICopyMutableAttributesKeys(const void *key, const void *value, void *context)
 {
     CFDictionarySetValue((CFMutableDictionaryRef)context, key, value);
 }
 
 void
-CUIControllerSetAuthIdentity(CUIControllerRef controller, CFDictionaryRef authIdentity)
+CUIControllerSetAttributes(CUIControllerRef controller, CFDictionaryRef attributes)
 {
-    CFDictionaryApplyFunction(controller->_authIdentity, __CUICopyMutableAuthIdentityKeys, (void *)authIdentity);
+    CFDictionaryApplyFunction(controller->_attributes, __CUICopyMutableAttributesKeys, (void *)attributes);
 }
 
 
 CFDictionaryRef
-CUIControllerGetAuthIdentity(CUIControllerRef controller)
+CUIControllerGetAttributes(CUIControllerRef controller)
 {
-    return controller->_authIdentity;
+    return controller->_attributes;
 }
 
 void
@@ -213,13 +213,13 @@ void
 CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
 {
     CFBooleanRef value = save ? kCFBooleanTrue : kCFBooleanFalse;
-    CFDictionarySetValue(controller->_authIdentity, kGSSAttrStatusPersistant, value);
+    CFDictionarySetValue(controller->_attributes, kGSSAttrStatusPersistant, value);
 }
 
 Boolean
 CUIControllerGetSaveToKeychain(CUIControllerRef controller)
 {
-    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_authIdentity, kGSSAttrStatusPersistant));
+    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_attributes, kGSSAttrStatusPersistant));
 }
 
 void

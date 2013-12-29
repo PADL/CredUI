@@ -30,7 +30,7 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
     
     
 extern CFDictionaryRef
-CUICredentialGetAuthIdentity(CUICredentialRef cred);
+CUICredentialGetAttributes(CUICredentialRef cred);
     
 extern void
 CUICredentialDidBecomeSelected(CUICredentialRef cred);

@@ -12,6 +12,8 @@
 #include <Foundation/Foundation.h>
 #include <CredUICore/CredUICore.h>
 
+#include "GSSItem.h"
+
 static NSString *readFromConsole(NSString *prompt, NSString *defaultValue, BOOL echo)
 {
     char buf[BUFSIZ], *s;
@@ -33,18 +35,21 @@ static NSString *readFromConsole(NSString *prompt, NSString *defaultValue, BOOL 
 int main(int argc, const char * argv[])
 {
     CUIControllerRef controller;
-    NSDictionary *authIdentity = @{
-                                   };
+    NSDictionary *attributes = @{
+                                 (__bridge id)kGSSAttrClass: (__bridge NSString *)kGSSAttrClassKerberos,
+                                 (__bridge id)kGSSAttrStatusTransient: @YES,
+                                 (__bridge id)kGSSAttrStatusPersistant: @NO
+                                };
     controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsNoUI);
     if (controller == NULL) {
         NSLog(@"failed to create controller");
         exit(1);
     }
     
-    CUIControllerSetAuthIdentity(controller, (__bridge CFDictionaryRef)authIdentity);
+    CUIControllerSetAttributes(controller, (__bridge CFDictionaryRef)attributes);
     
     NSLog(@"Controller is: %@", (__bridge id)controller);
-    NSLog(@"Auth identity is: %@", authIdentity);
+    NSLog(@"Attributes are: %@", attributes);
     
     NSMutableArray *creds = [NSMutableArray array];
     
@@ -93,9 +98,27 @@ int main(int argc, const char * argv[])
             CUIFieldSetValue(field, (__bridge CFTypeRef)value);
     }, &stop);
 
-    NSDictionary *credAuthIdentity = (__bridge NSDictionary *)CUICredentialGetAuthIdentity(cred);
+    CFDictionaryRef credAttributes = CUICredentialGetAttributes(cred);
+    CFErrorRef error = NULL;
+    dispatch_queue_t q = dispatch_queue_create("com.padl.CredUIEnumerate", NULL);
+
+    GSSItemRef item = GSSItemAdd(credAttributes, &error);
+    CFBridgingRelease(item);
     
-    NSLog(@"Auth identity: %@", credAuthIdentity);
+    if (item) {
+        GSSItemOperation(item, kGSSOperationAcquire, NULL, q, ^(CFTypeRef result, CFErrorRef error) {
+            if (error)
+                NSLog(@"Acquiring credential error: %@", error);
+            else
+                NSLog(@"Acquired credential %@", result);
+        });
+    } else if (error) {
+        NSLog(@"Failed to add item for attributes: %@", error);
+    } else {
+        NSLog(@"Failed to add item");
+    }
+    
+    CFRelease(controller);
     
     exit(0);
 }

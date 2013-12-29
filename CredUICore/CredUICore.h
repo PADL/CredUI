@@ -19,6 +19,6 @@
 #include <CredUICore/CUICredential.h>
 #include <CredUICore/CUIController.h>
 #include <CredUICore/CUIProvider.h>
-#include <CredUICore/CUIAuthIdentity.h>
+#include <CredUICore/CUIAttributes.h>
 
 #endif /* __CredUI__CredUICore__ */

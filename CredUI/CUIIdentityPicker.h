@@ -38,7 +38,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 @property(nonatomic, copy) NSString *message;
 
 /* Credentials dictionary, can be passed into GSSItem */
-@property(nonatomic, copy) NSDictionary *authIdentity;
+@property(nonatomic, copy) NSDictionary *attributes;
 
 /* Authentication error to show user, if any */
 @property(nonatomic, copy) NSError *authError;
@@ -58,9 +58,9 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 
 - initWithFlags:(CUIFlags)flags;
 
-- initWithFlags:(CUIFlags)flags authIdentity:(NSDictionary *)authIdent;
+- initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attrs;
 
-/* Run the IdentityPicker as an application-modal panel and return a authIdentity dictionary. Return NSOKButton or NSCancelButton. */
+/* Run the IdentityPicker as an application-modal panel and return a attribute dictionary. Return NSOKButton or NSCancelButton. */
 - (NSInteger)runModal;
 
 /* Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.

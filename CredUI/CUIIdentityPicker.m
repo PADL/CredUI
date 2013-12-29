@@ -25,10 +25,10 @@
 
 - initWithFlags:(CUIFlags)flags
 {
-    return [self initWithFlags:flags authIdentity:nil];
+    return [self initWithFlags:flags attributes:nil];
 }
 
-- initWithFlags:(CUIFlags)flags authIdentity:(NSDictionary *)authIdentity
+- initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     CUIUsageFlags usageFlags = 0;
     
@@ -44,8 +44,8 @@
     if (_controller == NULL)
         return nil;
     
-    if (authIdentity)
-        self.authIdentity = authIdentity;
+    if (attributes)
+        self.attributes = attributes;
     
     return self;
 }
@@ -80,14 +80,14 @@
     CUIControllerSetCredUIContext(_controller, &newUic);
 }
 
-- (NSDictionary *)authIdentity
+- (NSDictionary *)attributes
 {
-    return (__bridge NSDictionary *)CUIControllerGetAuthIdentity(_controller);
+    return (__bridge NSDictionary *)CUIControllerGetAttributes(_controller);
 }
 
-- (void)setAuthIdentity:(NSDictionary *)anAuthIdentity
+- (void)setAttributes:(NSDictionary *)someAttributes
 {
-    CUIControllerSetDefaultAuthIdentity(_controller, (__bridge CFDictionaryRef)anAuthIdentity);
+    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttribuets);
 }
 
 - (BOOL)saveToKeychain

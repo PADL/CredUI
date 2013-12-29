@@ -49,7 +49,7 @@ public:
         CFStringRef desc;
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
-                                        CFSTR("<CPasswordCredential %p{authIdentity = \"%@\"}>"), this, _authIdentity);
+                                        CFSTR("<CPasswordCredential %p{attributes = \"%@\"}>"), this, _attributes);
         
         return desc;
     }
@@ -58,11 +58,11 @@ public:
         return _fields;
     }
     
-    CFDictionaryRef getAuthIdentity(void) {
-        return _authIdentity;
+    CFDictionaryRef getAttributes(void) {
+        return _attributes;
     }
     
-    Boolean initWithAuthIdentity(CFDictionaryRef authIdentity);
+    Boolean initWithAttributes(CFDictionaryRef attributes);
  
     void didBecomeSelected(void) {
     }
@@ -74,15 +74,15 @@ public:
 private:
     int32_t _retainCount;
     CFArrayRef _fields;
-    CFMutableDictionaryRef _authIdentity;
+    CFMutableDictionaryRef _attributes;
     
 protected:
     
     ~CPasswordCredential() {
         if (_fields)
             CFRelease(_fields);
-        if (_authIdentity)
-            CFRelease(_authIdentity);
+        if (_attributes)
+            CFRelease(_attributes);
     }
 };
 

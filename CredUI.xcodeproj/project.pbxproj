@@ -43,7 +43,7 @@
 		D39EB054186F131F00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB057186F18E500C43A24 /* CUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB055186F18E500C43A24 /* CUIController.cpp */; };
 		D39EB058186F18E500C43A24 /* CUIController.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB056186F18E500C43A24 /* CUIController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D39EB05A186FA57200C43A24 /* CUIAuthIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB059186FA55400C43A24 /* CUIAuthIdentity.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D39EB05A186FA57200C43A24 /* CUIAttributes.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB059186FA55400C43A24 /* CUIAttributes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB05B186FAA0200C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D39EB05C186FAC9F00C43A24 /* CredUICore.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB00E186ED2B200C43A24 /* CredUICore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB062186FB1DA00C43A24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
@@ -149,7 +149,7 @@
 		D39EB051186F113A00C43A24 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		D39EB055186F18E500C43A24 /* CUIController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIController.cpp; sourceTree = "<group>"; };
 		D39EB056186F18E500C43A24 /* CUIController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIController.h; sourceTree = "<group>"; };
-		D39EB059186FA55400C43A24 /* CUIAuthIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIAuthIdentity.h; sourceTree = "<group>"; };
+		D39EB059186FA55400C43A24 /* CUIAttributes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIAttributes.h; sourceTree = "<group>"; };
 		D39EB061186FB1DA00C43A24 /* CredUIPicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CredUIPicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB065186FB1DA00C43A24 /* CredUIPicker-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUIPicker-Info.plist"; sourceTree = "<group>"; };
 		D39EB067186FB1DA00C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -166,6 +166,7 @@
 		D39EB086186FB1DA00C43A24 /* CredUIPickerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUIPickerTests.m; sourceTree = "<group>"; };
 		D39EB092186FB90400C43A24 /* CredUIEnumerate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CredUIEnumerate; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB094186FB90400C43A24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D39EB09F186FE1EF00C43A24 /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -350,7 +351,7 @@
 			children = (
 				D39EB008186ED2B200C43A24 /* Supporting Files */,
 				D39EB00E186ED2B200C43A24 /* CredUICore.h */,
-				D39EB059186FA55400C43A24 /* CUIAuthIdentity.h */,
+				D39EB059186FA55400C43A24 /* CUIAttributes.h */,
 				D39EB055186F18E500C43A24 /* CUIController.cpp */,
 				D39EB056186F18E500C43A24 /* CUIController.h */,
 				D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */,
@@ -460,6 +461,7 @@
 		D39EB093186FB90400C43A24 /* CredUIEnumerate */ = {
 			isa = PBXGroup;
 			children = (
+				D39EB09F186FE1EF00C43A24 /* GSSItem.h */,
 				D39EB094186FB90400C43A24 /* main.m */,
 			);
 			path = CredUIEnumerate;
@@ -484,7 +486,7 @@
 				D39EB03D186EED1900C43A24 /* CUIProvider.h in Headers */,
 				D39EB058186F18E500C43A24 /* CUIController.h in Headers */,
 				D39EB045186EF07500C43A24 /* CUIField.h in Headers */,
-				D39EB05A186FA57200C43A24 /* CUIAuthIdentity.h in Headers */,
+				D39EB05A186FA57200C43A24 /* CUIAttributes.h in Headers */,
 				D39EB05C186FAC9F00C43A24 /* CredUICore.h in Headers */,
 				D39EB041186EF06D00C43A24 /* CUICredential.h in Headers */,
 			);
