@@ -18,7 +18,6 @@ struct __CUIController {
     CUICredUIContext _uiContext;
     CFMutableDictionaryRef _authIdentity;
     CFErrorRef _authError;
-    Boolean _saveToKeychain;
     CFIndex _flags;
     CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
     gss_name_t _gssTargetName;
@@ -98,6 +97,15 @@ CUIControllerCreate(CFAllocatorRef allocator,
         return NULL;
     }
     
+    controller->_authIdentity = CFDictionaryCreateMutable(allocator,
+                                                          0,
+                                                          &kCFTypeDictionaryKeyCallBacks,
+                                                          &kCFTypeDictionaryValueCallBacks);
+    if (controller->_authIdentity == NULL) {
+        CFRelease(controller);
+        return NULL;
+    }
+    
     return controller;
 }
 
@@ -149,15 +157,21 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
     return didEnumerate;
 }
 
-void
-CUIControllerSetDefaultAuthIdentity(CUIControllerRef controller, CFDictionaryRef authIdentity)
+static void
+__CUICopyMutableAuthIdentityKeys(const void *key, const void *value, void *context)
 {
-    __CUISetter((CFTypeRef &)controller->_authIdentity, authIdentity);
+    CFDictionarySetValue((CFMutableDictionaryRef)context, key, value);
+}
+
+void
+CUIControllerSetAuthIdentity(CUIControllerRef controller, CFDictionaryRef authIdentity)
+{
+    CFDictionaryApplyFunction(controller->_authIdentity, __CUICopyMutableAuthIdentityKeys, (void *)authIdentity);
 }
 
 
 CFDictionaryRef
-CUIControllerGetDefaultAuthIdentity(CUIControllerRef controller)
+CUIControllerGetAuthIdentity(CUIControllerRef controller)
 {
     return controller->_authIdentity;
 }
@@ -198,13 +212,14 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 void
 CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
 {
-    controller->_saveToKeychain = save;
+    CFBooleanRef value = save ? kCFBooleanTrue : kCFBooleanFalse;
+    CFDictionarySetValue(controller->_authIdentity, kGSSAttrStatusPersistant, value);
 }
 
 Boolean
 CUIControllerGetSaveToKeychain(CUIControllerRef controller)
 {
-    return controller->_saveToKeychain;
+    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_authIdentity, kGSSAttrStatusPersistant));
 }
 
 void

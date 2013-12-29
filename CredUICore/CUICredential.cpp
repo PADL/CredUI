@@ -75,18 +75,14 @@ static Boolean _CUICredentialEqual(CFTypeRef cf1, CFTypeRef cf2)
 static CFStringRef _CUICredentialCopyDescription(CFTypeRef cf)
 {
     CUICredentialRef cred = (CUICredentialRef)cf;
-    CFStringRef contextDesc = NULL;
-    CFStringRef desc;
+    CFStringRef desc = NULL;
   
     if (cred->_context)
-        contextDesc = _CUICredentialContextCopyDescription(cred->_context);
+        desc = _CUICredentialContextCopyDescription(cred->_context);
     
-    if (contextDesc == NULL) {
+    if (desc == NULL) {
         desc = CFStringCreateWithFormat(CFGetAllocator(cf), NULL,
                                         CFSTR("<CUICredential %p>{context = %p}"), cred, cred->_context);
-    } else {
-        desc = CFStringCreateWithFormat(CFGetAllocator(cf), NULL,
-                                        CFSTR("<CUICredential %p{context = \"%@\"}>"), cred, contextDesc);
     }
     
     return desc;
@@ -148,11 +144,87 @@ CUICredentialGetFields(CUICredentialRef cred)
     return NULL;
 }
 
-extern CFDictionaryRef
+CFDictionaryRef
 CUICredentialGetAuthIdentity(CUICredentialRef cred)
 {
     if (cred->_context)
         return cred->_context->getAuthIdentity();
     
     return NULL;
+}
+
+void
+CUICredentialDidBecomeSelected(CUICredentialRef cred)
+{
+    if (cred->_context)
+        cred->_context->didBecomeSelected();
+}
+
+struct __CUICredentialFilterFieldsContext {
+    Boolean (^predicate)(CUIFieldRef);
+    CFMutableArrayRef array;
+};
+
+static void
+__CUICredentialFilterFieldsWithPredicate(const void *value, void *_context)
+{
+    CUIFieldRef field = (CUIFieldRef)value;
+    __CUICredentialFilterFieldsContext *context = (__CUICredentialFilterFieldsContext *)_context;
+    
+    if (context->predicate(field))
+        CFArrayAppendValue(context->array, field);
+}
+
+CFArrayRef
+CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
+                                     Boolean (^predicate)(CUIFieldRef field))
+{
+    CFArrayRef fields = CUICredentialGetFields(cred);
+    __CUICredentialFilterFieldsContext context;
+    
+    if (fields == NULL)
+        return NULL;
+
+    context.predicate = predicate;
+    context.array = CFArrayCreateMutable(CFGetAllocator(fields), 0, &kCFTypeArrayCallBacks);
+
+    CFArrayApplyFunction(fields,
+                         CFRangeMake(0, CFArrayGetCount(fields)),
+                         __CUICredentialFilterFieldsWithPredicate,
+                         (void *)&context);
+    
+    return context.array;
+}
+
+void
+CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop), Boolean *stop)
+{
+    CFArrayRef fields = CUICredentialGetFields(cred);
+    CFIndex index;
+    
+    if (fields) {
+        for (index = 0; index < CFArrayGetCount(fields); index++) {
+            CUIFieldRef field = (CUIFieldRef)CFArrayGetValueAtIndex(fields, index);
+            
+            cb(field, stop);
+            if (*stop)
+                break;
+        }
+    }
+}
+
+CUIFieldRef
+CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass)
+{
+    Boolean stop = false;
+    __block CUIFieldRef theField = NULL;
+
+    CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
+        if (CUIFieldGetClass(field) == fieldClass) {
+            theField = (CUIFieldRef)CFRetain(field);
+            *stop = true;
+        }
+    }, &stop);
+    
+    return theField;
 }

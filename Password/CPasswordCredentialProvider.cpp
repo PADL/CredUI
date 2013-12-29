@@ -11,6 +11,10 @@
 
 #include <libkern/OSAtomic.h>
 
+extern "C" {
+    void *CPasswordCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
+};
+
 class CPasswordCredentialProvider : public CUIProvider {
     
 private:
@@ -46,9 +50,9 @@ public:
         return E_NOINTERFACE;
     }
     
-    HRESULT initWithController(CUIControllerRef controller) {
+    Boolean initWithController(CUIControllerRef controller) {
         _controller = (CUIControllerRef)CFRetain(controller);
-        return S_OK;        
+        return true;
     }
 
     CUICredentialContext *getCredentialForAuthIdentity(CFDictionaryRef authIdentity) {

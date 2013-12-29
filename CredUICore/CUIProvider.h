@@ -31,23 +31,23 @@ public:
     /*
      * Return a description for debugging purposes
      */
-    virtual CFStringRef copyDescription(void);
+    virtual CFStringRef copyDescription(void) = 0;
     
     /*
      * Get an array of CUIFieldRefs that can be used to populate the
      * auth identity.
      */
-    virtual CFArrayRef getFields(void);
+    virtual CFArrayRef getFields(void) = 0;
     
     /*
      * Pack the fields into a GSS auth identity.
      */
-    virtual CFDictionaryRef getAuthIdentity(void);
+    virtual CFDictionaryRef getAuthIdentity(void) = 0;
     
     /*
      * Called when the user selects.
      */
-    virtual void didBecomeSelected(void);
+    virtual void didBecomeSelected(void) = 0;
 };
 
 class CUIProvider : public IUnknown {
@@ -55,7 +55,7 @@ public:
     /*
      * Initialize a new credential provider
      */
-    virtual HRESULT initWithController(CUIControllerRef controller) = 0;
+    virtual Boolean initWithController(CUIControllerRef controller) = 0;
     
     /*
      * Get a CUICredentialRef for an authentication identity. authIdentity may be

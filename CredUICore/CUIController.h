@@ -50,10 +50,10 @@ CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageFlags usageFlags);
     
 void
-CUIControllerSetDefaultAuthIdentity(CUIControllerRef controller, CFDictionaryRef authIdentity);
+CUIControllerSetAuthIdentity(CUIControllerRef controller, CFDictionaryRef authIdentity);
 
 CFDictionaryRef
-CUIControllerGetDefaultAuthIdentity(CUIControllerRef controller);
+CUIControllerGetAuthIdentity(CUIControllerRef controller);
 
 void
 CUIControllerSetAuthError(CUIControllerRef controller, CFErrorRef authError);

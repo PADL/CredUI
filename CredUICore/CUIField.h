@@ -36,6 +36,7 @@ CUIFieldCreate(
     CFAllocatorRef allocator,
     CUIFieldClass fieldClass,
     CFStringRef title,
+    CFTypeRef defaultValue,
     void (^fieldDidChange)(CUIFieldRef field, CFTypeRef value));
 
 extern CUIFieldRef
@@ -46,9 +47,12 @@ CUIFieldCreateCopy(
 extern CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field);
     
-extern CFTypeRef
+extern CFStringRef
 CUIFieldGetTitle(CUIFieldRef field);
-
+    
+extern CFTypeRef
+CUIFieldGetDefaultValue(CUIFieldRef field);
+    
 extern void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value);
     

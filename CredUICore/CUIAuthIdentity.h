@@ -114,5 +114,19 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFTypeRef kGSSAttrCredentialExists
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
+/*
+ * Status of a credentials
+ */
+
+extern const CFTypeRef kGSSAttrStatusPersistant
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+extern const CFTypeRef kGSSAttrStatusAutoAcquire
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+extern const CFTypeRef kGSSAttrStatusAutoAcquireStatus
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+extern const CFTypeRef kGSSAttrStatusTransient
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+
+
 
 #endif

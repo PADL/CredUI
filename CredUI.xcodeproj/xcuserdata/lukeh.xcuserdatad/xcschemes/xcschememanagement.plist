@@ -14,6 +14,16 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>CredUIEnumerate.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>CredUIPicker.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>Password.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -43,6 +53,21 @@
 			<true/>
 		</dict>
 		<key>D39EB02C186ED50800C43A24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D39EB060186FB1DA00C43A24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D39EB07A186FB1DA00C43A24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D39EB091186FB90400C43A24</key>
 		<dict>
 			<key>primary</key>
 			<true/>

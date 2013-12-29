@@ -20,10 +20,24 @@ CUICredentialGetTypeID(void);
     
 extern CFArrayRef
 CUICredentialGetFields(CUICredentialRef cred);
+
+extern CUIFieldRef
+CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass);
+    
+extern CFArrayRef
+CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
+                                     Boolean (^predicate)(CUIFieldRef field));
+    
     
 extern CFDictionaryRef
 CUICredentialGetAuthIdentity(CUICredentialRef cred);
-        
+    
+extern void
+CUICredentialDidBecomeSelected(CUICredentialRef cred);
+
+extern void
+CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop), Boolean *stop);
+    
 #ifdef __cplusplus
 }
 #endif

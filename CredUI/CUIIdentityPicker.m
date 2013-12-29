@@ -82,7 +82,7 @@
 
 - (NSDictionary *)authIdentity
 {
-    return (__bridge NSDictionary *)CUIControllerGetDefaultAuthIdentity(_controller);
+    return (__bridge NSDictionary *)CUIControllerGetAuthIdentity(_controller);
 }
 
 - (void)setAuthIdentity:(NSDictionary *)anAuthIdentity

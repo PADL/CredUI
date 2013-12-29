@@ -8,10 +8,71 @@
 
 #include "CredUICore_Private.h"
 
+#include <NSSystemDirectories.h>
+
+static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
+static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");
+
+extern "C" {
+extern CFArrayRef CFCopySearchPathForDirectoriesInDomains(CFIndex directory, CFIndex domainMask, Boolean expandTilde);
+};
+
+static CFMutableArrayRef plugins;
+
 static Boolean
 CUILoadProviders(void)
 {
-    return false;
+    CFArrayRef searchPaths;
+    CFIndex index;
+    
+    plugins = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+    if (plugins == NULL)
+        return false;
+    
+    searchPaths = CFCopySearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask | NSLocalDomainMask | NSSystemDomainMask, true);
+    if (searchPaths == NULL)
+        return false;
+    
+    for (index = 0; index < CFArrayGetCount(searchPaths); index++) {
+        CFURLRef url = CFURLCreateWithFileSystemPathRelativeToBase(kCFAllocatorDefault,
+                                                                   __CUIPlugInDirectory,
+                                                                   kCFURLPOSIXPathStyle,
+                                                                   true,
+                                                                   (CFURLRef)CFArrayGetValueAtIndex(searchPaths, index));
+        if (url == NULL)
+            continue;
+        
+        CFArrayRef bundles = CFBundleCreateBundlesFromDirectory(kCFAllocatorDefault,
+                                                                url,
+                                                                __CUIPlugInBundleType);
+        if (bundles == NULL) {
+            CFRelease(url);
+            continue;
+        }
+        
+        CFArrayAppendArray(plugins, bundles, CFRangeMake(0, CFArrayGetCount(bundles)));
+        CFRelease(bundles);
+        CFRelease(url);
+    }
+    
+    CFRelease(searchPaths);
+    
+    if (CFArrayGetCount(plugins) == 0) {
+        CFRelease(plugins);
+        plugins = NULL;
+        return false;
+    }
+    
+    return true;
+}
+
+void
+CUIUnloadProviders(void)
+{
+    if (plugins) {
+        CFRelease(plugins);
+        plugins = NULL;
+    }
 }
 
 static const void *
@@ -85,6 +146,11 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
 cleanup:
     if (factories)
         CFRelease(factories);
+    
+    if (providers && CFArrayGetCount(providers) == 0) {
+        CFRelease(providers);
+        providers = NULL;
+    }
     
     return providers;
 }

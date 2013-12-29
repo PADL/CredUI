@@ -12,6 +12,7 @@ struct __CUIField {
     CFRuntimeBase _base;
     CUIFieldClass _class;
     CFStringRef _title;
+    CFTypeRef _defaultValue;
     void (^_delegate)(CUIFieldRef field, CFTypeRef value);
 
 };
@@ -33,6 +34,8 @@ static void _CUIFieldDeallocate(CFTypeRef cf)
     
     if (field->_title)
         CFRelease(field->_title);
+    if (field->_defaultValue)
+        CFRelease(field->_defaultValue);
     if (field->_delegate)
         _Block_release(field->_delegate);
 }
@@ -46,7 +49,8 @@ static Boolean _CUIFieldEqual(CFTypeRef cf1, CFTypeRef cf2)
     
     if (!equal) {
         equal = (f1->_class == f2->_class) &&
-        _nullSafeCFEqual(f1->_title, f2->_title);
+        _nullSafeCFEqual(f1->_title, f2->_title) &&
+        _nullSafeCFEqual(f1->_defaultValue, f2->_defaultValue);
     }
     
     return equal;
@@ -97,6 +101,7 @@ CUIFieldCreate(
                CFAllocatorRef allocator,
                CUIFieldClass fieldClass,
                CFStringRef title,
+               CFTypeRef defaultValue,
                void (^fieldDidChange)(CUIFieldRef field, CFTypeRef value))
 {
     CUIFieldRef f;
@@ -104,6 +109,11 @@ CUIFieldCreate(
     f = (CUIFieldRef)_CFRuntimeCreateInstance(allocator, CUIFieldGetTypeID(), sizeof(struct __CUIField) - sizeof(CFRuntimeBase), NULL);
     if (f == NULL)
         return NULL;
+    
+    f->_class = fieldClass;
+    f->_title = (CFStringRef)CFRetain(title);
+    f->_defaultValue = defaultValue ? CFRetain(defaultValue) : NULL;
+    f->_delegate = (void (^)(CUIFieldRef, CFTypeRef))_Block_copy(fieldDidChange);
     
     return f;
 }
@@ -115,7 +125,7 @@ CUIFieldCreateCopy(
 {
     CUIFieldRef f;
     
-    f = CUIFieldCreate(allocator, field->_class, field->_title, field->_delegate);
+    f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
     if (f == NULL)
         return NULL;
     
@@ -128,10 +138,16 @@ CUIFieldGetClass(CUIFieldRef field)
     return field->_class;
 }
 
-CFTypeRef
+CFStringRef
 CUIFieldGetTitle(CUIFieldRef field)
 {
     return field->_title;
+}
+
+CFTypeRef
+CUIFieldGetDefaultValue(CUIFieldRef field)
+{
+    return field->_defaultValue;
 }
 
 void
