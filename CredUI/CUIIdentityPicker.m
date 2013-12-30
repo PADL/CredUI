@@ -37,7 +37,7 @@
 
 - (NSPanel *)_newPanel
 {
-    NSRect frame = NSMakeRect(0, 0, 400, 600);
+    NSRect frame = NSMakeRect(0, 0, 400, 450);
     NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask | NSUtilityWindowMask;
     NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
     NSPanel *panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
@@ -138,6 +138,7 @@
     self.credsController.selectsInsertedObjects = NO;
     
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
+    [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
 
     CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
         [self.credsController addObject:(__bridge id)cred];
@@ -165,6 +166,7 @@
 
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
     [self.credsController unbind:NSContentBinding];
+    [self.credsController unbind:NSSelectionIndexesBinding];
 
     return returnCode;
 }
