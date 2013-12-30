@@ -309,16 +309,21 @@ CUIControllerGetAuthError(CUIControllerRef controller)
 }
 
 Boolean
-CUIControllerSetCredUIContext(CUIControllerRef controller, const CUICredUIContext *uic)
+CUIControllerSetCredUIContext(CUIControllerRef controller,
+                              CUICredUIContextProperties whichProps,
+                              const CUICredUIContext *uic)
 {
     CUICredUIContext *cuic = &controller->_uiContext;
     
     if (uic->version != 0)
         return false;
     
-    __CUISetter(cuic->parentWindow, uic->parentWindow);
-    __CUISetter((CFTypeRef &)cuic->messageText, (CFTypeRef)uic->messageText);
-    __CUISetter((CFTypeRef &)cuic->titleText, (CFTypeRef)uic->titleText);
+    if (whichProps & kCUICredUIContextPropertyParentWindow)
+        __CUISetter(cuic->parentWindow, uic->parentWindow);
+    if (whichProps & kCUICredUIContextPropertyMessageText)
+        __CUISetter((CFTypeRef &)cuic->messageText, (CFTypeRef)uic->messageText);
+    if (whichProps & kCUICredUIContextPropertyTitleText)
+        __CUISetter((CFTypeRef &)cuic->titleText, (CFTypeRef)uic->titleText);
     
     return true;
 }

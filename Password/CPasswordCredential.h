@@ -49,7 +49,8 @@ public:
         CFStringRef desc;
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
-                                        CFSTR("<CPasswordCredential %p{attributes = \"%@\"}>"), this, _attributes);
+                                        CFSTR("<CPasswordCredential %p{name = \"%@\"}>"), this,
+                                        CFDictionaryGetValue(_attributes, kGSSAttrName));
         
         return desc;
     }

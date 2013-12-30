@@ -21,4 +21,5 @@
         [tile setCredential:representedObject];
     }
 }
+
 @end

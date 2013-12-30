@@ -32,6 +32,12 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsNoUI                  = 0x80000000
 };
 
+typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
+    kCUICredUIContextPropertyParentWindow   = 0x1,
+    kCUICredUIContextPropertyMessageText    = 0x2,
+    kCUICredUIContextPropertyTitleText      = 0x4
+};
+    
 typedef struct __CUIContext {
     CFIndex version;
     CFTypeRef parentWindow;
@@ -62,7 +68,9 @@ CFErrorRef
 CUIControllerGetAuthError(CUIControllerRef controller);
 
 Boolean
-CUIControllerSetCredUIContext(CUIControllerRef controller, const CUICredUIContext *context);
+CUIControllerSetCredUIContext(CUIControllerRef controller,
+                              CUICredUIContextProperties whichProperties,
+                              const CUICredUIContext *context);
 
 const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller);

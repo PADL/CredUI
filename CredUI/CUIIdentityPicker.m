@@ -11,6 +11,7 @@
 @property (nonatomic, assign) CUIControllerRef controller;
 @property (nonatomic, retain) id selectedCredential;
 @property (nonatomic, retain) NSMutableArray *creds;
+@property (nonatomic, retain) NSArrayController *arrayController;
 @property (nonatomic, retain) NSPanel *panel;
 @end
 
@@ -70,15 +71,6 @@
     return self;
 }
 
-- (void)_prepareToEnumerateCredentials
-{
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    CUICredUIContext newUic = *uic;
-    
-    newUic.parentWindow = (__bridge CFTypeRef)self.panel;
-    CUIControllerSetCredUIContext(_controller, &newUic);
-}
-
 - (BOOL)_enumerateCredentials
 {
     _creds = [[NSMutableArray alloc] init];
@@ -93,20 +85,51 @@
     [NSApp stopModalWithCode:NSModalResponseStop];
 }
 
+-(void)observeValueForKeyPath:(NSString *)keyPath
+                     ofObject:(id)object
+                       change:(NSDictionary *)change
+                      context:(void *)context
+{
+    NSLog(@"observeValueForkeyPath:%@ ofObject:%@ change:%@", keyPath, object, change);
+    
+    if ([keyPath isEqualTo:@"selectionIndexes"]) {
+        NSUInteger index;
+        
+        for (index = 0; index < self.creds.count; index++) {
+            CUICredentialRef credRef = (__bridge CUICredentialRef)[self.creds objectAtIndex:index];
+            Boolean autoLogin = false;
+            NSIndexSet *indices = [object selectionIndexes];
+            
+            NSLog(@"cred %@ selected %d", credRef, [indices containsIndex:index]);
+            
+            if ([indices containsIndex:index])
+                CUICredentialDidBecomeSelected(credRef, &autoLogin);
+            else
+                CUICredentialDidBecomeDeselected(credRef);
+
+            if (autoLogin)
+                [NSApp stopModalWithCode:NSModalResponseStop];
+        }
+    }
+}
+
 - (NSInteger)runModal
 {
-    NSCollectionView *collectionView;
-    
-    [self _prepareToEnumerateCredentials]; // fixes up parent window
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.panel };
+    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyParentWindow, &uic);
+
     if (![self _enumerateCredentials])
         return NSModalResponseStop;
     
     self.panel = [self _newPanel];
 
+    NSCollectionView *collectionView;
+
     collectionView = [[NSCollectionView alloc] initWithFrame:[[self.panel contentView] frame]];
     collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
     collectionView.content = _creds;
-    collectionView.selectable = TRUE;
+    collectionView.selectable = YES;
+    collectionView.allowsMultipleSelection = NO;
     collectionView.autoresizingMask = (NSViewMinXMargin
                                          | NSViewWidthSizable
                                          | NSViewMaxXMargin
@@ -114,6 +137,11 @@
                                          | NSViewHeightSizable
                                          | NSViewMaxYMargin);
 
+    [collectionView addObserver:self
+                     forKeyPath:@"selectionIndexes"
+                        options:NSKeyValueObservingOptionNew
+                        context:nil];
+    
     [self.panel.contentView addSubview:collectionView];
 
     NSInteger returnCode = [NSApp runModalForWindow:self.panel];
@@ -125,6 +153,8 @@
             self.selectedCredential = [_creds objectAtIndex:firstIndex];
     }
 
+    [collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
+    
     return returnCode;
 }
 
@@ -158,11 +188,8 @@
 
 - (void)setTitle:(NSString *)aTitle
 {
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    CUICredUIContext newUic = *uic;
-    
-    newUic.titleText = (__bridge CFStringRef)aTitle;
-    CUIControllerSetCredUIContext(_controller, &newUic);
+    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aTitle };
+    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyTitleText, &uic);
 }
 
 - (NSString *)message
@@ -173,11 +200,8 @@
 
 - (void)setMessage:(NSString *)aMessage
 {
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    CUICredUIContext newUic = *uic;
-    
-    newUic.messageText = (__bridge CFStringRef)aMessage;
-    CUIControllerSetCredUIContext(_controller, &newUic);
+    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aMessage };
+    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyMessageText, &uic);
 }
 
 - (NSDictionary *)attributes
