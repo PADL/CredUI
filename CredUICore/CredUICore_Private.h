@@ -32,8 +32,10 @@ CFArrayRef
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
 #ifdef __cplusplus
-extern CUICredentialRef
-CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
+extern "C" {
+    extern CUICredentialRef
+    CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
+}
 #else
 extern CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);

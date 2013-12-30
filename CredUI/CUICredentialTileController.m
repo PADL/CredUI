@@ -9,7 +9,7 @@
 @implementation CUICredentialTileController
 - (void)loadView
 {
-    [self setView:[[CUICredentialTile alloc] initWithFrame:NSMakeRect(5, 0, 390, 100)]];
+    [self setView:[[CUICredentialTile alloc] initWithFrame:NSMakeRect(0, 0, 400, 100)]];
 }
 
 - (void)setRepresentedObject:(id)representedObject

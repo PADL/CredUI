@@ -12,7 +12,7 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
 {
     CFTypeRef defaultUsername = NULL;
     CFTypeRef defaultPassword = NULL;
-    CUIFieldRef fields[3] = { 0 };
+    CUIFieldRef fields[4] = { 0 };
     
     if (attributes) {
         /*
@@ -47,6 +47,8 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
                                    }
     });
     
+    fields[3] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, CFSTR("Submit"), NULL, NULL);
+    
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
     if (_fields == NULL)
         return false;
@@ -58,6 +60,19 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
 
     // delete any existing cached password, because GSSItem won't be able to acquire a credential otherwise
     CFDictionaryRemoveValue(_attributes, kGSSAttrCredentialPassword);
-    
+
     return !!_attributes;
+}
+
+const CFStringRef CPasswordCredential::getCredentialStatus(void)
+{
+    CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrName);
+    CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrCredentialPassword);
+
+    if ((username && CFStringGetLength(username)) &&
+        (password && CFStringGetLength(password))) {
+        return kCUICredentialFinished;
+    } else {
+        return kCUICredentialNotFinished;
+    }
 }

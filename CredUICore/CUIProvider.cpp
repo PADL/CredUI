@@ -10,6 +10,12 @@
 
 #include <NSSystemDirectories.h>
 
+const CFTypeRef kCUICredentialStatus = CFSTR("kCUICredentialStatus");
+const CFStringRef kCUICredentialNotFinished = CFSTR("kCUICredentialNotFinished");
+const CFStringRef kCUICredentialFinished = CFSTR("kCUICredentialFinished");
+const CFStringRef kCUICredentialReturnCredentialFinished = CFSTR("kCUICredentialReturnCredentialFinished");
+const CFStringRef kCUICredentialReturnNoCredentialFinished = CFSTR("kCUICredentialReturnNoCredentialFinished");
+
 static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
 static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");
 

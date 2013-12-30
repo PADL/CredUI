@@ -12,6 +12,7 @@
 @class NSDictionary;
 @class GSSContext;
 @class GSSItem;
+@class CUICredential;
 
 /* CredUI flags, similar to Windows CredUI API */
 typedef NS_OPTIONS(NSUInteger, CUIFlags) {
@@ -57,15 +58,11 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 /* This can be a GSSName or a NSString */
 @property(nonatomic, copy) id targetName;
 
-/* CredUICore credential reference */
-struct __CUICredential;
-@property(nonatomic, readonly) struct __CUICredential *selectedCredentialRef;
-
-/* Attributes suitable for use with GSSItem */
-@property(nonatomic, readonly) NSDictionary *selectedCredentialAttributes;
+@property(nonatomic, readonly, retain) CUICredential *selectedCredential;
+@property(nonatomic, readonly, copy) NSDictionary *selectedCredentialAttributes;
 
 /* Creates a new/find an existing GSSItem for selected credential */
-- (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error;
+- (GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error;
 
 - initWithFlags:(CUIFlags)flags;
 

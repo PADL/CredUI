@@ -28,6 +28,11 @@ CF_INLINE Boolean _nullSafeCFEqual(CFTypeRef cf1, CFTypeRef cf2)
     return true;
 }
 
+static CFTypeRef _CUIFieldCopy(CFAllocatorRef allocator, CFTypeRef cf)
+{
+    return (CFTypeRef)CUIFieldCreateCopy(allocator, (CUIFieldRef)cf);
+}
+
 static void _CUIFieldDeallocate(CFTypeRef cf)
 {
     CUIFieldRef field = (CUIFieldRef)cf;
@@ -74,7 +79,7 @@ static const CFRuntimeClass _CUIFieldClass = {
     0,
     "CUIField",
     NULL, // init
-    NULL, // copy
+    _CUIFieldCopy, // copy
     _CUIFieldDeallocate,
     _CUIFieldEqual,
     NULL, // _CUIFieldHash,
@@ -153,5 +158,6 @@ CUIFieldGetDefaultValue(CUIFieldRef field)
 void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
-    field->_delegate(field, value);
+    if (field->_delegate)
+        field->_delegate(field, value);
 }

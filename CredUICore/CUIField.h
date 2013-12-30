@@ -23,8 +23,8 @@ typedef CF_ENUM(CFIndex, CUIFieldClass) {
     kCUIFieldClassEditText,
     kCUIFieldClassPasswordText,
     kCUIFieldClassTileImage,
-    kCUIFieldClassCheckbox,
-    kCUIFieldClassCombobox,
+    kCUIFieldClassCheckBox,
+    kCUIFieldClassComboBox,
     kCUIFieldClassSubmitButton
 };
 

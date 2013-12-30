@@ -25,6 +25,9 @@
 {
     self.picker = [[CUIIdentityPicker alloc] init];
     
+    self.picker.title = @"Identity Picker";
+    self.picker.message = @"Choose an identity";
+    
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)

@@ -60,11 +60,14 @@ public:
     }
     
     CFDictionaryRef getAttributes(void) {
+        CFDictionarySetValue(_attributes, kCUICredentialStatus, getCredentialStatus());
         return _attributes;
     }
     
     Boolean initWithAttributes(CFDictionaryRef attributes);
  
+    const CFStringRef getCredentialStatus(void);
+
     void didBecomeSelected(Boolean *pbAutoLogin) {
         *pbAutoLogin = false;
     }

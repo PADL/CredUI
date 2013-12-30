@@ -6,21 +6,12 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@interface CUIIdentityPicker () <NSWindowDelegate>
-@property (nonatomic, assign) CUIFlags flags;
-@property (nonatomic, assign) CUIControllerRef controller;
-@property (nonatomic, retain) id selectedCredential;
-@property (nonatomic, retain) NSPanel *panel;
-@property (nonatomic, retain) NSArrayController *credsController;
-@property (nonatomic, retain) NSCollectionView *collectionView;
-@end
 
 @implementation CUIIdentityPicker
 #pragma mark - Implementation
 
 - (void)dealloc
 {
-    
     if (_controller)
         CFRelease(_controller);
 }
@@ -38,7 +29,7 @@
 - (NSPanel *)_newPanel
 {
     NSRect frame = NSMakeRect(0, 0, 400, 450);
-    NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask | NSUtilityWindowMask;
+    NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask;
     NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
     NSPanel *panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
     panel.hidesOnDeactivate = YES;
@@ -111,18 +102,16 @@
         NSIndexSet *indexes = [object selectionIndexes];
 
         for (index = 0; index < creds.count; index++) {
-            CUICredentialRef credRef = (__bridge CUICredentialRef)[creds objectAtIndex:index];
-            Boolean autoLogin = false;
-            
-            NSLog(@"cred %@ selected %d", credRef, [indexes containsIndex:index]);
+            CUICredential *cred = creds[index];
+            BOOL autoLogin = NO;
             
             if ([indexes containsIndex:index])
-                CUICredentialDidBecomeSelected(credRef, &autoLogin);
+                [cred didBecomeSelected:&autoLogin];
             else
-                CUICredentialDidBecomeDeselected(credRef);
+                [cred didBecomeDeselected];
 
-            if (autoLogin)
-                [NSApp stopModalWithCode:NSModalResponseStop];
+            if (autoLogin && [self _canReturnWithCredential:cred])
+                [self _selectCredential:cred];
         }
     }
 }
@@ -141,7 +130,7 @@
     [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
 
     CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
-        [self.credsController addObject:(__bridge id)cred];
+        [self.credsController addObject:(__bridge CUICredential *)cred];
     });
     
     [self.collectionView addObserver:self
@@ -153,10 +142,13 @@
 
 - (NSInteger)runModal
 {
-    [self _populateCredentials];
+    NSInteger returnCode;
     
-    NSInteger returnCode = [NSApp runModalForWindow:self.panel];
+    [self _populateCredentials];
 
+    self.panel.title = self.title;
+
+    returnCode = [NSApp runModalForWindow:self.panel];
     if (returnCode == NSModalResponseStop) {
         NSArray *selectedObjects = [self.credsController selectedObjects];
         
@@ -187,9 +179,6 @@
     [invocation setArgument:&returnCode atIndex:3];
     [invocation setArgument:&contextInfo atIndex:4];
     [invocation invoke];
-    
-    if (object)
-        CFRelease(object);
 }
 
 #pragma mark - Accessors
@@ -271,39 +260,14 @@
     }
 }
 
-- (CUICredentialRef)selectedCredentialRef
-{
-    return (__bridge CUICredentialRef)self.selectedCredential;
-}
-
 - (NSDictionary *)selectedCredentialAttributes
 {
-    if (self.selectedCredentialRef == NULL)
-        return nil;
-    
-    return (__bridge NSDictionary *)CUICredentialGetAttributes(self.selectedCredentialRef);
+    return [self.selectedCredential attributes];
 }
 
 - (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error
 {
-    GSSItemRef itemRef;
-    CFErrorRef cfError = NULL;
-
-    if (error != NULL)
-        *error = nil;
-    
-    if (self.selectedCredentialRef == NULL)
-        return nil;
-    
-    itemRef = CUICredentialCreateGSSItem(self.selectedCredentialRef, true, &cfError);
-    if (cfError) {
-        if (error)
-            *error = CFBridgingRelease(cfError);
-        else
-            CFRelease(cfError);
-    }
-    
-    return CFBridgingRelease(itemRef);
+    return [self.selectedCredential _createGSSItem:YES error:error];
 }
 
 @end

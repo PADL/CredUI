@@ -11,6 +11,10 @@
 
 #include <CoreFoundation/CFPlugInCOM.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 // BFA3619B-1A12-4DBA-801F-33B0874DD76F
 #define kCUIProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xBF, 0xA3, 0x61, 0x9B, 0x1A, 0x12, 0x4D, 0xBA, 0x80, 0x1F, 0x33, 0xB0, 0x87, 0x4D, 0xD7, 0x6F)
 
@@ -24,6 +28,21 @@
 #define kCUICredentialInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x20, 0xC3, 0xA8, 0x40, 0x6B, 0xC4, 0x4B, 0x26, 0xB7, 0x05, 0x43, 0xB4, 0xC4, 0x62, 0x18, 0xE7)
 
 extern CFArrayCallBacks kCUICredentialContextArrayCallBacks;
+
+extern const CFTypeRef kCUICredentialStatus;
+
+// more information needed to make credential
+extern const CFStringRef kCUICredentialNotFinished;
+// credential provider complete but no credential made
+extern const CFStringRef kCUICredentialFinished;
+// credential made
+extern const CFStringRef kCUICredentialReturnCredentialFinished;
+// no credential made but force caller to return
+extern const CFStringRef kCUICredentialReturnNoCredentialFinished;
+
+#ifdef __cplusplus
+}
+#endif
 
 #ifdef __cplusplus
 class CUICredentialContext : public IUnknown {
