@@ -77,12 +77,14 @@ public:
     
     CPasswordCredential() {
         _retainCount = 1;
+        _inCredUsable = false;
         _fields = NULL;
         _attributes = NULL;
     }
 
 private:
     int32_t _retainCount;
+    bool _inCredUsable;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
     

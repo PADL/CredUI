@@ -139,4 +139,11 @@
     return CFBridgingRelease(item);
 }
 
+- (BOOL)_hasGSSItem
+{
+    id item = [self _createGSSItem:NO error:NULL];
+    
+    return !!item;
+}
+
 @end

@@ -11,7 +11,6 @@
 Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
 {
     CFTypeRef defaultUsername = NULL;
-    CFTypeRef defaultPassword = NULL;
     CUIFieldRef fields[4] = { 0 };
     
     if (attributes) {
@@ -27,7 +26,9 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
         if (nameType && CFEqual(nameType, kGSSAttrNameTypeGSSUsername))
             defaultUsername = CFDictionaryGetValue(attributes, kGSSAttrName);
         
-        defaultPassword = CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword);
+        if (defaultUsername &&
+            CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword))
+            _inCredUsable = true;
     }
     
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Password Credential"), NULL, NULL);
@@ -40,7 +41,7 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
                                    }
     });
     
-    fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), defaultPassword,
+    fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), NULL,
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    if (value && CFStringGetLength((CFStringRef)value)) {
                                        CFDictionarySetValue(_attributes, kGSSAttrCredentialPassword, value);
@@ -68,11 +69,16 @@ const CFStringRef CPasswordCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrName);
     CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrCredentialPassword);
-
-    if ((username && CFStringGetLength(username)) &&
+    CFStringRef status;
+    
+    if (_inCredUsable) {
+        status = kCUICredentialReturnCredentialFinished;
+    } else if ((username && CFStringGetLength(username)) &&
         (password && CFStringGetLength(password))) {
-        return kCUICredentialFinished;
+        status = kCUICredentialReturnCredentialFinished;
     } else {
-        return kCUICredentialNotFinished;
+        status = kCUICredentialNotFinished;
     }
+    
+    return status;
 }

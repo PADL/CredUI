@@ -27,5 +27,6 @@
                     stop:(BOOL *)stop;
 
 - (id)_createGSSItem:(BOOL)addIfNotExisting error:(NSError * __autoreleasing *)error;
+- (BOOL)_hasGSSItem;
 
 @end
