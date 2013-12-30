@@ -9,8 +9,10 @@
 #ifndef CredUI_CredUICore_Private_h
 #define CredUI_CredUICore_Private_h
 
-#include "CredUICore.h"
+#include <CoreFoundation/CFPlugInCOM.h>
+#include <CredUICore/CredUICore.h>
 
+#ifdef __cplusplus
 static inline void
 __CUISetter(CFTypeRef &dst, CFTypeRef src)
 {
@@ -24,12 +26,18 @@ __CUISetter(CFTypeRef &dst, CFTypeRef src)
         }
     }
 }
+#endif /* __cplusplus */
 
 CFArrayRef
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
+#ifdef __cplusplus
 extern CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
+#else
+extern CUICredentialRef
+CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
+#endif
 
 /*
  * Copyright (c) 2011 Kungliga Tekniska Högskolan

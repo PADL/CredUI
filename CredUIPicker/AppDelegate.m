@@ -10,19 +10,25 @@
 
 #import <CredUI/CUIIdentityPicker.h>
 
+@interface AppDelegate ()
+@property (nonatomic, strong) CUIIdentityPicker *picker;
+@end
+
 @implementation AppDelegate
-{
-}
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    NSLog(@"Picker did end: %@", [identityPicker attributes]);
+    NSLog(@"Picker did end: %@", [identityPicker selectedCredentialAttributes]);
 }
 
 - (IBAction)showIdentityPicker:(id)sender;
 {
-    CUIIdentityPicker *picker = [CUIIdentityPicker new];
-    [picker runModalForWindow:self.window modalDelegate:self didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+    self.picker = [[CUIIdentityPicker alloc] init];
+    
+    [self.picker runModalForWindow:self.window
+                     modalDelegate:self
+                    didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
+                       contextInfo:NULL];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification

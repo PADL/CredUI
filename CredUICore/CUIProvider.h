@@ -45,9 +45,10 @@ public:
     virtual CFDictionaryRef getAttributes(void) CF_RETURNS_NOT_RETAINED = 0;
     
     /*
-     * Called when the user selects.
+     * Called when the user selects the credential.
      */
-    virtual void didBecomeSelected(void) = 0;
+    virtual void didBecomeSelected(Boolean *pAutoLogin) = 0;
+    virtual void didBecomeDeselected(void) = 0;
 };
 
 class CUIProvider : public IUnknown {

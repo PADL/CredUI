@@ -160,11 +160,18 @@ CUICredentialGetAttributes(CUICredentialRef cred)
     return NULL;
 }
 
-void
-CUICredentialDidBecomeSelected(CUICredentialRef cred)
+extern void
+CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 {
     if (cred->_context)
-        cred->_context->didBecomeSelected();
+        cred->_context->didBecomeSelected(pbAutoLogin);
+}
+
+extern void
+CUICredentialDidBecomeDeselected(CUICredentialRef cred)
+{
+    if (cred->_context)
+        cred->_context->didBecomeDeselected();
 }
 
 struct __CUICredentialFilterFieldsContext {

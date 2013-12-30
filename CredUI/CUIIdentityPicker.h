@@ -11,6 +11,7 @@
 @class NSString;
 @class NSDictionary;
 @class GSSContext;
+@class GSSItem;
 
 /* CredUI flags, similar to Windows CredUI API */
 typedef NS_OPTIONS(NSUInteger, CUIFlags) {
@@ -37,7 +38,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
 
-/* Credentials dictionary, can be passed into GSSItem */
+/* Credentials dictionary */
 @property(nonatomic, copy) NSDictionary *attributes;
 
 /* Authentication error to show user, if any */
@@ -50,11 +51,21 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 @property(nonatomic, readonly) CUIFlags flags;
 
 /* GSS-API context handle for NegoEx exchange */
-@property(nonatomic, retain) GSSContext *contextHandle;
+@property(nonatomic, retain) GSSContext *GSSContextHandle;
 
 /* Target name to display to user */
 /* This can be a GSSName or a NSString */
-@property(nonatomic, copy) id target;
+@property(nonatomic, copy) id targetName;
+
+/* CredUICore credential reference */
+struct __CUICredential;
+@property(nonatomic, readonly) struct __CUICredential *selectedCredentialRef;
+
+/* Attributes suitable for use with GSSItem */
+@property(nonatomic, readonly) NSDictionary *selectedCredentialAttributes;
+
+/* Creates a new/find an existing GSSItem for selected credential */
+- (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error;
 
 - initWithFlags:(CUIFlags)flags;
 
@@ -65,7 +76,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
 
 /* Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.
    The didEndSelector should have the following signature:
-    - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+    - (void)identityPickerDidEnd:(id)attributeDictOrGSSItem returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 */
 - (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
 

@@ -9,6 +9,7 @@
 #import <GSS/GSS.h>
 #import <CredUI/CredUI.h>
 #import <CredUICore/CredUICore.h>
+#import <CredUICore/CredUICore_Private.h>
 
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"

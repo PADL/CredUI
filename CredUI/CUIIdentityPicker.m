@@ -6,19 +6,15 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import "CUIIdentityPicker.h"
-
 @interface CUIIdentityPicker () <NSWindowDelegate>
+@property (nonatomic, assign) CUIFlags flags;
+@property (nonatomic, assign) CUIControllerRef controller;
+@property (nonatomic, retain) id selectedCredential;
 @property (nonatomic, retain) NSMutableArray *creds;
+@property (nonatomic, retain) NSPanel *panel;
 @end
 
 @implementation CUIIdentityPicker
-{
-    CUIFlags _flags;
-    CUIControllerRef _controller;
-    NSPanel *_panel;
-}
-
 #pragma mark - Implementation
 
 - (void)dealloc
@@ -37,6 +33,19 @@
     return [self initWithFlags:flags attributes:nil];
 }
 
+- (NSPanel *)_newPanel
+{
+    NSRect frame = NSMakeRect(0, 0, 400, 600);
+    NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask | NSUtilityWindowMask;
+    NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
+    NSPanel *panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
+    panel.hidesOnDeactivate = YES;
+    panel.worksWhenModal = YES;
+    panel.delegate = self;
+
+    return panel;
+}
+
 - initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     CUIUsageFlags usageFlags = 0;
@@ -44,9 +53,11 @@
     if ((self = [super init]) == nil)
         return nil;
     
-    if (flags & CUIShowSaveCheckBox)
+    self.flags = flags;
+    
+    if (self.flags & CUIShowSaveCheckBox)
         usageFlags |= kCUIUsageFlagsSaveCheckbox;
-    if (flags & CUIFlagsGenericCredentials)
+    if (self.flags & CUIFlagsGenericCredentials)
         usageFlags |= kCUIUsageFlagsGeneric;
     
     _controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
@@ -56,24 +67,15 @@
     if (attributes)
         self.attributes = attributes;
 
-    NSRect frame = NSMakeRect(0, 0, 400, 600);
-    NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask | NSUtilityWindowMask;
-    NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
-
-    _panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
-    _panel.hidesOnDeactivate = YES;
-    _panel.worksWhenModal = YES;
-    _panel.delegate = self;
-    
     return self;
 }
 
-- (void)_preparedToEnumerateCredentials
+- (void)_prepareToEnumerateCredentials
 {
     const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
     CUICredUIContext newUic = *uic;
     
-    newUic.parentWindow = (__bridge CFTypeRef)_panel;
+    newUic.parentWindow = (__bridge CFTypeRef)self.panel;
     CUIControllerSetCredUIContext(_controller, &newUic);
 }
 
@@ -95,11 +97,13 @@
 {
     NSCollectionView *collectionView;
     
-    [self _preparedToEnumerateCredentials]; // fixes up parent window
+    [self _prepareToEnumerateCredentials]; // fixes up parent window
     if (![self _enumerateCredentials])
         return NSModalResponseStop;
     
-    collectionView = [[NSCollectionView alloc] initWithFrame:[[_panel contentView] frame]];
+    self.panel = [self _newPanel];
+
+    collectionView = [[NSCollectionView alloc] initWithFrame:[[self.panel contentView] frame]];
     collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
     collectionView.content = _creds;
     collectionView.selectable = TRUE;
@@ -110,9 +114,18 @@
                                          | NSViewHeightSizable
                                          | NSViewMaxYMargin);
 
-    [_panel.contentView addSubview:collectionView];    
+    [self.panel.contentView addSubview:collectionView];
 
-    return [NSApp runModalForWindow:_panel];
+    NSInteger returnCode = [NSApp runModalForWindow:self.panel];
+    if (returnCode == NSModalResponseStop) {
+        NSIndexSet *indices = [collectionView selectionIndexes];
+        NSUInteger firstIndex = [indices firstIndex];
+        
+        if (firstIndex != NSNotFound)
+            self.selectedCredential = [_creds objectAtIndex:firstIndex];
+    }
+
+    return returnCode;
 }
 
 - (void)runModalForWindow:(NSWindow *)window
@@ -123,14 +136,17 @@
     NSInteger returnCode = [self runModal];
     NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    void *selfPtr = (__bridge void *)self;
+    void *object = (__bridge void *)self;
     
     [invocation setTarget:delegate];
     [invocation setSelector:didEndSelector];
-    [invocation setArgument:&selfPtr atIndex:2];
+    [invocation setArgument:&object atIndex:2];
     [invocation setArgument:&returnCode atIndex:3];
     [invocation setArgument:&contextInfo atIndex:4];
     [invocation invoke];
+    
+    if (object)
+        CFRelease(object);
 }
 
 #pragma mark - Accessors
@@ -184,24 +200,22 @@
     CUIControllerSetSaveToKeychain(_controller, save);
 }
 
-@synthesize flags = _flags;
-
-- (GSSContext *)contextHandle
+- (GSSContext *)GSSContextHandle
 {
     return (__bridge GSSContext *)CUIControllerGetGssContextHandle(_controller);
 }
 
-- (void)setGssContextHandle:(GSSContext *)aContext
+- (void)setGSSContextHandle:(GSSContext *)aContext
 {
     CUIControllerSetGssContextHandle(_controller, (__bridge CFTypeRef)aContext);
 }
 
-- (id)target
+- (id)targetName
 {
     return (__bridge id)CUIControllerGetGssTargetName(_controller);
 }
 
-- (void)setTarget:(id)aTarget
+- (void)setTargetName:(id)aTarget
 {
     CFTypeRef cfTarget = (__bridge CFTypeRef)aTarget;
     
@@ -219,4 +233,40 @@
         CUIControllerSetGssTargetName(_controller, (gss_name_t)cfTarget);
     }
 }
+
+- (CUICredentialRef)selectedCredentialRef
+{
+    return (__bridge CUICredentialRef)self.selectedCredential;
+}
+
+- (NSDictionary *)selectedCredentialAttributes
+{
+    if (self.selectedCredentialRef == NULL)
+        return nil;
+    
+    return (__bridge NSDictionary *)CUICredentialGetAttributes(self.selectedCredentialRef);
+}
+
+- (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error
+{
+    GSSItemRef itemRef;
+    CFErrorRef cfError = NULL;
+
+    if (error != NULL)
+        *error = nil;
+    
+    if (self.selectedCredentialRef == NULL)
+        return nil;
+    
+    itemRef = CUICredentialCreateGSSItem(self.selectedCredentialRef, true, &cfError);
+    if (cfError) {
+        if (error)
+            *error = CFBridgingRelease(cfError);
+        else
+            CFRelease(cfError);
+    }
+    
+    return CFBridgingRelease(itemRef);
+}
+
 @end

@@ -82,7 +82,7 @@ int main(int argc, const char * argv[])
     
     Boolean stop = false;
     
-    CUICredentialDidBecomeSelected(cred);
+    CUICredentialDidBecomeSelected(cred, &stop);
     
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         NSString *title = (__bridge NSString *)CUIFieldGetTitle(field);

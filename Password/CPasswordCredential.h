@@ -64,7 +64,11 @@ public:
     
     Boolean initWithAttributes(CFDictionaryRef attributes);
  
-    void didBecomeSelected(void) {
+    void didBecomeSelected(Boolean *pbAutoLogin) {
+        *pbAutoLogin = false;
+    }
+    
+    void didBecomeDeselected(void) {
     }
     
     CPasswordCredential() {
