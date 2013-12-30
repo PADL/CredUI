@@ -10,9 +10,9 @@
 @property (nonatomic, assign) CUIFlags flags;
 @property (nonatomic, assign) CUIControllerRef controller;
 @property (nonatomic, retain) id selectedCredential;
-@property (nonatomic, retain) NSMutableArray *creds;
-@property (nonatomic, retain) NSArrayController *arrayController;
 @property (nonatomic, retain) NSPanel *panel;
+@property (nonatomic, retain) NSArrayController *credsController;
+@property (nonatomic, retain) NSCollectionView *collectionView;
 @end
 
 @implementation CUIIdentityPicker
@@ -20,6 +20,7 @@
 
 - (void)dealloc
 {
+    
     if (_controller)
         CFRelease(_controller);
 }
@@ -47,6 +48,25 @@
     return panel;
 }
 
+- (NSCollectionView *)_newCollectionViewWithPanel:(NSPanel *)panel
+{
+    NSCollectionView *collectionView;
+    
+    collectionView = [[NSCollectionView alloc] initWithFrame:[[panel contentView] frame]];
+    collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
+    collectionView.selectable = YES;
+    collectionView.allowsMultipleSelection = NO;
+    collectionView.autoresizingMask = (NSViewMinXMargin
+                                       | NSViewWidthSizable
+                                       | NSViewMaxXMargin
+                                       | NSViewMinYMargin
+                                       | NSViewHeightSizable
+                                       | NSViewMaxYMargin);
+    collectionView.autoresizesSubviews = YES;
+    
+    return collectionView;
+}
+
 - initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     CUIUsageFlags usageFlags = 0;
@@ -67,17 +87,12 @@
     
     if (attributes)
         self.attributes = attributes;
-
-    return self;
-}
-
-- (BOOL)_enumerateCredentials
-{
-    _creds = [[NSMutableArray alloc] init];
     
-    return CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
-        [_creds addObject:(__bridge id)cred];
-    });
+    self.panel = [self _newPanel];
+    self.collectionView = [self _newCollectionViewWithPanel:self.panel];
+    [self.panel.contentView addSubview:self.collectionView];
+    
+    return self;
 }
 
 - (void)windowWillClose:(NSNotification *)notification
@@ -90,19 +105,18 @@
                        change:(NSDictionary *)change
                       context:(void *)context
 {
-    NSLog(@"observeValueForkeyPath:%@ ofObject:%@ change:%@", keyPath, object, change);
-    
     if ([keyPath isEqualTo:@"selectionIndexes"]) {
         NSUInteger index;
-        
-        for (index = 0; index < self.creds.count; index++) {
-            CUICredentialRef credRef = (__bridge CUICredentialRef)[self.creds objectAtIndex:index];
+        NSArray *creds = [object content];
+        NSIndexSet *indexes = [object selectionIndexes];
+
+        for (index = 0; index < creds.count; index++) {
+            CUICredentialRef credRef = (__bridge CUICredentialRef)[creds objectAtIndex:index];
             Boolean autoLogin = false;
-            NSIndexSet *indices = [object selectionIndexes];
             
-            NSLog(@"cred %@ selected %d", credRef, [indices containsIndex:index]);
+            NSLog(@"cred %@ selected %d", credRef, [indexes containsIndex:index]);
             
-            if ([indices containsIndex:index])
+            if ([indexes containsIndex:index])
                 CUICredentialDidBecomeSelected(credRef, &autoLogin);
             else
                 CUICredentialDidBecomeDeselected(credRef);
@@ -113,48 +127,45 @@
     }
 }
 
-- (NSInteger)runModal
+- (void)_populateCredentials
 {
     CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.panel };
+    
     CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyParentWindow, &uic);
-
-    if (![self _enumerateCredentials])
-        return NSModalResponseStop;
     
-    self.panel = [self _newPanel];
-
-    NSCollectionView *collectionView;
-
-    collectionView = [[NSCollectionView alloc] initWithFrame:[[self.panel contentView] frame]];
-    collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
-    collectionView.content = _creds;
-    collectionView.selectable = YES;
-    collectionView.allowsMultipleSelection = NO;
-    collectionView.autoresizingMask = (NSViewMinXMargin
-                                         | NSViewWidthSizable
-                                         | NSViewMaxXMargin
-                                         | NSViewMinYMargin
-                                         | NSViewHeightSizable
-                                         | NSViewMaxYMargin);
-
-    [collectionView addObserver:self
-                     forKeyPath:@"selectionIndexes"
-                        options:NSKeyValueObservingOptionNew
-                        context:nil];
+    self.credsController = [[NSArrayController alloc] init];
+    self.credsController.avoidsEmptySelection = NO;
+    self.credsController.selectsInsertedObjects = NO;
     
-    [self.panel.contentView addSubview:collectionView];
+    [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
 
+    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
+        [self.credsController addObject:(__bridge id)cred];
+    });
+    
+    [self.collectionView addObserver:self
+                          forKeyPath:@"selectionIndexes"
+                             options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                             context:nil];
+    
+}
+
+- (NSInteger)runModal
+{
+    [self _populateCredentials];
+    
     NSInteger returnCode = [NSApp runModalForWindow:self.panel];
+
     if (returnCode == NSModalResponseStop) {
-        NSIndexSet *indices = [collectionView selectionIndexes];
-        NSUInteger firstIndex = [indices firstIndex];
+        NSArray *selectedObjects = [self.credsController selectedObjects];
         
-        if (firstIndex != NSNotFound)
-            self.selectedCredential = [_creds objectAtIndex:firstIndex];
+        if (selectedObjects.count)
+            self.selectedCredential = selectedObjects[0];
     }
 
-    [collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
-    
+    [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
+    [self.credsController unbind:NSContentBinding];
+
     return returnCode;
 }
 
