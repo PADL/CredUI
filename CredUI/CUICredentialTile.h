@@ -9,8 +9,5 @@
 @class CUICredential;
 
 @interface CUICredentialTile : NSView
-
 @property (weak, nonatomic) CUICredential *credential;
-//@property (nonatomic, retain) NSArray *fields;
-
 @end
