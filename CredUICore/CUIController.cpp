@@ -289,7 +289,7 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
 {
     CFIndex index;
     CFArrayRef items = NULL;
-    CFErrorRef error;
+    CFErrorRef error = NULL;
     Boolean didEnumerate = false;
     
     if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0 &&
@@ -305,7 +305,7 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
 
     if (items)
         CFRelease(items);
-    if (error)
+    else if (error)
         CFRelease(error);
     
     return didEnumerate;

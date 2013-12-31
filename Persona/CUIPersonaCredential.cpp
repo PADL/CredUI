@@ -37,7 +37,8 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
 {
     CUIFieldRef fields[2] = { 0 };
 
-    *error = NULL;
+    if (error != NULL)
+        *error = NULL;
  
     gss_name_t gssTargetName = CUIControllerGetGssTargetName(controller);
     if (gssTargetName) {
@@ -68,13 +69,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    // this is the willSubmit callback; CredUI only renders a single submit button
                                    // for the network UI case
-                                   CFErrorRef error = NULL;
-                                   
-                                   createBrowserIDAssertion(&error);
-                                   
-                                   if (error)
-                                       CFRelease(error);
-
+                                   createBrowserIDAssertion(NULL);
     });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
@@ -98,7 +93,8 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
 {
     uint32_t ulContextFlags;
 
-    *error = NULL;
+    if (error != NULL)
+        *error = NULL;
 
     ulContextFlags = BID_CONTEXT_GSS | BID_CONTEXT_USER_AGENT | BID_CONTEXT_ECDH_KEYEX;
 
@@ -120,7 +116,8 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     BIDIdentity identity = BID_C_NO_IDENTITY;
     uint32_t ulReqFlags, ulRetFlags = 0;
 
-    *error = NULL;
+    if (error != NULL)
+        *error = NULL;
     
     ulReqFlags = BID_ACQUIRE_FLAG_NO_CACHED | BID_ACQUIRE_FLAG_MUTUAL_AUTH;
 

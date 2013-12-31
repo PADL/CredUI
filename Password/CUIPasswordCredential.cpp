@@ -13,7 +13,8 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
     CFTypeRef defaultUsername = NULL;
     CUIFieldRef fields[3] = { 0 };
     
-    *error = NULL;
+    if (error != NULL)
+        *error = NULL;
     
     if (attributes) {
         /*
