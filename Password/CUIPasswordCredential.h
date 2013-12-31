@@ -1,23 +1,20 @@
 //
-//  CPersonaCredential.h
+//  CUIPasswordCredential.h
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CPersonaCredential__
-#define __CredUI__CPersonaCredential__
+#ifndef __CredUI__CUIPasswordCredential__
+#define __CredUI__CUIPasswordCredential__
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
 
-#include <browserid.h>
-#include <CFBrowserID.h>
-
 #include "CredUICore.h"
 
-class CPersonaCredential : public CUICredentialContext {
+class CUIPasswordCredential : public CUICredentialContext {
     
 public:
     
@@ -52,7 +49,7 @@ public:
         CFStringRef desc;
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
-                                        CFSTR("<CPersonaCredential %p{name = \"%@\"}>"), this,
+                                        CFSTR("<CUIPasswordCredential %p{name = \"%@\"}>"), this,
                                         CFDictionaryGetValue(_attributes, kGSSAttrName));
         
         return desc;
@@ -63,46 +60,40 @@ public:
     }
     
     CFDictionaryRef getAttributes(void) {
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, getCredentialStatus());
         return _attributes;
     }
-
-    Boolean createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error);
-    Boolean createBrowserIDAssertion(CFErrorRef *error);
-
-    Boolean initWithControllerAndAttributes(
-        CUIControllerRef controller,
-        CFDictionaryRef attributes,
-        CFErrorRef *error);
     
-    void didBecomeSelected(Boolean *pbAutoLogin) {}
-    void didBecomeDeselected(void) {}
-    void didSubmit(void);
+    Boolean initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
+ 
+    const CFStringRef getCredentialStatus(void);
+
+    void didBecomeSelected(Boolean *pbAutoLogin) {
+        *pbAutoLogin = false;
+    }
     
-    CPersonaCredential() {
+    void didBecomeDeselected(void) {
+    }
+    
+    void didSubmit(void) {
+    }
+    
+    CUIPasswordCredential() {
         _retainCount = 1;
-        _bidContext = NULL;
-        _defaultIdentity = NULL;
-        _targetName = NULL;
+        _inCredUsable = false;
         _fields = NULL;
         _attributes = NULL;
     }
 
 private:
     int32_t _retainCount;
-    BIDContext _bidContext;
-    CFStringRef _defaultIdentity;
-    CFStringRef _targetName;
+    bool _inCredUsable;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
     
 protected:
-    ~CPersonaCredential() {
-        if (_bidContext)
-            CFRelease(_bidContext);
-        if (_defaultIdentity)
-            CFRelease(_defaultIdentity);
-        if (_targetName)
-            CFRelease(_targetName);
+    
+    ~CUIPasswordCredential() {
         if (_fields)
             CFRelease(_fields);
         if (_attributes)
@@ -110,4 +101,4 @@ protected:
     }
 };
 
-#endif /* defined(__CredUI__CPersonaCredential__) */
+#endif /* defined(__CredUI__CUIPasswordCredential__) */

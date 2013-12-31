@@ -27,7 +27,12 @@
                             </menuItem>
                             <menuItem title="Pick Credentials" keyEquivalent="1" id="129">
                                 <connections>
-                                    <action selector="showIdentityPicker" target="494" id="0Ic-Ko-Itv"/>
+                                    <action selector="showIdentityPicker:" target="494" id="4oK-kg-ZhH"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Test Persona" keyEquivalent="2" id="g1G-5z-x2n">
+                                <connections>
+                                    <action selector="showPersonaDialog:" target="494" id="zSa-XW-D9U"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">

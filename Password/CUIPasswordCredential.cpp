@@ -1,14 +1,14 @@
 //
-//  CPasswordCredential.cpp
+//  CUIPasswordCredential.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CPasswordCredential.h"
+#include "CUIPasswordCredential.h"
 
-Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
+Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
 {
     CFTypeRef defaultUsername = NULL;
     CUIFieldRef fields[3] = { 0 };
@@ -67,7 +67,7 @@ Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CFEr
     return true;
 }
 
-const CFStringRef CPasswordCredential::getCredentialStatus(void)
+const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrName);
     CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrCredentialPassword);

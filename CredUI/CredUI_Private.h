@@ -6,12 +6,13 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import <GSS/GSS.h>
+#import <CoreFoundation/CFPlugInCOM.h>
+
 #import <CredUI/CredUI.h>
+#import <CredUI/GSSPromptForCredentials.h>
+
 #import <CredUICore/CredUICore.h>
 #import <CredUICore/CredUICore_Private.h>
-
-#import <CoreFoundation/CFPlugInCOM.h>
 
 #import "CUIField.h"
 #import "CUICredential.h"

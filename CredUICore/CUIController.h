@@ -36,15 +36,18 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
 typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
     kCUICredUIContextPropertyParentWindow   = 0x1,
     kCUICredUIContextPropertyMessageText    = 0x2,
-    kCUICredUIContextPropertyTitleText      = 0x4
+    kCUICredUIContextPropertyTitleText      = 0x4,
+    kCUICredUIContextPropertyAll            = 0xf
 };
     
-typedef struct __CUIContext {
+#ifndef __CredUI__PromptForCredentials__
+typedef struct __CUICredUIContext {
     CFIndex version;
     CFTypeRef parentWindow;
     CFStringRef messageText;
     CFStringRef titleText;
 } CUICredUIContext;
+#endif
 
 typedef struct __CUIController *CUIControllerRef;
 

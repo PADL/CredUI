@@ -1,27 +1,55 @@
 
 //
-//  CPersonaCredential.cpp
+//  CUIPersonaCredential.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CPersonaCredentialProvider.h"
-#include "CPersonaCredential.h"
+#include "CUIPersonaCredentialProvider.h"
+#include "CUIPersonaCredential.h"
 
-Boolean CPersonaCredential::initWithControllerAndAttributes(
+static const gss_OID_desc GSSBrowserIDAes128MechDesc =
+{ 10, (void *)"\x2B\x06\x01\x04\x01\xA9\x4A\x18\x01\x11" };
+
+static CFStringRef CUIPersonaCreateTargetName(gss_name_t name)
+{
+    OM_uint32 major, minor;
+    gss_name_t kerbName;
+    CFStringRef displayName;
+    
+    // for production we need to canon using the BrowserID not Kerberos
+#if 0
+    major = gss_canonicalize_name(&minor, name, &GSSBrowserIDAes128MechDesc, &kerbName);
+#else
+    major = gss_canonicalize_name(&minor, name, GSS_KRB5_MECHANISM, &kerbName);
+#endif
+    if (GSS_ERROR(major))
+        return NULL;
+    
+    displayName = GSSNameCreateDisplayString(kerbName);
+    
+    CFRelease(kerbName);
+    
+    return displayName;
+}
+
+Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     CUIControllerRef controller,
     CFDictionaryRef attributes,
     CFErrorRef *error)
 {
-    CUIFieldRef fields[1] = { 0 };
+    CUIFieldRef fields[2] = { 0 };
 
     *error = NULL;
  
     gss_name_t gssTargetName = CUIControllerGetGssTargetName(controller);
-    if (gssTargetName)
-        _targetName = GSSNameCreateDisplayString(gssTargetName);
+    if (gssTargetName) {
+        _targetName = CUIPersonaCreateTargetName(gssTargetName);
+        if (_targetName == NULL)
+            return false; // could mean BrowserID is not installed on this system
+    }
 
     if (!createBrowserIDContext(controller, error))
         return false;
@@ -41,6 +69,11 @@ Boolean CPersonaCredential::initWithControllerAndAttributes(
     }
 
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Sign in with Persona"), NULL, NULL);
+    fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, CFSTR("Submit"), NULL,
+                               ^(CUIFieldRef field, CFTypeRef value) {
+                                   // this is the willSubmit callback; CredUI only renders a single submit button
+                                   // for the network UI case
+    });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
     if (_fields == NULL)
@@ -53,7 +86,7 @@ Boolean CPersonaCredential::initWithControllerAndAttributes(
     return true;
 }
 
-void CPersonaCredential::didSubmit(void)
+void CUIPersonaCredential::didSubmit(void)
 {
     CFErrorRef error = NULL;
     
@@ -63,7 +96,7 @@ void CPersonaCredential::didSubmit(void)
         CFRelease(error);
 }
 
-Boolean CPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)
+Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)
 {
     uint32_t ulContextFlags;
 
@@ -75,15 +108,17 @@ Boolean CPersonaCredential::createBrowserIDContext(CUIControllerRef controller, 
     if (_bidContext) {
         BIDSetContextParam(_bidContext, BID_PARAM_ECDH_CURVE, (void *)BID_ECDH_CURVE_P521);
 
+#if 0
         const CUICredUIContext *uiContext = CUIControllerGetCredUIContext(controller);
         if (uiContext)
             BIDSetContextParam(_bidContext, BID_PARAM_PARENT_WINDOW, (void *)uiContext->parentWindow);
+#endif
     }
 
     return !!_bidContext;
 }
 
-Boolean CPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
+Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
 {
     CFStringRef assertion;
     BIDIdentity identity = BID_C_NO_IDENTITY;
@@ -104,9 +139,9 @@ Boolean CPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     if (assertion) {
         CFDictionarySetValue(_attributes, kGSSAttrBrowserIDAssertion, assertion);
         CFDictionarySetValue(_attributes, kGSSAttrBrowserIDIdentity, identity);
-        CFDictionarySetValue(_attributes, kCUICredentialStatus, kCUICredentialReturnCredentialFinished);
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
     } else {
-        CFDictionarySetValue(_attributes, kCUICredentialStatus, kCUICredentialNotFinished);
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);
     }
     
     return true;

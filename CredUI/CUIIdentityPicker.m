@@ -265,6 +265,16 @@
     CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyMessageText, &uic);
 }
 
+- (CUICredUIContext *)credUIContext
+{
+    return (CUICredUIContext *)CUIControllerGetCredUIContext(_controller);
+}
+
+- (void)setCredUIContext:(CUICredUIContext *)uic
+{
+    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyAll, uic);
+}
+
 - (NSDictionary *)attributes
 {
     return (__bridge NSDictionary *)CUIControllerGetAttributes(_controller);
@@ -306,7 +316,7 @@
     
     if (CFGetTypeID(cfTarget) == CFStringGetTypeID()) {
         CFErrorRef error = NULL;
-        gss_name_t gssName = GSSCreateName(cfTarget, GSS_C_NT_USER_NAME, &error);
+        gss_name_t gssName = GSSCreateName(cfTarget, GSS_C_NT_HOSTBASED_SERVICE, &error);
         
         if (gssName) {
             CUIControllerSetGssTargetName(_controller, gssName);
@@ -340,12 +350,32 @@
     return [self.selectedCredential _createGSSItem:YES error:error];
 }
 
+- (NSString *)targetDisplayName
+{
+    if (self.targetName == nil)
+        return NULL;
+    
+    CFStringRef displayName = GSSNameCreateDisplayString((__bridge gss_name_t)self.targetName);
+    
+    return CFBridgingRelease(displayName);
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ %p{targetName = \"%@\", selectedCredential = %@, flags = 0x%08x}>",
+            [self.class description],
+            self,
+            self.targetDisplayName,
+            self.selectedCredential,
+            (unsigned int)self.flags];
+}
+
 #pragma mark - Credential submission
 
 - (BOOL)_canReturnWithCredential:(CUICredential *)cred
 {
     NSDictionary *attrs = cred.attributes;
-    id status = [attrs objectForKey:(__bridge id)kCUICredentialStatus];
+    id status = [attrs objectForKey:(__bridge id)kCUIAttrCredentialStatus];
     
     if ([status isEqual:(__bridge id)kCUICredentialReturnCredentialFinished] ||
         [status isEqual:(__bridge id)kCUICredentialReturnNoCredentialFinished])
@@ -357,7 +387,9 @@
 - (void)_submit:(id)sender
 {
     [self.selectedCredential willSubmit];
-    [self.panel close];
+    
+//    if ([self _canReturnWithCredential:self.selectedCredential])
+        [self.panel close];
 }
 
 @end

@@ -1,27 +1,25 @@
 //
-//  PersonaCredentialProvider.cpp
+//  PasswordCredentialProvider.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CPersonaCredentialProvider.h"
-#include "CPersonaCredential.h"
+#include "CUIPasswordCredentialProvider.h"
+#include "CUIPasswordCredential.h"
 
 #include <libkern/OSAtomic.h>
 
-// 58733A29-A6A5-4E57-93EB-200D9411F686
-#define kPersonaCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x58, 0x73, 0x3A, 0x29, 0xA6, 0xA5, 0x4E, 0x57, 0x93, 0xEB, 0x20, 0x0D, 0x94, 0x11, 0xF6, 0x86)
+// BFA3619B-1A12-4DBA-801F-33B0874DD76F
+#define kPasswordCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xBF, 0xA3, 0x61, 0x9B, 0x1A, 0x12, 0x4D, 0xBA, 0x80, 0x1F, 0x33, 0xB0, 0x87, 0x4D, 0xD7, 0x6F)
 
-const CFStringRef kGSSAttrBrowserIDAssertion = CFSTR("kGSSAttrBrowserIDAssertion");
-const CFStringRef kGSSAttrBrowserIDIdentity  = CFSTR("kGSSAttrBrowserIDIdentity");
 
 extern "C" {
-    void *CPersonaCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
+    void *CUIPasswordCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
 };
 
-class CPersonaCredentialProvider : public CUIProvider {
+class CUIPasswordCredentialProvider : public CUIProvider {
     
 private:
     int32_t _retainCount;
@@ -55,38 +53,39 @@ public:
         CFRelease(interfaceID);
         return E_NOINTERFACE;
     }
-    
-    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) {
-        CPersonaCredential *passwordCred = new CPersonaCredential();
+  
+    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes,
+                                                         CFErrorRef *error) {
+        CUIPasswordCredential *passwordCred = new CUIPasswordCredential();
         
-        if (!passwordCred->initWithControllerAndAttributes(_controller, attributes, error)) {
+        if (!passwordCred->initWithAttributes(attributes, error)) {
             passwordCred->Release();
             return NULL;
         }
         
         return passwordCred;
     }
-    
+
     Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
         _controller = (CUIControllerRef)CFRetain(controller);
         return true;
     }
-
+    
     CFArrayRef createOtherCredentials(CFErrorRef *error) {
         return NULL;
     }
-    
-    CPersonaCredentialProvider() {
-        CFPlugInAddInstanceForFactory(kPersonaCredentialProviderFactoryID);
+
+    CUIPasswordCredentialProvider() {
+        CFPlugInAddInstanceForFactory(kPasswordCredentialProviderFactoryID);
         _retainCount = 1;
     }
-    
+
 protected:
     
-    ~CPersonaCredentialProvider() {
+    ~CUIPasswordCredentialProvider() {
         if (_controller)
             CFRelease(_controller);
-        CFPlugInRemoveInstanceForFactory(kPersonaCredentialProviderFactoryID);
+        CFPlugInRemoveInstanceForFactory(kPasswordCredentialProviderFactoryID);
     }
     
 private:
@@ -94,10 +93,10 @@ private:
 };
 
 void *
-CPersonaCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
+CUIPasswordCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
 {
     if (CFEqual(typeID, kCUIProviderTypeID))
-        return new CPersonaCredentialProvider;
+        return new CUIPasswordCredentialProvider;
     
     return NULL;
 }

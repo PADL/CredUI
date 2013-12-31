@@ -10,7 +10,7 @@
 
 #include <NSSystemDirectories.h>
 
-const CFTypeRef kCUICredentialStatus = CFSTR("kCUICredentialStatus");
+const CFTypeRef kCUIAttrCredentialStatus = CFSTR("kCUIAttrCredentialStatus");
 const CFStringRef kCUICredentialNotFinished = CFSTR("kCUICredentialNotFinished");
 const CFStringRef kCUICredentialFinished = CFSTR("kCUICredentialFinished");
 const CFStringRef kCUICredentialReturnCredentialFinished = CFSTR("kCUICredentialReturnCredentialFinished");

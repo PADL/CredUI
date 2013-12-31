@@ -29,7 +29,7 @@
 	<key>CFPlugInFactories</key>
 	<dict>
 		<key>58733A29-A6A5-4E57-93EB-200D9411F686</key>
-		<string>CPersonaCredentialProviderFactory</string>
+		<string>CUIPersonaCredentialProviderFactory</string>
 	</dict>
 	<key>CFPlugInTypes</key>
 	<dict>
