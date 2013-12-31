@@ -10,38 +10,40 @@
 
 #include <NSSystemDirectories.h>
 
-#define CUI_CONST_TYPE(t,k) const t k = (t)(CFSTR(#k));
+#define CUI_CONST_TYPE(t,k,v) const t k = (t)(CFSTR(#v));
 
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrClass);
-CUI_CONST_TYPE(CFStringRef, kCUIAttrClassKerberos);
-CUI_CONST_TYPE(CFStringRef, kCUIAttrClassNTLM);
-CUI_CONST_TYPE(CFStringRef, kCUIAttrClassIAKerb);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrClass,                          kCUIAttrClass);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassKerberos,                  kGSSAttrClassKerberos);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassNTLM,                      kGSSAttrClassNTLM);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassIAKerb,                    kGSSAttrClassIAKerb);
 
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrSupportGSSCredential);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameType);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSExportedName);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSUsername);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSHostBasedService);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrName);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameDisplay);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrUUID);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientExpire);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientDefaultInClass);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialPassword);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStore);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialSecIdentity);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialExists);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusPersistant);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquire);
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusTransient);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrSupportGSSCredential,           kCUIAttrSupportGSSCredential);
 
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquireStatus);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameType,                       kCUIAttrNameType);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSExportedName,        kGSSAttrNameTypeGSSExportedName);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSUsername,            kGSSAttrNameTypeGSSUsername);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSHostBasedService,    kGSSAttrNameTypeGSSHostBasedService);
 
-CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStatus);
-CUI_CONST_TYPE(CFStringRef, kCUICredentialNotFinished);
-CUI_CONST_TYPE(CFStringRef, kCUICredentialFinished);
-CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnCredentialFinished);
-CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnNoCredentialFinished);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrName,                           kCUIAttrName);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameDisplay,                    kCUIAttrNameDisplay);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrUUID,                           kCUIAttrUUID);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientExpire,                kCUIAttrTransientExpire);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientDefaultInClass,        kCUIAttrTransientDefaultInClass);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialPassword,             kCUIAttrCredentialPassword);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStore,                kCUIAttrCredentialStore);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialSecIdentity,          kCUIAttrCredentialSecIdentity);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialExists,               kCUIAttrCredentialExists);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusPersistant,               kCUIAttrStatusPersistant);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquire,              kCUIAttrStatusAutoAcquire);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusTransient,                kCUIAttrStatusTransient);
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquireStatus,        kCUIAttrStatusAutoAcquireStatus);
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStatus,               kCUIAttrCredentialStatus);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialNotFinished,              kCUICredentialNotFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialFinished,                 kCUICredentialFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnCredentialFinished, kCUICredentialReturnCredentialFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnNoCredentialFinished,kCUICredentialReturnNoCredentialFinished);
 
 static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
 static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");

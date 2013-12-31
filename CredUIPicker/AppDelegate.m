@@ -28,9 +28,9 @@
     
     NSLog(@"identityPicker selected GSS name = %@", identityPicker.selectedCredentialGSSName);
     
-    cred = [[GSSCredential alloc] initWithName:[identityPicker selectedCredentialGSSName]
-                                     mechanism:[GSSMechanism kerberosMechanism]
-                                    attributes:[identityPicker selectedCredentialAttributes]
+    cred = [[GSSCredential alloc] initWithName:identityPicker.selectedCredentialGSSName
+                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredentialAttributes[@"kCUIAttrClass"]]
+                                    attributes:identityPicker.selectedCredentialAttributes
                                          error:&error];
     if (cred)
         NSLog(@"credential acquired: %@", cred);
