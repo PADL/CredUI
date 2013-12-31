@@ -85,10 +85,6 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     return true;
 }
 
-void CUIPersonaCredential::didSubmit(void)
-{
-}
-
 Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)
 {
     uint32_t ulContextFlags;
