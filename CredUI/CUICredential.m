@@ -79,12 +79,12 @@
     return (__bridge NSArray *)CUICredentialGetFields([self _credentialRef]);
 }
 
-- init
+- (instancetype)init
 {
     return [self initWithContext:NULL];
 }
 
-- initWithContext:(IUnknownVTbl *)context
+- (instancetype)initWithContext:(IUnknownVTbl *)context
 {
     CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
     

@@ -15,16 +15,6 @@
         CFRelease(_controller);
 }
 
-- init
-{
-    return [self initWithFlags:0];
-}
-
-- initWithFlags:(CUIFlags)flags
-{
-    return [self initWithFlags:flags attributes:nil];
-}
-
 - (NSPanel *)_newPanel
 {
     NSRect frame = NSMakeRect(0, 0, 400, 450);
@@ -82,7 +72,17 @@
     return button;
 }
 
-- initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
+- (instancetype)init
+{
+    return [self initWithFlags:0];
+}
+
+- (instancetype)initWithFlags:(CUIFlags)flags
+{
+    return [self initWithFlags:flags attributes:nil];
+}
+
+- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     CUIUsageFlags usageFlags = 0;
     
@@ -328,17 +328,6 @@
     }
 }
 
-- (CUICredential *)selectedCredential
-{
-    NSArray *selectedObjects = [self.credsController selectedObjects];
-    CUICredential *cred = nil;
-    
-    if (selectedObjects.count)
-        cred = selectedObjects[0];
-
-    return cred;
-}
-
 - (NSString *)targetDisplayName
 {
     if (self.targetName == nil)
@@ -347,6 +336,17 @@
     CFStringRef displayName = GSSNameCreateDisplayString((__bridge gss_name_t)self.targetName);
     
     return CFBridgingRelease(displayName);
+}
+
+- (CUICredential *)selectedCredential
+{
+    NSArray *selectedObjects = [self.credsController selectedObjects];
+    CUICredential *cred = nil;
+    
+    if (selectedObjects.count)
+        cred = selectedObjects[0];
+    
+    return cred;
 }
 
 - (NSString *)description
