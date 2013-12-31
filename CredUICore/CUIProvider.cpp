@@ -134,6 +134,7 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         CFUUIDRef factoryID = (CFUUIDRef)CFArrayGetValueAtIndex(factories, index);
         IUnknown *iunk = (IUnknown *)CFPlugInInstanceCreate(allocator, factoryID, kCUIProviderTypeID);
         CUIProvider *provider = NULL;
+        CFErrorRef error = NULL;
         
         if (iunk == NULL)
             continue;
@@ -141,7 +142,9 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUIProviderInterfaceID), (void **)&provider);
         iunk->Release();
         
-        if (!provider->initWithController(controller)) {
+        if (!provider->initWithController(controller, &error)) {
+            if (error)
+                CFRelease(error);
             provider->Release();
             continue;
         }

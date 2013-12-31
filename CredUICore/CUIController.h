@@ -29,6 +29,7 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsInCredOnly            = 0x00000020,
     kCUIUsageFlagsEnumerateAdmins       = 0x00000100,
     kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,
+    kCUIUsageFlagsExcludePersistedCreds = 0x40000000,
     kCUIUsageFlagsNoUI                  = 0x80000000
 };
 
@@ -94,7 +95,7 @@ gss_name_t
 CUIControllerGetGssTargetName(CUIControllerRef controller);
 
 Boolean
-CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef));
+CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef));
     
 #ifdef __cplusplus
 }

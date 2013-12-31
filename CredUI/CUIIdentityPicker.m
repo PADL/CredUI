@@ -71,6 +71,8 @@
         usageFlags |= kCUIUsageFlagsSaveCheckbox;
     if (self.flags & CUIFlagsGenericCredentials)
         usageFlags |= kCUIUsageFlagsGeneric;
+    if (self.flags & CUIFlagsExcludePersistedCredentials)
+        usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     
     _controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
     if (_controller == NULL)
@@ -129,8 +131,11 @@
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
     [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
 
-    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred) {
-        [self.credsController addObject:(__bridge CUICredential *)cred];
+    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred, CFErrorRef error) {
+        if (cred)
+            [self.credsController addObject:(__bridge CUICredential *)cred];
+        else if (error)
+            NSLog(@"CUIControllerEnumerateCredentials: %@", error);
     });
     
     [self.collectionView addObserver:self

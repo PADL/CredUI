@@ -32,7 +32,8 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
     CUIFlagsExpectConfirmation          = 0x20000,
     CUIFlagsGenericCredentials          = 0x40000,
     CUIFlagsUsernameTargetCredentials   = 0x80000,
-    CUIFlagsKeepUsername                = 0x100000
+    CUIFlagsKeepUsername                = 0x100000,
+    CUIFlagsExcludePersistedCredentials = 0x10000000
 };
 
 @interface CUIIdentityPicker : NSObject

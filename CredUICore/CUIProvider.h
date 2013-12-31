@@ -15,9 +15,6 @@
 extern "C" {
 #endif
     
-// BFA3619B-1A12-4DBA-801F-33B0874DD76F
-#define kCUIProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xBF, 0xA3, 0x61, 0x9B, 0x1A, 0x12, 0x4D, 0xBA, 0x80, 0x1F, 0x33, 0xB0, 0x87, 0x4D, 0xD7, 0x6F)
-
 // F7356A4B-91A7-4455-AF3A-175D27449C9E
 #define kCUIProviderInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xF7, 0x35, 0x6A, 0x4B, 0x91, 0xA7, 0x44, 0x55, 0xAF, 0x3A, 0x17, 0x5D, 0x27, 0x44, 0x9C, 0x9E)
 
@@ -75,19 +72,19 @@ public:
     /*
      * Initialize a new credential provider
      */
-    virtual Boolean initWithController(CUIControllerRef controller) = 0;
+    virtual Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) = 0;
     
     /*
-     * Get a CUICredentialRef for an authentication identity. attribuets may be
+     * Get a CUICredentialRef for an authentication identity. Attributes may be
      * NULL in which case it should prompt the user.
      */
-    virtual CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes) = 0;
+    virtual CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
     
     /*
      * Get any additional CUICredentialContexts for users that the provider knows about,
      * for example inserted smartcards.
      */
-    virtual CFArrayRef createOtherCredentials(void) CF_RETURNS_RETAINED = 0; // array of CUICredentialRef
+    virtual CFArrayRef createOtherCredentials(CFErrorRef *error) CF_RETURNS_RETAINED = 0; // array of CUICredentialRef
 };
 
 #else
@@ -101,9 +98,9 @@ typedef struct CUICredentialContext {
 
 typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
-    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller);
-    CUICredentialRef (STDMETHODCALLTYPE *createCredentialWithAttributes)(CFDictionaryRef attributes);
-    CFArrayRef (STDMETHODCALLTYPE *createOtherCredentials)(void *thisPointer);
+    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller, CFErrorRef *error);
+    CUICredentialRef (STDMETHODCALLTYPE *createCredentialWithAttributes)(CFDictionaryRef attributes, CFErrorRef *error);
+    CFArrayRef (STDMETHODCALLTYPE *createOtherCredentials)(void *thisPointer, CFErrorRef *error);
 } CUIProvider;
 #endif /* defined(__cplusplus) */
 

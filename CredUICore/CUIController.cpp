@@ -113,28 +113,33 @@ static Boolean
 __CUIControllerEnumerateCredentialForProviderWithAttributes(CUIControllerRef controller,
                                                             CUIProvider *provider,
                                                             CFDictionaryRef attributes,
-                                                            void (^cb)(CUICredentialRef))
+                                                            void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CUICredentialContext *attrCredContext;
+    CUICredentialRef cred = NULL;
+    CFErrorRef error = NULL;
     
-    attrCredContext = provider->createCredentialWithAttributes(attributes);
-    if (attrCredContext) {
-        CUICredentialRef cred = CUICredentialCreate(CFGetAllocator(controller), attrCredContext);
-        if (cred == NULL)
-            return false;
-        
-        cb(cred);
+    attrCredContext = provider->createCredentialWithAttributes(attributes, &error);
+    if (attrCredContext)
+        cred = CUICredentialCreate(CFGetAllocator(controller), attrCredContext);
+    
+    if (cred || error)
+        cb(cred, error);
+    
+    if (cred)
         CFRelease(cred);
+    if (error)
+        CFRelease(error);
+    if (attrCredContext)
         attrCredContext->Release();
-    }
     
-    return true;
+    return !!cred;
 }
 
 struct __CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CUIProvider *provider;
-    void (^callback)(CUICredentialRef);
+    void (^callback)(CUICredentialRef, CFErrorRef);
     Boolean didEnumerate;
 };
 
@@ -146,7 +151,7 @@ __CUIEnumerateOtherCredentialsForProviderCallback(const void *value, void *_cont
     CUICredentialRef cred = CUICredentialCreate(CFGetAllocator(enumContext->controller), credContext);
     
     if (cred) {
-        enumContext->callback(cred);
+        enumContext->callback(cred, NULL);
         CFRelease(cred);
         enumContext->didEnumerate = true;
     }
@@ -155,9 +160,10 @@ __CUIEnumerateOtherCredentialsForProviderCallback(const void *value, void *_cont
 static Boolean
 __CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
                                                     CUIProvider *provider,
-                                                    void (^cb)(CUICredentialRef))
+                                                    void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CFArrayRef otherCredContexts;
+    CFErrorRef error = NULL;
     
     __CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
@@ -166,7 +172,7 @@ __CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
         .didEnumerate = false
     };
     
-    otherCredContexts = provider->createOtherCredentials();
+    otherCredContexts = provider->createOtherCredentials(&error);
     if (otherCredContexts) {
         CFArrayApplyFunction(otherCredContexts,
                              CFRangeMake(0, CFArrayGetCount(otherCredContexts)),
@@ -174,6 +180,9 @@ __CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
                              (void *)&enumContext);
         
         CFRelease(otherCredContexts);
+    } else if (error) {
+        cb(NULL, error);
+        CFRelease(error);
     }
     
     return enumContext.didEnumerate;
@@ -189,8 +198,8 @@ __CUIEnumerateItemCredentialsCallback(const void *value, void *_context)
         __CUIControllerEnumerateCredentialForProviderWithAttributes(enumContext->controller,
                                                                     enumContext->provider,
                                                                     item->keys,
-                                                                    ^(CUICredentialRef cred) {
-                                                                        enumContext->callback(cred);
+                                                                    ^(CUICredentialRef cred, CFErrorRef err) {
+                                                                        enumContext->callback(cred, err);
                                                                         __CUICredentialSetItem(cred, item);
                                                                     });
 }
@@ -199,7 +208,7 @@ static Boolean
 __CUIControllerEnumerateItemCredentialsForProvider(CUIControllerRef controller,
                                                    CUIProvider *provider,
                                                    CFArrayRef items,
-                                                   void (^cb)(CUICredentialRef))
+                                                   void (^cb)(CUICredentialRef, CFErrorRef))
 {
     __CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
@@ -222,7 +231,7 @@ static Boolean
 __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
                                                CUIProvider *provider,
                                                CFArrayRef items,
-                                               void (^cb)(CUICredentialRef))
+                                               void (^cb)(CUICredentialRef, CFErrorRef))
 {
     Boolean didEnumerate = false;
     
@@ -234,7 +243,8 @@ __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
     }
     
     if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0) {
-        if (controller->_usage == kCUIUsageScenarioNetwork) {
+        if ((controller->_usage == kCUIUsageScenarioNetwork) &&
+            (controller->_usageFlags & kCUIUsageFlagsExcludePersistedCreds) == 0) {
             didEnumerate |= __CUIControllerEnumerateItemCredentialsForProvider(controller,
                                                                                provider,
                                                                                items,
@@ -253,7 +263,7 @@ __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
 
 
 Boolean
-CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef))
+CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CFIndex index;
     CFArrayRef items = NULL;

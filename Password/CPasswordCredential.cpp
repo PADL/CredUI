@@ -8,10 +8,12 @@
 
 #include "CPasswordCredential.h"
 
-Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes)
+Boolean CPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
 {
     CFTypeRef defaultUsername = NULL;
     CUIFieldRef fields[4] = { 0 };
+    
+    *error = NULL;
     
     if (attributes) {
         /*
