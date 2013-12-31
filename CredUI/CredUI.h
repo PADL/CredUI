@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <CredUI/CUITypes.h>
 #import <CredUI/CUIPromptForCredentials.h>
 #import <CredUI/CUICredential.h>
 #import <CredUI/CUIIdentityPicker.h>

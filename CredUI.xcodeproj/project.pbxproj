@@ -88,6 +88,7 @@
 		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; };
+		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -285,6 +286,7 @@
 		D39EB0FA1872B3F800C43A24 /* GSSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug/GSSKit.framework"; sourceTree = "<group>"; };
 		D39EB0FC1872B85700C43A24 /* GSSItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
+		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,6 +465,7 @@
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D336E284182B51A6009271CD /* Supporting Files */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
+				D3BED8F21872F5FA00623B92 /* CUITypes.h */,
 				D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */,
 				D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */,
 				D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */,
@@ -651,6 +654,7 @@
 				D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */,
 				D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */,
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
+				D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */,
 				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,

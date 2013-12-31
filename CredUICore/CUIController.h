@@ -40,7 +40,7 @@ typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
     kCUICredUIContextPropertyAll            = 0xf
 };
     
-#ifndef __CredUI__PromptForCredentials__
+#ifndef CredUI_CUITypes_h
 typedef struct __CUICredUIContext {
     CFIndex version;
     CFTypeRef parentWindow;
