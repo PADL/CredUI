@@ -23,7 +23,7 @@
 
 - (IBAction)showIdentityPicker:(id)sender;
 {
-    self.picker = [[CUIIdentityPicker alloc] init];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials];
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";

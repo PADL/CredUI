@@ -1,3 +1,4 @@
+
 //
 //  CPersonaCredential.cpp
 //  CredUI
@@ -14,7 +15,7 @@ Boolean CPersonaCredential::initWithControllerAndAttributes(
     CFDictionaryRef attributes,
     CFErrorRef *error)
 {
-    CUIFieldRef fields[2] = { 0 };
+    CUIFieldRef fields[1] = { 0 };
 
     *error = NULL;
  
@@ -40,14 +41,6 @@ Boolean CPersonaCredential::initWithControllerAndAttributes(
     }
 
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Sign in with Persona"), NULL, NULL);
-    fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, CFSTR("Submit"), NULL,
-                               ^(CUIFieldRef field, CFTypeRef value) {
-                                   CFErrorRef error;
-                                   createBrowserIDAssertion(&error);
-                                   if (error)
-                                       CFRelease(error);
-
-    });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
     if (_fields == NULL)
@@ -58,6 +51,16 @@ Boolean CPersonaCredential::initWithControllerAndAttributes(
         return false;
     
     return true;
+}
+
+void CPersonaCredential::didSubmit(void)
+{
+    CFErrorRef error = NULL;
+    
+    createBrowserIDAssertion(&error);
+    
+    if (error)
+        CFRelease(error);
 }
 
 Boolean CPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)

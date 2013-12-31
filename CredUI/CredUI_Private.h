@@ -18,7 +18,6 @@
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
 #import "CUIIdentityPicker+Private.h"
-#import "CUIIdentityPicker+CredentialSubmission.h"
 
 CF_EXPORT void _CFRuntimeBridgeClasses(CFTypeID cf_typeID, const char *objc_classname);
 CF_EXPORT CFTypeRef _CFTryRetain(CFTypeRef cf);

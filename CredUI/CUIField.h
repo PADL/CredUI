@@ -9,8 +9,8 @@
 @interface CUIField : NSObject <NSTextFieldDelegate>
 
 @property(nonatomic, readonly, assign) CUIFieldClass fieldClass;
-@property(nonatomic, readonly, assign) NSString *title;
-@property(nonatomic, readonly, assign) NSString *defaultValue;
+@property(nonatomic, readonly, copy) NSString *title;
+@property(nonatomic, readonly, copy) NSString *defaultValue;
 
 - initWithClass:(CUIFieldClass)fieldClass
           title:(NSString *)title

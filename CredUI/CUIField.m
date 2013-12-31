@@ -79,6 +79,8 @@
 {
     CUIFieldRef fieldRef;
     
+    // XXX copy arguments
+    
     fieldRef = CUIFieldCreate(kCFAllocatorDefault,
                               fieldClass,
                               (__bridge CFStringRef)title,
@@ -120,16 +122,16 @@
 
 - (void)setValue:(id)aValue
 {
-    CUIFieldSetValue([self _fieldRef], (__bridge CFTypeRef)aValue);
+    id aValueCopy = [aValue copy];
+    
+    CUIFieldSetValue([self _fieldRef], (__bridge CFTypeRef)aValueCopy);
+    
+    [aValueCopy release];
 }
 
 - (void)didSubmit:(id)sender
 {
-    CUIIdentityPicker *picker = [[sender window] delegate];
-    CUICredentialTile *tile = (CUICredentialTile *)[sender superview];
-    
     [self setValue:(__bridge id)kCFBooleanTrue];
-    [picker _selectCredential:[tile credential]];
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification

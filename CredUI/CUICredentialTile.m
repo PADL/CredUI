@@ -8,7 +8,7 @@
 
 @implementation CUICredentialTile
 
-- (NSTextField *)_createTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
+- (NSTextField *)_newTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
 {
     NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
     
@@ -25,7 +25,7 @@
     return textField;
 }
 
-- (NSTextField *)_createEditableTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
+- (NSTextField *)_newEditableTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
 {
     NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
     
@@ -37,7 +37,7 @@
     return textField;
 }
 
-- (NSSecureTextField *)_createSecureTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
+- (NSSecureTextField *)_newSecureTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
 {
     NSSecureTextField *textField = [[NSSecureTextField alloc] initWithFrame:frame];
     
@@ -48,7 +48,7 @@
     return textField;
 }
 
-- (NSButton *)_createButtonForCredentialField:(CUIField *)field withFrame:(NSRect)frame
+- (NSButton *)_newButtonForCredentialField:(CUIField *)field withFrame:(NSRect)frame
 {
     NSButton *button = [[NSButton alloc] initWithFrame:frame];
     
@@ -59,7 +59,7 @@
     return button;
 }
     
-- (NSView *)_createViewForCredentialField:(CUIField *)field withFrame:(NSRect *)frame
+- (NSView *)_newViewForCredentialField:(CUIField *)field withFrame:(NSRect *)frame
 {
     NSView *view = nil;
     
@@ -69,22 +69,23 @@
     switch ([field fieldClass]) {
         case kCUIFieldClassLargeText:
         case kCUIFieldClassSmallText:
-            view = [self _createTextFieldForCredentialField:field withFrame:*frame];
+            view = [self _newTextFieldForCredentialField:field withFrame:*frame];
             break;
         case kCUIFieldClassCommandLink:
             break;
         case kCUIFieldClassEditText:
-            view = [self _createEditableTextFieldForCredentialField:field withFrame:*frame];
+            view = [self _newEditableTextFieldForCredentialField:field withFrame:*frame];
             break;
         case kCUIFieldClassPasswordText:
-            view = [self _createSecureTextFieldForCredentialField:field withFrame:*frame];
+            view = [self _newSecureTextFieldForCredentialField:field withFrame:*frame];
             break;
         case kCUIFieldClassTileImage:
         case kCUIFieldClassCheckBox:
         case kCUIFieldClassComboBox:
             break;
         case kCUIFieldClassSubmitButton:
-            view = [self _createButtonForCredentialField:field withFrame:*frame];
+            // CUIIdentityPicker will draw a global submit button for all providers
+            // view = [self _newButtonForCredentialField:field withFrame:*frame];
             break;
         case kCUIFieldClassInvalid:
         default:
@@ -103,7 +104,7 @@
     frame.size.height = 0;
     
     for (CUIField *field in credFields) {
-        NSView *subview = [self _createViewForCredentialField:field withFrame:&frame];
+        NSView *subview = [self _newViewForCredentialField:field withFrame:&frame];
         
         if (subview) {
             [self addSubview:subview];
@@ -115,6 +116,14 @@
 {
     _credential = credential;
     [self _updateSubviews];
+}
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    if (self.selected) {
+        [[NSColor alternateSelectedControlColor] set];
+        NSRectFill([self bounds]);
+    }
 }
 
 @end

@@ -75,6 +75,9 @@ public:
     void didBecomeDeselected(void) {
     }
     
+    void didSubmit(void) {
+    }
+    
     CPasswordCredential() {
         _retainCount = 1;
         _inCredUsable = false;

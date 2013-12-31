@@ -76,6 +76,7 @@ public:
     
     void didBecomeSelected(Boolean *pbAutoLogin) {}
     void didBecomeDeselected(void) {}
+    void didSubmit(void);
     
     CPersonaCredential() {
         _retainCount = 1;

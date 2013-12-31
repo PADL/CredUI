@@ -44,6 +44,12 @@ extern void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred);
 
 extern void
+CUICredentialWillSubmit(CUICredentialRef cred);
+
+extern void
+CUICredentialDidSubmit(CUICredentialRef cred);
+    
+extern void
 CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop), Boolean *stop);
     
 #ifdef __cplusplus

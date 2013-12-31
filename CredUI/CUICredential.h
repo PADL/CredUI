@@ -23,6 +23,9 @@
 - (void)didBecomeSelected:(BOOL *)pbAutoLogin;
 - (void)didBecomeDeselected;
 
+- (void)willSubmit;
+- (void)didSubmit;
+
 - (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block
                     stop:(BOOL *)stop;
 

@@ -22,4 +22,11 @@
     }
 }
 
+- (void)setSelected:(BOOL)flag
+{
+    [super setSelected:flag];
+    [(CUICredentialTile *)self.view setSelected:flag];
+    [self.view setNeedsDisplay:YES];
+}
+
 @end

@@ -58,6 +58,31 @@
     return collectionView;
 }
 
+- (NSTextField *)_newMessageTextField
+{
+    NSRect frame = NSMakeRect(0, 0, 400, 50);
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
+    
+    textField.editable = NO;
+    textField.selectable = NO;
+    textField.bordered = YES;
+    textField.backgroundColor = [NSColor lightGrayColor];
+    
+    return textField;
+}
+
+- (NSButton *)_newSubmitButton
+{
+    NSRect frame = NSMakeRect(0, 0, 400, 30);
+    NSButton *button = [[NSButton alloc] initWithFrame:frame];
+    
+    button.title = @"OK";
+    button.target = self;
+    button.action = @selector(_submit:);
+    
+    return button;
+}
+
 - initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     CUIUsageFlags usageFlags = 0;
@@ -82,8 +107,14 @@
         self.attributes = attributes;
     
     self.panel = [self _newPanel];
+
+    self.messageTextField = [self _newMessageTextField];
+    [self.panel.contentView addSubview:self.messageTextField];
+    
     self.collectionView = [self _newCollectionViewWithPanel:self.panel];
     [self.panel.contentView addSubview:self.collectionView];
+    
+    [self.panel.contentView addSubview:[self _newSubmitButton]];
     
     return self;
 }
@@ -113,7 +144,7 @@
                 [cred didBecomeDeselected];
 
             if (autoLogin && [self _canReturnWithCredential:cred])
-                [self _selectCredential:cred];
+                [self _submit:nil];
         }
     }
 }
@@ -145,27 +176,9 @@
     
 }
 
-- (NSInteger)runModal
+- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    NSInteger returnCode;
-    
-    [self _populateCredentials];
-
-    self.panel.title = self.title;
-
-    returnCode = [NSApp runModalForWindow:self.panel];
-    if (returnCode == NSModalResponseStop) {
-        NSArray *selectedObjects = [self.credsController selectedObjects];
-        
-        if (selectedObjects.count)
-            self.selectedCredential = selectedObjects[0];
-    }
-
-    [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
-    [self.credsController unbind:NSContentBinding];
-    [self.credsController unbind:NSSelectionIndexesBinding];
-
-    return returnCode;
+    *((NSInteger *)contextInfo) = returnCode;
 }
 
 - (void)runModalForWindow:(NSWindow *)window
@@ -173,7 +186,36 @@
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    NSInteger returnCode = [self runModal];
+    __block NSModalResponse returnCode;
+    
+    if (self.title)
+        self.panel.title = self.title;
+    if (self.message)
+        self.messageTextField.stringValue = self.message;
+    
+    [self _populateCredentials];
+    
+    if (window) {
+        [window beginSheet:self.panel completionHandler:^(NSModalResponse sheetReturnCode) {
+            returnCode = sheetReturnCode;
+        }];
+    } else {
+        returnCode = [NSApp runModalForWindow:self.panel];
+    }
+    if (returnCode == NSModalResponseStop) {
+        NSArray *selectedObjects = [self.credsController selectedObjects];
+        
+        if (selectedObjects.count)
+            self.selectedCredential = selectedObjects[0];
+    }
+    
+    [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
+    [self.credsController unbind:NSContentBinding];
+    [self.credsController unbind:NSSelectionIndexesBinding];
+    
+    // do this outside modal loop
+    [self.selectedCredential didSubmit];
+
     NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     void *object = (__bridge void *)self;
@@ -184,6 +226,18 @@
     [invocation setArgument:&returnCode atIndex:3];
     [invocation setArgument:&contextInfo atIndex:4];
     [invocation invoke];
+}
+
+- (NSInteger)runModal
+{
+    NSInteger returnCode;
+    
+    [self runModalForWindow:nil
+              modalDelegate:self
+             didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
+                contextInfo:&returnCode];
+    
+    return returnCode;
 }
 
 #pragma mark - Accessors
@@ -265,6 +319,17 @@
     }
 }
 
+- (CUICredential *)selectedCredential
+{
+    NSArray *selectedObjects = [self.credsController selectedObjects];
+    CUICredential *cred = nil;
+    
+    if (selectedObjects.count)
+        cred = selectedObjects[0];
+
+    return cred;
+}
+
 - (NSDictionary *)selectedCredentialAttributes
 {
     return [self.selectedCredential attributes];
@@ -273,6 +338,26 @@
 - (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error
 {
     return [self.selectedCredential _createGSSItem:YES error:error];
+}
+
+#pragma mark - Credential submission
+
+- (BOOL)_canReturnWithCredential:(CUICredential *)cred
+{
+    NSDictionary *attrs = cred.attributes;
+    id status = [attrs objectForKey:(__bridge id)kCUICredentialStatus];
+    
+    if ([status isEqual:(__bridge id)kCUICredentialReturnCredentialFinished] ||
+        [status isEqual:(__bridge id)kCUICredentialReturnNoCredentialFinished])
+        return YES;
+    else
+        return NO;
+}
+
+- (void)_submit:(id)sender
+{
+    [self.selectedCredential willSubmit];
+    [self.panel close];
 }
 
 @end

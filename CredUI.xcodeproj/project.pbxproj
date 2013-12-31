@@ -69,8 +69,6 @@
 		D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D39EB0BF1871302100C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0BD1871302100C43A24 /* CUIField.h */; };
 		D39EB0C01871302100C43A24 /* CUIField.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0BE1871302100C43A24 /* CUIField.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D39EB0C718713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0C518713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.h */; };
-		D39EB0C818713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0C618713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.m */; };
 		D39EB0CA18714E4F00C43A24 /* CUIIdentityPicker+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */; };
 		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; };
 		D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0CC18714ED200C43A24 /* CUICredential.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -253,8 +251,6 @@
 		D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUICredentialTileController.m; sourceTree = "<group>"; };
 		D39EB0BD1871302100C43A24 /* CUIField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIField.h; sourceTree = "<group>"; };
 		D39EB0BE1871302100C43A24 /* CUIField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIField.m; sourceTree = "<group>"; };
-		D39EB0C518713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIIdentityPicker+CredentialSubmission.h"; sourceTree = "<group>"; };
-		D39EB0C618713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUIIdentityPicker+CredentialSubmission.m"; sourceTree = "<group>"; };
 		D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIIdentityPicker+Private.h"; sourceTree = "<group>"; };
 		D39EB0CB18714ED200C43A24 /* CUICredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredential.h; sourceTree = "<group>"; };
 		D39EB0CC18714ED200C43A24 /* CUICredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUICredential.m; sourceTree = "<group>"; };
@@ -434,8 +430,6 @@
 				D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */,
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */,
-				D39EB0C518713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.h */,
-				D39EB0C618713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.m */,
 				D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */,
 				D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
@@ -625,7 +619,6 @@
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
-				D39EB0C718713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.h in Headers */,
 				D39EB0A41870235F00C43A24 /* CUICredentialTile.h in Headers */,
 				D39EB0CA18714E4F00C43A24 /* CUIIdentityPicker+Private.h in Headers */,
 				D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */,
@@ -941,7 +934,6 @@
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
 				D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */,
 				D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */,
-				D39EB0C818713B6900C43A24 /* CUIIdentityPicker+CredentialSubmission.m in Sources */,
 				D39EB0A51870235F00C43A24 /* CUICredentialTile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

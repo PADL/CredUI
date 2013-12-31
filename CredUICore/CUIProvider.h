@@ -65,6 +65,7 @@ public:
      */
     virtual void didBecomeSelected(Boolean *pAutoLogin) = 0;
     virtual void didBecomeDeselected(void) = 0;
+    virtual void didSubmit(void) = 0;
 };
 
 class CUIProvider : public IUnknown {
@@ -94,6 +95,7 @@ typedef struct CUICredentialContext {
     CFArrayRef (STDMETHODCALLTYPE *getFields)(void *thisPointer);
     CFDictionaryRef (STDMETHODCALLTYPE *getAttributes)(void *thisPointer);
     void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer);
+    void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
 } CUICredentialContext;
 
 typedef struct CUIProvider {

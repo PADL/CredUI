@@ -160,14 +160,31 @@ CUICredentialGetAttributes(CUICredentialRef cred)
     return NULL;
 }
 
-extern void
+void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 {
     if (cred->_context)
         cred->_context->didBecomeSelected(pbAutoLogin);
 }
 
-extern void
+void
+CUICredentialWillSubmit(CUICredentialRef cred)
+{
+    CUIFieldRef selectedCredSubmitButton;
+    
+    selectedCredSubmitButton = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassSubmitButton);
+    if (selectedCredSubmitButton)
+        CUIFieldSetValue(selectedCredSubmitButton, kCFBooleanTrue);
+}
+
+void
+CUICredentialDidSubmit(CUICredentialRef cred)
+{
+    if (cred->_context)
+        cred->_context->didSubmit();
+}
+
+void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred)
 {
     if (cred->_context)

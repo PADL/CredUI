@@ -115,6 +115,16 @@
     CUICredentialDidBecomeDeselected([self _credentialRef]);
 }
 
+- (void)willSubmit
+{
+    CUICredentialWillSubmit([self _credentialRef]);
+}
+
+- (void)didSubmit
+{
+    CUICredentialDidSubmit([self _credentialRef]);
+}
+
 - (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block
                     stop:(BOOL *)stop
 {
