@@ -125,9 +125,6 @@ int main(int argc, const char * argv[])
     NSError *error = NULL;
     GSSItem *item = (__bridge GSSItem *)CUICredentialGetGSSItem(cred);
     
-    if (item == nil)
-        item = [GSSItem add:credAttributes error:&error];
-    
     if (item) {
         GSSCredential *cred = [item acquire:credAttributes error:&error];
         NSLog(@"Got cred: %@", cred);
