@@ -35,4 +35,5 @@ __CUIPromptForCredentials(gss_name_t targetName,
                           CFDictionaryRef inCredAttributes,
                           CFDictionaryRef *outCredAttributes,
                           Boolean *pfSave,
-                          CUIFlags flags);
+                          CUIFlags flags,
+                          CUIAttributeClass attrClass);

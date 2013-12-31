@@ -18,5 +18,5 @@ GSSPromptForCredentials(gss_name_t targetName,
 {
     return __CUIPromptForCredentials(targetName, gssContextHandle, uiContext,
                                      authError, inCredAttributes, outCredAttributes,
-                                     pfSave, flags);
+                                     pfSave, flags, CUIAttributeClassGSSInitialCred);
 }

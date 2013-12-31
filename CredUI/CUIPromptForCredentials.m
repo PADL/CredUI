@@ -16,7 +16,8 @@ __CUIPromptForCredentials(gss_name_t targetName,
                           CFDictionaryRef inCredAttributes,
                           CFDictionaryRef *outCredAttributes,
                           Boolean *pfSave,
-                          CUIFlags flags)
+                          CUIFlags flags,
+                          CUIAttributeClass attrClass)
 {
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
     CUICredential *selectedCredential;
@@ -32,7 +33,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     
     selectedCredential = identityPicker.selectedCredential;
     
-    *outCredAttributes = CFBridgingRetain(selectedCredential.attributes);
+    *outCredAttributes = CFBridgingRetain([selectedCredential attributesWithClass:attrClass]);
     
     *pfSave = identityPicker.saveToKeychain;
     
@@ -71,5 +72,6 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                                      (__bridge CFDictionaryRef)inCredAttributes,
                                      outCredAttributes,
                                      save,
-                                     flags);
+                                     flags,
+                                     CUIAttributeClassGeneric);
 }
