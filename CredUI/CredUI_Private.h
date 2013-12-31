@@ -25,3 +25,13 @@ CF_EXPORT CFTypeRef _CFTryRetain(CFTypeRef cf);
 CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
 
 void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
+
+Boolean
+__CUIPromptForCredentials(gss_name_t targetName,
+                          CFTypeRef gssContextHandle,
+                          CUICredUIContext *uiContext,
+                          CFErrorRef authError,
+                          CFDictionaryRef inCredAttributes,
+                          CFDictionaryRef *outCredAttributes,
+                          Boolean *pfSave,
+                          CUIFlags flags);

@@ -16,23 +16,10 @@ GSSPromptForCredentials(gss_name_t targetName,
                         Boolean *pfSave,
                         CUIFlags flags)
 {
-    CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
-    CUICredential *selectedCredential;
+    if ((flags & (CUIFlagsGSSAcquireCredsDisposition | CUIFlagsGSSItemDisposition)) == 0)
+        flags |= CUIFlagsGSSAcquireCredsDisposition;
     
-    if (identityPicker == nil)
-        return false;
-    
-    identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
-    identityPicker.authError = (__bridge NSError *)authError;
-    identityPicker.saveToKeychain = *pfSave;
-    
-    [identityPicker runModal];
-    
-    selectedCredential = identityPicker.selectedCredential;
-    
-    *outCredAttributes = CFBridgingRetain(selectedCredential.attributes);
-    
-    *pfSave = identityPicker.saveToKeychain;
-    
-    return [identityPicker _canReturnWithCredential:selectedCredential];
+    return __CUIPromptForCredentials(targetName, gssContextHandle, uiContext,
+                                     authError, inCredAttributes, outCredAttributes,
+                                     pfSave, flags);
 }
