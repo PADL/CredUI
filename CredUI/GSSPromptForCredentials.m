@@ -29,7 +29,12 @@ Boolean
 GSSIsPromptingNeeded(CFErrorRef authError)
 {
     NSError *error = (__bridge NSError *)authError;
-    OM_uint32 major = [error.userInfo[@"kGSSMajorErrorCode"] unsignedIntValue];
+    
+    if ([error.domain isEqual:@"org.h5l.GSS"]) {
+        OM_uint32 major = [error.userInfo[@"kGSSMajorErrorCode"] unsignedIntValue];
 
-    return (major == GSS_S_NO_CRED || major == GSS_S_PROMPTING_NEEDED);
+        return (major == GSS_S_NO_CRED || major == GSS_S_PROMPTING_NEEDED);
+    }
+    
+    return false;
 }
