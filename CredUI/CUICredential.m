@@ -185,7 +185,11 @@
     }
     
     return nil;
-    
+}
+
+- (NSString *)GSSMechanismClass
+{
+    return self.attributes[(__bridge id)kCUIAttrClass];
 }
 
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
@@ -212,5 +216,4 @@
     
     return transformedDict;
 }
-
 @end

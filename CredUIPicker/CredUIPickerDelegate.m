@@ -41,7 +41,7 @@
     NSLog(@"identityPicker selected GSS name = %@", name);
 
     cred = [[GSSCredential alloc] initWithName:name
-                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.attributes[@"kCUIAttrClass"]]
+                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.GSSMechanismClass]
                                     attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
                                          error:&error];
     if (cred)
