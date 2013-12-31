@@ -109,13 +109,11 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
 
     _bidContext = BIDContextCreate(kCFAllocatorDefault, NULL, ulContextFlags, error);
     if (_bidContext) {
-        BIDSetContextParam(_bidContext, BID_PARAM_ECDH_CURVE, (void *)BID_ECDH_CURVE_P521);
+//        BIDSetContextParam(_bidContext, BID_PARAM_ECDH_CURVE, (void *)BID_ECDH_CURVE_P521);
 
-#if 1
         const CUICredUIContext *uiContext = CUIControllerGetCredUIContext(controller);
         if (uiContext)
             BIDSetContextParam(_bidContext, BID_PARAM_PARENT_WINDOW, (void *)uiContext->parentWindow);
-#endif
     }
 
     return !!_bidContext;
@@ -143,6 +141,15 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
+        
+        CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
+        
+        CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
+        CFDictionarySetValue(_attributes, kCUIAttrName, subject);
+        
+        CFRelease(assertion);
+        CFRelease(identity);
+        CFRelease(subject);
     } else {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);
     }

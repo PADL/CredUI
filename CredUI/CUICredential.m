@@ -134,7 +134,20 @@
 
 - (GSSItem *)GSSItem
 {
-    return (__bridge GSSItem *)CUICredentialGetGSSItem([self _credentialRef]);
+    GSSItemRef item = CUICredentialGetGSSItem([self _credentialRef]);
+
+    if (item) {
+        CFRetain(item);
+    } else {
+        NSDictionary *itemAttrs = [self attributesWithDisposition:CUIFlagsGSSItemDisposition];
+        CFErrorRef error = NULL;
+
+        item = GSSItemAdd((__bridge CFDictionaryRef)itemAttrs, &error);
+        if (error)
+            CFRelease(error);
+    }
+
+    return CFBridgingRelease(item);
 }
 
 - (id)GSSName
