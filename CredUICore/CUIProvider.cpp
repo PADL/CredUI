@@ -10,11 +10,38 @@
 
 #include <NSSystemDirectories.h>
 
-const CFTypeRef kCUIAttrCredentialStatus = CFSTR("kCUIAttrCredentialStatus");
-const CFStringRef kCUICredentialNotFinished = CFSTR("kCUICredentialNotFinished");
-const CFStringRef kCUICredentialFinished = CFSTR("kCUICredentialFinished");
-const CFStringRef kCUICredentialReturnCredentialFinished = CFSTR("kCUICredentialReturnCredentialFinished");
-const CFStringRef kCUICredentialReturnNoCredentialFinished = CFSTR("kCUICredentialReturnNoCredentialFinished");
+#define CUI_CONST_TYPE(t,k) const t k = (t)(CFSTR(#k));
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrClass);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassKerberos);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassNTLM);
+CUI_CONST_TYPE(CFStringRef, kCUIAttrClassIAKerb);
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrSupportGSSCredential);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameType);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSExportedName);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSUsername);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameTypeGSSHostBasedService);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrName);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrNameDisplay);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrUUID);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientExpire);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrTransientDefaultInClass);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialPassword);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStore);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialSecIdentity);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialExists);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusPersistant);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquire);
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusTransient);
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrStatusAutoAcquireStatus);
+
+CUI_CONST_TYPE(CFTypeRef,   kCUIAttrCredentialStatus);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialNotFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnCredentialFinished);
+CUI_CONST_TYPE(CFStringRef, kCUICredentialReturnNoCredentialFinished);
 
 static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
 static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");

@@ -13,6 +13,12 @@
 extern "C" {
 #endif
 
+struct GSSItem {
+    CFRuntimeBase base;
+    CFMutableDictionaryRef keys;
+};
+
+
 /*
  * Create/Modify/Delete/Search GSS items
  *

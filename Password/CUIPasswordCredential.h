@@ -50,7 +50,7 @@ public:
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
                                         CFSTR("<CUIPasswordCredential %p{name = \"%@\"}>"), this,
-                                        CFDictionaryGetValue(_attributes, kGSSAttrName));
+                                        CFDictionaryGetValue(_attributes, kCUIAttrName));
         
         return desc;
     }

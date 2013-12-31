@@ -189,19 +189,41 @@ __CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
 }
 
 static void
+__CUITransformItemAttributeKeys(const void *key, const void *value, void *context)
+{
+    CFMutableStringRef transformedKey = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, (CFStringRef)key);
+
+    /* XXX this is pretty inefficient because we do it every time */
+    if (transformedKey) {
+        CFStringFindAndReplace(transformedKey, CFSTR("kGSS"), CFSTR("kCUI"), CFRangeMake(0, 4), 0);
+        CFDictionarySetValue((CFMutableDictionaryRef)context, transformedKey, value);
+        CFRelease(transformedKey);
+    }
+}
+
+static void
 __CUIEnumerateItemCredentialsCallback(const void *value, void *_context)
 {
     GSSItemRef item = (GSSItemRef)value;
     __CUIEnumerateCredentialContext *enumContext = (__CUIEnumerateCredentialContext *)_context;
-    
+    CFDictionaryRef transformedAttrs;
+
+    transformedAttrs = CFDictionaryCreateMutable(CFGetAllocator(enumContext->controller),
+                                                 0,
+                                                 &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+    CFDictionaryApplyFunction(item->keys, __CUITransformItemAttributeKeys, (void *)transformedAttrs);
+
     enumContext->didEnumerate |=
         __CUIControllerEnumerateCredentialForProviderWithAttributes(enumContext->controller,
                                                                     enumContext->provider,
-                                                                    item->keys,
+                                                                    transformedAttrs,
                                                                     ^(CUICredentialRef cred, CFErrorRef err) {
                                                                         enumContext->callback(cred, err);
                                                                         __CUICredentialSetItem(cred, item);
                                                                     });
+
+    CFRelease(transformedAttrs);
 }
 
 static Boolean
@@ -350,13 +372,13 @@ void
 CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
 {
     CFBooleanRef value = save ? kCFBooleanTrue : kCFBooleanFalse;
-    CFDictionarySetValue(controller->_attributes, kGSSAttrStatusPersistant, value);
+    CFDictionarySetValue(controller->_attributes, kCUIAttrStatusPersistant, value);
 }
 
 Boolean
 CUIControllerGetSaveToKeychain(CUIControllerRef controller)
 {
-    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_attributes, kGSSAttrStatusPersistant));
+    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_attributes, kCUIAttrStatusPersistant));
 }
 
 void

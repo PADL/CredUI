@@ -53,7 +53,7 @@ public:
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
                                         CFSTR("<CUIPersonaCredential %p{identity = \"%@\"}>"), this,
-                                        CFDictionaryGetValue(_attributes, kGSSAttrCredentialBrowserIDIdentity));
+                                        CFDictionaryGetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity));
         
         return desc;
     }

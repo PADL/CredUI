@@ -89,13 +89,6 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 extern "C" {
 #endif
 
-struct GSSItem {
-    CFRuntimeBase base;
-    CFMutableDictionaryRef keys;
-};
-
-typedef struct GSSItem *GSSItemRef;
-
 void
 __CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item);
     

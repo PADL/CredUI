@@ -11,6 +11,8 @@
 
 @class NSString;
 @class NSDictionary;
+@class NSWindow;
+
 @class GSSContext;
 @class GSSItem;
 @class CUICredential;
@@ -41,8 +43,7 @@
 /* Attributes for the selected credential suitable for acquiring a credential */
 @property(nonatomic, readonly, copy) NSDictionary *selectedCredentialAttributes;
 
-/* Creates a new/find an existing GSSItem for selected credential */
-- (GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error;
+- (GSSItem *)selectedGSSItem;
 
 - initWithFlags:(CUIFlags)flags;
 
@@ -53,7 +54,7 @@
 
 /* Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.
    The didEndSelector should have the following signature:
-    - (void)identityPickerDidEnd:(id)attributeDictOrGSSItem returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+    - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 */
 - (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
 

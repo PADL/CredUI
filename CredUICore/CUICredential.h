@@ -35,7 +35,7 @@ CUICredentialGetAttributes(CUICredentialRef cred);
 struct GSSItem;
 
 extern struct GSSItem *
-CUICredentialCreateGSSItem(CUICredentialRef cred, Boolean addIfNotExisting, CFErrorRef *pError);
+CUICredentialGetGSSItem(CUICredentialRef cred);
     
 extern void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin);

@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-
 @implementation CUIIdentityPicker
 #pragma mark - Implementation
 
@@ -342,12 +341,12 @@
 
 - (NSDictionary *)selectedCredentialAttributes
 {
-    return [self.selectedCredential attributes];
+    return [self.selectedCredential attributesWithDisposition:self.flags];
 }
 
-- (__autoreleasing GSSItem *)selectedGSSItem:(NSError * __autoreleasing *)error
+- (GSSItem *)selectedGSSItem
 {
-    return [self.selectedCredential _createGSSItem:YES error:error];
+    return [self.selectedCredential GSSItem];
 }
 
 - (NSString *)targetDisplayName
@@ -388,7 +387,7 @@
 {
     [self.selectedCredential willSubmit];
     
-//    if ([self _canReturnWithCredential:self.selectedCredential])
+    if ([self _canReturnWithCredential:self.selectedCredential])
         [self.panel close];
 }
 

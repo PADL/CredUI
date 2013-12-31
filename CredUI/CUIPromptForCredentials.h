@@ -30,7 +30,9 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
     CUIFlagsGenericCredentials          = 0x40000,
     CUIFlagsUsernameTargetCredentials   = 0x80000,
     CUIFlagsKeepUsername                = 0x100000,
-    CUIFlagsExcludePersistedCredentials = 0x10000000
+    CUIFlagsExcludePersistedCredentials = 0x10000000,
+    CUIFlagsGSSAcquireCredsDisposition  = 0x20000000,
+    CUIFlagsGSSItemDisposition          = 0x40000000
 };
 
 typedef struct __CUICredUIContext {

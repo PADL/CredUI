@@ -19,22 +19,22 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
         /*
          * If this is a stored item (i.e. it has a UUID) and it's not a password credential, ignore it
          */
-        if (CFDictionaryGetValue(attributes, kGSSAttrUUID) &&
-            !CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword))
+        if (CFDictionaryGetValue(attributes, kCUIAttrUUID) &&
+            !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
             return false;
 
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kGSSAttrNameType);
+        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
         
-        if (nameType && CFEqual(nameType, kGSSAttrNameTypeGSSUsername))
-            defaultUsername = CFDictionaryGetValue(attributes, kGSSAttrName);
+        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
+            defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrName);
         
         if (defaultUsername &&
-            CFDictionaryGetValue(attributes, kGSSAttrCredentialPassword))
+            CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
             _inCredUsable = true;
         
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
         // delete any existing cached password, because GSSItem won't be able to acquire a credential otherwise
-        CFDictionaryRemoveValue(_attributes, kGSSAttrCredentialPassword);
+        CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
@@ -43,20 +43,20 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
     
     fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), defaultUsername,
                                ^(CUIFieldRef field, CFTypeRef value) {
-                                   CFDictionarySetValue(_attributes, kGSSAttrNameType, kGSSAttrNameTypeGSSUsername);
+                                   CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
                                    if (value) {
-                                       CFDictionarySetValue(_attributes, kGSSAttrName, value);
+                                       CFDictionarySetValue(_attributes, kCUIAttrName, value);
                                    } else {
-                                       CFDictionaryRemoveValue(_attributes, kGSSAttrName);
+                                       CFDictionaryRemoveValue(_attributes, kCUIAttrName);
                                    }
     });
     
     fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), NULL,
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    if (value) {
-                                       CFDictionarySetValue(_attributes, kGSSAttrCredentialPassword, value);
+                                       CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);
                                    } else {
-                                       CFDictionaryRemoveValue(_attributes, kGSSAttrCredentialPassword);
+                                       CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
                                    }
     });
     
@@ -69,8 +69,8 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
 
 const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
 {
-    CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrName);
-    CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kGSSAttrCredentialPassword);
+    CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
+    CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
     CFStringRef status;
     
     fprintf(stderr, "attr dict %p", _attributes);

@@ -10,8 +10,14 @@
 #include <readpassphrase.h>
 
 #include <Foundation/Foundation.h>
+
+#include <CredUI/CredUI.h>
+#include <CredUI/CUICredential.h>
+
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/CUIAttributes.h>
+
+#include <GSSKit/GSSKit.h>
 
 #include "../CredUICore/GSSItem.h"
 
@@ -37,11 +43,11 @@ int main(int argc, const char * argv[])
 {
     CUIControllerRef controller;
     NSDictionary *attributes = @{
-                                 (__bridge id)kGSSAttrClass: (__bridge id)kGSSAttrClassKerberos,
-                                 (__bridge id)kGSSAttrStatusTransient: @YES,
-                                 (__bridge id)kGSSAttrStatusPersistant: @NO,
-                                 (__bridge id)kGSSAttrNameType: (__bridge id)kGSSAttrNameTypeGSSUsername,
-                                 (__bridge id)kGSSAttrName: @"lhoward@ATHENA.MIT.EDU"
+                                 (__bridge id)kCUIAttrClass: (__bridge id)kCUIAttrClassKerberos,
+                                 (__bridge id)kCUIAttrStatusTransient: @YES,
+                                 (__bridge id)kCUIAttrStatusPersistant: @NO,
+                                 (__bridge id)kCUIAttrNameType: (__bridge id)kCUIAttrNameTypeGSSUsername,
+                                 (__bridge id)kCUIAttrName: @"lhoward@ATHENA.MIT.EDU"
                                 };
     controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsNoUI);
     if (controller == NULL) {
@@ -112,26 +118,19 @@ int main(int argc, const char * argv[])
             CUIFieldSetValue(field, (__bridge CFTypeRef)value);
     }, &stop);
 
-    CFDictionaryRef credAttributes = CUICredentialGetAttributes(cred);
+    NSDictionary *credAttributes = [(__bridge CUICredential *)cred attributesWithDisposition:CUIFlagsGSSItemDisposition];
     
     NSLog(@"Credential attributes: %@", credAttributes);
     
-    CFErrorRef error = NULL;
-    GSSItemRef item = CUICredentialCreateGSSItem(cred, true, &error);
+    NSError *error = NULL;
+    GSSItem *item = (__bridge GSSItem *)CUICredentialGetGSSItem(cred);
+    
+    if (item == nil)
+        item = [GSSItem add:credAttributes error:&error];
     
     if (item) {
-        dispatch_queue_t q = dispatch_queue_create("com.padl.CredUIEnumerate", NULL);
-        dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-
-        GSSItemOperation(item, kGSSOperationAcquire, credAttributes, q, ^(CFTypeRef result, CFErrorRef error) {
-            if (error)
-                NSLog(@"Acquiring credential error: %@", error);
-            else
-                NSLog(@"Acquired credential %@", result);
-            dispatch_semaphore_signal(semaphore);
-        });
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-        CFRelease(item);
+        GSSCredential *cred = [item acquire:credAttributes error:&error];
+        NSLog(@"Got cred: %@", cred);
     } else if (error) {
         NSLog(@"Failed to add item for attributes: %@", error);
     } else {

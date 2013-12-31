@@ -20,9 +20,9 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CUIFlags flags)
 {
     NSDictionary *inCredAttributes = @{
-                                       (__bridge id)kGSSAttrNameType : (__bridge NSString *)kGSSAttrNameTypeGSSUsername,
-                                       (__bridge id)kGSSAttrName : (__bridge NSString *)username,
-                                       (__bridge id)kGSSAttrCredentialPassword : (__bridge NSString *)password
+                                       (__bridge id)kCUIAttrNameType : (__bridge NSString *)kCUIAttrNameTypeGSSUsername,
+                                       (__bridge id)kCUIAttrName : (__bridge NSString *)username,
+                                       (__bridge id)kCUIAttrCredentialPassword : (__bridge NSString *)password
                                        };
     CFErrorRef error = NULL;
     gss_name_t target = GSSCreateName(targetName, GSS_C_NT_HOSTBASED_SERVICE, &error);

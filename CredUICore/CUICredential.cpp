@@ -267,13 +267,7 @@ __CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item)
 }
 
 GSSItemRef
-CUICredentialCreateGSSItem(CUICredentialRef cred, Boolean addIfNotExisting, CFErrorRef *pError)
+CUICredentialGetGSSItem(CUICredentialRef cred)
 {
-    if (cred->_gssItem == NULL && addIfNotExisting) {
-        CFDictionaryRef attributes = CUICredentialGetAttributes(cred);
-        if (attributes)
-            cred->_gssItem = GSSItemAdd(attributes, pError);
-    }
-
     return cred->_gssItem;
 }

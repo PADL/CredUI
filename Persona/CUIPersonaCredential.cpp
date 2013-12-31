@@ -58,13 +58,13 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         /*
          * We can't do anything with stored GSSItems
          */
-        if (CFDictionaryGetValue(attributes, kGSSAttrUUID))
+        if (CFDictionaryGetValue(attributes, kCUIAttrUUID))
             return false;
         
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kGSSAttrNameType);
-        CFStringRef name = (CFStringRef)CFDictionaryGetValue(attributes, kGSSAttrName);
+        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
+        CFStringRef name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
 
-        if (nameType && CFEqual(nameType, kGSSAttrNameTypeGSSUsername) && name)
+        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername) && name)
             _defaultIdentity = (CFStringRef)CFRetain(name);
     }
 
@@ -90,7 +90,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     if (_attributes == NULL)
         return false;
     
-    CFDictionarySetValue(_attributes, kGSSAttrClass, kGSSAttrClassBrowserID);
+    CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassBrowserID);
     
     return true;
 }
@@ -140,8 +140,8 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
                                      &ulRetFlags,
                                      error);
     if (assertion) {
-        CFDictionarySetValue(_attributes, kGSSAttrCredentialBrowserIDAssertion, assertion);
-        CFDictionarySetValue(_attributes, kGSSAttrCredentialBrowserIDIdentity, identity);
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
     } else {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);

@@ -67,10 +67,10 @@
 		D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */; };
 		D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */; };
 		D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D39EB0BF1871302100C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0BD1871302100C43A24 /* CUIField.h */; };
+		D39EB0BF1871302100C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0BD1871302100C43A24 /* CUIField.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D39EB0C01871302100C43A24 /* CUIField.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0BE1871302100C43A24 /* CUIField.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D39EB0CA18714E4F00C43A24 /* CUIIdentityPicker+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */; };
-		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; };
+		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0CC18714ED200C43A24 /* CUICredential.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D39EB0D41872441300C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D39EB0DA1872441300C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB0D81872441300C43A24 /* InfoPlist.strings */; };
@@ -85,6 +85,8 @@
 		D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB0F91872900200C43A24 /* libbrowserid.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */; };
 		D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
+		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
+		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -171,6 +173,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D39EB0D21872441300C43A24;
 			remoteInfo = Persona;
+		};
+		D39EB0FE1872C07F00C43A24 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D336E279182B51A6009271CD;
+			remoteInfo = CredUI;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -352,6 +361,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */,
+				D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */,
 				D39EB09E186FBB7F00C43A24 /* GSS.framework in Frameworks */,
 				D39EB09D186FB97A00C43A24 /* Foundation.framework in Frameworks */,
 				D39EB09C186FB92900C43A24 /* CoreFoundation.framework in Frameworks */,
@@ -803,6 +814,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D39EB0FF1872C07F00C43A24 /* PBXTargetDependency */,
 				D39EB0B31870408E00C43A24 /* PBXTargetDependency */,
 				D39EB0A91870406900C43A24 /* PBXTargetDependency */,
 			);
@@ -1092,6 +1104,11 @@
 			isa = PBXTargetDependency;
 			target = D39EB0D21872441300C43A24 /* Persona */;
 			targetProxy = D39EB0EB1872538400C43A24 /* PBXContainerItemProxy */;
+		};
+		D39EB0FF1872C07F00C43A24 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D336E279182B51A6009271CD /* CredUI */;
+			targetProxy = D39EB0FE1872C07F00C43A24 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1514,6 +1531,10 @@
 		D39EB099186FB90400C43A24 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1525,6 +1546,10 @@
 		D39EB09A186FB90400C43A24 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

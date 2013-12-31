@@ -24,17 +24,17 @@
 
 - (id)retain
 {
-    return CFRetain((GSSItemRef)self);
+    return CFRetain((CUICredentialRef)self);
 }
 
 - (oneway void)release
 {
-    CFRelease((GSSItemRef)self);
+    CFRelease((CUICredentialRef)self);
 }
 
 - (NSUInteger)retainCount
 {
-    return CFGetRetainCount((GSSItemRef)self);
+    return CFGetRetainCount((CUICredentialRef)self);
 }
 
 - (BOOL)isEqual:(id)anObject
@@ -125,35 +125,36 @@
     CUICredentialDidSubmit([self _credentialRef]);
 }
 
+#if 0
 - (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block
                     stop:(BOOL *)stop
 {
 }
+#endif
 
-
-- (id)_createGSSItem:(BOOL)addIfNotExisting error:(NSError * __autoreleasing *)error
+- (GSSItem *)GSSItem
 {
-    GSSItemRef item;
-    CFErrorRef errorRef = NULL;
-    
-    item = CUICredentialCreateGSSItem([self _credentialRef],
-                                      addIfNotExisting,
-                                      &errorRef);
-    if (errorRef) {
-        if (error)
-            *error = CFBridgingRelease(errorRef);
-        else
-            CFRelease(errorRef);
-    }
-    
-    return CFBridgingRelease(item);
+    return (__bridge GSSItem *)CUICredentialGetGSSItem([self _credentialRef]);
 }
 
-- (BOOL)_hasGSSItem
+- (NSDictionary *)attributesWithDisposition:(CUIFlags)flags
 {
-    id item = [self _createGSSItem:NO error:NULL];
-    
-    return !!item;
+    NSMutableDictionary *transformedDict = [[NSMutableDictionary alloc] init];
+
+    [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSString *transformedKey;
+
+        if (flags & CUIFlagsGSSItemDisposition)
+            transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
+        else if (flags & CUIFlagsGSSAcquireCredsDisposition)
+            transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
+        else
+            transformedKey = key;
+
+        transformedDict[transformedKey] = obj;
+    }];
+
+    return transformedDict;
 }
 
 @end

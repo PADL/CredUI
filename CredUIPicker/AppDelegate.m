@@ -23,10 +23,6 @@
 
 - (void)doGSSAPITests:(CUIIdentityPicker *)identityPicker
 {
-    NSError *error = nil;
-    GSSItem *item = [identityPicker selectedGSSItem:&error];
-
-    NSLog(@"GSS Item: %@", item);
 }
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -39,7 +35,7 @@
 
 - (IBAction)showIdentityPicker:(id)sender;
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsGSSAcquireCredsDisposition];
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
