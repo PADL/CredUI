@@ -139,7 +139,7 @@
     if (item) {
         CFRetain(item);
     } else {
-        NSDictionary *itemAttrs = [self attributesWithDisposition:CUIFlagsGSSItemDisposition];
+        NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
         CFErrorRef error = NULL;
 
         item = GSSItemAdd((__bridge CFDictionaryRef)itemAttrs, &error);
@@ -179,16 +179,16 @@
     
 }
 
-- (NSDictionary *)attributesWithDisposition:(CUIFlags)flags
+- (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
 {
     NSMutableDictionary *transformedDict = [[NSMutableDictionary alloc] init];
 
     [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NSString *transformedKey;
 
-        if (flags & CUIFlagsGSSItemDisposition)
+        if (attrClass == CUIAttributeClassGSSItem)
             transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
-        else if (flags & CUIFlagsGSSAcquireCredsDisposition)
+        else if (attrClass == CUIAttributeClassGSSAcquireCred)
             transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
         else
             transformedKey = key;
@@ -196,8 +196,7 @@
         transformedDict[transformedKey] = obj;
     }];
 
-    if (flags & CUIFlagsGSSItemDisposition) {
-    } else if (flags & CUIFlagsGSSAcquireCredsDisposition) {
+    if (attrClass == CUIAttributeClassGSSAcquireCred) {
         // we only emit initiator creds
         transformedDict[(__bridge NSString *)kGSSCredentialUsage] = (__bridge NSString *)kGSS_C_INITIATE;
     }

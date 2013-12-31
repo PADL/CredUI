@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import <CredUI/CUIIdentityPicker.h>
+#import <CredUI/CredUI.h>
 #import <GSSKit/GSSKit.h>
 
 #import <browserid.h>
@@ -26,11 +26,11 @@
     GSSCredential *cred;
     NSError *error;
     
-    NSLog(@"identityPicker selected GSS name = %@", identityPicker.selectedCredentialGSSName);
+    NSLog(@"identityPicker selected GSS name = %@", identityPicker.selectedCredential.GSSName);
     
-    cred = [[GSSCredential alloc] initWithName:identityPicker.selectedCredentialGSSName
-                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredentialAttributes[@"kCUIAttrClass"]]
-                                    attributes:identityPicker.selectedCredentialAttributes
+    cred = [[GSSCredential alloc] initWithName:identityPicker.selectedCredential.GSSName
+                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.attributes[@"kCUIAttrClass"]]
+                                    attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSAcquireCred]
                                          error:&error];
     if (cred)
         NSLog(@"credential acquired: %@", cred);
@@ -43,7 +43,7 @@
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    NSLog(@"Picker did end: %@", [identityPicker selectedCredentialAttributes]);
+    NSLog(@"Picker did end: %@", identityPicker.selectedCredential.attributes);
     
     // OK, now let's try and do some GSS stuff
     [self doGSSAPITests:identityPicker];
@@ -51,8 +51,8 @@
 
 - (IBAction)showIdentityPicker:(id)sender;
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsGSSAcquireCredsDisposition];
-    
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials];
+
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
     self.picker.targetName = @"host@browserid.padl.com";

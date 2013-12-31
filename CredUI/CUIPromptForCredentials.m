@@ -63,9 +63,7 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
             CFRelease(error);
         return false;
     }
-    
-    flags &= ~(CUIFlagsGSSAcquireCredsDisposition | CUIFlagsGSSItemDisposition);
-    
+        
     return __CUIPromptForCredentials(target,
                                      reserved,
                                      uiContext,

@@ -118,7 +118,7 @@ int main(int argc, const char * argv[])
             CUIFieldSetValue(field, (__bridge CFTypeRef)value);
     }, &stop);
 
-    NSDictionary *credAttributes = [(__bridge CUICredential *)cred attributesWithDisposition:CUIFlagsGSSItemDisposition];
+    NSDictionary *credAttributes = [(__bridge CUICredential *)cred attributesWithClass:CUIAttributeClassGSSItem];
     
     NSLog(@"Credential attributes: %@", credAttributes);
     

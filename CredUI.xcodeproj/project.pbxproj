@@ -70,7 +70,7 @@
 		D39EB0BF1871302100C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0BD1871302100C43A24 /* CUIField.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D39EB0C01871302100C43A24 /* CUIField.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0BE1871302100C43A24 /* CUIField.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D39EB0CA18714E4F00C43A24 /* CUIIdentityPicker+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */; };
-		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0CC18714ED200C43A24 /* CUICredential.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D39EB0D41872441300C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D39EB0DA1872441300C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB0D81872441300C43A24 /* InfoPlist.strings */; };
@@ -87,6 +87,7 @@
 		D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
+		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -283,6 +284,7 @@
 		D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSPromptForCredentials.m; sourceTree = "<group>"; };
 		D39EB0FA1872B3F800C43A24 /* GSSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug/GSSKit.framework"; sourceTree = "<group>"; };
 		D39EB0FC1872B85700C43A24 /* GSSItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
+		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -449,6 +451,7 @@
 				D39EB0BD1871302100C43A24 /* CUIField.h */,
 				D39EB0BE1871302100C43A24 /* CUIField.m */,
 				D39EB0CB18714ED200C43A24 /* CUICredential.h */,
+				D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */,
 				D39EB0CC18714ED200C43A24 /* CUICredential.m */,
 				D39EB0A21870235F00C43A24 /* CUICredentialTile.h */,
 				D39EB0A31870235F00C43A24 /* CUICredentialTile.m */,
@@ -648,6 +651,7 @@
 				D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */,
 				D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */,
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
+				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
 				D39EB0A41870235F00C43A24 /* CUICredentialTile.h in Headers */,
@@ -1633,6 +1637,7 @@
 				D39EB025186ED2B200C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB026186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICoreTests" */ = {
 			isa = XCConfigurationList;
@@ -1641,6 +1646,7 @@
 				D39EB028186ED2B200C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB037186ED50900C43A24 /* Build configuration list for PBXNativeTarget "Password" */ = {
 			isa = XCConfigurationList;
@@ -1649,6 +1655,7 @@
 				D39EB039186ED50900C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB088186FB1DB00C43A24 /* Build configuration list for PBXNativeTarget "CredUIPicker" */ = {
 			isa = XCConfigurationList;
@@ -1657,6 +1664,7 @@
 				D39EB08A186FB1DB00C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB08B186FB1DB00C43A24 /* Build configuration list for PBXNativeTarget "CredUIPickerTests" */ = {
 			isa = XCConfigurationList;
@@ -1665,6 +1673,7 @@
 				D39EB08D186FB1DB00C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB098186FB90400C43A24 /* Build configuration list for PBXNativeTarget "CredUIEnumerate" */ = {
 			isa = XCConfigurationList;
@@ -1673,6 +1682,7 @@
 				D39EB09A186FB90400C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB0DC1872441300C43A24 /* Build configuration list for PBXNativeTarget "Persona" */ = {
 			isa = XCConfigurationList;
@@ -1681,6 +1691,7 @@
 				D39EB0DE1872441300C43A24 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

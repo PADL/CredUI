@@ -339,21 +339,6 @@
     return cred;
 }
 
-- (NSDictionary *)selectedCredentialAttributes
-{
-    return [self.selectedCredential attributesWithDisposition:self.flags];
-}
-
-- (GSSItem *)selectedCredentialGSSItem
-{
-    return [self.selectedCredential GSSItem];
-}
-
-- (id)selectedCredentialGSSName
-{
-    return [self.selectedCredential GSSName];
-}
-
 - (NSString *)targetDisplayName
 {
     if (self.targetName == nil)

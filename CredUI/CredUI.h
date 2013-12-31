@@ -7,4 +7,5 @@
 //
 
 #import <CredUI/CUIPromptForCredentials.h>
+#import <CredUI/CUICredential.h>
 #import <CredUI/CUIIdentityPicker.h>

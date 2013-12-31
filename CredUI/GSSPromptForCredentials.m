@@ -16,9 +16,6 @@ GSSPromptForCredentials(gss_name_t targetName,
                         Boolean *pfSave,
                         CUIFlags flags)
 {
-    if ((flags & (CUIFlagsGSSAcquireCredsDisposition | CUIFlagsGSSItemDisposition)) == 0)
-        flags |= CUIFlagsGSSAcquireCredsDisposition;
-    
     return __CUIPromptForCredentials(targetName, gssContextHandle, uiContext,
                                      authError, inCredAttributes, outCredAttributes,
                                      pfSave, flags);

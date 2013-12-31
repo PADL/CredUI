@@ -15,7 +15,8 @@
 #import <CredUICore/CredUICore_Private.h>
 
 #import "CUIField.h"
-#import "CUICredential.h"
+
+#import "CUICredential+Private.h"
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
 #import "CUIIdentityPicker+Private.h"
