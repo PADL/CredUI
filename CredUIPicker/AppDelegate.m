@@ -30,7 +30,7 @@
     
     cred = [[GSSCredential alloc] initWithName:identityPicker.selectedCredential.GSSName
                                      mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.attributes[@"kCUIAttrClass"]]
-                                    attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSAcquireCred]
+                                    attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
                                          error:&error];
     if (cred)
         NSLog(@"credential acquired: %@", cred);

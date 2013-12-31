@@ -188,7 +188,7 @@
 
         if (attrClass == CUIAttributeClassGSSItem)
             transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
-        else if (attrClass == CUIAttributeClassGSSAcquireCred)
+        else if (attrClass == CUIAttributeClassGSSInitialCred)
             transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
         else
             transformedKey = key;
@@ -196,7 +196,7 @@
         transformedDict[transformedKey] = obj;
     }];
 
-    if (attrClass == CUIAttributeClassGSSAcquireCred) {
+    if (attrClass == CUIAttributeClassGSSInitialCred) {
         // we only emit initiator creds
         transformedDict[(__bridge NSString *)kGSSCredentialUsage] = (__bridge NSString *)kGSS_C_INITIATE;
     }

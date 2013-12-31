@@ -10,9 +10,9 @@
 @class GSSItem;
 
 typedef NS_ENUM(NSUInteger, CUIAttributeClass) {
-    CUIAttributeClassGeneric                = 1,
-    CUIAttributeClassGSSAcquireCred         = 2,
-    CUIAttributeClassGSSItem                = 4
+    CUIAttributeClassGeneric                = 1,    // generic credential attributes
+    CUIAttributeClassGSSInitialCred         = 2,    // attributes for gss_aapl_initial_cred
+    CUIAttributeClassGSSItem                = 4     // attributes for GSSItemAdd
 };
 
 @interface CUICredential : NSObject
