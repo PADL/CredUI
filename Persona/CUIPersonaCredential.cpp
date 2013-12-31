@@ -73,6 +73,13 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    // this is the willSubmit callback; CredUI only renders a single submit button
                                    // for the network UI case
+                                   CFErrorRef error = NULL;
+                                   
+                                   createBrowserIDAssertion(&error);
+                                   
+                                   if (error)
+                                       CFRelease(error);
+
     });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
@@ -88,12 +95,6 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
 
 void CUIPersonaCredential::didSubmit(void)
 {
-    CFErrorRef error = NULL;
-    
-    createBrowserIDAssertion(&error);
-    
-    if (error)
-        CFRelease(error);
 }
 
 Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)
@@ -108,7 +109,7 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
     if (_bidContext) {
         BIDSetContextParam(_bidContext, BID_PARAM_ECDH_CURVE, (void *)BID_ECDH_CURVE_P521);
 
-#if 0
+#if 1
         const CUICredUIContext *uiContext = CUIControllerGetCredUIContext(controller);
         if (uiContext)
             BIDSetContextParam(_bidContext, BID_PARAM_PARENT_WINDOW, (void *)uiContext->parentWindow);
@@ -137,8 +138,8 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
                                      &ulRetFlags,
                                      error);
     if (assertion) {
-        CFDictionarySetValue(_attributes, kGSSAttrBrowserIDAssertion, assertion);
-        CFDictionarySetValue(_attributes, kGSSAttrBrowserIDIdentity, identity);
+        CFDictionarySetValue(_attributes, kGSSAttrCredentialBrowserIDAssertion, assertion);
+        CFDictionarySetValue(_attributes, kGSSAttrCredentialBrowserIDIdentity, identity);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
     } else {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);
