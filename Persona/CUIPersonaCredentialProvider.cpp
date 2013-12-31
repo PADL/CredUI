@@ -16,6 +16,7 @@
 
 const CFStringRef kGSSAttrCredentialBrowserIDAssertion = CFSTR("kGSSAttrCredentialBrowserIDAssertion");
 const CFStringRef kGSSAttrCredentialBrowserIDIdentity  = CFSTR("kGSSAttrCredentialBrowserIDIdentity");
+const CFStringRef kGSSAttrClassBrowserID = CFSTR("kGSSAttrClassBrowserID");
 
 extern "C" {
     void *CUIPersonaCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);

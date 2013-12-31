@@ -11,8 +11,9 @@
 
 #include <Foundation/Foundation.h>
 #include <CredUICore/CredUICore.h>
+#include <CredUICore/CUIAttributes.h>
 
-#include "GSSItem.h"
+#include "../CredUICore/GSSItem.h"
 
 static NSString *readFromConsole(NSString *prompt, NSString *defaultValue, BOOL echo)
 {
@@ -55,8 +56,9 @@ int main(int argc, const char * argv[])
     
     NSMutableArray *creds = [NSMutableArray array];
     
-    CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred) {
-        [creds addObject:(__bridge id)cred];
+    CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred, CFErrorRef err) {
+        if (cred)
+            [creds addObject:(__bridge id)cred];
     });
 
     [creds enumerateObjectsUsingBlock:^(id cred, NSUInteger idx, BOOL *stop) {

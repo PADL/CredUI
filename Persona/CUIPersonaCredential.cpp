@@ -90,6 +90,8 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     if (_attributes == NULL)
         return false;
     
+    CFDictionarySetValue(_attributes, kGSSAttrClass, kGSSAttrClassBrowserID);
+    
     return true;
 }
 

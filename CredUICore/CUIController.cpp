@@ -270,7 +270,9 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
     CFErrorRef error;
     Boolean didEnumerate = false;
     
-    items = GSSItemCopyMatching(controller->_attributes, &error);
+    if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0 &&
+        (controller->_usageFlags & kCUIUsageFlagsExcludePersistedCreds) == 0)
+        items = GSSItemCopyMatching(controller->_attributes, &error);
     
     for (index = 0; index < CFArrayGetCount(controller->_providers); index++) {
         didEnumerate |= __CUIControllerEnumerateCredentialsForProvider(controller,

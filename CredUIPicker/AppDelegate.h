@@ -8,21 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-#define CREDUIPICKER_TEST_PERSONA 1
-
-#if CREDUIPICKER_TEST_PERSONA
-NSString *
-PersonaGetAssertion(
-                    NSString *audience,
-                    NSWindow *parentWindow,
-                    NSError * __autoreleasing *error);
-#endif
+@class CUIIdentityPicker;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
-#if CREDUIPICKER_TEST_PERSONA
-- (IBAction)showPersonaDialog:(id)sender;
-#endif
+- (void)doGSSAPITests:(CUIIdentityPicker *)picker;
 - (IBAction)showIdentityPicker:(id)sender;
 @end

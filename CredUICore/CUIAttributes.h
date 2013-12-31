@@ -33,9 +33,8 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-
-#ifndef CredUI_CUIAuthIdentity_h
-#define CredUI_CUIAuthIdentity_h
+#import <CoreFoundation/CoreFoundation.h>
+#import <Availability.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -132,6 +131,4 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

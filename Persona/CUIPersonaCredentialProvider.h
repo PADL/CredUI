@@ -15,5 +15,6 @@ class PersonaCredentialProvider;
 
 extern const CFStringRef kGSSAttrCredentialBrowserIDAssertion;
 extern const CFStringRef kGSSAttrCredentialBrowserIDIdentity;
+extern const CFStringRef kGSSAttrClassBrowserID;
 
 #endif /* defined(__CredUI__PersonaCredentialProvider__) */

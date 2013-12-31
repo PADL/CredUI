@@ -83,6 +83,7 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
  */
 
 #include <GSS/GSS.h>
+#include "GSSItem.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,35 +98,6 @@ typedef struct GSSItem *GSSItemRef;
 
 void
 __CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item);
-    
-GSSItemRef
-GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error)
-__attribute__((cf_returns_retained))
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
-Boolean
-GSSItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate, CFErrorRef *error)
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
-Boolean
-GSSItemDelete(CFDictionaryRef query, CFErrorRef *error)
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
-Boolean
-GSSItemDeleteItem(GSSItemRef item, CFErrorRef *error)
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
-/**
- * Will never return a zero length array, GSSItemCopyMatching() will return more then one entry or a NULL pointer.
- */
-
-CFArrayRef
-GSSItemCopyMatching(CFDictionaryRef query, CFErrorRef *error)
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
-CFTypeRef
-GSSItemGetValue(GSSItemRef item, CFStringRef key)
-__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
     
 #ifdef __cplusplus
 }

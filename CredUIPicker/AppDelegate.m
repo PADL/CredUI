@@ -9,17 +9,11 @@
 #import "AppDelegate.h"
 
 #import <CredUI/CUIIdentityPicker.h>
+#import <GSSKit/GSSKit.h>
 
 #import <browserid.h>
 #import <CFBrowserID.h>
 
-#if CREDUIPICKER_TEST_PERSONA
-NSString *
-PersonaGetAssertion(
-                    NSString *audience,
-                    NSWindow *parentWindow,
-                    NSError * __autoreleasing *error);
-#endif
 
 @interface AppDelegate ()
 @property (nonatomic, strong) CUIIdentityPicker *picker;
@@ -27,21 +21,21 @@ PersonaGetAssertion(
 
 @implementation AppDelegate
 
+- (void)doGSSAPITests:(CUIIdentityPicker *)identityPicker
+{
+    NSError *error = nil;
+    GSSItem *item = [identityPicker selectedGSSItem:&error];
+
+    NSLog(@"GSS Item: %@", item);
+}
+
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     NSLog(@"Picker did end: %@", [identityPicker selectedCredentialAttributes]);
-}
-
-#if CREDUIPICKER_TEST_PERSONA
-- (IBAction)showPersonaDialog:(id)sender
-{
-    NSString *assertion;
-    NSError *error;
     
-    assertion = PersonaGetAssertion(@"host/foo.bar.com", nil, &error);
-    NSLog(@"assertion = %@, error = %@", assertion, error);
+    // OK, now let's try and do some GSS stuff
+    [self doGSSAPITests:identityPicker];
 }
-#endif
 
 - (IBAction)showIdentityPicker:(id)sender;
 {
@@ -62,47 +56,3 @@ PersonaGetAssertion(
 }
 
 @end
-
-#if CREDUIPICKER_TEST_PERSONA
-
-/*
- * Display a modal dialog acquiring an assertion for the given audience.
- */
-NSString *
-PersonaGetAssertion(
-                    NSString *audience,
-                    NSWindow *parentWindow,
-                    NSError * __autoreleasing *error)
-{
-    BIDContext context;
-    CFStringRef assertion;
-    CFErrorRef cfErr;
-    uint32_t flags;
-    
-    context = BIDContextCreate(kCFAllocatorDefault, NULL, BID_CONTEXT_USER_AGENT, &cfErr);
-    if (context == NULL) {
-        if (error)
-            *error = CFBridgingRelease(cfErr);
-        else
-            CFRelease(cfErr);
-        return NULL;
-    }
-    
-    BIDSetContextParam(context, BID_PARAM_PARENT_WINDOW, (__bridge void *)parentWindow);
-    
-    assertion = BIDAssertionCreateUI(context, (__bridge CFStringRef)audience,
-                                     NULL, NULL, 0, NULL, &flags, &cfErr);
-    
-    if (cfErr) {
-        if (error)
-            *error = CFBridgingRelease(cfErr);
-        else
-            CFRelease(cfErr);
-    }
-    
-    CFRelease(context);
-    
-    return CFBridgingRelease(assertion);
-}
-
-#endif /* CREDUIPICKER_TEST_PERSONA */
