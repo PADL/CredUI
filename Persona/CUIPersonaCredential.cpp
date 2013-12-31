@@ -10,7 +10,7 @@
 #include "CUIPersonaCredentialProvider.h"
 #include "CUIPersonaCredential.h"
 
-static const gss_OID_desc GSSBrowserIDAes128MechDesc =
+static gss_OID_desc GSSBrowserIDAes128MechDesc =
 { 10, (void *)"\x2B\x06\x01\x04\x01\xA9\x4A\x18\x01\x11" };
 
 static CFStringRef CUIPersonaCreateTargetName(gss_name_t name)
@@ -19,12 +19,7 @@ static CFStringRef CUIPersonaCreateTargetName(gss_name_t name)
     gss_name_t kerbName;
     CFStringRef displayName;
     
-    // for production we need to canon using the BrowserID not Kerberos
-#if 0
     major = gss_canonicalize_name(&minor, name, &GSSBrowserIDAes128MechDesc, &kerbName);
-#else
-    major = gss_canonicalize_name(&minor, name, GSS_KRB5_MECHANISM, &kerbName);
-#endif
     if (GSS_ERROR(major))
         return NULL;
     
