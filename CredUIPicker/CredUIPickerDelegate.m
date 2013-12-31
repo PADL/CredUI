@@ -1,12 +1,12 @@
 //
-//  AppDelegate.m
+//  CredUIPickerDelegate.m
 //  CredUIPicker
 //
 //  Created by Luke Howard on 29/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import "AppDelegate.h"
+#import "CredUIPickerDelegate.h"
 
 #import <CredUI/CredUI.h>
 #import <GSSKit/GSSKit.h>
@@ -15,11 +15,11 @@
 #import <CFBrowserID.h>
 
 
-@interface AppDelegate ()
+@interface CredUIPickerDelegate ()
 @property (nonatomic, strong) CUIIdentityPicker *picker;
 @end
 
-@implementation AppDelegate
+@implementation CredUIPickerDelegate
 
 - (GSSCredential *)acquireGSSCred:(CUIIdentityPicker *)identityPicker
 {

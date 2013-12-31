@@ -48,7 +48,7 @@
 		D39EB068186FB1DA00C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB066186FB1DA00C43A24 /* InfoPlist.strings */; };
 		D39EB06A186FB1DA00C43A24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB069186FB1DA00C43A24 /* main.m */; };
 		D39EB06E186FB1DA00C43A24 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D39EB06C186FB1DA00C43A24 /* Credits.rtf */; };
-		D39EB071186FB1DA00C43A24 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB070186FB1DA00C43A24 /* AppDelegate.m */; };
+		D39EB071186FB1DA00C43A24 /* CredUIPickerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */; };
 		D39EB074186FB1DA00C43A24 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D39EB072186FB1DA00C43A24 /* MainMenu.xib */; };
 		D39EB076186FB1DA00C43A24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D39EB075186FB1DA00C43A24 /* Images.xcassets */; };
 		D39EB07C186FB1DA00C43A24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
@@ -251,8 +251,8 @@
 		D39EB069186FB1DA00C43A24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D39EB06B186FB1DA00C43A24 /* CredUIPicker-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CredUIPicker-Prefix.pch"; sourceTree = "<group>"; };
 		D39EB06D186FB1DA00C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		D39EB06F186FB1DA00C43A24 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		D39EB070186FB1DA00C43A24 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D39EB06F186FB1DA00C43A24 /* CredUIPickerDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUIPickerDelegate.h; sourceTree = "<group>"; };
+		D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUIPickerDelegate.m; sourceTree = "<group>"; };
 		D39EB073186FB1DA00C43A24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D39EB075186FB1DA00C43A24 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D39EB07B186FB1DA00C43A24 /* CredUIPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CredUIPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -459,8 +459,8 @@
 				D39EB0A21870235F00C43A24 /* CUICredentialTile.h */,
 				D39EB0A31870235F00C43A24 /* CUICredentialTile.m */,
 				D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */,
-				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D39EB0C918714E4F00C43A24 /* CUIIdentityPicker+Private.h */,
+				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */,
 				D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
@@ -574,8 +574,8 @@
 		D39EB063186FB1DA00C43A24 /* CredUIPicker */ = {
 			isa = PBXGroup;
 			children = (
-				D39EB06F186FB1DA00C43A24 /* AppDelegate.h */,
-				D39EB070186FB1DA00C43A24 /* AppDelegate.m */,
+				D39EB06F186FB1DA00C43A24 /* CredUIPickerDelegate.h */,
+				D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */,
 				D39EB072186FB1DA00C43A24 /* MainMenu.xib */,
 				D39EB075186FB1DA00C43A24 /* Images.xcassets */,
 				D39EB064186FB1DA00C43A24 /* Supporting Files */,
@@ -1020,7 +1020,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB071186FB1DA00C43A24 /* AppDelegate.m in Sources */,
+				D39EB071186FB1DA00C43A24 /* CredUIPickerDelegate.m in Sources */,
 				D39EB06A186FB1DA00C43A24 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

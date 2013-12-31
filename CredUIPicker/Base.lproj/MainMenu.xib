@@ -69,6 +69,6 @@
                 <menuItem title="File" id="83"/>
             </items>
         </menu>
-        <customObject id="494" customClass="AppDelegate"/>
+        <customObject id="494" customClass="CredUIPickerDelegate"/>
     </objects>
 </document>

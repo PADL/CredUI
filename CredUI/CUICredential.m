@@ -7,6 +7,8 @@
 //
 
 @implementation CUICredential
+{
+}
 
 #pragma mark Initialization
 
