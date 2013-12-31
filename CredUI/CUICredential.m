@@ -117,6 +117,11 @@
     CUICredentialDidBecomeDeselected([self _credentialRef]);
 }
 
+- (BOOL)canSubmit
+{
+    return CUICredentialCanSubmit([self _credentialRef]);
+}
+
 - (void)willSubmit
 {
     CUICredentialWillSubmit([self _credentialRef]);
@@ -127,12 +132,14 @@
     CUICredentialDidSubmit([self _credentialRef]);
 }
 
-#if 0
-- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block
-                    stop:(BOOL *)stop
+- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))cb
 {
+    CUICredentialFieldsApplyBlock([self _credentialRef], ^(CUIFieldRef field, Boolean *pStop) {
+        BOOL stop = *pStop;
+        cb(field, &stop);
+        *pStop = stop;
+    });
 }
-#endif
 
 - (GSSItem *)GSSItem
 {

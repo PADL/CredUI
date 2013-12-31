@@ -142,7 +142,7 @@
             else
                 [cred didBecomeDeselected];
 
-            if (autoLogin && [self _canReturnWithCredential:cred])
+            if (autoLogin && [cred canSubmit])
                 [self _submit:nil];
         }
     }
@@ -361,23 +361,11 @@
 
 #pragma mark - Credential submission
 
-- (BOOL)_canReturnWithCredential:(CUICredential *)cred
-{
-    NSDictionary *attrs = cred.attributes;
-    id status = [attrs objectForKey:(__bridge id)kCUIAttrCredentialStatus];
-    
-    if ([status isEqual:(__bridge id)kCUICredentialReturnCredentialFinished] ||
-        [status isEqual:(__bridge id)kCUICredentialReturnNoCredentialFinished])
-        return YES;
-    else
-        return NO;
-}
-
 - (void)_submit:(id)sender
 {
     [self.selectedCredential willSubmit];
-    
-    if ([self _canReturnWithCredential:self.selectedCredential])
+
+    if ([self.selectedCredential canSubmit])
         [self.panel close];
 }
 

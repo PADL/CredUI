@@ -88,9 +88,8 @@ int main(int argc, const char * argv[])
         exit(1);
     }
     
-    Boolean stop = false;
-    
-    CUICredentialDidBecomeSelected(cred, &stop);
+    Boolean autoLogin = false;
+    CUICredentialDidBecomeSelected(cred, &autoLogin);
     
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         NSString *title = (__bridge NSString *)CUIFieldGetTitle(field);
@@ -116,7 +115,7 @@ int main(int argc, const char * argv[])
         
         if (value && [value length])
             CUIFieldSetValue(field, (__bridge CFTypeRef)value);
-    }, &stop);
+    });
 
     NSDictionary *credAttributes = [(__bridge CUICredential *)cred attributesWithClass:CUIAttributeClassGSSItem];
     

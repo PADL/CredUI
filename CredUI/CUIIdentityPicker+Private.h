@@ -17,7 +17,6 @@
 @property(nonatomic, retain) NSTextField *messageTextField;
 @property(nonatomic, readonly) NSString *targetDisplayName;
 
-- (BOOL)_canReturnWithCredential:(CUICredential *)cred;
 - (void)_submit:(id)sender;
 
 @end

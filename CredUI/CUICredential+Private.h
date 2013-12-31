@@ -30,12 +30,10 @@
 - (void)didBecomeSelected:(BOOL *)pbAutoLogin;
 - (void)didBecomeDeselected;
 
+- (BOOL)canSubmit;
 - (void)willSubmit;
 - (void)didSubmit;
 
-#if 0
-- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block
-                    stop:(BOOL *)stop;
-#endif
+- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block;
 
 @end

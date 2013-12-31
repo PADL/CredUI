@@ -167,6 +167,39 @@ CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
         cred->_context->didBecomeSelected(pbAutoLogin);
 }
 
+static Boolean
+__CUICredentialHasMandatoryKeys(CUICredentialRef cred)
+{
+    CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
+    
+    // probably should actually validate some values too
+    return CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus) &&
+           CFDictionaryGetValue(attrs, kCUIAttrName) &&
+           CFDictionaryGetValue(attrs, kCUIAttrNameType);
+}
+
+static Boolean
+__CUICredentialIsReturnable(CUICredentialRef cred)
+{
+    CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
+    CFTypeRef status = CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus);
+    
+    if (status) {
+        if (CFEqual(status, kCUICredentialReturnCredentialFinished) ||
+            CFEqual(status, kCUICredentialReturnNoCredentialFinished))
+            return true;
+    }
+    
+    return false;
+}
+
+Boolean
+CUICredentialCanSubmit(CUICredentialRef cred)
+{
+    return __CUICredentialHasMandatoryKeys(cred) &&
+           __CUICredentialIsReturnable(cred);
+}
+
 void
 CUICredentialWillSubmit(CUICredentialRef cred)
 {
@@ -228,17 +261,18 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
 }
 
 void
-CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop), Boolean *stop)
+CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop))
 {
     CFArrayRef fields = CUICredentialGetFields(cred);
     CFIndex index;
+    Boolean stop = false;
     
     if (fields) {
         for (index = 0; index < CFArrayGetCount(fields); index++) {
             CUIFieldRef field = (CUIFieldRef)CFArrayGetValueAtIndex(fields, index);
             
-            cb(field, stop);
-            if (*stop)
+            cb(field, &stop);
+            if (stop)
                 break;
         }
     }
@@ -247,7 +281,6 @@ CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boo
 CUIFieldRef
 CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass)
 {
-    Boolean stop = false;
     __block CUIFieldRef theField = NULL;
 
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
@@ -255,7 +288,7 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
             theField = (CUIFieldRef)CFRetain(field);
             *stop = true;
         }
-    }, &stop);
+    });
     
     return theField;
 }

@@ -43,14 +43,28 @@ CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin);
 extern void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred);
 
+/*
+ * Call this once the user has selected a credential and you want to use it
+ */
 extern void
 CUICredentialWillSubmit(CUICredentialRef cred);
 
+/*
+ * Call CUICredentialCanSubmit after CUICredentialWillSubmit to validate
+ * the credential has any mandatory attributes.
+ */
+extern Boolean
+CUICredentialCanSubmit(CUICredentialRef cred);
+
+/*
+ * Call CUICredentialDidSubmit after the credential has been submitted to
+ * notify the provider.
+ */
 extern void
 CUICredentialDidSubmit(CUICredentialRef cred);
     
 extern void
-CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop), Boolean *stop);
+CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop));
     
 #ifdef __cplusplus
 }

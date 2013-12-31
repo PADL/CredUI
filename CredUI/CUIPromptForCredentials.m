@@ -37,7 +37,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     
     *pfSave = identityPicker.saveToKeychain;
     
-    return [identityPicker _canReturnWithCredential:selectedCredential];
+    return [selectedCredential canSubmit];
 }
 
 Boolean
