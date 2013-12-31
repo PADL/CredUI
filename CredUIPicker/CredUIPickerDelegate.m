@@ -25,10 +25,22 @@
 {
     GSSCredential *cred;
     NSError *error;
+
+    if (identityPicker.selectedCredential == nil) {
+        NSLog(@"no selected credential");
+        return nil;
+    }
     
-    NSLog(@"identityPicker selected GSS name = %@", identityPicker.selectedCredential.GSSName);
-    
-    cred = [[GSSCredential alloc] initWithName:identityPicker.selectedCredential.GSSName
+    GSSName *name = identityPicker.selectedCredential.GSSName;
+
+    if (name == nil) {
+        NSLog(@"no name");
+        return nil;
+    }
+
+    NSLog(@"identityPicker selected GSS name = %@", name);
+
+    cred = [[GSSCredential alloc] initWithName:name
                                      mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.attributes[@"kCUIAttrClass"]]
                                     attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
                                          error:&error];
@@ -108,7 +120,8 @@
     // OK, now let's try and do some GSS stuff
     GSSCredential *cred = [self acquireGSSCred:identityPicker];
     
-    (void) [self initAcceptGSSContext:identityPicker initiatorCred:cred];
+    if (cred)
+        (void) [self initAcceptGSSContext:identityPicker initiatorCred:cred];
 }
 
 - (IBAction)showIdentityPicker:(id)sender;

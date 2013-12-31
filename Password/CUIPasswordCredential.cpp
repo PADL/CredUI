@@ -73,7 +73,6 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
     CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
     CFStringRef status;
     
-    fprintf(stderr, "attr dict %p", _attributes);
     if (_inCredUsable) {
         status = kCUICredentialReturnCredentialFinished;
     } else if ((username && CFStringGetLength(username)) &&
