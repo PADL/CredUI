@@ -11,6 +11,10 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
@@ -21,5 +25,9 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFDictionaryRef *outCredAttributes,
                         Boolean *save,
                         CUIFlags flags);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

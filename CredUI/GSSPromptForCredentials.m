@@ -20,3 +20,16 @@ GSSPromptForCredentials(gss_name_t targetName,
                                      authError, inCredAttributes, outCredAttributes,
                                      pfSave, flags, CUIAttributeClassGSSInitialCred);
 }
+
+#ifndef GSS_S_PROMPTING_NEEDED
+#define GSS_S_PROMPTING_NEEDED (1 << (GSS_C_SUPPLEMENTARY_OFFSET + 5))
+#endif
+
+Boolean
+GSSIsPromptingNeeded(CFErrorRef authError)
+{
+    NSError *error = (__bridge NSError *)authError;
+    OM_uint32 major = [error.userInfo[@"kGSSMajorErrorCode"] unsignedIntValue];
+
+    return (major == GSS_S_NO_CRED || major == GSS_S_PROMPTING_NEEDED);
+}

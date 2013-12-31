@@ -12,6 +12,10 @@
 #include <GSS/GSS.h>
 #include <CredUI/CUIPromptForCredentials.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
 Boolean
 GSSPromptForCredentials(gss_name_t targetName,
                         CFTypeRef gssContextHandle,
@@ -21,5 +25,12 @@ GSSPromptForCredentials(gss_name_t targetName,
                         CFDictionaryRef *outCredAttributes,
                         Boolean *pfSave,
                         CUIFlags flags);
+
+Boolean
+GSSIsPromptingNeeded(CFErrorRef authError);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
