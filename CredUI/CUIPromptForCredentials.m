@@ -33,6 +33,8 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
         return false;
     }
     
+    flags &= ~(CUIFlagsGSSAcquireCredsDisposition | CUIFlagsGSSItemDisposition);
+    
     return GSSPromptForCredentials(target,
                                    reserved,
                                    uiContext,

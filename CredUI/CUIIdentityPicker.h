@@ -40,10 +40,15 @@
 /* This can be a GSSName or a NSString */
 @property(nonatomic, copy) id targetName;
 
-/* Attributes for the selected credential suitable for acquiring a credential */
+/*
+ * Attributes for the selected credential suitable for acquiring a credential.
+ * Depending on the disposition set in flags, these will be suitable for passing
+ * into GSSItemAdd to gss_aapl_initial_cred.
+ */
 @property(nonatomic, readonly, copy) NSDictionary *selectedCredentialAttributes;
 
-- (GSSItem *)selectedGSSItem;
+- (GSSItem *)selectedCredentialGSSItem;
+- (id)selectedCredentialGSSName;
 
 - initWithFlags:(CUIFlags)flags;
 

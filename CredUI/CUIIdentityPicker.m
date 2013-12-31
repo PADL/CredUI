@@ -344,9 +344,14 @@
     return [self.selectedCredential attributesWithDisposition:self.flags];
 }
 
-- (GSSItem *)selectedGSSItem
+- (GSSItem *)selectedCredentialGSSItem
 {
     return [self.selectedCredential GSSItem];
+}
+
+- (id)selectedCredentialGSSName
+{
+    return [self.selectedCredential GSSName];
 }
 
 - (NSString *)targetDisplayName

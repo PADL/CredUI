@@ -137,6 +137,35 @@
     return (__bridge GSSItem *)CUICredentialGetGSSItem([self _credentialRef]);
 }
 
+- (id)GSSName
+{
+    gss_name_t name = GSS_C_NO_NAME;
+    gss_const_OID oid = GSS_C_NO_OID;
+    CFErrorRef error = NULL;
+
+    id type = self.attributes[(__bridge NSString *)kCUIAttrNameType];
+    id value = self.attributes[(__bridge NSString *)kCUIAttrName];
+
+    if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSUsername])
+        oid = GSS_C_NT_USER_NAME;
+    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSHostBasedService])
+        oid = GSS_C_NT_HOSTBASED_SERVICE;
+    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSExportedName])
+        oid = GSS_C_NT_EXPORT_NAME;
+    
+    if (oid) {
+        name = GSSCreateName(value, oid, &error);
+        
+        if (name)
+            return CFBridgingRelease(name);
+        else if (error)
+            CFRelease(error);
+    }
+    
+    return nil;
+    
+}
+
 - (NSDictionary *)attributesWithDisposition:(CUIFlags)flags
 {
     NSMutableDictionary *transformedDict = [[NSMutableDictionary alloc] init];
@@ -154,6 +183,12 @@
         transformedDict[transformedKey] = obj;
     }];
 
+    if (flags & CUIFlagsGSSItemDisposition) {
+    } else if (flags & CUIFlagsGSSAcquireCredsDisposition) {
+        // we only emit initiator creds
+        transformedDict[(__bridge NSString *)kGSSCredentialUsage] = (__bridge NSString *)kGSS_C_INITIATE;
+    }
+    
     return transformedDict;
 }
 

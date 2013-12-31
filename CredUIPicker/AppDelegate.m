@@ -23,6 +23,22 @@
 
 - (void)doGSSAPITests:(CUIIdentityPicker *)identityPicker
 {
+    GSSCredential *cred;
+    NSError *error;
+    
+    NSLog(@"identityPicker selected GSS name = %@", identityPicker.selectedCredentialGSSName);
+    
+    cred = [[GSSCredential alloc] initWithName:[identityPicker selectedCredentialGSSName]
+                                     mechanism:[GSSMechanism kerberosMechanism]
+                                    attributes:[identityPicker selectedCredentialAttributes]
+                                         error:&error];
+    if (cred)
+        NSLog(@"credential acquired: %@", cred);
+    else if (error)
+        NSLog(@"error: %@", error);
+    else
+        NSLog(@"no cred / no error");
+    
 }
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo

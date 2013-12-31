@@ -43,5 +43,6 @@
 #endif
 
 - (GSSItem *)GSSItem;
+- (id)GSSName;
 
 @end
