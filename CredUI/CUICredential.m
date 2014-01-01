@@ -18,26 +18,37 @@
     _CFRuntimeBridgeClasses(CUICredentialGetTypeID(), "CUICFCredential");
 }
 
++ (id)allocWithZone:(NSZone *)zone
+{
+    static CUICFCredential *placeholderCred;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        if (placeholderCred == nil)
+            placeholderCred = [super allocWithZone:zone];
+    });
+
+    return placeholderCred;
+}
+
 CF_CLASSIMPLEMENTATION(CUICFCredential)
+
+- (instancetype)initWithContext:(IUnknownVTbl *)context
+{
+    CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
+    
+    self = (id)credentialRef;
+    
+    return NSMakeCollectable(self);
+}
 
 @end
 
 @implementation CUICredential
 
-+ (id)allocWithZone:(NSZone *)zone
++ (BOOL)supportsSecureCoding
 {
-    static CUICredential *placeholderCred;
-    static dispatch_once_t onceToken;
-    
-    if ([self class] == [CUICFCredential class]) {
-        dispatch_once(&onceToken, ^{
-            if (placeholderCred == nil)
-                placeholderCred = [super allocWithZone:zone];
-        });
-        return placeholderCred;
-    } else {
-        return [super allocWithZone:zone];
-    }
+    return YES;
 }
 
 - (CUICredentialRef)_credentialRef
@@ -62,20 +73,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (instancetype)initWithContext:(IUnknownVTbl *)context
 {
-    if ([self class] == [CUICFCredential class]) {
-        CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
- 
-        self = (id)credentialRef;
-    } else {
-        self = [super init];
-    }
-    
-    return NSMakeCollectable(self);
-}
-
-+ (BOOL)supportsSecureCoding
-{
-    return YES;
+    return [super init];
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder

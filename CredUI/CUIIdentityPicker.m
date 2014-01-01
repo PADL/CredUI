@@ -68,6 +68,7 @@
     button.title = @"OK";
     button.target = self;
     button.action = @selector(willSubmitCredential:);
+    button.enabled = NO;
     
     return button;
 }
@@ -113,7 +114,8 @@
     self.collectionView = [self _newCollectionViewWithPanel:self.panel];
     [self.panel.contentView addSubview:self.collectionView];
     
-    [self.panel.contentView addSubview:[self _newSubmitButton]];
+    self.submitButton = [self _newSubmitButton];
+    [self.panel.contentView addSubview:self.submitButton];
     
     return self;
 }
@@ -142,8 +144,10 @@
             else
                 [cred didBecomeDeselected];
 
-            if (autoLogin) {
-                [self willSubmitCredential:nil];
+            if ([cred canSubmit]) {
+                self.submitButton.enabled = YES;
+                if (autoLogin)
+                    [self willSubmitCredential:nil];
             }
         }
     }
@@ -156,7 +160,6 @@
     CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyParentWindow, &uic);
     
     self.credsController = [[NSArrayController alloc] init];
-    self.credsController.avoidsEmptySelection = NO;
     self.credsController.selectsInsertedObjects = NO;
     
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
@@ -168,6 +171,8 @@
         else if (error)
             NSLog(@"CUIControllerEnumerateCredentials: %@", error);
     });
+    
+    self.credsController.selectionIndex = 0;
     
     [self.collectionView addObserver:self
                           forKeyPath:@"selectionIndexes"
@@ -355,9 +360,7 @@
 - (void)willSubmitCredential:(id)sender
 {
     [self.selectedCredential willSubmit];
-
-    if ([self.selectedCredential canSubmit])
-        [self.panel close];
+    [self.panel close];
 }
 
 - (void)didSubmitCredential

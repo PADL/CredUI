@@ -18,27 +18,47 @@
     _CFRuntimeBridgeClasses(CUIFieldGetTypeID(), "CUICFField");
 }
 
++ (id)allocWithZone:(NSZone *)zone
+{
+    static CUICFField *placeholderField;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        if (placeholderField == nil)
+            placeholderField = [super allocWithZone:zone];
+    });
+
+    return placeholderField;
+}
+
 CF_CLASSIMPLEMENTATION(CUICFField)
+
+- initWithClass:(CUIFieldClass)fieldClass
+          title:(NSString *)title
+   defaultValue:(id)defaultValue
+       delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
+{
+    CUIFieldRef fieldRef;
+    NSString *titleCopy = [title copy];
+    id defaultValueCopy = [defaultValue copy];
+    
+    fieldRef = CUIFieldCreate(kCFAllocatorDefault,
+                              fieldClass,
+                              (CFStringRef)titleCopy,
+                              (CFTypeRef)defaultValueCopy,
+                              fieldDidChange);
+    
+    [titleCopy release];
+    [defaultValueCopy release];
+        
+    self = (id)fieldRef;
+    
+    return NSMakeCollectable(self);
+}
 
 @end
 
 @implementation CUIField
-
-+ (id)allocWithZone:(NSZone *)zone
-{
-    static CUIField *placeholderField;
-    static dispatch_once_t onceToken;
-    
-    if ([self class] == [CUICFField class]) {
-        dispatch_once(&onceToken, ^{
-            if (placeholderField == nil)
-                placeholderField = [super allocWithZone:zone];
-        });
-        return placeholderField;
-    } else {
-        return [super allocWithZone:zone];
-    }
-}
 
 - (CUIFieldRef)_fieldRef
 {
@@ -60,26 +80,9 @@ CF_CLASSIMPLEMENTATION(CUICFField)
    defaultValue:(id)defaultValue
        delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
 {
-    if ([self class] == [CUICFField class]) {
-        CUIFieldRef fieldRef;
-        NSString *titleCopy = [title copy];
-        id defaultValueCopy = [defaultValue copy];
-
-        fieldRef = CUIFieldCreate(kCFAllocatorDefault,
-                                  fieldClass,
-                                  (CFStringRef)titleCopy,
-                                  (CFTypeRef)defaultValueCopy,
-                                  fieldDidChange);
-        
-        [titleCopy release];
-        [defaultValueCopy release];
-
-        self = (id)fieldRef;
-    } else {
-        self = [super init];
-    }
+    self = [super init];
     
-    return NSMakeCollectable(self);
+    return self;
 }
 
 - init
@@ -114,6 +117,17 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [aValueCopy release];
 }
 
+- (void)setValue:(id)aValue sender:(NSView *)sender
+{
+    CUICredentialTile *tile = (CUICredentialTile *)[sender superview];
+    CUIIdentityPicker *identityPicker = [sender.window delegate];
+
+    [self setValue:aValue];
+    
+    if ([tile.credential canSubmit])
+        identityPicker.submitButton.enabled = YES;
+}
+
 - (void)didSubmit:(id)sender
 {
     [self setValue:(id)kCFBooleanTrue];
@@ -122,7 +136,8 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 - (void)controlTextDidChange:(NSNotification *)notification
 {
     NSTextView *textView = notification.userInfo[@"NSFieldEditor"];
-    [self setValue:textView.string];
+    
+    [self setValue:textView.string sender:notification.object];
 }
 
 @end
