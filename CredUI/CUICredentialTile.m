@@ -99,6 +99,7 @@
 {
     NSArray *credFields = [self.credential fields];
     NSRect frame = self.frame;
+    NSView *lastview = nil;
     
     frame.origin.y = frame.size.height;
     frame.size.height = 0;
@@ -107,7 +108,10 @@
         NSView *subview = [self _newViewForCredentialField:field withFrame:&frame];
         
         if (subview) {
+            if (lastview)
+                lastview.nextKeyView = subview;
             [self addSubview:subview];
+            lastview = subview;
         }
     }
 }
