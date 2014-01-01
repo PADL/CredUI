@@ -16,7 +16,6 @@ struct __CUIController {
     CUICredUIContext _uiContext;
     CFMutableDictionaryRef _attributes;
     CFErrorRef _authError;
-    Boolean _saveToKeychain;
     CFIndex _flags;
     CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
     gss_name_t _gssTargetName;
@@ -364,18 +363,6 @@ CUI_EXPORT const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller)
 {
     return &controller->_uiContext;
-}
-
-CUI_EXPORT void
-CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
-{
-    controller->_saveToKeychain = save;
-}
-
-CUI_EXPORT Boolean
-CUIControllerGetSaveToKeychain(CUIControllerRef controller)
-{
-    return controller->_saveToKeychain;
 }
 
 CUI_EXPORT void
