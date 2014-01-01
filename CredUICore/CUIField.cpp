@@ -142,24 +142,32 @@ CUIFieldCreateCopy(
 CUI_EXPORT CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, CUIFieldClass, field, "fieldClass");
+
     return field->_class;
 }
 
 CUI_EXPORT CFStringRef
 CUIFieldGetTitle(CUIFieldRef field)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, CFStringRef, field, "title");
+
     return field->_title;
 }
 
 CUI_EXPORT CFTypeRef
 CUIFieldGetDefaultValue(CUIFieldRef field)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, CFTypeRef, field, "defaultValue");
+
     return field->_defaultValue;
 }
 
 CUI_EXPORT void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
+    CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setDefaultValue:", value);
+
     if (field->_delegate)
         field->_delegate(field, value);
 }
