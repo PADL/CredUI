@@ -19,6 +19,9 @@
 
 __attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
+{
+    id _internal;
+}
 
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;

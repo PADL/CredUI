@@ -119,7 +119,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (void)setValue:(id)aValue sender:(id)sender
 {
-    CUIIdentityPicker *identityPicker = [[(NSView *)sender window] delegate];
+    id identityPicker = [[(NSView *)sender window] delegate];
 
     [self setValue:aValue];
     [identityPicker credentialFieldDidChange:sender];

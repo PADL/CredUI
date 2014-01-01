@@ -15,11 +15,13 @@
 #import <CredUICore/CredUICore_Private.h>
 
 #import "CUIField.h"
-
 #import "CUICredential+Private.h"
+
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
-#import "CUIIdentityPicker+Private.h"
+
+#import "CUIIdentityPickerInternal.h"
+#import "CUIIdentityPickerInternal+UIFactory.h"
 
 CF_EXPORT void _CFRuntimeBridgeClasses(CFTypeID cf_typeID, const char *objc_classname);
 CF_EXPORT CFTypeRef _CFTryRetain(CFTypeRef cf);
