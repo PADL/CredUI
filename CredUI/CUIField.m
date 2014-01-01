@@ -6,64 +6,49 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@implementation CUIField
-{
-}
+@interface CUICFField : CUIField
+@end
 
-#pragma mark Initialization
+@implementation CUICFField
 
 + (void)load
 {
-    _CFRuntimeBridgeClasses(CUIFieldGetTypeID(), "CUIField");
+    _CFRuntimeBridgeClasses(CUIFieldGetTypeID(), "CUICFField");
 }
+
+CF_CLASSIMPLEMENTATION(CUICFField)
+
+@end
+
+@implementation CUIField
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return nil;
+    static CUIField *placeholderField;
+    static dispatch_once_t onceToken;
+    
+    if ([self class] == [CUICFField class]) {
+        dispatch_once(&onceToken, ^{
+            if (placeholderField == nil)
+                placeholderField = [super allocWithZone:zone];
+        });
+        return placeholderField;
+	} else {
+        return [super allocWithZone:zone];
+	}
 }
 
-#pragma mark Bridging
-
-- (id)retain
+- (CUIFieldRef)_fieldRef
 {
-    return CFRetain((CFTypeRef)self);
-}
-
-- (oneway void)release
-{
-    CFRelease((CFTypeRef)self);
-}
-
-- (NSUInteger)retainCount
-{
-    return CFGetRetainCount((CFTypeRef)self);
-}
-
-- (BOOL)isEqual:(id)anObject
-{
-    return (BOOL)CFEqual((CFTypeRef)self, (CFTypeRef)anObject);
-}
-
-- (NSUInteger)hash
-{
-    return CFHash((CFTypeRef)self);
+    if ([self class] == [CUICFField class])
+        return (CUIFieldRef)self;
+    else
+        return _internal;
 }
 
 - (NSString *)description
 {
-    CFStringRef copyDesc = CFCopyDescription((CFTypeRef)self);
-    
-    return CFBridgingRelease(copyDesc);
-}
-
-- (BOOL)allowsWeakReference
-{
-    return !_CFIsDeallocating(self);
-}
-
-- (BOOL)retainWeakReference
-{
-    return _CFTryRetain(self) != nil;
+    return [NSMakeCollectable(CFCopyDescription([self _fieldRef])) autorelease];
 }
 
 - (CFTypeID)_cfTypeID
@@ -82,16 +67,21 @@
 
     fieldRef = CUIFieldCreate(kCFAllocatorDefault,
                               fieldClass,
-                              (__bridge CFStringRef)titleCopy,
-                              (__bridge CFTypeRef)defaultValueCopy,
+                              (CFStringRef)titleCopy,
+                              (CFTypeRef)defaultValueCopy,
                               fieldDidChange);
     
-    self = (__bridge id)fieldRef;
-   
     [titleCopy release];
     [defaultValueCopy release];
- 
-    return self;
+
+    if ([self class] == [CUICFField class]) {
+        self = (id)fieldRef;
+    } else {
+        self = [super init];
+        _internal = fieldRef;
+    }
+    
+    return NSMakeCollectable(self);
 }
 
 - init
@@ -102,9 +92,12 @@
                       delegate:nil];
 }
 
-- (CUIFieldRef)_fieldRef
+- (void)dealloc
 {
-    return (__bridge CUIFieldRef)self;
+    if ([self class] != [CUICFField class])
+        CFRelease(_internal);
+    
+    [super dealloc];
 }
 
 - (CUIFieldClass)fieldClass
@@ -114,26 +107,26 @@
 
 - (NSString *)title
 {
-    return (__bridge NSString *)CUIFieldGetTitle([self _fieldRef]);
+    return (NSString *)CUIFieldGetTitle([self _fieldRef]);
 }
 
 - (id)defaultValue
 {
-    return (__bridge id)CUIFieldGetDefaultValue([self _fieldRef]);
+    return (id)CUIFieldGetDefaultValue([self _fieldRef]);
 }
 
 - (void)setValue:(id)aValue
 {
     id aValueCopy = [aValue copy];
     
-    CUIFieldSetValue([self _fieldRef], (__bridge CFTypeRef)aValueCopy);
+    CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
     
     [aValueCopy release];
 }
 
 - (void)didSubmit:(id)sender
 {
-    [self setValue:(__bridge id)kCFBooleanTrue];
+    [self setValue:(id)kCFBooleanTrue];
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification

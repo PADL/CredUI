@@ -6,79 +6,54 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@implementation CUICredential
-{
-}
+@interface CUICFCredential : CUICredential
+@end
 
-#pragma mark Initialization
+@implementation CUICFCredential
 
 + (void)load
 {
-    _CFRuntimeBridgeClasses(CUICredentialGetTypeID(), "CUICredential");
+    _CFRuntimeBridgeClasses(CUICredentialGetTypeID(), "CUICFCredential");
 }
+
+CF_CLASSIMPLEMENTATION(CUICFCredential)
+
+@end
+
+@implementation CUICredential
 
 + (id)allocWithZone:(NSZone *)zone
 {
-    return nil;
+    static CUICredential *placeholderCred;
+    static dispatch_once_t onceToken;
+    
+    if ([self class] == [CUICFCredential class]) {
+        dispatch_once(&onceToken, ^{
+            if (placeholderCred == nil)
+                placeholderCred = [super allocWithZone:zone];
+        });
+        return placeholderCred;
+	} else {
+        return [super allocWithZone:zone];
+	}
 }
 
-#pragma mark Bridging
-
-- (id)retain
+- (CUICredentialRef)_credentialRef
 {
-    return CFRetain((CUICredentialRef)self);
-}
-
-- (oneway void)release
-{
-    CFRelease((CUICredentialRef)self);
-}
-
-- (NSUInteger)retainCount
-{
-    return CFGetRetainCount((CUICredentialRef)self);
-}
-
-- (BOOL)isEqual:(id)anObject
-{
-    return (BOOL)CFEqual((CFTypeRef)self, (CFTypeRef)anObject);
-}
-
-- (NSUInteger)hash
-{
-    return CFHash((CFTypeRef)self);
+    if ([self class] == [CUICFCredential class])
+        return (CUICredentialRef)self;
+    else
+        return _internal;
 }
 
 - (NSString *)description
 {
-    CFStringRef copyDesc = CFCopyDescription((CFTypeRef)self);
-    
-    return CFBridgingRelease(copyDesc);
-}
-
-- (BOOL)allowsWeakReference
-{
-    return !_CFIsDeallocating(self);
-}
-
-- (BOOL)retainWeakReference
-{
-    return _CFTryRetain(self) != nil;
+    return [NSMakeCollectable(CFCopyDescription([self _credentialRef])) autorelease];
 }
 
 - (CFTypeID)_cfTypeID
 {
     return CUIFieldGetTypeID();
-}
-
-- (CUICredentialRef)_credentialRef
-{
-    return (__bridge CUICredentialRef)self;
-}
-
-- (NSArray *)fields
-{
-    return (__bridge NSArray *)CUICredentialGetFields([self _credentialRef]);
 }
 
 - (instancetype)init
@@ -89,10 +64,23 @@
 - (instancetype)initWithContext:(IUnknownVTbl *)context
 {
     CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
+ 
+    if ([self class] == [CUICFCredential class]) {
+        self = (id)credentialRef;
+    } else {
+        self = [super init];
+        _internal = credentialRef;
+    }
     
-    self = (__bridge id)credentialRef;
+    return NSMakeCollectable(self);
+}
+
+- (void)dealloc
+{
+    if ([self class] != [CUICFCredential class])
+        CFRelease(_internal);
     
-    return self;
+    [super dealloc];
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
@@ -108,22 +96,20 @@
     credAttributes = [coder decodeObject];
     if (credAttributes == nil)
         return nil;
+        
+    credentialRef = CUICredentialCreateProxy(kCFAllocatorDefault, (CFDictionaryRef)credAttributes);
     
-    credentialRef = CUICredentialCreateProxy(kCFAllocatorDefault, (__bridge CFDictionaryRef)credAttributes);
-    
-    self = (__bridge id)credentialRef;
-    
-    return self;
+    return (id)credentialRef;
 }
 
 - (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
 {
-    return (__bridge CUIField *)CUICredentialFindFirstFieldWithClass([self _credentialRef], fieldClass);
+    return (CUIField *)CUICredentialFindFirstFieldWithClass([self _credentialRef], fieldClass);
 }
 
 - (NSDictionary *)attributes
 {
-    return (__bridge NSDictionary *)CUICredentialGetAttributes([self _credentialRef]);
+    return (NSDictionary *)CUICredentialGetAttributes([self _credentialRef]);
 }
 
 - (void)didBecomeSelected:(BOOL *)pbAutoLogin
@@ -167,7 +153,7 @@
 - (GSSItem *)GSSItem
 {
     NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
-    NSArray *matchingItems = CFBridgingRelease(GSSItemCopyMatching((__bridge CFDictionaryRef)itemAttrs, NULL));
+    NSArray *matchingItems = [NSMakeCollectable(GSSItemCopyMatching((CFDictionaryRef)itemAttrs, NULL)) autorelease];
 
     return matchingItems.count ? matchingItems[0] : nil;
 }
@@ -178,31 +164,28 @@
     gss_const_OID oid = GSS_C_NO_OID;
     CFErrorRef error = NULL;
 
-    id type = self.attributes[(__bridge NSString *)kCUIAttrNameType];
-    id value = self.attributes[(__bridge NSString *)kCUIAttrName];
+    id type = self.attributes[(NSString *)kCUIAttrNameType];
+    id value = self.attributes[(NSString *)kCUIAttrName];
 
-    if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSUsername])
+    if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSUsername])
         oid = GSS_C_NT_USER_NAME;
-    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSHostBasedService])
+    else if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSHostBasedService])
         oid = GSS_C_NT_HOSTBASED_SERVICE;
-    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSExportedName])
+    else if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSExportedName])
         oid = GSS_C_NT_EXPORT_NAME;
     
-    if (oid) {
+    if (oid != GSS_C_NO_OID)
         name = GSSCreateName(value, oid, &error);
-        
-        if (name)
-            return CFBridgingRelease(name);
-        else if (error)
-            CFRelease(error);
-    }
     
-    return nil;
+    if (error)
+        CFRelease(error);
+    
+    return [NSMakeCollectable(name) autorelease];
 }
 
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
 {
-    NSMutableDictionary *transformedDict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *transformedDict = [NSMutableDictionary dictionary];
 
     [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NSString *transformedKey;
@@ -219,7 +202,7 @@
 
     if (attrClass == CUIAttributeClassGSSInitialCred) {
         // we only emit initiator creds
-        transformedDict[(__bridge NSString *)kGSSCredentialUsage] = (__bridge NSString *)kGSS_C_INITIATE;
+        transformedDict[(NSString *)kGSSCredentialUsage] = (NSString *)kGSS_C_INITIATE;
     }
     
     return transformedDict;
@@ -229,26 +212,26 @@
 {
     NSDictionary *itemAttributes = [self attributesWithClass:CUIAttributeClassGSSItem];
     GSSItemRef item;
-    CFErrorRef cfError;
     BOOL ret = NO;
     
     if (error)
         *error = nil;
     
-    item = GSSItemAdd((__bridge CFDictionaryRef)itemAttributes, &cfError);
+    item = GSSItemAdd((CFDictionaryRef)itemAttributes, (CFErrorRef *)error);
     if (item) {
-        ret = YES;
         CFRelease(item);
+        ret = YES;
     }
     
-    if (cfError) {
-        if (error)
-            *error = CFBridgingRelease(cfError);
-        else
-            CFRelease(cfError);
-    }
-    
+    if (error)
+        [NSMakeCollectable(*error) autorelease];
+        
     return ret;
+}
+
+- (NSArray *)fields
+{
+    return (NSArray *)CUICredentialGetFields([self _credentialRef]);
 }
 
 @end

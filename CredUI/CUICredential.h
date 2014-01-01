@@ -11,6 +11,10 @@
 
 __attribute__((visibility("default")))
 @interface CUICredential : NSObject
+{
+    @private
+    void *_internal;
+}
 
 - (NSDictionary *)attributes;
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)flags;

@@ -16,7 +16,6 @@
 @property (nonatomic, strong) CUIIdentityPicker *picker;
 @end
 
-
 @implementation CredUIPickerDelegate
 
 - (GSSCredential *)acquireGSSCred:(CUIIdentityPicker *)identityPicker

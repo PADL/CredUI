@@ -37,3 +37,40 @@ __CUIPromptForCredentials(gss_name_t targetName,
                           Boolean *pfSave,
                           CUIFlags flags,
                           CUIAttributeClass attrClass);
+
+#define CF_CLASSIMPLEMENTATION(ClassName)                                       \
+- (id)retain                                                                    \
+{                                                                               \
+    return CFRetain((CFTypeRef)self);                                           \
+}                                                                               \
+                                                                                \
+- (oneway void)release                                                          \
+{                                                                               \
+    CFRelease((CFTypeRef)self);                                                 \
+}                                                                               \
+                                                                                \
+- (NSUInteger)retainCount                                                       \
+{                                                                               \
+    return CFGetRetainCount((CFTypeRef)self);                                   \
+}                                                                               \
+                                                                                \
+- (BOOL)isEqual:(id)anObject                                                    \
+{                                                                               \
+    return (BOOL)CFEqual((CFTypeRef)self, (CFTypeRef)anObject);                 \
+}                                                                               \
+                                                                                \
+- (NSUInteger)hash                                                              \
+{                                                                               \
+    return CFHash((CFTypeRef)self);                                             \
+}                                                                               \
+                                                                                \
+- (BOOL)allowsWeakReference                                                     \
+{                                                                               \
+    return !_CFIsDeallocating(self);                                            \
+}                                                                               \
+                                                                                \
+- (BOOL)retainWeakReference                                                     \
+{                                                                               \
+    return _CFTryRetain(self) != nil;                                           \
+}                                                                               \
+                                                                                

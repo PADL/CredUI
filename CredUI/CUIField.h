@@ -7,6 +7,10 @@
 //
 
 @interface CUIField : NSObject <NSTextFieldDelegate>
+{
+    @private
+    void *_internal;
+}
 
 @property(nonatomic, readonly, assign) CUIFieldClass fieldClass;
 @property(nonatomic, readonly, copy) NSString *title;
