@@ -77,17 +77,20 @@
        delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
 {
     CUIFieldRef fieldRef;
-    
-    // XXX copy arguments
-    
+    NSString *titleCopy = [title copy];
+    id defaultValueCopy = [defaultValue copy];
+
     fieldRef = CUIFieldCreate(kCFAllocatorDefault,
                               fieldClass,
-                              (__bridge CFStringRef)title,
-                              (__bridge CFTypeRef)defaultValue,
+                              (__bridge CFStringRef)titleCopy,
+                              (__bridge CFTypeRef)defaultValueCopy,
                               fieldDidChange);
     
     self = (__bridge id)fieldRef;
-    
+   
+    [titleCopy release];
+    [defaultValueCopy release];
+ 
     return self;
 }
 
