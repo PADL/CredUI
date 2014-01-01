@@ -35,17 +35,14 @@ CF_CLASSIMPLEMENTATION(CUICFField)
                 placeholderField = [super allocWithZone:zone];
         });
         return placeholderField;
-	} else {
+    } else {
         return [super allocWithZone:zone];
-	}
+    }
 }
 
 - (CUIFieldRef)_fieldRef
 {
-    if ([self class] == [CUICFField class])
-        return (CUIFieldRef)self;
-    else
-        return _internal;
+    return (CUIFieldRef)self;
 }
 
 - (NSString *)description
@@ -76,12 +73,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [titleCopy release];
     [defaultValueCopy release];
 
-    if ([self class] == [CUICFField class]) {
-        self = (id)fieldRef;
-    } else {
-        self = [super init];
-        _internal = fieldRef;
-    }
+    self = (id)fieldRef;
     
     return NSMakeCollectable(self);
 }
@@ -92,14 +84,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
                          title:nil
                   defaultValue:nil
                       delegate:nil];
-}
-
-- (void)dealloc
-{
-    if ([self class] != [CUICFField class] && _internal)
-        CFRelease(_internal);
-    
-    [super dealloc];
 }
 
 - (CUIFieldClass)fieldClass

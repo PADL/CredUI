@@ -33,6 +33,11 @@
     *foo = YES;
 }
 
+- (NSString *)description
+{
+    return @"Hello, this is a custom field";
+}
+
 - (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
 {
     NSLog(@"FooCredential: firstFieldWihClass: %d", (int)fieldClass);
@@ -45,13 +50,30 @@ static void testSubclasses(void)
     FooCredential *foo = [[FooCredential alloc] init];
     CUIFieldRef field = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
     
-
+    NSLog(@"cred: %@", foo);
     NSLog(@"field: %@", field);
+    
+    CFStringRef cfDesc = CFCopyDescription((__bridge CFTypeRef)foo);
+    if (cfDesc) {
+        NSLog(@"CF desc: %@", cfDesc);
+        CFRelease(cfDesc);
+    }
     
     Boolean bar;
     
     CUICredentialDidBecomeSelected((__bridge CUICredentialRef)foo, &bar);
     NSLog(@"Did become selected = %d", bar);
+}
+
+static void testEncodeDecode(CUICredentialRef cred)
+{
+    NSString *filePath = @"/tmp/somecred";
+    
+    [NSKeyedArchiver archiveRootObject:(__bridge id)cred toFile:filePath];
+    
+    id reconstitutedCred = [NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:filePath]];
+    
+    NSLog(@"reconstitutedCred: %@", reconstitutedCred);
 }
 
 static NSString *readFromConsole(NSString *prompt, NSString *defaultValue, BOOL echo)
@@ -170,6 +192,8 @@ int main(int argc, const char * argv[])
     } else {
         NSLog(@"Failed to find item");
     }
+    
+    testEncodeDecode(cred);
     
     CFRelease(controller);
     

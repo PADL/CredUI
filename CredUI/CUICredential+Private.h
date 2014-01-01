@@ -8,7 +8,6 @@
 
 #import <CoreFoundation/CFPlugInCOM.h>
 
-#import <CredUICore/CUIField.h>
 #import <CredUICore/CUICredential.h>
 
 @class CUIField;

@@ -34,9 +34,7 @@
 		D39EB045186EF07500C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB043186EF07500C43A24 /* CUIField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB04A186F087A00C43A24 /* CUIPasswordCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB048186F087A00C43A24 /* CUIPasswordCredentialProvider.cpp */; };
 		D39EB04E186F0CC400C43A24 /* CUIPasswordCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB04C186F0CC400C43A24 /* CUIPasswordCredential.cpp */; };
-		D39EB04F186F111A00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB050186F111F00C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
-		D39EB052186F113A00C43A24 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB051186F113A00C43A24 /* CoreServices.framework */; };
 		D39EB053186F114800C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D39EB054186F131F00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB057186F18E500C43A24 /* CUIController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB055186F18E500C43A24 /* CUIController.cpp */; };
@@ -94,6 +92,7 @@
 		D3BED8FA1873B46200623B92 /* CUIProxyCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F81873B46200623B92 /* CUIProxyCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8FC1873E69C00623B92 /* CFBridgeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8FB1873E69C00623B92 /* CFBridgeHelper.h */; };
 		D3BED9001873E72100623B92 /* CFInternalHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8FF1873E72100623B92 /* CFInternalHelper.h */; };
+		D3BED9031873FA8600623B92 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -326,9 +325,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB052186F113A00C43A24 /* CoreServices.framework in Frameworks */,
+				D3BED9031873FA8600623B92 /* GSS.framework in Frameworks */,
 				D39EB050186F111F00C43A24 /* CoreFoundation.framework in Frameworks */,
-				D39EB04F186F111A00C43A24 /* GSS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

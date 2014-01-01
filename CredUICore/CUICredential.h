@@ -27,8 +27,7 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 extern CFArrayRef
 CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
                                      Boolean (^predicate)(CUIFieldRef field));
-    
-    
+
 extern CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred);
     

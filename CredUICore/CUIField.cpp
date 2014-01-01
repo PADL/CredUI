@@ -19,12 +19,15 @@ struct __CUIField {
 
 static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
 
-// from CFXMLNode.c
-CF_INLINE Boolean _nullSafeCFEqual(CFTypeRef cf1, CFTypeRef cf2)
+CF_INLINE Boolean __CFEqualNullSafe(CFTypeRef cf1, CFTypeRef cf2)
 {
-    if (cf1 && !cf2) return false;
-    if (cf2 && !cf1) return false;
-    if (cf1) return CFEqual(cf1, cf2);
+    if (cf1 && cf2 == NULL)
+        return false;
+    if (cf2 && cf1 == NULL)
+        return false;
+    if (cf1)
+        return CFEqual(cf1, cf2);
+    
     return true;
 }
 
@@ -54,8 +57,8 @@ static Boolean _CUIFieldEqual(CFTypeRef cf1, CFTypeRef cf2)
     
     if (!equal) {
         equal = (f1->_class == f2->_class) &&
-        _nullSafeCFEqual(f1->_title, f2->_title) &&
-        _nullSafeCFEqual(f1->_defaultValue, f2->_defaultValue);
+        __CFEqualNullSafe(f1->_title, f2->_title) &&
+        __CFEqualNullSafe(f1->_defaultValue, f2->_defaultValue);
     }
     
     return equal;
@@ -111,7 +114,8 @@ CUIFieldCreate(
 {
     CUIFieldRef f;
     
-    f = (CUIFieldRef)_CFRuntimeCreateInstance(allocator, CUIFieldGetTypeID(), sizeof(struct __CUIField) - sizeof(CFRuntimeBase), NULL);
+    f = (CUIFieldRef)_CFRuntimeCreateInstance(allocator, CUIFieldGetTypeID(),
+                                              sizeof(struct __CUIField) - sizeof(CFRuntimeBase), NULL);
     if (f == NULL)
         return NULL;
     

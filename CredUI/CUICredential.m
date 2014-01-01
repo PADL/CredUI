@@ -35,17 +35,14 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
                 placeholderCred = [super allocWithZone:zone];
         });
         return placeholderCred;
-	} else {
+    } else {
         return [super allocWithZone:zone];
-	}
+    }
 }
 
 - (CUICredentialRef)_credentialRef
 {
-    if ([self class] == [CUICFCredential class])
-        return (CUICredentialRef)self;
-    else
-        return _internal;
+    return (CUICredentialRef)self;
 }
 
 - (NSString *)description
@@ -67,22 +64,9 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 {
     CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
  
-    if ([self class] == [CUICFCredential class]) {
-        self = (id)credentialRef;
-    } else {
-        self = [super init];
-        _internal = credentialRef;
-    }
+    self = (id)credentialRef;
     
     return NSMakeCollectable(self);
-}
-
-- (void)dealloc
-{
-    if ([self class] != [CUICFCredential class] && _internal)
-        CFRelease(_internal);
-    
-    [super dealloc];
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder
@@ -155,7 +139,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 {
     gss_name_t name = GSS_C_NO_NAME;
     gss_const_OID oid = GSS_C_NO_OID;
-    CFErrorRef error = NULL;
 
     id type = self.attributes[(NSString *)kCUIAttrNameType];
     id value = self.attributes[(NSString *)kCUIAttrName];
@@ -168,10 +151,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
         oid = GSS_C_NT_EXPORT_NAME;
     
     if (oid != GSS_C_NO_OID)
-        name = GSSCreateName(value, oid, &error);
-    
-    if (error)
-        CFRelease(error);
+        name = GSSCreateName(value, oid, NULL);
     
     return [NSMakeCollectable(name) autorelease];
 }
