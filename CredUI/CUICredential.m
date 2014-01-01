@@ -73,7 +73,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return NSMakeCollectable(self);
 }
 
-- (BOOL)supportsSecureCoding
++ (BOOL)supportsSecureCoding
 {
     return YES;
 }
