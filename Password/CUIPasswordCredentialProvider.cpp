@@ -66,7 +66,10 @@ public:
         return passwordCred;
     }
 
-    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
+    Boolean initWithController(CUIControllerRef controller,
+                               CUIUsageScenario usageScenario,
+                               CUIUsageFlags usageFlags,
+                               CFErrorRef *error) {
         _controller = (CUIControllerRef)CFRetain(controller);
         return true;
     }

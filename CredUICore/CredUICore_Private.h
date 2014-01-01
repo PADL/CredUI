@@ -32,6 +32,25 @@ __CUISetter(CFTypeRef &dst, CFTypeRef src)
 }
 #endif /* __cplusplus */
 
+struct __CUICredential {
+    CFRuntimeBase _base;
+    CUICredentialContext *_context;
+};
+
+struct __CUIController {
+    CFRuntimeBase _base;
+    CFArrayRef _providers;
+    CUIUsageScenario _usage;
+    CUIUsageFlags _usageFlags;
+    CUICredUIContext _uiContext;
+    CFMutableDictionaryRef _attributes;
+    CFErrorRef _authError;
+    CFIndex _flags;
+    CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
+    gss_name_t _gssTargetName;
+    
+};
+
 CFArrayRef
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
@@ -93,11 +112,6 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 extern "C" {
 #endif
 
-struct __CUICredential {
-    CFRuntimeBase _base;
-    CUICredentialContext *_context;
-};
-    
 #ifdef __cplusplus
 }
 #endif

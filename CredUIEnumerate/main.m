@@ -120,7 +120,7 @@ int main(int argc, const char * argv[])
     
     testSubclasses();
     
-    controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsNoUI);
+    controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsDoNotShowUI);
     if (controller == NULL) {
         NSLog(@"failed to create controller");
         exit(1);

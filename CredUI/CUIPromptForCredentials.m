@@ -27,7 +27,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     
     identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
     identityPicker.authError = (__bridge NSError *)authError;
-    identityPicker.saveToKeychain = *pfSave;
+    identityPicker.persist = *pfSave;
     
     [identityPicker runModal];
     
@@ -35,7 +35,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     
     *outCredAttributes = CFBridgingRetain([selectedCredential attributesWithClass:attrClass]);
     
-    *pfSave = identityPicker.saveToKeychain;
+    *pfSave = identityPicker.persist;
     
     return [selectedCredential canSubmit];
 }

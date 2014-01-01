@@ -60,7 +60,7 @@ public:
     
     CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) {
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
-        
+       
         if (!personaCred->initWithControllerAndAttributes(_controller, attributes, error)) {
             personaCred->Release();
             return NULL;
@@ -69,7 +69,13 @@ public:
         return personaCred;
     }
     
-    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
+    Boolean initWithController(CUIControllerRef controller,
+                               CUIUsageScenario usageScenario,
+                               CUIUsageFlags usageFlags,
+                               CFErrorRef *error) {
+        if (usageFlags & kCUIUsageFlagsDoNotShowUI)
+            return false;
+
         _controller = (CUIControllerRef)CFRetain(controller);
         return true;
     }

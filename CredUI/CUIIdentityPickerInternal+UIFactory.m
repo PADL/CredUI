@@ -66,4 +66,19 @@
     return button;
 }
 
+- (NSButton *)_newPersistCheckBox
+{
+    NSRect frame = NSMakeRect(0, 30, 400, 30);
+    NSButton *button = [[NSButton alloc] initWithFrame:frame];
+    
+    button.title = @"Save credential";
+    button.target = self;
+    button.buttonType = NSSwitchButton;
+    button.action = @selector(didClickPersist:);
+    button.enabled = YES;
+    button.state = self.persist;
+
+    return button;
+}
+
 @end

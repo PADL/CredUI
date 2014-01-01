@@ -48,6 +48,16 @@
         
         self.collectionView = [self _newCollectionViewWithWindow:self.window];
         [self.window.contentView addSubview:self.collectionView];
+      
+        if (self.flags & CUIPersist)
+            self.persist = YES;
+        else if (self.flags & CUIDoNotPersist)
+            self.persist = NO;
+        else
+            _flags |= CUIShowSaveCheckBox;
+
+        if (self.flags & CUIShowSaveCheckBox)
+            [self.window.contentView addSubview:[self _newPersistCheckBox]];
         
         self.submitButton = [self _newSubmitButton];
         [self.window.contentView addSubview:self.submitButton];
@@ -177,7 +187,7 @@
     
     [self.selectedCredential didSubmit];
     
-    if (self.saveToKeychain && self.selectedCredential.GSSItem == nil)
+    if (self.persist && self.selectedCredential.GSSItem == nil)
         [self.selectedCredential addGSSItem:&error];
 }
 
@@ -187,6 +197,11 @@
     
     if ([tile.credential isEqual:self.selectedCredential])
         [self _updateSubmitButtonForSelectedCred];
+}
+
+- (void)didClickPersist:(id)sender
+{
+    self.persist = ((NSButton *)sender).state;
 }
 
 #pragma mark - Accessors

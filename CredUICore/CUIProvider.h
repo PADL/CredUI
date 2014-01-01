@@ -73,7 +73,10 @@ public:
     /*
      * Initialize a new credential provider
      */
-    virtual Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) = 0;
+    virtual Boolean initWithController(CUIControllerRef controller,
+                                       CUIUsageScenario usageScenario,
+                                       CUIUsageFlags usageFlags,
+                                       CFErrorRef *error) = 0;
     
     /*
      * Get a CUICredentialRef for an authentication identity. Attributes may be
@@ -101,7 +104,10 @@ typedef struct CUICredentialContext {
 
 typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
-    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller, CFErrorRef *error);
+    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller,
+                                                    CUIUsageScenario usageScenario,
+                                                    CUIUsageFlags usageFlags,
+                                                    CFErrorRef *error);
     CUICredentialRef (STDMETHODCALLTYPE *createCredentialWithAttributes)(CFDictionaryRef attributes, CFErrorRef *error);
     CFArrayRef (STDMETHODCALLTYPE *createOtherCredentials)(void *thisPointer, CFErrorRef *error);
 } CUIProvider;

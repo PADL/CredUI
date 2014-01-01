@@ -12,5 +12,6 @@
 - (NSCollectionView *)_newCollectionViewWithWindow:(NSWindow *)panel;
 - (NSTextField *)_newMessageTextField;
 - (NSButton *)_newSubmitButton;
+- (NSButton *)_newPersistCheckBox;
 
 @end

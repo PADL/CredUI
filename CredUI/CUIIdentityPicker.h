@@ -33,7 +33,7 @@ __attribute__((visibility("default")))
 @property(nonatomic, copy) NSError *authError;
 
 /* Allow user to persist credentials */
-@property(nonatomic, assign) BOOL saveToKeychain;
+@property(nonatomic, assign) BOOL persist;
 
 /* CredUI flags */
 @property(nonatomic, readonly) CUIFlags flags;

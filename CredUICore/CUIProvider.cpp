@@ -171,7 +171,10 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUIProviderInterfaceID), (void **)&provider);
         iunk->Release();
         
-        if (!provider->initWithController(controller, &error)) {
+        if (!provider->initWithController(controller,
+                                          controller->_usage,
+                                          controller->_usageFlags,
+                                          &error)) {
             if (error)
                 CFRelease(error);
             provider->Release();

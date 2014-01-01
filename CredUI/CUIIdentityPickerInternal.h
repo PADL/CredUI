@@ -12,7 +12,7 @@
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSDictionary *attributes;
 @property(nonatomic, copy) NSError *authError;
-@property(nonatomic, assign) BOOL saveToKeychain;
+@property(nonatomic, assign) BOOL persist;
 @property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, retain) GSSContext *GSSContextHandle;
 @property(nonatomic, copy) id targetName;
@@ -32,6 +32,7 @@
 
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes;
 
+- (void)didClickPersist:(id)sender;
 - (void)credentialFieldDidChange:(id)sender;
 - (void)willSubmitCredential:(id)sender;
 - (void)didSubmitCredential;

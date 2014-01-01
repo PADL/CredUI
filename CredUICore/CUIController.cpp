@@ -8,20 +8,6 @@
 
 #include "CredUICore_Private.h"
 
-struct __CUIController {
-    CFRuntimeBase _base;
-    CFArrayRef _providers;
-    CUIUsageScenario _usage;
-    CUIUsageFlags _usageFlags;
-    CUICredUIContext _uiContext;
-    CFMutableDictionaryRef _attributes;
-    CFErrorRef _authError;
-    CFIndex _flags;
-    CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
-    gss_name_t _gssTargetName;
-    
-};
-
 static CFTypeID _CUIControllerTypeID = _kCFRuntimeNotATypeID;
 
 static void _CUIControllerDeallocate(CFTypeRef cf)
