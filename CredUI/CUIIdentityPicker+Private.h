@@ -17,6 +17,7 @@
 @property(nonatomic, retain) NSTextField *messageTextField;
 @property(nonatomic, readonly) NSString *targetDisplayName;
 
-- (void)_submit:(id)sender;
+- (void)willSubmitCredential:(id)sender;
+- (void)didSubmitCredential;
 
 @end

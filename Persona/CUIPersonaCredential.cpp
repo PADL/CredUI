@@ -81,7 +81,8 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         return false;
     
     CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassBrowserID);
-    
+    CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
+
     return true;
 }
 

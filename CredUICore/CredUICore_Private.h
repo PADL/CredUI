@@ -89,8 +89,10 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 extern "C" {
 #endif
 
-void
-__CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item);
+struct __CUICredential {
+    CFRuntimeBase _base;
+    CUICredentialContext *_context;
+};
     
 #ifdef __cplusplus
 }

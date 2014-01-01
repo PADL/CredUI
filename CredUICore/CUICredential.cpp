@@ -48,12 +48,6 @@ CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
     .equal = _CUICredentialContextEqual
 };
 
-struct __CUICredential {
-    CFRuntimeBase _base;
-    CUICredentialContext *_context;
-    GSSItemRef _gssItem;
-};
-
 static CFTypeID _CUICredentialTypeID = _kCFRuntimeNotATypeID;
 
 static void _CUICredentialDeallocate(CFTypeRef cf)
@@ -62,8 +56,6 @@ static void _CUICredentialDeallocate(CFTypeRef cf)
 
     if (cred->_context)
         _CUICredentialContextRelease(CFGetAllocator(cf), cred->_context);
-    if (cred->_gssItem)
-        CFRelease(cred->_gssItem);
 }
 
 static Boolean _CUICredentialEqual(CFTypeRef cf1, CFTypeRef cf2)
@@ -291,16 +283,4 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
     });
     
     return theField;
-}
-
-void
-__CUICredentialSetItem(CUICredentialRef cred, GSSItemRef item)
-{
-    __CUISetter((CFTypeRef &)cred->_gssItem, item);
-}
-
-GSSItemRef
-CUICredentialGetGSSItem(CUICredentialRef cred)
-{
-    return cred->_gssItem;
 }

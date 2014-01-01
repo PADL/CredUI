@@ -58,7 +58,7 @@ int main(int argc, const char * argv[])
     CUIControllerSetAttributes(controller, (__bridge CFDictionaryRef)attributes);
     
     NSLog(@"Controller is: %@", (__bridge id)controller);
-    NSLog(@"Attributes are: %@", attributes);
+    NSLog(@"IN_CRED attributes are: %@", attributes);
     
     NSMutableArray *creds = [NSMutableArray array];
     
@@ -72,7 +72,9 @@ int main(int argc, const char * argv[])
         CUIFieldRef field2 = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)cred, kCUIFieldClassEditText);
         
         if (field) {
-            NSLog(@"[%lu] %@(%@)", (unsigned long)idx, (__bridge NSString *)CUIFieldGetTitle(field), (__bridge NSString *)CUIFieldGetDefaultValue(field2));
+            NSLog(@"[%lu] %@(%@)", (unsigned long)idx,
+                  field ? (__bridge NSString *)CUIFieldGetTitle(field) : nil,
+                  field2 ? (__bridge NSString *)CUIFieldGetDefaultValue(field2) : nil);
         }
     }];
     
@@ -119,18 +121,18 @@ int main(int argc, const char * argv[])
 
     NSDictionary *credAttributes = [(__bridge CUICredential *)cred attributesWithClass:CUIAttributeClassGSSItem];
     
-    NSLog(@"Credential attributes: %@", credAttributes);
+    NSLog(@"OUT_CRED attributes: %@", credAttributes);
     
-    NSError *error = NULL;
-    GSSItem *item = (__bridge GSSItem *)CUICredentialGetGSSItem(cred);
+    NSError *error = nil;
+    GSSItem *item = [(__bridge CUICredential *)cred GSSItem];
     
     if (item) {
         GSSCredential *cred = [item acquire:credAttributes error:&error];
         NSLog(@"Got cred: %@", cred);
     } else if (error) {
-        NSLog(@"Failed to add item for attributes: %@", error);
+        NSLog(@"Failed to find item for attributes: %@", error);
     } else {
-        NSLog(@"Failed to add item");
+        NSLog(@"Failed to find item");
     }
     
     CFRelease(controller);

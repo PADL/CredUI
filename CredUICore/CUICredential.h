@@ -32,11 +32,6 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
 extern CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred);
     
-struct GSSItem;
-
-extern struct GSSItem *
-CUICredentialGetGSSItem(CUICredentialRef cred);
-    
 extern void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin);
 

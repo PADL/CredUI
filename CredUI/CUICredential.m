@@ -95,6 +95,27 @@
     return self;
 }
 
+- (void)encodeWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:self.attributes];
+}
+
+- (id)initWithCoder:(NSCoder *)coder
+{
+    NSDictionary *credAttributes;
+    CUICredentialRef credentialRef;
+    
+    credAttributes = [coder decodeObject];
+    if (credAttributes == nil)
+        return nil;
+    
+    credentialRef = CUICredentialCreateProxy(kCFAllocatorDefault, (__bridge CFDictionaryRef)credAttributes);
+    
+    self = (__bridge id)credentialRef;
+    
+    return self;
+}
+
 - (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
 {
     return (__bridge CUIField *)CUICredentialFindFirstFieldWithClass([self _credentialRef], fieldClass);
@@ -143,20 +164,10 @@
 
 - (GSSItem *)GSSItem
 {
-    GSSItemRef item = CUICredentialGetGSSItem([self _credentialRef]);
+    NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
+    NSArray *matchingItems = CFBridgingRelease(GSSItemCopyMatching((__bridge CFDictionaryRef)itemAttrs, NULL));
 
-    if (item) {
-        CFRetain(item);
-    } else {
-        NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
-        CFErrorRef error = NULL;
-
-        item = GSSItemAdd((__bridge CFDictionaryRef)itemAttrs, &error);
-        if (error)
-            CFRelease(error);
-    }
-
-    return CFBridgingRelease(item);
+    return matchingItems.count ? matchingItems[0] : nil;
 }
 
 - (id)GSSName
@@ -211,4 +222,26 @@
     
     return transformedDict;
 }
+
+- (BOOL)addGSSItem:(NSError * __autoreleasing *)error
+{
+    NSDictionary *itemAttributes = [self attributesWithClass:CUIAttributeClassGSSItem];
+    GSSItemRef item;
+    CFErrorRef cfError;
+    BOOL ret = NO;
+    
+    *error = nil;
+    
+    item = GSSItemAdd((__bridge CFDictionaryRef)itemAttributes, &cfError);
+    if (item) {
+        ret = YES;
+        CFRelease(item);
+    }
+    
+    if (cfError)
+        *error = CFBridgingRelease(cfError);
+    
+    return ret;
+}
+
 @end

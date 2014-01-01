@@ -80,12 +80,6 @@ const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller);
 
 void
-CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save);
-
-Boolean
-CUIControllerGetSaveToKeychain(CUIControllerRef controller);
-
-void
 CUIControllerSetGssContextHandle(CUIControllerRef controller, CFTypeRef ctx);
 
 CFTypeRef

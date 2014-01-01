@@ -18,6 +18,7 @@ struct __CUIController {
     CUICredUIContext _uiContext;
     CFMutableDictionaryRef _attributes;
     CFErrorRef _authError;
+    Boolean _saveToKeychain;
     CFIndex _flags;
     CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
     gss_name_t _gssTargetName;
@@ -220,7 +221,6 @@ __CUIEnumerateItemCredentialsCallback(const void *value, void *_context)
                                                                     transformedAttrs,
                                                                     ^(CUICredentialRef cred, CFErrorRef err) {
                                                                         enumContext->callback(cred, err);
-                                                                        __CUICredentialSetItem(cred, item);
                                                                     });
 
     CFRelease(transformedAttrs);
@@ -371,14 +371,13 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 void
 CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
 {
-    CFBooleanRef value = save ? kCFBooleanTrue : kCFBooleanFalse;
-    CFDictionarySetValue(controller->_attributes, kCUIAttrStatusPersistant, value);
+    controller->_saveToKeychain = save;
 }
 
 Boolean
 CUIControllerGetSaveToKeychain(CUIControllerRef controller)
 {
-    return CFBooleanGetValue((CFBooleanRef)CFDictionaryGetValue(controller->_attributes, kCUIAttrStatusPersistant));
+    return controller->_saveToKeychain;
 }
 
 void

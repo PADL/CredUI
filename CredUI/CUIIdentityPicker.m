@@ -67,7 +67,7 @@
     
     button.title = @"OK";
     button.target = self;
-    button.action = @selector(_submit:);
+    button.action = @selector(willSubmitCredential:);
     
     return button;
 }
@@ -142,8 +142,8 @@
             else
                 [cred didBecomeDeselected];
 
-            if (autoLogin && [cred canSubmit])
-                [self _submit:nil];
+            if (autoLogin)
+                [self willSubmitCredential:nil];
         }
     }
 }
@@ -213,8 +213,8 @@
     [self.credsController unbind:NSSelectionIndexesBinding];
     
     // do this outside modal loop
-    [self.selectedCredential didSubmit];
-
+    [self didSubmitCredential];
+    
     NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     void *object = (__bridge void *)self;
@@ -284,16 +284,6 @@
     CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttributes	);
 }
 
-- (BOOL)saveToKeychain
-{
-    return CUIControllerGetSaveToKeychain(_controller);
-}
-
-- (void)setSaveToKeychain:(BOOL)save
-{
-    CUIControllerSetSaveToKeychain(_controller, save);
-}
-
 - (GSSContext *)GSSContextHandle
 {
     return (__bridge GSSContext *)CUIControllerGetGssContextHandle(_controller);
@@ -361,12 +351,23 @@
 
 #pragma mark - Credential submission
 
-- (void)_submit:(id)sender
+- (void)willSubmitCredential:(id)sender
 {
     [self.selectedCredential willSubmit];
 
     if ([self.selectedCredential canSubmit])
         [self.panel close];
+}
+
+- (void)didSubmitCredential
+{
+    NSError *error;
+    
+    [self.selectedCredential didSubmit];
+    
+    if (self.saveToKeychain && self.selectedCredential.GSSItem == nil)
+        [self.selectedCredential addGSSItem:&error];
+    
 }
 
 @end
