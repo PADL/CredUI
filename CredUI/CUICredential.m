@@ -62,9 +62,13 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (instancetype)initWithContext:(IUnknownVTbl *)context
 {
-    CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
+    if ([self class] == [CUICFCredential class]) {
+        CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
  
-    self = (id)credentialRef;
+        self = (id)credentialRef;
+    } else {
+        self = [super init];
+    }
     
     return NSMakeCollectable(self);
 }

@@ -27,6 +27,19 @@
 @class CUIField;
 
 @implementation FooCredential
+- init
+{
+    self = [super init];
+    return self;
+}
+
++ allocWithZone:(NSZone *)zone
+{
+    id a = [super allocWithZone:zone];
+    
+    return a;
+}
+
 - (void)didBecomeSelected:(BOOL *)foo
 {
     NSLog(@"didBecomeSelected");

@@ -37,7 +37,7 @@ extern "C" {
 
 OBJC_EXPORT id objc_msgSend(id self, SEL op, ...) __attribute__((weak_import));
     
-extern int _CFIsObjC(CFTypeID typeID, CFTypeRef obj);
+OBJC_EXPORT Boolean _CFIsObjC(CFTypeID typeID, CFTypeRef obj);
 
 #define CF_OBJC_FUNCDISPATCH0(typeID, rettype, obj, sel) \
     if (objc_msgSend != NULL && _CFIsObjC(typeID, (CFTypeRef)obj)) \

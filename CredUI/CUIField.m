@@ -60,20 +60,24 @@ CF_CLASSIMPLEMENTATION(CUICFField)
    defaultValue:(id)defaultValue
        delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
 {
-    CUIFieldRef fieldRef;
-    NSString *titleCopy = [title copy];
-    id defaultValueCopy = [defaultValue copy];
+    if ([self class] == [CUICFField class]) {
+        CUIFieldRef fieldRef;
+        NSString *titleCopy = [title copy];
+        id defaultValueCopy = [defaultValue copy];
 
-    fieldRef = CUIFieldCreate(kCFAllocatorDefault,
-                              fieldClass,
-                              (CFStringRef)titleCopy,
-                              (CFTypeRef)defaultValueCopy,
-                              fieldDidChange);
-    
-    [titleCopy release];
-    [defaultValueCopy release];
+        fieldRef = CUIFieldCreate(kCFAllocatorDefault,
+                                  fieldClass,
+                                  (CFStringRef)titleCopy,
+                                  (CFTypeRef)defaultValueCopy,
+                                  fieldDidChange);
+        
+        [titleCopy release];
+        [defaultValueCopy release];
 
-    self = (id)fieldRef;
+        self = (id)fieldRef;
+    } else {
+        self = [super init];
+    }
     
     return NSMakeCollectable(self);
 }

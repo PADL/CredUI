@@ -519,6 +519,7 @@
 				D39EB008186ED2B200C43A24 /* Supporting Files */,
 				D39EB00E186ED2B200C43A24 /* CredUICore.h */,
 				D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */,
+				D3BED8FF1873E72100623B92 /* CFInternalHelper.h */,
 				D39EB0FC1872B85700C43A24 /* GSSItem.h */,
 				D39EB059186FA55400C43A24 /* CUIAttributes.h */,
 				D39EB055186F18E500C43A24 /* CUIController.cpp */,
@@ -531,7 +532,6 @@
 				D39EB043186EF07500C43A24 /* CUIField.h */,
 				D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */,
 				D3BED8F81873B46200623B92 /* CUIProxyCredential.h */,
-				D3BED8FF1873E72100623B92 /* CFInternalHelper.h */,
 			);
 			path = CredUICore;
 			sourceTree = "<group>";
