@@ -73,6 +73,11 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return NSMakeCollectable(self);
 }
 
+- (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     [coder encodeObject:self.attributes];

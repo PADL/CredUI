@@ -12,7 +12,7 @@
 
 @class CUIField;
 
-@interface CUICredential ()
+@interface CUICredential () <NSSecureCoding>
 
 @property(nonatomic, readonly, assign) NSArray *fields;
 
