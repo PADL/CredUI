@@ -75,8 +75,7 @@ public:
         CFErrorRef *error);
     
     void didBecomeSelected(Boolean *pbAutoLogin) {
-        // autologin not yet working
-        //*pbAutoLogin = true;
+        *pbAutoLogin = true;
     }
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}

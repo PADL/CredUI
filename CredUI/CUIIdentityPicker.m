@@ -120,15 +120,10 @@
     return self;
 }
 
-- (void)windowWillClose:(NSNotification *)notification
-{
-    [NSApp stopModalWithCode:NSModalResponseStop];
-}
-
--(void)observeValueForKeyPath:(NSString *)keyPath
-                     ofObject:(id)object
-                       change:(NSDictionary *)change
-                      context:(void *)context
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
 {
     if ([keyPath isEqualTo:@"selectionIndexes"]) {
         NSUInteger index;
@@ -144,11 +139,12 @@
             else
                 [cred didBecomeDeselected];
 
-            if ([cred canSubmit]) {
-                self.submitButton.enabled = YES;
-                if (autoLogin)
-                    [self willSubmitCredential:nil];
+            if (autoLogin) {
+                NSAssert(self.autoLogin == NO, @"Only one credential can be selected and auto-login");
+                self.autoLogin = autoLogin;
             }
+            
+            [self _updateSubmitButtonForSelectedCred];
         }
     }
 }
@@ -205,7 +201,17 @@
             returnCode = sheetReturnCode;
         }];
     } else {
-        returnCode = [NSApp runModalForWindow:self.panel];
+        NSModalSession modalSession = [NSApp beginModalSessionForWindow:self.panel];
+        do {
+            returnCode = [NSApp runModalSession:modalSession];
+            [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
+            if (self.autoLogin) {
+                [self willSubmitCredential:self.submitButton];
+                self.autoLogin = NO;
+            }
+        } while (returnCode == NSModalResponseContinue);
+        
+        [NSApp endModalSession:modalSession];
     }
     if (returnCode == NSModalResponseStop) {
         NSArray *selectedObjects = [self.credsController selectedObjects];
@@ -357,10 +363,20 @@
 
 #pragma mark - Credential submission
 
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [NSApp stopModalWithCode:NSModalResponseStop];
+}
+
+- (void)_updateSubmitButtonForSelectedCred
+{
+    self.submitButton.enabled = [self.selectedCredential canSubmit];
+}
+
 - (void)willSubmitCredential:(id)sender
 {
     [self.selectedCredential willSubmit];
-    [self.panel close];
+    [self.panel performClose:sender];
 }
 
 - (void)didSubmitCredential
@@ -372,6 +388,14 @@
     if (self.saveToKeychain && self.selectedCredential.GSSItem == nil)
         [self.selectedCredential addGSSItem:&error];
     
+}
+
+- (void)credentialFieldDidChange:(id)sender
+{
+    CUICredentialTile *tile = (CUICredentialTile *)[sender superview];
+    
+    if ([tile.credential isEqual:self.selectedCredential])
+        [self _updateSubmitButtonForSelectedCred];
 }
 
 @end

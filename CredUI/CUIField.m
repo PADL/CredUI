@@ -117,15 +117,12 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [aValueCopy release];
 }
 
-- (void)setValue:(id)aValue sender:(NSView *)sender
+- (void)setValue:(id)aValue sender:(id)sender
 {
-    CUICredentialTile *tile = (CUICredentialTile *)[sender superview];
-    CUIIdentityPicker *identityPicker = [sender.window delegate];
+    CUIIdentityPicker *identityPicker = [[(NSView *)sender window] delegate];
 
     [self setValue:aValue];
-    
-    if ([tile.credential canSubmit])
-        identityPicker.submitButton.enabled = YES;
+    [identityPicker credentialFieldDidChange:sender];
 }
 
 - (void)didSubmit:(id)sender

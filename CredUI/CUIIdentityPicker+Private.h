@@ -18,7 +18,9 @@
 @property(nonatomic, retain) NSTextField *messageTextField;
 @property(nonatomic, retain) NSButton *submitButton;
 @property(nonatomic, readonly) NSString *targetDisplayName;
+@property(assign) BOOL autoLogin;
 
+- (void)credentialFieldDidChange:(id)sender;
 - (void)willSubmitCredential:(id)sender;
 - (void)didSubmitCredential;
 
