@@ -15,6 +15,8 @@ __attribute__((visibility("default")))
 - (NSDictionary *)attributes;
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)flags;
 
+- (BOOL)confirm:(NSError * __autoreleasing *)error;
+
 - (GSSItem *)GSSItem;
 - (id)GSSName;
 

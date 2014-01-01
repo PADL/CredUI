@@ -44,7 +44,7 @@ extern "C" {
  * Type is any of the kCUIAttrTypeNNN credential types below, type are
  * strings
  */
-extern const CFTypeRef kCUIAttrClass
+extern const CFStringRef kCUIAttrClass
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 extern const CFStringRef kCUIAttrClassKerberos
@@ -57,7 +57,7 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 /*
  * Item supports acquiring a gss_cred_id_t with GSSItemOperation
  */
-extern const CFTypeRef kCUIAttrSupportGSSCredential
+extern const CFStringRef kCUIAttrSupportGSSCredential
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 /*
@@ -67,26 +67,26 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
  * kCUIAttrNameDisplay can only be returned, constructed from the
  * other name types after creation.
  */
-extern const CFTypeRef kCUIAttrNameType
+extern const CFStringRef kCUIAttrNameType
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrNameTypeGSSExportedName /* CFDataRef */
+extern const CFStringRef kCUIAttrNameTypeGSSExportedName /* CFDataRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrNameTypeGSSUsername /* CFStringRef */
+extern const CFStringRef kCUIAttrNameTypeGSSUsername /* CFStringRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrNameTypeGSSHostBasedService /* CFStringRef */
+extern const CFStringRef kCUIAttrNameTypeGSSHostBasedService /* CFStringRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
-extern const CFTypeRef kCUIAttrName
+extern const CFStringRef kCUIAttrName
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 /* name suiteable to display to user */
-extern const CFTypeRef kCUIAttrNameDisplay /* CFStringRef */
+extern const CFStringRef kCUIAttrNameDisplay /* CFStringRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 /*
  * Unique UUID for this entry
  */
-extern const CFTypeRef kCUIAttrUUID /* CFUUIDRef */
+extern const CFStringRef kCUIAttrUUID /* CFUUIDRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 
@@ -94,9 +94,9 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
  * If the item is a transient credential it can have associated
  * expiration time.
  */
-extern const CFTypeRef kCUIAttrTransientExpire	/* CFDateRef */
+extern const CFStringRef kCUIAttrTransientExpire	/* CFDateRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrTransientDefaultInClass /* CFBooleanRef */
+extern const CFStringRef kCUIAttrTransientDefaultInClass /* CFBooleanRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 /*
  * Credential to use to use when acquiring with with
@@ -107,26 +107,26 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
  * the cfobject kCUIAttrCredentialExists when queried.
  */
 
-extern const CFTypeRef kCUIAttrCredentialPassword /* CFStringRef */
+extern const CFStringRef kCUIAttrCredentialPassword /* CFStringRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrCredentialStore /* CFBooleanRef */
+extern const CFStringRef kCUIAttrCredentialStore /* CFBooleanRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrCredentialSecIdentity /* SecIdentityRef */
+extern const CFStringRef kCUIAttrCredentialSecIdentity /* SecIdentityRef */
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrCredentialExists
+extern const CFStringRef kCUIAttrCredentialExists
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 /*
  * Status of a credentials
  */
 
-extern const CFTypeRef kCUIAttrStatusPersistant
+extern const CFStringRef kCUIAttrStatusPersistant
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrStatusAutoAcquire
+extern const CFStringRef kCUIAttrStatusAutoAcquire
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrStatusAutoAcquireStatus
+extern const CFStringRef kCUIAttrStatusAutoAcquireStatus
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-extern const CFTypeRef kCUIAttrStatusTransient
+extern const CFStringRef kCUIAttrStatusTransient
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 #ifdef __cplusplus

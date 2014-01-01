@@ -26,7 +26,7 @@ extern "C" {
 
 extern CFArrayCallBacks kCUICredentialContextArrayCallBacks;
 
-extern const CFTypeRef kCUIAttrCredentialStatus;
+extern const CFStringRef kCUIAttrCredentialStatus;
 
 // more information needed to make credential
 extern const CFStringRef kCUICredentialNotFinished;

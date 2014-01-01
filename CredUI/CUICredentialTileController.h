@@ -7,5 +7,5 @@
 //
 
 @interface CUICredentialTileController : NSCollectionViewItem
-     
+
 @end

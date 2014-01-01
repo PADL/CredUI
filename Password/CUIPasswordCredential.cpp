@@ -44,7 +44,7 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
     
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Password Credential"), NULL, NULL);
     
-    fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), defaultUsername,
+    fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, kCUIAttrNameTypeGSSUsername, defaultUsername,
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
                                    if (value) {
@@ -54,7 +54,7 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
                                    }
     });
     
-    fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), NULL,
+    fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, kCUIAttrCredentialPassword, NULL,
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    if (value) {
                                        CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);

@@ -11,6 +11,7 @@
 @interface CUICredentialTile : NSView
 
 @property (weak, nonatomic) CUICredential *credential;
+@property(nonatomic, retain) NSTextField *usernameField;
 @property (nonatomic, assign) BOOL selected;
 
 @end

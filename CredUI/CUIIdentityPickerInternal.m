@@ -187,7 +187,9 @@
     
     [self.selectedCredential didSubmit];
     
-    if (self.persist && self.selectedCredential.GSSItem == nil)
+    if (self.persist &&
+        self.selectedCredential.GSSItem == nil &&
+        (self.flags & CUIFlagsExpectConfirmation) == 0)
         [self.selectedCredential addGSSItem:&error];
 }
 

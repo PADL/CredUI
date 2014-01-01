@@ -34,6 +34,7 @@
     textField.selectable = YES;
     textField.editable = YES;
     textField.delegate = field;
+    
     return textField;
 }
 
@@ -75,6 +76,8 @@
             break;
         case kCUIFieldClassEditText:
             view = [self _newEditableTextFieldForCredentialField:field withFrame:*frame];
+            if (field.isUsernameField)
+                self.usernameField = (NSTextField *)view;
             break;
         case kCUIFieldClassPasswordText:
             view = [self _newSecureTextFieldForCredentialField:field withFrame:*frame];
@@ -124,6 +127,13 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+    CUIIdentityPickerInternal *identityPicker = (CUIIdentityPickerInternal *)self.window.delegate;
+
+    if (identityPicker.flags & CUIPasswordOnlyOK)
+        [self.usernameField removeFromSuperview];
+    if (identityPicker.flags & CUIFlagsKeepUsername)
+        self.usernameField.editable = NO;
+    
     if (self.selected) {
         [[NSColor alternateSelectedControlColor] set];
         NSRectFill([self bounds]);

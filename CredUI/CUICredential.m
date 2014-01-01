@@ -209,6 +209,11 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return ret;
 }
 
+- (BOOL)confirm:(NSError * __autoreleasing *)error
+{
+    return [self addGSSItem:error];
+}
+
 - (NSArray *)fields
 {
     return (NSArray *)CUICredentialGetFields([self _credentialRef]);

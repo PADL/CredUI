@@ -137,4 +137,14 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [self setValue:textView.string sender:notification.object];
 }
 
+- (BOOL)isUsernameField
+{
+    return [self.title isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSUsername];
+}
+
+- (BOOL)isPasswordField
+{
+    return [self.title isEqual:(__bridge NSString *)kCUIAttrCredentialPassword];
+}
+
 @end
