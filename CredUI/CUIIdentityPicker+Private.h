@@ -7,6 +7,7 @@
 //
 
 @interface CUIIdentityPicker () <NSWindowDelegate>
+
 @property(nonatomic, assign) CUIFlags flags;
 @property(nonatomic, assign) CUIControllerRef controller;
 @property(nonatomic, retain) CUICredential *selectedCredential;
