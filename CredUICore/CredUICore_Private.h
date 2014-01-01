@@ -10,6 +10,9 @@
 #define CredUI_CredUICore_Private_h
 
 #include <CoreFoundation/CFPlugInCOM.h>
+
+#define CUI_EXPORT  __attribute__((visibility("default")))
+
 #include <CredUICore/CredUICore.h>
 
 #ifdef __cplusplus

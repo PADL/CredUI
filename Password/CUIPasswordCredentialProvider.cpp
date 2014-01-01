@@ -92,7 +92,7 @@ private:
     
 };
 
-void *
+__attribute__((visibility("default"))) void *
 CUIPasswordCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
 {
     if (CFEqual(typeID, kCUIProviderTypeID))

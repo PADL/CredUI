@@ -99,7 +99,7 @@ static const CFRuntimeClass _CUICredentialClass = {
     _CUICredentialCopyDescription
 };
 
-CFTypeID
+CUI_EXPORT CFTypeID
 CUICredentialGetTypeID(void)
 {
     static dispatch_once_t onceToken;
@@ -113,7 +113,7 @@ CUICredentialGetTypeID(void)
     return _CUICredentialTypeID;
 }
 
-CUICredentialRef
+CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
 {
     CUICredentialRef cred;
@@ -134,7 +134,7 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
     return cred;
 }
 
-CFArrayRef
+CUI_EXPORT CFArrayRef
 CUICredentialGetFields(CUICredentialRef cred)
 {
     if (cred->_context)
@@ -143,7 +143,7 @@ CUICredentialGetFields(CUICredentialRef cred)
     return NULL;
 }
 
-CFDictionaryRef
+CUI_EXPORT CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred)
 {
     if (cred->_context)
@@ -152,9 +152,11 @@ CUICredentialGetAttributes(CUICredentialRef cred)
     return NULL;
 }
 
-void
+CUI_EXPORT void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 {
+    *pbAutoLogin = false;
+
     if (cred->_context)
         cred->_context->didBecomeSelected(pbAutoLogin);
 }
@@ -185,14 +187,14 @@ __CUICredentialIsReturnable(CUICredentialRef cred)
     return false;
 }
 
-Boolean
+CUI_EXPORT Boolean
 CUICredentialCanSubmit(CUICredentialRef cred)
 {
     return __CUICredentialHasMandatoryKeys(cred) &&
            __CUICredentialIsReturnable(cred);
 }
 
-void
+CUI_EXPORT void
 CUICredentialWillSubmit(CUICredentialRef cred)
 {
     CUIFieldRef selectedCredSubmitButton;
@@ -202,14 +204,14 @@ CUICredentialWillSubmit(CUICredentialRef cred)
         CUIFieldSetValue(selectedCredSubmitButton, kCFBooleanTrue);
 }
 
-void
+CUI_EXPORT void
 CUICredentialDidSubmit(CUICredentialRef cred)
 {
     if (cred->_context)
         cred->_context->didSubmit();
 }
 
-void
+CUI_EXPORT void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred)
 {
     if (cred->_context)
@@ -231,7 +233,7 @@ __CUICredentialFilterFieldsWithPredicate(const void *value, void *_context)
         CFArrayAppendValue(context->array, field);
 }
 
-CFArrayRef
+CUI_EXPORT CFArrayRef
 CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
                                      Boolean (^predicate)(CUIFieldRef field))
 {
@@ -252,7 +254,7 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
     return context.array;
 }
 
-void
+CUI_EXPORT void
 CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop))
 {
     CFArrayRef fields = CUICredentialGetFields(cred);
@@ -270,7 +272,7 @@ CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boo
     }
 }
 
-CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass)
 {
     __block CUIFieldRef theField = NULL;

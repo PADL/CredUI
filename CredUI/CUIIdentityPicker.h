@@ -17,6 +17,7 @@
 @class GSSItem;
 @class CUICredential;
 
+__attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;

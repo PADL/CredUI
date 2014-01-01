@@ -95,7 +95,7 @@ private:
     
 };
 
-void *
+__attribute__((visibility("default"))) void *
 CUIPersonaCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
 {
     if (CFEqual(typeID, kCUIProviderTypeID))

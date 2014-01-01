@@ -87,7 +87,7 @@ static const CFRuntimeClass _CUIFieldClass = {
     _CUIFieldCopyDescription
 };
 
-CFTypeID
+CUI_EXPORT CFTypeID
 CUIFieldGetTypeID(void)
 {
     static dispatch_once_t onceToken;
@@ -101,7 +101,7 @@ CUIFieldGetTypeID(void)
     return _CUIFieldTypeID;
 }
 
-CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUIFieldCreate(
                CFAllocatorRef allocator,
                CUIFieldClass fieldClass,
@@ -123,7 +123,7 @@ CUIFieldCreate(
     return f;
 }
 
-CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUIFieldCreateCopy(
                    CFAllocatorRef allocator,
                    CUIFieldRef field)
@@ -137,25 +137,25 @@ CUIFieldCreateCopy(
     return f;
 }
 
-CUIFieldClass
+CUI_EXPORT CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field)
 {
     return field->_class;
 }
 
-CFStringRef
+CUI_EXPORT CFStringRef
 CUIFieldGetTitle(CUIFieldRef field)
 {
     return field->_title;
 }
 
-CFTypeRef
+CUI_EXPORT CFTypeRef
 CUIFieldGetDefaultValue(CUIFieldRef field)
 {
     return field->_defaultValue;
 }
 
-void
+CUI_EXPORT void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
     if (field->_delegate)

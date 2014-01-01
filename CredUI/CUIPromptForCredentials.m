@@ -40,7 +40,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     return [selectedCredential canSubmit];
 }
 
-Boolean
+CUI_EXPORT Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
                         CFTypeRef reserved,

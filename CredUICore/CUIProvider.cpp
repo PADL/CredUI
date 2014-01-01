@@ -10,7 +10,7 @@
 
 #include <NSSystemDirectories.h>
 
-#define CUI_CONST_TYPE(t,k,v) const t k = (t)(CFSTR(#v));
+#define CUI_CONST_TYPE(t,k,v) CUI_EXPORT const t k = (t)(CFSTR(#v));
 
 CUI_CONST_TYPE(CFTypeRef,   kCUIAttrClass,                          kCUIAttrClass);
 CUI_CONST_TYPE(CFStringRef, kCUIAttrClassKerberos,                  kGSSAttrClassKerberos);

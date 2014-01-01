@@ -128,8 +128,10 @@
 
 - (void)didBecomeSelected:(BOOL *)pbAutoLogin
 {
-    Boolean bAutoLogin;
+    Boolean bAutoLogin = false;
+    
     CUICredentialDidBecomeSelected([self _credentialRef], &bAutoLogin);
+    
     *pbAutoLogin = bAutoLogin;
 }
 
@@ -230,7 +232,8 @@
     CFErrorRef cfError;
     BOOL ret = NO;
     
-    *error = nil;
+    if (error)
+        *error = nil;
     
     item = GSSItemAdd((__bridge CFDictionaryRef)itemAttributes, &cfError);
     if (item) {
@@ -238,8 +241,12 @@
         CFRelease(item);
     }
     
-    if (cfError)
-        *error = CFBridgingRelease(cfError);
+    if (cfError) {
+        if (error)
+            *error = CFBridgingRelease(cfError);
+        else
+            CFRelease(cfError);
+    }
     
     return ret;
 }

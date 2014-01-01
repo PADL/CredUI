@@ -8,8 +8,6 @@
 
 #include "CredUICore_Private.h"
 
-#include <GSS/GSS.h>
-
 struct __CUIController {
     CFRuntimeBase _base;
     CFArrayRef _providers;
@@ -64,7 +62,7 @@ static const CFRuntimeClass _CUIControllerClass = {
     _CUIControllerCopyDescription
 };
 
-CFTypeID
+CUI_EXPORT CFTypeID
 CUIControllerGetTypeID(void)
 {
     static dispatch_once_t onceToken;
@@ -78,7 +76,7 @@ CUIControllerGetTypeID(void)
     return _CUIControllerTypeID;
 }
 
-CUIControllerRef
+CUI_EXPORT CUIControllerRef
 CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageScenario usage,
                     CUIUsageFlags usageFlags)
@@ -284,7 +282,7 @@ __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
 }
 
 
-Boolean
+CUI_EXPORT Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CFIndex index;
@@ -318,31 +316,31 @@ __CUICopyMutableAttributesKeys(const void *key, const void *value, void *context
     CFDictionarySetValue((CFMutableDictionaryRef)context, key, value);
 }
 
-void
+CUI_EXPORT void
 CUIControllerSetAttributes(CUIControllerRef controller, CFDictionaryRef attributes)
 {
     CFDictionaryApplyFunction(attributes, __CUICopyMutableAttributesKeys, (void *)controller->_attributes);
 }
 
-CFDictionaryRef
+CUI_EXPORT CFDictionaryRef
 CUIControllerGetAttributes(CUIControllerRef controller)
 {
     return controller->_attributes;
 }
 
-void
+CUI_EXPORT void
 CUIControllerSetAuthError(CUIControllerRef controller, CFErrorRef authError)
 {
     __CUISetter((CFTypeRef &)controller->_authError, authError);
 }
 
-CFErrorRef
+CUI_EXPORT CFErrorRef
 CUIControllerGetAuthError(CUIControllerRef controller)
 {
     return controller->_authError;
 }
 
-Boolean
+CUI_EXPORT Boolean
 CUIControllerSetCredUIContext(CUIControllerRef controller,
                               CUICredUIContextProperties whichProps,
                               const CUICredUIContext *uic)
@@ -362,43 +360,43 @@ CUIControllerSetCredUIContext(CUIControllerRef controller,
     return true;
 }
 
-const CUICredUIContext *
+CUI_EXPORT const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller)
 {
     return &controller->_uiContext;
 }
 
-void
+CUI_EXPORT void
 CUIControllerSetSaveToKeychain(CUIControllerRef controller, Boolean save)
 {
     controller->_saveToKeychain = save;
 }
 
-Boolean
+CUI_EXPORT Boolean
 CUIControllerGetSaveToKeychain(CUIControllerRef controller)
 {
     return controller->_saveToKeychain;
 }
 
-void
+CUI_EXPORT void
 CUIControllerSetGssContextHandle(CUIControllerRef controller, CFTypeRef gssContextHandle)
 {
     __CUISetter(controller->_gssContextHandle, gssContextHandle);
 }
 
-CFTypeRef
+CUI_EXPORT CFTypeRef
 CUIControllerGetGssContextHandle(CUIControllerRef controller)
 {
     return controller->_gssContextHandle;
 }
 
-void
+CUI_EXPORT void
 CUIControllerSetGssTargetName(CUIControllerRef controller, gss_name_t targetName)
 {
     __CUISetter((CFTypeRef &)controller->_gssTargetName, (CFTypeRef)targetName);
 }
 
-gss_name_t
+CUI_EXPORT gss_name_t
 CUIControllerGetGssTargetName(CUIControllerRef controller)
 {
     return controller->_gssTargetName;

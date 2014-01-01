@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-Boolean
+CUI_EXPORT Boolean
 GSSPromptForCredentials(gss_name_t targetName,
                         CFTypeRef gssContextHandle,
                         CUICredUIContext *uiContext,
@@ -25,7 +25,7 @@ GSSPromptForCredentials(gss_name_t targetName,
 #define GSS_S_PROMPTING_NEEDED (1 << (GSS_C_SUPPLEMENTARY_OFFSET + 5))
 #endif
 
-Boolean
+CUI_EXPORT Boolean
 GSSIsPromptingNeeded(CFErrorRef authError)
 {
     NSError *error = (__bridge NSError *)authError;

@@ -142,8 +142,10 @@
             else
                 [cred didBecomeDeselected];
 
-            if (autoLogin)
+            if (autoLogin) {
                 [self willSubmitCredential:nil];
+                break;
+            }
         }
     }
 }

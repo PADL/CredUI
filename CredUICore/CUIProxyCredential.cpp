@@ -91,7 +91,7 @@ protected:
     }
 };
 
-CUICredentialRef
+CUI_EXPORT CUICredentialRef
 CUICredentialCreateProxy(CFAllocatorRef allocator,
                          CFDictionaryRef credAttributes)
 {

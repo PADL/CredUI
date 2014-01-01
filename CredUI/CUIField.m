@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-
 @implementation CUIField
 {
 }

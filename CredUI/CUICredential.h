@@ -9,6 +9,7 @@
 @class NSDictionary;
 @class GSSItem;
 
+__attribute__((visibility("default")))
 @interface CUICredential : NSObject
 
 - (NSDictionary *)attributes;
