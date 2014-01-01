@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include "CFBridgeHelper.h"
+
 @interface CUICFField : CUIField
 @end
 
@@ -94,7 +96,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (void)dealloc
 {
-    if ([self class] != [CUICFField class])
+    if ([self class] != [CUICFField class] && _internal)
         CFRelease(_internal);
     
     [super dealloc];

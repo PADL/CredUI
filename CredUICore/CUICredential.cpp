@@ -48,7 +48,7 @@ CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
     .equal = _CUICredentialContextEqual
 };
 
-static CFTypeID _CUICredentialTypeID = _kCFRuntimeNotATypeID;
+static CFTypeID __CUICredentialTypeID = _kCFRuntimeNotATypeID;
 
 static void _CUICredentialDeallocate(CFTypeRef cf)
 {
@@ -105,12 +105,12 @@ CUICredentialGetTypeID(void)
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        if (_CUICredentialTypeID == _kCFRuntimeNotATypeID) {
-            _CUICredentialTypeID = _CFRuntimeRegisterClass(&_CUICredentialClass);
+        if (__CUICredentialTypeID == _kCFRuntimeNotATypeID) {
+            __CUICredentialTypeID = _CFRuntimeRegisterClass(&_CUICredentialClass);
         }
     });
     
-    return _CUICredentialTypeID;
+    return __CUICredentialTypeID;
 }
 
 CUI_EXPORT CUICredentialRef
@@ -119,7 +119,11 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
     CUICredentialRef cred;
     CUICredentialContext *credContext;
     
-    cred = (CUICredentialRef)_CFRuntimeCreateInstance(allocator, CUICredentialGetTypeID(), sizeof(struct __CUICredential) - sizeof(CFRuntimeBase), NULL);
+    if (iunk == NULL)
+        return NULL;
+    
+    cred = (CUICredentialRef)_CFRuntimeCreateInstance(allocator, CUICredentialGetTypeID(),
+                                                      sizeof(struct __CUICredential) - sizeof(CFRuntimeBase), NULL);
     if (cred == NULL)
         return NULL;
     
@@ -137,6 +141,8 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
 CUI_EXPORT CFArrayRef
 CUICredentialGetFields(CUICredentialRef cred)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, CFArrayRef, cred, "fields");
+    
     if (cred->_context)
         return cred->_context->getFields();
     
@@ -146,6 +152,8 @@ CUICredentialGetFields(CUICredentialRef cred)
 CUI_EXPORT CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, CFDictionaryRef, cred, "attributes");
+    
     if (cred->_context)
         return cred->_context->getAttributes();
     
@@ -155,10 +163,22 @@ CUICredentialGetAttributes(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 {
-    *pbAutoLogin = false;
+    __block BOOL bAutoLogin;
+    __block BOOL bCalledSubclass = true;
 
-    if (cred->_context)
-        cred->_context->didBecomeSelected(pbAutoLogin);
+    ^(BOOL *v) {
+        CF_OBJC_FUNCDISPATCH1(__CUICredentialTypeID, void, cred, "didBecomeSelected:", v);
+        bCalledSubclass = false;
+    }(&bAutoLogin);
+
+    if (bCalledSubclass) {
+        *pbAutoLogin = bAutoLogin;
+    } else {
+        *pbAutoLogin = false;
+    
+        if (cred->_context)
+            cred->_context->didBecomeSelected(pbAutoLogin);
+    }
 }
 
 static Boolean
@@ -190,6 +210,8 @@ __CUICredentialIsReturnable(CUICredentialRef cred)
 CUI_EXPORT Boolean
 CUICredentialCanSubmit(CUICredentialRef cred)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, Boolean, cred, "canSubmit");
+
     return __CUICredentialHasMandatoryKeys(cred) &&
            __CUICredentialIsReturnable(cred);
 }
@@ -198,7 +220,9 @@ CUI_EXPORT void
 CUICredentialWillSubmit(CUICredentialRef cred)
 {
     CUIFieldRef selectedCredSubmitButton;
-    
+   
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, void, cred, "willSubmit");
+
     selectedCredSubmitButton = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassSubmitButton);
     if (selectedCredSubmitButton)
         CUIFieldSetValue(selectedCredSubmitButton, kCFBooleanTrue);
@@ -207,6 +231,8 @@ CUICredentialWillSubmit(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidSubmit(CUICredentialRef cred)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, void, cred, "didSubmit");
+
     if (cred->_context)
         cred->_context->didSubmit();
 }
@@ -214,6 +240,8 @@ CUICredentialDidSubmit(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred)
 {
+    CF_OBJC_FUNCDISPATCH0(__CUICredentialTypeID, void, cred, "didBecomeDeselected");
+
     if (cred->_context)
         cred->_context->didBecomeDeselected();
 }
@@ -277,6 +305,8 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 {
     __block CUIFieldRef theField = NULL;
 
+    CF_OBJC_FUNCDISPATCH1(__CUICredentialTypeID, CUIFieldRef, cred, "firstFieldWithClass:", fieldClass);
+    
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         if (CUIFieldGetClass(field) == fieldClass) {
             theField = (CUIFieldRef)CFRetain(field);

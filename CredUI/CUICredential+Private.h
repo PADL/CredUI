@@ -34,7 +34,6 @@
 - (void)willSubmit;
 - (void)didSubmit;
 
-- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))block;
 - (BOOL)addGSSItem:(NSError * __autoreleasing *)error;
 
 @end

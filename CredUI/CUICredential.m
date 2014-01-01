@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include "CFBridgeHelper.h"
+
 @interface CUICFCredential : CUICredential
 @end
 
@@ -77,7 +79,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (void)dealloc
 {
-    if ([self class] != [CUICFCredential class])
+    if ([self class] != [CUICFCredential class] && _internal)
         CFRelease(_internal);
     
     [super dealloc];
@@ -139,15 +141,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 - (void)didSubmit
 {
     CUICredentialDidSubmit([self _credentialRef]);
-}
-
-- (void)fieldsApplyBlock:(void (^)(CUIFieldRef, BOOL *))cb
-{
-    CUICredentialFieldsApplyBlock([self _credentialRef], ^(CUIFieldRef field, Boolean *pStop) {
-        BOOL stop = *pStop;
-        cb(field, &stop);
-        *pStop = stop;
-    });
 }
 
 - (GSSItem *)GSSItem

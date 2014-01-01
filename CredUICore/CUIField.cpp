@@ -17,7 +17,7 @@ struct __CUIField {
 
 };
 
-static CFTypeID _CUIFieldTypeID = _kCFRuntimeNotATypeID;
+static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
 
 // from CFXMLNode.c
 CF_INLINE Boolean _nullSafeCFEqual(CFTypeRef cf1, CFTypeRef cf2)
@@ -93,12 +93,12 @@ CUIFieldGetTypeID(void)
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        if (_CUIFieldTypeID == _kCFRuntimeNotATypeID) {
-            _CUIFieldTypeID = _CFRuntimeRegisterClass(&_CUIFieldClass);
+        if (__CUIFieldTypeID == _kCFRuntimeNotATypeID) {
+            __CUIFieldTypeID = _CFRuntimeRegisterClass(&_CUIFieldClass);
         }
     });
     
-    return _CUIFieldTypeID;
+    return __CUIFieldTypeID;
 }
 
 CUI_EXPORT CUIFieldRef
@@ -129,6 +129,8 @@ CUIFieldCreateCopy(
                    CUIFieldRef field)
 {
     CUIFieldRef f;
+    
+    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, CUIFieldRef, field, "copy");
     
     f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
     if (f == NULL)

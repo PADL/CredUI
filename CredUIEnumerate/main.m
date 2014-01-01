@@ -21,6 +21,39 @@
 
 #include "../CredUICore/GSSItem.h"
 
+@interface FooCredential : CUICredential
+@end
+
+@class CUIField;
+
+@implementation FooCredential
+- (void)didBecomeSelected:(BOOL *)foo
+{
+    NSLog(@"didBecomeSelected");
+    *foo = YES;
+}
+
+- (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
+{
+    NSLog(@"FooCredential: firstFieldWihClass: %d", (int)fieldClass);
+    return nil;
+}
+@end
+
+static void testSubclasses(void)
+{
+    FooCredential *foo = [[FooCredential alloc] init];
+    CUIFieldRef field = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
+    
+
+    NSLog(@"field: %@", field);
+    
+    Boolean bar;
+    
+    CUICredentialDidBecomeSelected((__bridge CUICredentialRef)foo, &bar);
+    NSLog(@"Did become selected = %d", bar);
+}
+
 static NSString *readFromConsole(NSString *prompt, NSString *defaultValue, BOOL echo)
 {
     char buf[BUFSIZ], *s;
@@ -49,6 +82,9 @@ int main(int argc, const char * argv[])
                                  (__bridge id)kCUIAttrNameType: (__bridge id)kCUIAttrNameTypeGSSUsername,
                                  (__bridge id)kCUIAttrName: @"lhoward@ATHENA.MIT.EDU"
                                 };
+    
+    testSubclasses();
+    
     controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, kCUIUsageFlagsNoUI);
     if (controller == NULL) {
         NSLog(@"failed to create controller");

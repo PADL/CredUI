@@ -92,6 +92,8 @@
 		D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */; };
 		D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */; };
 		D3BED8FA1873B46200623B92 /* CUIProxyCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F81873B46200623B92 /* CUIProxyCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3BED8FC1873E69C00623B92 /* CFBridgeHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8FB1873E69C00623B92 /* CFBridgeHelper.h */; };
+		D3BED9001873E72100623B92 /* CFInternalHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8FF1873E72100623B92 /* CFInternalHelper.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -294,6 +296,9 @@
 		D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSCredential+CredUI.m"; sourceTree = "<group>"; };
 		D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIProxyCredential.cpp; sourceTree = "<group>"; };
 		D3BED8F81873B46200623B92 /* CUIProxyCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIProxyCredential.h; sourceTree = "<group>"; };
+		D3BED8FB1873E69C00623B92 /* CFBridgeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFBridgeHelper.h; sourceTree = "<group>"; };
+		D3BED8FF1873E72100623B92 /* CFInternalHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFInternalHelper.h; sourceTree = "<group>"; };
+		D3BED9011873EAA700623B92 /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = usr/lib/libobjc.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -431,6 +436,7 @@
 		D336E27C182B51A6009271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3BED9011873EAA700623B92 /* libobjc.dylib */,
 				D39EB0FA1872B3F800C43A24 /* GSSKit.framework */,
 				D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */,
 				D39EB051186F113A00C43A24 /* CoreServices.framework */,
@@ -471,6 +477,7 @@
 				D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */,
 				D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
+				D3BED8FB1873E69C00623B92 /* CFBridgeHelper.h */,
 				D3BED8F21872F5FA00623B92 /* CUITypes.h */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
 				D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */,
@@ -526,6 +533,7 @@
 				D39EB043186EF07500C43A24 /* CUIField.h */,
 				D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */,
 				D3BED8F81873B46200623B92 /* CUIProxyCredential.h */,
+				D3BED8FF1873E72100623B92 /* CFInternalHelper.h */,
 			);
 			path = CredUICore;
 			sourceTree = "<group>";
@@ -661,6 +669,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3BED8FC1873E69C00623B92 /* CFBridgeHelper.h in Headers */,
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
 				D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */,
 				D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */,
@@ -680,6 +689,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D39EB03D186EED1900C43A24 /* CUIProvider.h in Headers */,
+				D3BED9001873E72100623B92 /* CFInternalHelper.h in Headers */,
 				D39EB058186F18E500C43A24 /* CUIController.h in Headers */,
 				D39EB045186EF07500C43A24 /* CUIField.h in Headers */,
 				D39EB05A186FA57200C43A24 /* CUIAttributes.h in Headers */,
@@ -1373,6 +1383,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "CredUICore/CredUICore-Info.plist";
+				OTHER_LDFLAGS = "-weak-lobjc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -1389,6 +1400,7 @@
 				GCC_PREFIX_HEADER = "CredUICore/CredUICore-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "CredUICore/CredUICore-Info.plist";
+				OTHER_LDFLAGS = "-weak-lobjc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
