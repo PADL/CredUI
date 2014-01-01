@@ -89,6 +89,7 @@
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; };
 		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,6 +288,8 @@
 		D39EB0FC1872B85700C43A24 /* GSSItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
+		D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSCredential+CredUI.h"; sourceTree = "<group>"; };
+		D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSCredential+CredUI.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -576,6 +579,8 @@
 			children = (
 				D39EB06F186FB1DA00C43A24 /* CredUIPickerDelegate.h */,
 				D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */,
+				D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */,
+				D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */,
 				D39EB072186FB1DA00C43A24 /* MainMenu.xib */,
 				D39EB075186FB1DA00C43A24 /* Images.xcassets */,
 				D39EB064186FB1DA00C43A24 /* Supporting Files */,
@@ -1021,6 +1026,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D39EB071186FB1DA00C43A24 /* CredUIPickerDelegate.m in Sources */,
+				D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */,
 				D39EB06A186FB1DA00C43A24 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

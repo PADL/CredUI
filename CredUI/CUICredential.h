@@ -16,6 +16,5 @@
 
 - (GSSItem *)GSSItem;
 - (id)GSSName;
-- (NSString *)GSSMechanismClass;
 
 @end

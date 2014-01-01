@@ -6,18 +6,16 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import "CredUIPickerDelegate.h"
-
 #import <CredUI/CredUI.h>
 #import <GSSKit/GSSKit.h>
 
-#import <browserid.h>
-#import <CFBrowserID.h>
-
+#import "CredUIPickerDelegate.h"
+#import "GSSCredential+CredUI.h"
 
 @interface CredUIPickerDelegate ()
 @property (nonatomic, strong) CUIIdentityPicker *picker;
 @end
+
 
 @implementation CredUIPickerDelegate
 
@@ -25,25 +23,13 @@
 {
     GSSCredential *cred;
     NSError *error;
-
+    
     if (identityPicker.selectedCredential == nil) {
         NSLog(@"no selected credential");
         return nil;
     }
-    
-    GSSName *name = identityPicker.selectedCredential.GSSName;
 
-    if (name == nil) {
-        NSLog(@"no name");
-        return nil;
-    }
-
-    NSLog(@"identityPicker selected GSS name = %@", name);
-
-    cred = [[GSSCredential alloc] initWithName:name
-                                     mechanism:[GSSMechanism mechanismWithClass:identityPicker.selectedCredential.GSSMechanismClass]
-                                    attributes:[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
-                                         error:&error];
+    cred = [[GSSCredential alloc] initWithCUICredential:identityPicker.selectedCredential error:&error];
     if (cred)
         NSLog(@"credential acquired: %@", cred);
     else if (error)
@@ -52,7 +38,6 @@
         NSLog(@"no cred / no error");
     
     return cred;
-
 }
 
 - (NSUInteger)initAcceptGSSContext:(CUIIdentityPicker *)identityPicker

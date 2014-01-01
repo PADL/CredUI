@@ -187,11 +187,6 @@
     return nil;
 }
 
-- (NSString *)GSSMechanismClass
-{
-    return self.attributes[(__bridge id)kCUIAttrClass];
-}
-
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
 {
     NSMutableDictionary *transformedDict = [[NSMutableDictionary alloc] init];
