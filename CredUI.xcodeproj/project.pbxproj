@@ -462,6 +462,7 @@
 			children = (
 				D336E284182B51A6009271CD /* Supporting Files */,
 				D336E28A182B51A6009271CD /* CredUI.h */,
+				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D39EB0BD1871302100C43A24 /* CUIField.h */,
 				D39EB0BE1871302100C43A24 /* CUIField.m */,
 				D39EB0CB18714ED200C43A24 /* CUICredential.h */,
@@ -474,7 +475,6 @@
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */,
 				D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */,
-				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D3BED8FB1873E69C00623B92 /* CFBridgeHelper.h */,
 				D3BED8F21872F5FA00623B92 /* CUITypes.h */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
