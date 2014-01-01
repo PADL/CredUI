@@ -144,7 +144,6 @@
 
             if (autoLogin) {
                 [self willSubmitCredential:nil];
-                break;
             }
         }
     }

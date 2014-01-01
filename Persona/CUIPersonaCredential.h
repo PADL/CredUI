@@ -74,7 +74,10 @@ public:
         CFDictionaryRef attributes,
         CFErrorRef *error);
     
-    void didBecomeSelected(Boolean *pbAutoLogin) {}
+    void didBecomeSelected(Boolean *pbAutoLogin) {
+        // autologin not yet working
+        //*pbAutoLogin = true;
+    }
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
     
