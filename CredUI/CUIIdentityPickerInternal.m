@@ -24,14 +24,16 @@
     
     if (self.flags & CUIFlagsGenericCredentials)
         usageFlags |= kCUIUsageFlagsGeneric;
-    if (self.flags & CUIFlagsExcludePersistedCredentials)
-        usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     if (self.flags & CUIFlagsExcludeCertificates)
         usageFlags |= kCUIUsageFlagsExcludeCertificates;
-    if (self.flags & CUIFlagsKeepUsername)
-        usageFlags |= kCUIUsageFlagsKeepUsername;
+    if (self.flags & (CUIFlagsRequireCertificate | CUIFlagsRequireSmartcard))
+        usageFlags |= kCUIUsageFlagsRequireCertificates;
     if (self.flags & CUIFlagsPasswordOnlyOK)
         usageFlags |= kCUIUsageFlagsPasswordOnlyOK;
+    if (self.flags & CUIFlagsKeepUsername)
+        usageFlags |= kCUIUsageFlagsKeepUsername;
+    if (self.flags & CUIFlagsExcludePersistedCredentials)
+        usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     
     return CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
 }
