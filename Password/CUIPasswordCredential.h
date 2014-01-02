@@ -82,10 +82,8 @@ public:
     void didSubmit(void) {
     }
    
-    Boolean confirm(CFErrorRef *error) {
-        return false;
-    }
-
+    Boolean confirm(CFErrorRef *error);
+    
     CUIPasswordCredential() {
         _retainCount = 1;
         _inCredUsable = false;
@@ -96,6 +94,7 @@ public:
 private:
     int32_t _retainCount;
     bool _inCredUsable;
+    bool _generic;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
     

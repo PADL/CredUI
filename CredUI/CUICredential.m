@@ -7,6 +7,7 @@
 //
 
 #include "CFBridgeHelper.h"
+#include "CUIProviderUtilities.h"
 
 @interface CUICFCredential : CUICredential
 @end
@@ -133,6 +134,8 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 {
     CUICredentialDidSubmit([self _credentialRef]);
 }
+
+extern CFArrayRef GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
 
 - (GSSItem *)GSSItem
 {

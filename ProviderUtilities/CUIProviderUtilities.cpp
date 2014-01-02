@@ -8,6 +8,8 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
+#include <CredUICore/CUIAttributes.h>
+
 #include "CUIProviderUtilities.h"
 
 static CFStringRef kCUIPrefix = CFSTR("kCUI");
@@ -60,4 +62,52 @@ CFDictionaryRef CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attr
 CFDictionaryRef CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
 {
     return transformAttributes(attributes, true);
+}
+
+Boolean
+CUIGetAttributeSource(CFDictionaryRef attributes)
+{
+    if (CFDictionaryGetValue(attributes, kCUIAttrUUID))
+        return kCUIAttributeSourceGSSItem;
+    else
+        return kCUIAttributeSourceUser;
+}
+
+extern "C" {
+    struct GSSItem;
+
+    extern struct GSSItem *
+    GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
+
+    extern Boolean
+    GSSItemUpdate(CFDictionaryRef query, CFDictionaryRef attributesToUpdate, CFErrorRef *error);
+}
+
+Boolean
+CUIAddGSSItem(CFDictionaryRef attributes, CFErrorRef *error)
+{
+    CFDictionaryRef gssItemAttributes;
+    Boolean ret = false;
+    struct GSSItem *item = NULL;
+
+    if (error)
+        *error = NULL;
+
+    gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(attributes);
+    if (gssItemAttributes == NULL)
+        return false;
+
+    if (CUIGetAttributeSource(attributes) == kCUIAttributeSourceGSSItem) {
+        ret = GSSItemUpdate(gssItemAttributes, gssItemAttributes, error);
+    } else {
+        item = GSSItemAdd(gssItemAttributes, error);
+        if (item) {
+            ret = true;
+            CFRelease(item);
+        }
+    }
+    
+    CFRelease(gssItemAttributes);
+    
+    return ret;
 }

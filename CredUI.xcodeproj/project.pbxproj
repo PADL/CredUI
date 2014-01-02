@@ -11,6 +11,8 @@
 		D32662C218752D01004C1F57 /* CUIProviderUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = D32662C018752D01004C1F57 /* CUIProviderUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D32662C518752D8A004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
 		D32662C818752D98004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
+		D32662CB1875308A004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
+		D32662CC187530C3004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
 		D336E288182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E286182B51A6009271CD /* InfoPlist.strings */; };
 		D336E293182B51A6009271CD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D336E294182B51A6009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
@@ -117,6 +119,20 @@
 			remoteInfo = CUIProviderUtilities;
 		};
 		D32662C618752D95004C1F57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3AA965418752BCB003852C5;
+			remoteInfo = CUIProviderUtilities;
+		};
+		D32662C918753082004C1F57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3AA965418752BCB003852C5;
+			remoteInfo = CUIProviderUtilities;
+		};
+		D32662CD187530C7004C1F57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
@@ -361,6 +377,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D32662CB1875308A004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D39EB05B186FAA0200C43A24 /* CredUICore.framework in Frameworks */,
 				D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */,
 				D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */,
@@ -445,6 +462,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D32662CC187530C3004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D39EB0E81872532E00C43A24 /* GSS.framework in Frameworks */,
 				D39EB0E718724FD000C43A24 /* libbrowserid.0.dylib in Frameworks */,
 				D39EB0E518724FC400C43A24 /* CredUICore.framework in Frameworks */,
@@ -482,10 +500,10 @@
 				D336E298182B51A6009271CD /* CredUITests */,
 				D39EB007186ED2B200C43A24 /* CredUICore */,
 				D39EB01B186ED2B200C43A24 /* CredUICoreTests */,
-				D39EB030186ED50800C43A24 /* Password */,
 				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
 				D39EB080186FB1DA00C43A24 /* CredUIPickerTests */,
 				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
+				D39EB030186ED50800C43A24 /* Password */,
 				D39EB0D51872441300C43A24 /* Persona */,
 				D3F67B0E187513A1006B36C3 /* GSSItem */,
 				D336E27C182B51A6009271CD /* Frameworks */,
@@ -828,6 +846,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D32662CA18753082004C1F57 /* PBXTargetDependency */,
 				D39EB0AD1870407600C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUI;
@@ -979,6 +998,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D32662CE187530C7004C1F57 /* PBXTargetDependency */,
 				D39EB0EA1872537F00C43A24 /* PBXTargetDependency */,
 			);
 			name = Persona;
@@ -1266,6 +1286,16 @@
 			isa = PBXTargetDependency;
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
 			targetProxy = D32662C618752D95004C1F57 /* PBXContainerItemProxy */;
+		};
+		D32662CA18753082004C1F57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
+			targetProxy = D32662C918753082004C1F57 /* PBXContainerItemProxy */;
+		};
+		D32662CE187530C7004C1F57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
+			targetProxy = D32662CD187530C7004C1F57 /* PBXContainerItemProxy */;
 		};
 		D336E296182B51A6009271CD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

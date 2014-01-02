@@ -7,6 +7,7 @@
 //
 
 #include "CUIPasswordCredential.h"
+#include "CUIProviderUtilities.h"
 
 Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
                                                   CUIUsageFlags usageFlags,
@@ -19,11 +20,13 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
     if (error != NULL)
         *error = NULL;
     
+    _generic = !!(usageFlags & kCUIUsageFlagsGeneric);
+    
     if (attributes) {
         /*
          * If this is a stored item (i.e. it has a UUID) and it's not a password credential, ignore it
          */
-        if (CFDictionaryGetValue(attributes, kCUIAttrUUID) &&
+        if (CUIGetAttributeSource(attributes) != kCUIAttributeSourceUser &&
             !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
             return false;
 
@@ -95,4 +98,17 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
     }
     
     return status;
+}
+
+Boolean CUIPasswordCredential::confirm(CFErrorRef *error)
+{
+    if (!_generic) {
+        /*
+         * If the attributes didn't come from a GSS item, then create one.
+         */
+        if (CUIGetAttributeSource(getAttributes()) != kCUIAttributeSourceGSSItem)
+            return CUIAddGSSItem(getAttributes(), error);
+    }
+    
+    return false;
 }
