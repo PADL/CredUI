@@ -24,6 +24,7 @@ __attribute__((visibility("default")))
 
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
+@property(nonatomic, assign) CUICredUIContext *credUIContext;
 
 /* Credentials dictionary */
 @property(nonatomic, copy) NSDictionary *attributes;

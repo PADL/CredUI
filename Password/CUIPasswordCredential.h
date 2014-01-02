@@ -79,7 +79,10 @@ public:
     void didBecomeDeselected(void) {
     }
     
-    void didSubmit(void);
+    void didSubmit(void) {
+    }
+    
+    void syncPersistedPassword(void);
     
     Boolean isPlaceholderPassword(void) {
         CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);

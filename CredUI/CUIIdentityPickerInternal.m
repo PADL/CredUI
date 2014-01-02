@@ -28,7 +28,7 @@
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     if (self.flags & CUIFlagsKeepUsername)
         usageFlags |= kCUIUsageFlagsKeepUsername;
-    if (self.flags & CUIPasswordOnlyOK)
+    if (self.flags & CUIFlagsPasswordOnlyOK)
         usageFlags |= kCUIUsageFlagsPasswordOnlyOK;
     
     return CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
@@ -51,14 +51,14 @@
         self.collectionView = [self _newCollectionViewWithWindow:self.window];
         [self.window.contentView addSubview:self.collectionView];
       
-        if (self.flags & CUIPersist)
+        if (self.flags & CUIFlagsPersist)
             self.persist = YES;
-        else if (self.flags & CUIDoNotPersist)
+        else if (self.flags & CUIFlagsDoNotPersist)
             self.persist = NO;
         else
-            _flags |= CUIShowSaveCheckBox;
+            _flags |= CUIFlagsShowSaveCheckBox;
 
-        if (self.flags & CUIShowSaveCheckBox)
+        if (self.flags & CUIFlagsShowSaveCheckBox)
             [self.window.contentView addSubview:[self _newPersistCheckBox]];
         
         self.submitButton = [self _newSubmitButton];
@@ -122,14 +122,14 @@
                           forKeyPath:@"selectionIndexes"
                              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                              context:nil];
-    
 }
 
 #pragma mark - Run Loop
 
 - (NSModalResponse)_runModal:(NSWindow *)window
 {
-    __block NSModalResponse modalResponse;
+    __block NSModalResponse modalResponse = NSModalResponseStop;
+    NSModalSession modalSession = NULL;
     
     if (self.title)
         self.window.title = self.title;
@@ -137,23 +137,34 @@
         self.messageTextField.stringValue = self.message;
     
     [self _populateCredentials];
-    
+   
+    /*
+     * Generic credentials can be automatically submitted if there is an available
+     * credential. Or at least, that's what Windows does.
+     */
+    if ((self.flags & CUIFlagsGenericCredentials) &&
+        (self.flags & CUIFlagsAlwaysShowUI) == 0 &&
+        [self.selectedCredential canSubmit])
+        goto autoSubmit;
+
     if (window) {
         [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
             modalResponse = sheetReturnCode;
         }];
     } else {
-        NSModalSession modalSession = [NSApp beginModalSessionForWindow:self.window];
+        modalSession = [NSApp beginModalSessionForWindow:self.window];
         do {
             modalResponse = [NSApp runModalSession:modalSession];
             [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
             if (self.autoLogin) {
+autoSubmit:
                 [self willSubmitCredential:self.submitButton];
                 self.autoLogin = NO;
             }
         } while (modalResponse == NSModalResponseContinue);
         
-        [NSApp endModalSession:modalSession];
+        if (modalSession)
+            [NSApp endModalSession:modalSession];
     }
     
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];

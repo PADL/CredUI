@@ -26,9 +26,10 @@ __CUIPromptForCredentials(gss_name_t targetName,
         return false;
     
     identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
+    identityPicker.credUIContext = uiContext;
     identityPicker.authError = (__bridge NSError *)authError;
     identityPicker.persist = *pfSave;
-    
+ 
     [identityPicker runModal];
     
     selectedCredential = identityPicker.selectedCredential;

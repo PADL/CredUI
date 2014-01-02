@@ -161,7 +161,7 @@
 
 - (IBAction)showIdentityPickerGeneric:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI];
     
     self.picker.title = @"Generic Identity Picker";
     self.picker.message = @"Choose an identity";
