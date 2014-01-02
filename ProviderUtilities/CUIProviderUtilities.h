@@ -11,10 +11,6 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*
  * Helper functions for building attribute providers. Keeps anything GSS
  * item or keychain specific out of CredUICore.
@@ -72,9 +68,5 @@ CUIKeychainStore(CFDictionaryRef attributes,
     
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* defined(__CredUI__CUIProviderUtilities__) */
