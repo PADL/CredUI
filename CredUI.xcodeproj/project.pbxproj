@@ -86,6 +86,10 @@
 		D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
+		D3AA96421875151C003852C5 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D3AA964318751521003852C5 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D3AA964D187523B8003852C5 /* GSSItem+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */; };
+		D3AA96501875279D003852C5 /* GSSItemUtilities.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3AA964E1875279D003852C5 /* GSSItemUtilities.cpp */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; };
 		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */; };
@@ -96,6 +100,9 @@
 		D3BED9031873FA8600623B92 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D3BED92B1874373F00623B92 /* CUIIdentityPickerInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED9291874373F00623B92 /* CUIIdentityPickerInternal.h */; };
 		D3BED92C1874373F00623B92 /* CUIIdentityPickerInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */; };
+		D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
+		D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3F67B11187513A1006B36C3 /* InfoPlist.strings */; };
+		D3F67B1A187513CB006B36C3 /* GSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +196,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = D336E279182B51A6009271CD;
 			remoteInfo = CredUI;
+		};
+		D3AA9640187514AB003852C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D3AA964918751F66003852C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
+			remoteInfo = GSSItem;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -292,7 +313,12 @@
 		D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSPromptForCredentials.h; sourceTree = "<group>"; };
 		D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSPromptForCredentials.m; sourceTree = "<group>"; };
 		D39EB0FA1872B3F800C43A24 /* GSSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug/GSSKit.framework"; sourceTree = "<group>"; };
-		D39EB0FC1872B85700C43A24 /* GSSItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
+		D3AA96461875166B003852C5 /* GSSItemCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItemCredential.h; sourceTree = "<group>"; };
+		D3AA964818751DFB003852C5 /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
+		D3AA964B187523B8003852C5 /* GSSItem+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSItem+CredUI.h"; sourceTree = "<group>"; };
+		D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSItem+CredUI.m"; sourceTree = "<group>"; };
+		D3AA964E1875279D003852C5 /* GSSItemUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSItemUtilities.cpp; sourceTree = "<group>"; };
+		D3AA964F1875279D003852C5 /* GSSItemUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItemUtilities.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
 		D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSCredential+CredUI.h"; sourceTree = "<group>"; };
@@ -304,6 +330,12 @@
 		D3BED9011873EAA700623B92 /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = usr/lib/libobjc.dylib; sourceTree = SDKROOT; };
 		D3BED9291874373F00623B92 /* CUIIdentityPickerInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityPickerInternal.h; sourceTree = "<group>"; };
 		D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPickerInternal.m; sourceTree = "<group>"; };
+		D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSItem.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3F67B10187513A1006B36C3 /* GSSItem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSItem-Info.plist"; sourceTree = "<group>"; };
+		D3F67B12187513A1006B36C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D3F67B14187513A1006B36C3 /* GSSItem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSItem-Prefix.pch"; sourceTree = "<group>"; };
+		D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSItemCredentialProvider.cpp; sourceTree = "<group>"; };
+		D3F67B19187513CB006B36C3 /* GSSItemCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItemCredentialProvider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +433,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3F67B09187513A1006B36C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3AA964318751521003852C5 /* CredUICore.framework in Frameworks */,
+				D3AA96421875151C003852C5 /* GSS.framework in Frameworks */,
+				D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -416,6 +458,7 @@
 				D39EB080186FB1DA00C43A24 /* CredUIPickerTests */,
 				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
 				D39EB0D51872441300C43A24 /* Persona */,
+				D3F67B0E187513A1006B36C3 /* GSSItem */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -433,6 +476,7 @@
 				D39EB07B186FB1DA00C43A24 /* CredUIPickerTests.xctest */,
 				D39EB092186FB90400C43A24 /* CredUIEnumerate */,
 				D39EB0D31872441300C43A24 /* Persona.credprovider */,
+				D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -529,7 +573,6 @@
 				D39EB00E186ED2B200C43A24 /* CredUICore.h */,
 				D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */,
 				D3BED8FF1873E72100623B92 /* CFInternalHelper.h */,
-				D39EB0FC1872B85700C43A24 /* GSSItem.h */,
 				D39EB059186FA55400C43A24 /* CUIAttributes.h */,
 				D39EB055186F18E500C43A24 /* CUIController.cpp */,
 				D39EB056186F18E500C43A24 /* CUIController.h */,
@@ -602,6 +645,8 @@
 				D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */,
 				D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */,
 				D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */,
+				D3AA964B187523B8003852C5 /* GSSItem+CredUI.h */,
+				D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */,
 				D39EB072186FB1DA00C43A24 /* MainMenu.xib */,
 				D39EB075186FB1DA00C43A24 /* Images.xcassets */,
 				D39EB064186FB1DA00C43A24 /* Supporting Files */,
@@ -665,6 +710,30 @@
 				D39EB0D71872441300C43A24 /* Persona-Info.plist */,
 				D39EB0D81872441300C43A24 /* InfoPlist.strings */,
 				D39EB0DB1872441300C43A24 /* Persona-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D3F67B0E187513A1006B36C3 /* GSSItem */ = {
+			isa = PBXGroup;
+			children = (
+				D3F67B0F187513A1006B36C3 /* Supporting Files */,
+				D3AA96461875166B003852C5 /* GSSItemCredential.h */,
+				D3AA964818751DFB003852C5 /* GSSItem.h */,
+				D3AA964E1875279D003852C5 /* GSSItemUtilities.cpp */,
+				D3AA964F1875279D003852C5 /* GSSItemUtilities.h */,
+				D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */,
+				D3F67B19187513CB006B36C3 /* GSSItemCredentialProvider.h */,
+			);
+			path = GSSItem;
+			sourceTree = "<group>";
+		};
+		D3F67B0F187513A1006B36C3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D3F67B10187513A1006B36C3 /* GSSItem-Info.plist */,
+				D3F67B11187513A1006B36C3 /* InfoPlist.strings */,
+				D3F67B14187513A1006B36C3 /* GSSItem-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -813,6 +882,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3AA964A18751F66003852C5 /* PBXTargetDependency */,
 				D39EB0EC1872538400C43A24 /* PBXTargetDependency */,
 				D39EB0B11870408800C43A24 /* PBXTargetDependency */,
 				D39EB0AF1870408100C43A24 /* PBXTargetDependency */,
@@ -879,6 +949,24 @@
 			productReference = D39EB0D31872441300C43A24 /* Persona.credprovider */;
 			productType = "com.apple.product-type.bundle";
 		};
+		D3F67B0B187513A1006B36C3 /* GSSItem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3F67B17187513A1006B36C3 /* Build configuration list for PBXNativeTarget "GSSItem" */;
+			buildPhases = (
+				D3F67B08187513A1006B36C3 /* Sources */,
+				D3F67B09187513A1006B36C3 /* Frameworks */,
+				D3F67B0A187513A1006B36C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3AA9641187514AB003852C5 /* PBXTargetDependency */,
+			);
+			name = GSSItem;
+			productName = GSSItem;
+			productReference = D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -921,6 +1009,7 @@
 				D39EB060186FB1DA00C43A24 /* CredUIPicker */,
 				D39EB07A186FB1DA00C43A24 /* CredUIPickerTests */,
 				D39EB091186FB90400C43A24 /* CredUIEnumerate */,
+				D3F67B0B187513A1006B36C3 /* GSSItem */,
 			);
 		};
 /* End PBXProject section */
@@ -993,6 +1082,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3F67B0A187513A1006B36C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1055,6 +1152,7 @@
 			files = (
 				D39EB071186FB1DA00C43A24 /* CredUIPickerDelegate.m in Sources */,
 				D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */,
+				D3AA964D187523B8003852C5 /* GSSItem+CredUI.m in Sources */,
 				D39EB06A186FB1DA00C43A24 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1081,6 +1179,15 @@
 			files = (
 				D39EB0E4187244DF00C43A24 /* CUIPersonaCredentialProvider.cpp in Sources */,
 				D39EB0E1187244D300C43A24 /* CUIPersonaCredential.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3F67B08187513A1006B36C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3F67B1A187513CB006B36C3 /* GSSItemCredentialProvider.cpp in Sources */,
+				D3AA96501875279D003852C5 /* GSSItemUtilities.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1151,6 +1258,16 @@
 			isa = PBXTargetDependency;
 			target = D336E279182B51A6009271CD /* CredUI */;
 			targetProxy = D39EB0FE1872C07F00C43A24 /* PBXContainerItemProxy */;
+		};
+		D3AA9641187514AB003852C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D3AA9640187514AB003852C5 /* PBXContainerItemProxy */;
+		};
+		D3AA964A18751F66003852C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
+			targetProxy = D3AA964918751F66003852C5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1231,6 +1348,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				D39EB0D91872441300C43A24 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D3F67B11187513A1006B36C3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3F67B12187513A1006B36C3 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1648,6 +1773,36 @@
 			};
 			name = Release;
 		};
+		D3F67B15187513A1006B36C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "GSSItem/GSSItem-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Debug;
+		};
+		D3F67B16187513A1006B36C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
+				INFOPLIST_FILE = "GSSItem/GSSItem-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1737,6 +1892,15 @@
 			buildConfigurations = (
 				D39EB0DD1872441300C43A24 /* Debug */,
 				D39EB0DE1872441300C43A24 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3F67B17187513A1006B36C3 /* Build configuration list for PBXNativeTarget "GSSItem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3F67B15187513A1006B36C3 /* Debug */,
+				D3F67B16187513A1006B36C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

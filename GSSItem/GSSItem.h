@@ -12,6 +12,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+#include <CoreFoundation/CFRuntime.h>
 
 struct GSSItem {
     CFRuntimeBase base;

@@ -113,6 +113,11 @@ CUICredentialContextArrayCreate(CFAllocatorRef allocator,
                                 const CUICredentialContext **contexts,
                                 CFIndex numContexts);
 
+Boolean
+__CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                             CFDictionaryRef attributes,
+                                             CFTypeRef notFactories,
+                                             void (^cb)(CUICredentialRef, CFErrorRef));
 
 #ifdef __cplusplus
 }

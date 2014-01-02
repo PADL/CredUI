@@ -39,6 +39,7 @@ struct __CUICredential {
 
 struct __CUIController {
     CFRuntimeBase _base;
+    CFArrayRef _factories;
     CFArrayRef _providers;
     CUIUsageScenario _usage;
     CUIUsageFlags _usageFlags;
@@ -51,7 +52,7 @@ struct __CUIController {
     
 };
 
-CFArrayRef
+Boolean
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
 #ifdef __cplusplus

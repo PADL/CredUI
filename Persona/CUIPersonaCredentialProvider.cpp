@@ -89,10 +89,6 @@ public:
         return true;
     }
 
-    CFArrayRef createOtherCredentials(CFErrorRef *error) {
-        return NULL;
-    }
-    
     CUIPersonaCredentialProvider() {
         CFPlugInAddInstanceForFactory(kPersonaCredentialProviderFactoryID);
         _retainCount = 1;

@@ -75,8 +75,7 @@ CUIControllerCreate(CFAllocatorRef allocator,
     controller->_usage = usage;
     controller->_usageFlags = usageFlags;
 
-    controller->_providers = CUIProvidersCreate(allocator, controller);
-    if (controller->_providers == NULL) {
+    if (!CUIProvidersCreate(allocator, controller)) {
         CFRelease(controller);
         return NULL;
     }
@@ -116,8 +115,8 @@ __CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_c
 
 static Boolean
 __CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
-                                                       CUIProvider *provider,
                                                        CFDictionaryRef attributes,
+                                                       CUIProvider *provider,
                                                        void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CFArrayRef matchingCredContexts;
@@ -146,114 +145,37 @@ __CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controll
     return enumContext.didEnumerate;
 }
 
-static void
-__CUITransformItemAttributeKeys(const void *key, const void *value, void *context)
-{
-    CFMutableStringRef transformedKey = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, (CFStringRef)key);
-
-    /* XXX this is pretty inefficient because we do it every time */
-    if (transformedKey) {
-        CFStringFindAndReplace(transformedKey, CFSTR("kGSS"), CFSTR("kCUI"), CFRangeMake(0, 4), 0);
-        CFDictionarySetValue((CFMutableDictionaryRef)context, transformedKey, value);
-        CFRelease(transformedKey);
-    }
-}
-
-static void
-__CUIEnumerateItemCredentialsCallback(const void *value, void *_context)
-{
-    GSSItemRef item = (GSSItemRef)value;
-    __CUIEnumerateCredentialContext *enumContext = (__CUIEnumerateCredentialContext *)_context;
-    CFDictionaryRef transformedAttrs;
-
-    transformedAttrs = CFDictionaryCreateMutable(CFGetAllocator(enumContext->controller),
-                                                 0,
-                                                 &kCFTypeDictionaryKeyCallBacks,
-                                                 &kCFTypeDictionaryValueCallBacks);
-    CFDictionaryApplyFunction(item->keys, __CUITransformItemAttributeKeys, (void *)transformedAttrs);
-
-    enumContext->didEnumerate |=
-        __CUIControllerEnumerateMatchingCredentialsForProvider(enumContext->controller,
-                                                               enumContext->provider,
-                                                               transformedAttrs,
-                                                               ^(CUICredentialRef cred, CFErrorRef err) {
-                                                                        enumContext->callback(cred, err);
-                                                               });
-
-    CFRelease(transformedAttrs);
-}
-
-static Boolean
-__CUIControllerEnumerateItemCredentialsForProvider(CUIControllerRef controller,
-                                                   CUIProvider *provider,
-                                                   CFArrayRef items,
-                                                   void (^cb)(CUICredentialRef, CFErrorRef))
-{
-    __CUIEnumerateCredentialContext enumContext = {
-        .controller = controller,
-        .provider = provider,
-        .callback = cb,
-        .didEnumerate = false
-    };
-    
-    if (items) {
-        CFArrayApplyFunction(items,
-                             CFRangeMake(0, CFArrayGetCount(items)),
-                             __CUIEnumerateItemCredentialsCallback,
-                             (void *)&enumContext);
-    }
-    
-    return enumContext.didEnumerate;
-}
-
-static Boolean
-__CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
-                                               CUIProvider *provider,
-                                               CFArrayRef items,
-                                               void (^cb)(CUICredentialRef, CFErrorRef))
-{
-    Boolean didEnumerate = false;
-    
-    if (controller->_attributes) {
-        didEnumerate |= __CUIControllerEnumerateMatchingCredentialsForProvider(controller,
-                                                                               provider,
-                                                                               controller->_attributes,
-                                                                               cb);
-    }
-    
-    if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0) {
-        if ((controller->_usage == kCUIUsageScenarioNetwork) &&
-            (controller->_usageFlags & kCUIUsageFlagsExcludePersistedCreds) == 0) {
-            didEnumerate |= __CUIControllerEnumerateItemCredentialsForProvider(controller,
-                                                                               provider,
-                                                                               items,
-                                                                               cb);
-        } else if (controller->_usage == kCUIUsageScenarioLogin) {
-            // Here we may enumerate local accounts for example
-        }
-    }
-    
-    return didEnumerate;
-}
-
-
 CUI_EXPORT Boolean
-CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
+__CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                             CFDictionaryRef attributes,
+                                             CFTypeRef notFactories,
+                                             void (^cb)(CUICredentialRef, CFErrorRef))
 {
-    CFIndex index;
     CFArrayRef items = NULL;
     CFErrorRef error = NULL;
     Boolean didEnumerate = false;
     
-    if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0 &&
-        (controller->_usageFlags & kCUIUsageFlagsExcludePersistedCreds) == 0)
-        items = GSSItemCopyMatching(controller->_attributes, &error);
-    
-    for (index = 0; index < CFArrayGetCount(controller->_providers); index++) {
-        didEnumerate |= __CUIControllerEnumerateCredentialsForProvider(controller,
-                                                                       (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index),
-                                                                       items,
-                                                                       cb);
+    for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
+        CFUUIDRef factory = (CFUUIDRef)CFArrayGetValueAtIndex(controller->_factories, index);
+        CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
+        Boolean skipThisProvider = false;
+        
+        if (notFactories) {
+            if (CFGetTypeID(notFactories) == CFArrayGetTypeID())
+                skipThisProvider = CFArrayContainsValue((CFArrayRef)notFactories,
+                                                        CFRangeMake(0, CFArrayGetCount((CFArrayRef)notFactories)),
+                                                        (void *)factory);
+            else
+                skipThisProvider = CFEqual(notFactories, factory);
+        }
+        
+        if (skipThisProvider)
+            continue;
+        
+        didEnumerate |= __CUIControllerEnumerateMatchingCredentialsForProvider(controller,
+                                                                               attributes,
+                                                                               provider,
+                                                                               cb);
     }
 
     if (items)
@@ -262,6 +184,12 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
         CFRelease(error);
     
     return didEnumerate;
+}
+
+CUI_EXPORT Boolean
+CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
+{
+    return __CUIControllerEnumerateCredentialsExcepting(controller, controller->_attributes, NULL, cb);
 }
 
 static void

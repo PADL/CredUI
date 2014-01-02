@@ -19,5 +19,8 @@
 
 - (GSSCredential *)acquireGSSCred:(CUIIdentityPicker *)identityPicker;
 
-- (IBAction)showIdentityPicker:(id)sender;
+- (IBAction)showIdentityPickerGSSIC:(id)sender;
+- (IBAction)showIdentityPickerGSSItem:(id)sender;
+- (IBAction)showIdentityPickerGeneric:(id)sender;
+
 @end

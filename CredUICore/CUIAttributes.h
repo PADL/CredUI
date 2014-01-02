@@ -53,7 +53,9 @@ extern const CFStringRef kCUIAttrClassNTLM
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFStringRef kCUIAttrClassIAKerb
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
-
+extern const CFStringRef kCUIAttrClassGeneric
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+    
 /*
  * Item supports acquiring a gss_cred_id_t with GSSItemOperation
  */
@@ -127,6 +129,11 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFStringRef kCUIAttrStatusAutoAcquireStatus
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFStringRef kCUIAttrStatusTransient
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+
+extern const CFStringRef kCUIAttrCredentialProvider
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+extern const CFStringRef kCUIAttrCredentialMetaProvider
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
 #ifdef __cplusplus

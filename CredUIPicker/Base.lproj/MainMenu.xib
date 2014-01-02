@@ -27,7 +27,17 @@
                             </menuItem>
                             <menuItem title="Pick Credentials" keyEquivalent="1" id="129">
                                 <connections>
-                                    <action selector="showIdentityPicker:" target="494" id="4oK-kg-ZhH"/>
+                                    <action selector="showIdentityPickerGSSIC:" target="494" id="aMg-R7-Ud2"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pick Item Creds" keyEquivalent="2" id="z84-qQ-tSb">
+                                <connections>
+                                    <action selector="showIdentityPickerGSSItem:" target="494" id="YaX-5r-BEo"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Pick Generic Creds" keyEquivalent="3" id="XGH-F9-MNx">
+                                <connections>
+                                    <action selector="showIdentityPickerGeneric:" target="494" id="eLp-ZG-QRi"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">

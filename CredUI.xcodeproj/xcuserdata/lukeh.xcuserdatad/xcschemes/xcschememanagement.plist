@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>CredUI.xpc.identityPickerService.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>CredUICore.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
+		</dict>
+		<key>GSSItem.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
 		</dict>
 		<key>Password.xcscheme</key>
 		<dict>
@@ -78,6 +88,11 @@
 			<true/>
 		</dict>
 		<key>D39EB0D21872441300C43A24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D3F67B0B187513A1006B36C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>

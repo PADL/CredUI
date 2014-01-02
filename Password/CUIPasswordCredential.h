@@ -61,6 +61,8 @@ public:
     
     CFDictionaryRef getAttributes(void) {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, getCredentialStatus());
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PasswordCredentialProvider"));
+
         return _attributes;
     }
     

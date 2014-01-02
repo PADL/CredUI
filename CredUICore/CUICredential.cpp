@@ -39,7 +39,7 @@ _CUICredentialContextEqual(const void *value1, const void *value2)
     return (credContext1 == credContext2);
 }
 
-CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
+CUI_EXPORT CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
     .version = 0,
     .retain = _CUICredentialContextRetain,
     .release = _CUICredentialContextRelease,

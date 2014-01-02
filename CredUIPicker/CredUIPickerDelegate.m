@@ -11,6 +11,7 @@
 
 #import "CredUIPickerDelegate.h"
 #import "GSSCredential+CredUI.h"
+#import "GSSItem+CredUI.h"
 
 @interface CredUIPickerDelegate ()
 @property (nonatomic, strong) CUIIdentityPicker *picker;
@@ -97,9 +98,9 @@
     return [[initiatorCtx lastError] code];
 }
 
-- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+- (void)GSSIC_identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    NSLog(@"Picker did end: %@", identityPicker.selectedCredential.attributes);
+    NSLog(@"IC picker did end: %@", identityPicker.selectedCredential.attributes);
     
     // OK, now let's try and do some GSS stuff
     GSSCredential *cred = [self acquireGSSCred:identityPicker];
@@ -108,19 +109,70 @@
         (void) [self initAcceptGSSContext:identityPicker initiatorCred:cred];
 }
 
-- (IBAction)showIdentityPicker:(id)sender;
+- (IBAction)showIdentityPickerGSSIC:(id)sender
 {
     self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials];
-
+    
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
     self.picker.targetName = @"host@browserid.padl.com";
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
+                    didEndSelector:@selector(GSSIC_identityPickerDidEnd:returnCode:contextInfo:)
+                       contextInfo:NULL];
+
+}
+
+- (void)GSSItem_identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    NSLog(@"Item picker did end: %@", identityPicker.selectedCredential.attributes);
+    NSError *error = nil;
+    
+    // OK, now let's try and do some GSS stuff
+    NSArray *items = [GSSItem itemsMatchingCUICredential:identityPicker.selectedCredential error:&error];
+    
+    if (items)
+        NSLog(@"Item --> %@", items);
+    else
+        NSLog(@"Item error --> %@", error);
+}
+
+- (IBAction)showIdentityPickerGSSItem:(id)sender
+{
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:0];
+    
+    self.picker.title = @"Item Identity Picker";
+    self.picker.message = @"Choose an identity";
+    self.picker.targetName = @"host@browserid.padl.com";
+    
+    [self.picker runModalForWindow:self.window
+                     modalDelegate:self
+                    didEndSelector:@selector(GSSItem_identityPickerDidEnd:returnCode:contextInfo:)
+                       contextInfo:NULL];
+
+}
+
+
+- (void)Generic_identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    NSLog(@"Generic picker did end: %@", identityPicker.selectedCredential.attributes);
+}
+
+- (IBAction)showIdentityPickerGeneric:(id)sender
+{
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials];
+    
+    self.picker.title = @"Generic Identity Picker";
+    self.picker.message = @"Choose an identity";
+    self.picker.targetName = @"https://www.padl.com";
+    
+    [self.picker runModalForWindow:self.window
+                     modalDelegate:self
+                    didEndSelector:@selector(Generic_identityPickerDidEnd:returnCode:contextInfo:)
                        contextInfo:NULL];
 }
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {

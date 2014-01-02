@@ -179,6 +179,7 @@
 
 - (void)willSubmitCredential:(id)sender
 {
+    self.submitButton.state = NSOnState; // in case cred was submitted without clicking
     [self.selectedCredential willSubmit];
     [self.window performClose:sender];
 }

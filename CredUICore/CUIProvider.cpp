@@ -16,6 +16,7 @@ CUI_CONST_TYPE(kCUIAttrClass,                          kCUIAttrClass);
 CUI_CONST_TYPE(kCUIAttrClassKerberos,                  kGSSAttrClassKerberos);
 CUI_CONST_TYPE(kCUIAttrClassNTLM,                      kGSSAttrClassNTLM);
 CUI_CONST_TYPE(kCUIAttrClassIAKerb,                    kGSSAttrClassIAKerb);
+CUI_CONST_TYPE(kCUIAttrClassGeneric,                   kCUIAttrClassGeneric);
 
 CUI_CONST_TYPE(kCUIAttrSupportGSSCredential,           kCUIAttrSupportGSSCredential);
 
@@ -44,6 +45,9 @@ CUI_CONST_TYPE(kCUICredentialNotFinished,              kCUICredentialNotFinished
 CUI_CONST_TYPE(kCUICredentialFinished,                 kCUICredentialFinished);
 CUI_CONST_TYPE(kCUICredentialReturnCredentialFinished, kCUICredentialReturnCredentialFinished);
 CUI_CONST_TYPE(kCUICredentialReturnNoCredentialFinished,kCUICredentialReturnNoCredentialFinished);
+
+CUI_CONST_TYPE(kCUIAttrCredentialProvider,             kCUIAttrCredentialProvider);
+CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaProvider);
 
 static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
 static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");
@@ -139,11 +143,10 @@ CFArrayCallBacks kCUIProviderArrayCallBacks = {
     .equal = _CUIProviderEqual
 };
 
-CFArrayRef
+Boolean
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
 {
     static dispatch_once_t onceToken;
-    CFMutableArrayRef providers = NULL;
     CFArrayRef factories = NULL;
     CFIndex index;
     
@@ -151,10 +154,14 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         CUILoadProviders();
     });
     
-    providers = CFArrayCreateMutable(allocator, 0, &kCUIProviderArrayCallBacks);
-    if (providers == NULL)
+    controller->_providers = CFArrayCreateMutable(allocator, 0, &kCUIProviderArrayCallBacks);
+    if (controller->_providers == NULL)
         goto cleanup;
-    
+
+    controller->_factories = CFArrayCreateMutable(allocator, 0, &kCFTypeArrayCallBacks);
+    if (controller->_factories == NULL)
+        goto cleanup;
+
     factories = CFPlugInFindFactoriesForPlugInType(kCUIProviderTypeID);
     if (factories == NULL)
         goto cleanup;
@@ -181,19 +188,27 @@ CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
             continue;
         }
         
-        CFArrayAppendValue(providers, provider);
+        CFArrayAppendValue((CFMutableArrayRef)controller->_factories, factoryID);
+        CFArrayAppendValue((CFMutableArrayRef)controller->_providers, provider);
     }
     
 cleanup:
     if (factories)
         CFRelease(factories);
     
-    if (providers && CFArrayGetCount(providers) == 0) {
-        CFRelease(providers);
-        providers = NULL;
+    if (controller->_factories &&
+        CFArrayGetCount(controller->_factories) == 0) {
+        CFRelease(controller->_factories);
+        controller->_factories = NULL;
+    }
+
+    if (controller->_providers &&
+        CFArrayGetCount(controller->_providers) == 0) {
+        CFRelease(controller->_providers);
+        controller->_providers = NULL;
     }
     
-    return providers;
+    return !!controller->_providers;
 }
 
 CUI_EXPORT CFArrayRef
@@ -204,5 +219,3 @@ CUICredentialContextArrayCreate(CFAllocatorRef allocator,
     return CFArrayCreate(allocator, (const void **)contexts,
                          numContexts, &kCUICredentialContextArrayCallBacks);
 }
-
-
