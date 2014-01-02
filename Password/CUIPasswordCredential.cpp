@@ -16,7 +16,7 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
                                                                CFDictionaryRef attributes,
                                                                CFErrorRef *error)
 {
-    CFTypeRef defaultUsername = NULL;
+    CFStringRef defaultUsername = NULL;
     CUIFieldRef fields[4] = { 0 };
     size_t cFields = 0;
     CFTypeRef targetName;
@@ -50,12 +50,8 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
        
         /*
          * Get the default user name for display.
-         */ 
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
-        
-        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
-            defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrName);
-        
+         */
+        defaultUsername = CUIGetDefaultUsername(attributes);
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);

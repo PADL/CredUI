@@ -68,12 +68,10 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
             attrClass &&
             !CFEqual(attrClass, kCUIAttrClassBrowserID))
             return false;
-            
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
-        CFStringRef name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
-
-        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername) && name)
-            _defaultIdentity = (CFStringRef)CFRetain(name);
+        
+        _defaultIdentity = CUIGetDefaultUsername(attributes);
+        if (_defaultIdentity)
+            CFRetain(_defaultIdentity);        
     }
 
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sign in with Persona"), NULL);

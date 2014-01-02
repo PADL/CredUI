@@ -70,6 +70,9 @@ CUIKeychainStore(CFDictionaryRef attributes,
                  CFTypeRef targetName,
                  CFErrorRef *error);
     
+CFStringRef
+CUIGetDefaultUsername(CFDictionaryRef attributes);
+
 #ifdef __cplusplus
 }
 #endif

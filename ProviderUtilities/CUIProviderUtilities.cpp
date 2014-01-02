@@ -320,3 +320,19 @@ CUIKeychainStore(CFDictionaryRef attributes,
     
     return !osret;
 }
+
+CFStringRef
+CUIGetDefaultUsername(CFDictionaryRef attributes)
+{
+    CFStringRef defaultUsername;
+
+    defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
+    if (defaultUsername == NULL) {
+        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
+        
+        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
+            defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
+    }
+    
+    return defaultUsername;
+}
