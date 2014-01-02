@@ -115,7 +115,7 @@ int main(int argc, const char * argv[])
                                  (__bridge id)kCUIAttrStatusTransient: @YES,
                                  (__bridge id)kCUIAttrStatusPersistant: @NO,
                                  (__bridge id)kCUIAttrNameType: (__bridge id)kCUIAttrNameTypeGSSUsername,
-                                 (__bridge id)kCUIAttrName: @"lhoward@ATHENA.MIT.EDU"
+                                 //(__bridge id)kCUIAttrName: @"lukeh@DE.PADL.COM"
                                 };
     
     testSubclasses();

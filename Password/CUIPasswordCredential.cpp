@@ -126,7 +126,7 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
     if (username == NULL || CFStringGetLength(username) == 0)
         return kCUICredentialNotFinished;
 
-    if (isPlaceholderPassword() || CFStringGetLength((CFStringRef)password))
+    if (isPlaceholderPassword() || (password && CFStringGetLength((CFStringRef)password)))
          return kCUICredentialReturnCredentialFinished;
     else
         return kCUICredentialNotFinished;
