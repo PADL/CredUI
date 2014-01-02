@@ -118,7 +118,7 @@
 		D3BED92C1874373F00623B92 /* CUIIdentityPickerInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */; };
 		D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3F67B11187513A1006B36C3 /* InfoPlist.strings */; };
-		D3F67B1A187513CB006B36C3 /* GSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */; };
+		D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -389,7 +389,7 @@
 		D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSPromptForCredentials.h; sourceTree = "<group>"; };
 		D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSPromptForCredentials.m; sourceTree = "<group>"; };
 		D39EB0FA1872B3F800C43A24 /* GSSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug/GSSKit.framework"; sourceTree = "<group>"; };
-		D3AA96461875166B003852C5 /* GSSItemCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItemCredential.h; sourceTree = "<group>"; };
+		D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGSSItemCredential.h; sourceTree = "<group>"; };
 		D3AA964818751DFB003852C5 /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItem.h; sourceTree = "<group>"; };
 		D3AA964B187523B8003852C5 /* GSSItem+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSItem+CredUI.h"; sourceTree = "<group>"; };
 		D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSItem+CredUI.m"; sourceTree = "<group>"; };
@@ -409,8 +409,8 @@
 		D3F67B10187513A1006B36C3 /* GSSItem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSItem-Info.plist"; sourceTree = "<group>"; };
 		D3F67B12187513A1006B36C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D3F67B14187513A1006B36C3 /* GSSItem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSItem-Prefix.pch"; sourceTree = "<group>"; };
-		D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSItemCredentialProvider.cpp; sourceTree = "<group>"; };
-		D3F67B19187513CB006B36C3 /* GSSItemCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSItemCredentialProvider.h; sourceTree = "<group>"; };
+		D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIGSSItemCredentialProvider.cpp; sourceTree = "<group>"; };
+		D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGSSItemCredentialProvider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -847,10 +847,10 @@
 			isa = PBXGroup;
 			children = (
 				D3F67B0F187513A1006B36C3 /* Supporting Files */,
-				D3AA96461875166B003852C5 /* GSSItemCredential.h */,
+				D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */,
 				D3AA964818751DFB003852C5 /* GSSItem.h */,
-				D3F67B18187513CB006B36C3 /* GSSItemCredentialProvider.cpp */,
-				D3F67B19187513CB006B36C3 /* GSSItemCredentialProvider.h */,
+				D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */,
+				D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */,
 			);
 			path = GSSItem;
 			sourceTree = "<group>";
@@ -1389,7 +1389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3F67B1A187513CB006B36C3 /* GSSItemCredentialProvider.cpp in Sources */,
+				D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

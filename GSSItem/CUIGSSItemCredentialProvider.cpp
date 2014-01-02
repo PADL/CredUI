@@ -1,5 +1,5 @@
 //
-//  PersonaCredentialProvider.cpp
+//  GSSItemCredentialProvider.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
@@ -15,8 +15,8 @@
 #include "CUIProviderUtilities.h"
 
 #include "GSSItem.h"
-#include "GSSItemCredentialProvider.h"
-#include "GSSItemCredential.h"
+#include "CUIGSSItemCredentialProvider.h"
+#include "CUIGSSItemCredential.h"
 
 
 // 2F62D1C1-F586-41CC-8096-C90683068DA5
