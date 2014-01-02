@@ -102,7 +102,7 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 - (CUICredential *)selectedCredential
 {
     if (_modalResponse != NSModalResponseStop)
-        return;
+        return nil;
         
     return ((CUIIdentityPickerInternal *)_internal).selectedCredential;
 }

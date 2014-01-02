@@ -32,6 +32,7 @@ static CFStringRef CUIPersonaCreateTargetName(gss_name_t name)
 
 Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     CUIControllerRef controller,
+    CUIUsageFlags usageFlags,
     CFDictionaryRef attributes,
     CFErrorRef *error)
 {
@@ -57,6 +58,12 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         if (CFDictionaryGetValue(attributes, kCUIAttrUUID))
             return false;
         
+        CFTypeRef attrClass = CFDictionaryGetValue(attributes, kCUIAttrClass);
+        if ((usageFlags & kCUIUsageFlagsMechanismOnly) &&
+            attrClass &&
+            !CFEqual(attrClass, kCUIAttrClassBrowserID))
+            return false;
+            
         CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
         CFStringRef name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
 

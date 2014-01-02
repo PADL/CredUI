@@ -28,6 +28,8 @@ class CUIPersonaCredentialProvider : public CUIProvider {
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
+    CUIUsageScenario _usageScenario;
+    CUIUsageFlags _usageFlags;
     
 public:
     ULONG AddRef(void) {
@@ -61,7 +63,7 @@ public:
     CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) {
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
        
-        if (!personaCred->initWithControllerAndAttributes(_controller, attributes, error)) {
+        if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();
             return NULL;
         }
@@ -79,6 +81,9 @@ public:
             return false;
 
         _controller = (CUIControllerRef)CFRetain(controller);
+        _usageScenario = usageScenario;
+        _usageFlags = usageFlags;
+        
         return true;
     }
 
@@ -89,6 +94,8 @@ public:
     CUIPersonaCredentialProvider() {
         CFPlugInAddInstanceForFactory(kPersonaCredentialProviderFactoryID);
         _retainCount = 1;
+        _usageScenario = kCUIUsageScenarioInvalid;
+        _usageFlags = 0;
     }
     
 protected:

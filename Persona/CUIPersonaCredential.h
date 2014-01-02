@@ -69,10 +69,10 @@ public:
     Boolean createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error);
     Boolean createBrowserIDAssertion(CFErrorRef *error);
 
-    Boolean initWithControllerAndAttributes(
-        CUIControllerRef controller,
-        CFDictionaryRef attributes,
-        CFErrorRef *error);
+    Boolean initWithControllerAndAttributes(CUIControllerRef controller,
+                                            CUIUsageFlags usageFlags,
+                                            CFDictionaryRef attributes,
+                                            CFErrorRef *error);
     
     void didBecomeSelected(Boolean *pbAutoLogin) {
         *pbAutoLogin = true;
