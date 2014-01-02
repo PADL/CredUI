@@ -71,7 +71,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
             _defaultIdentity = (CFStringRef)CFRetain(name);
     }
 
-    fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Sign in with Persona"), NULL, NULL);
+    fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sign in with Persona"), NULL);
     fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, CFSTR("Submit"), NULL,
                                ^(CUIFieldRef field, CFTypeRef value) {
                                    // this is the willSubmit callback; CredUI only renders a single submit button
@@ -103,15 +103,14 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
     ulContextFlags = BID_CONTEXT_GSS | BID_CONTEXT_USER_AGENT | BID_CONTEXT_ECDH_KEYEX;
 
     _bidContext = BIDContextCreate(kCFAllocatorDefault, NULL, ulContextFlags, error);
-    if (_bidContext) {
-//        BIDSetContextParam(_bidContext, BID_PARAM_ECDH_CURVE, (void *)BID_ECDH_CURVE_P521);
+    if (_bidContext == NULL)
+        return false;
+    
+    const CUICredUIContext *uiContext = CUIControllerGetCredUIContext(controller);
+    if (uiContext)
+        BIDSetContextParam(_bidContext, BID_PARAM_PARENT_WINDOW, (void *)uiContext->parentWindow);
 
-        const CUICredUIContext *uiContext = CUIControllerGetCredUIContext(controller);
-        if (uiContext)
-            BIDSetContextParam(_bidContext, BID_PARAM_PARENT_WINDOW, (void *)uiContext->parentWindow);
-    }
-
-    return !!_bidContext;
+    return true;
 }
 
 Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)

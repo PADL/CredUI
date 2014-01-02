@@ -63,6 +63,10 @@ public:
         return _attributes;
     }
     
+    Boolean confirm(CFErrorRef *) {
+        return false;
+    }
+    
     Boolean initWithAttributes(CFDictionaryRef attributes) {
         if (attributes)
             _attributes = (CFDictionaryRef)CFRetain(attributes);

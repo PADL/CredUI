@@ -188,30 +188,18 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return transformedDict;
 }
 
-- (BOOL)addGSSItem:(NSError * __autoreleasing *)error
+- (BOOL)confirm:(NSError * __autoreleasing *)error
 {
-    NSDictionary *itemAttributes = [self attributesWithClass:CUIAttributeClassGSSItem];
-    GSSItemRef item;
-    BOOL ret = NO;
+    BOOL ret;
     
     if (error)
         *error = nil;
     
-    item = GSSItemAdd((CFDictionaryRef)itemAttributes, (CFErrorRef *)error);
-    if (item) {
-        CFRelease(item);
-        ret = YES;
-    }
-    
+    ret = CUICredentialConfirm([self _credentialRef], (CFErrorRef *)error);
     if (error)
         [NSMakeCollectable(*error) autorelease];
-        
+    
     return ret;
-}
-
-- (BOOL)confirm:(NSError * __autoreleasing *)error
-{
-    return [self addGSSItem:error];
 }
 
 - (NSArray *)fields

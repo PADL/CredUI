@@ -59,6 +59,9 @@ CUICredentialDidSubmit(CUICredentialRef cred);
     
 extern void
 CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop));
+
+extern Boolean
+CUICredentialConfirm(CUICredentialRef cred, CFErrorRef *error);
     
 #ifdef __cplusplus
 }

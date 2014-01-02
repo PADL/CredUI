@@ -79,7 +79,11 @@ public:
     }
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
-    
+ 
+    Boolean confirm(CFErrorRef *error) {
+        return false;
+    }
+
     CUIPersonaCredential() {
         _retainCount = 1;
         _bidContext = NULL;

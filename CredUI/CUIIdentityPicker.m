@@ -69,14 +69,15 @@
 - (NSString *)description
 {
     CFStringRef displayName = GSSNameCreateDisplayString((__bridge gss_name_t)self.targetName);
-        
+    CUICredential *selectedCredential = ((CUIIdentityPickerInternal *)_internal).selectedCredential;
+    
     CFBridgingRelease(displayName);
 
     return [NSString stringWithFormat:@"<%@ %p{targetName = \"%@\", selectedCredential = %@, flags = 0x%08x}>",
             [self.class description],
             self,
             displayName,
-            self.selectedCredential,
+            selectedCredential,
             (unsigned int)self.flags];
 }
 

@@ -79,7 +79,11 @@ public:
     
     void didSubmit(void) {
     }
-    
+   
+    Boolean confirm(CFErrorRef *error) {
+        return false;
+    }
+
     CUIPasswordCredential() {
         _retainCount = 1;
         _inCredUsable = false;

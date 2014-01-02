@@ -93,33 +93,6 @@ CUIControllerCreate(CFAllocatorRef allocator,
     return controller;
 }
 
-static Boolean
-__CUIControllerEnumerateCredentialForProviderWithAttributes(CUIControllerRef controller,
-                                                            CUIProvider *provider,
-                                                            CFDictionaryRef attributes,
-                                                            void (^cb)(CUICredentialRef, CFErrorRef))
-{
-    CUICredentialContext *attrCredContext;
-    CUICredentialRef cred = NULL;
-    CFErrorRef error = NULL;
-    
-    attrCredContext = provider->createCredentialWithAttributes(attributes, &error);
-    if (attrCredContext)
-        cred = CUICredentialCreate(CFGetAllocator(controller), attrCredContext);
-    
-    if (cred || error)
-        cb(cred, error);
-    
-    if (cred)
-        CFRelease(cred);
-    if (error)
-        CFRelease(error);
-    if (attrCredContext)
-        attrCredContext->Release();
-    
-    return !!cred;
-}
-
 struct __CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CUIProvider *provider;
@@ -128,7 +101,7 @@ struct __CUIEnumerateCredentialContext {
 };
 
 static void
-__CUIEnumerateOtherCredentialsForProviderCallback(const void *value, void *_context)
+__CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_context)
 {
     CUICredentialContext *credContext = (CUICredentialContext *)value;
     __CUIEnumerateCredentialContext *enumContext = (__CUIEnumerateCredentialContext *)_context;
@@ -142,11 +115,12 @@ __CUIEnumerateOtherCredentialsForProviderCallback(const void *value, void *_cont
 }
 
 static Boolean
-__CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
-                                                    CUIProvider *provider,
-                                                    void (^cb)(CUICredentialRef, CFErrorRef))
+__CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
+                                                       CUIProvider *provider,
+                                                       CFDictionaryRef attributes,
+                                                       void (^cb)(CUICredentialRef, CFErrorRef))
 {
-    CFArrayRef otherCredContexts;
+    CFArrayRef matchingCredContexts;
     CFErrorRef error = NULL;
     
     __CUIEnumerateCredentialContext enumContext = {
@@ -156,14 +130,14 @@ __CUIControllerEnumerateOtherCredentialsForProvider(CUIControllerRef controller,
         .didEnumerate = false
     };
     
-    otherCredContexts = provider->createOtherCredentials(&error);
-    if (otherCredContexts) {
-        CFArrayApplyFunction(otherCredContexts,
-                             CFRangeMake(0, CFArrayGetCount(otherCredContexts)),
-                             __CUIEnumerateOtherCredentialsForProviderCallback,
+    matchingCredContexts = provider->copyMatchingCredentials(attributes, &error);
+    if (matchingCredContexts) {
+        CFArrayApplyFunction(matchingCredContexts,
+                             CFRangeMake(0, CFArrayGetCount(matchingCredContexts)),
+                             __CUIEnumerateMatchingCredentialsForProviderCallback,
                              (void *)&enumContext);
         
-        CFRelease(otherCredContexts);
+        CFRelease(matchingCredContexts);
     } else if (error) {
         cb(NULL, error);
         CFRelease(error);
@@ -199,12 +173,12 @@ __CUIEnumerateItemCredentialsCallback(const void *value, void *_context)
     CFDictionaryApplyFunction(item->keys, __CUITransformItemAttributeKeys, (void *)transformedAttrs);
 
     enumContext->didEnumerate |=
-        __CUIControllerEnumerateCredentialForProviderWithAttributes(enumContext->controller,
-                                                                    enumContext->provider,
-                                                                    transformedAttrs,
-                                                                    ^(CUICredentialRef cred, CFErrorRef err) {
+        __CUIControllerEnumerateMatchingCredentialsForProvider(enumContext->controller,
+                                                               enumContext->provider,
+                                                               transformedAttrs,
+                                                               ^(CUICredentialRef cred, CFErrorRef err) {
                                                                         enumContext->callback(cred, err);
-                                                                    });
+                                                               });
 
     CFRelease(transformedAttrs);
 }
@@ -241,10 +215,10 @@ __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
     Boolean didEnumerate = false;
     
     if (controller->_attributes) {
-        didEnumerate |= __CUIControllerEnumerateCredentialForProviderWithAttributes(controller,
-                                                                                    provider,
-                                                                                    controller->_attributes,
-                                                                                    cb);
+        didEnumerate |= __CUIControllerEnumerateMatchingCredentialsForProvider(controller,
+                                                                               provider,
+                                                                               controller->_attributes,
+                                                                               cb);
     }
     
     if ((controller->_usageFlags & kCUIUsageFlagsInCredOnly) == 0) {
@@ -257,10 +231,6 @@ __CUIControllerEnumerateCredentialsForProvider(CUIControllerRef controller,
         } else if (controller->_usage == kCUIUsageScenarioLogin) {
             // Here we may enumerate local accounts for example
         }
-        
-        didEnumerate |= __CUIControllerEnumerateOtherCredentialsForProvider(controller,
-                                                                            provider,
-                                                                            cb);
     }
     
     return didEnumerate;

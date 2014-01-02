@@ -33,6 +33,4 @@
 - (void)willSubmit;
 - (void)didSubmit;
 
-- (BOOL)addGSSItem:(NSError * __autoreleasing *)error;
-
 @end

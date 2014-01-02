@@ -59,16 +59,18 @@ public:
         CFRelease(interfaceID);
         return E_NOINTERFACE;
     }
-    
-    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) {
+
+    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CFErrorRef *error) {
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
-       
+        const CUICredentialContext *contexts[] = { personaCred };
+        
         if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();
             return NULL;
         }
         
-        return personaCred;
+        return CUICredentialContextArrayCreate(CFGetAllocator(_controller), contexts, 1);
     }
     
     Boolean initWithController(CUIControllerRef controller,

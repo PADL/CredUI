@@ -12,9 +12,80 @@
 #include <CoreFoundation/CFPlugInCOM.h>
 
 #ifdef __cplusplus
+class CUICredentialContext : public IUnknown {
+public:
+    /*
+     * Return a description for debugging purposes
+     */
+    virtual CFStringRef copyDescription(void) CF_RETURNS_RETAINED = 0;
+    
+    /*
+     * Get an array of CUIFieldRefs that can be used to populate the
+     * auth identity.
+     */
+    virtual CFArrayRef getFields(void) CF_RETURNS_NOT_RETAINED = 0;
+    
+    /*
+     * Pack the fields into a GSS auth identity.
+     */
+    virtual CFDictionaryRef getAttributes(void) CF_RETURNS_NOT_RETAINED = 0;
+    
+    virtual Boolean confirm(CFErrorRef *error) = 0;
+    
+    /*
+     * Called when the user selects the credential.
+     */
+    virtual void didBecomeSelected(Boolean *pbAutoLogin) = 0;
+    virtual void didBecomeDeselected(void) = 0;
+    virtual void didSubmit(void) = 0;
+};
+
+class CUIProvider : public IUnknown {
+public:
+    /*
+     * Initialize a new credential provider
+     */
+    virtual Boolean initWithController(CUIControllerRef controller,
+                                       CUIUsageScenario usageScenario,
+                                       CUIUsageFlags usageFlags,
+                                       CFErrorRef *error) = 0;
+    
+    /*
+     * Get all matching credentials for the selected attributes (attributes
+     * may be NULL).
+     */
+    virtual CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                               CFErrorRef *error) CF_RETURNS_RETAINED = 0;
+};
+
+#else
+typedef struct CUICredentialContext {
+    IUNKNOWN_C_GUTS;
+    CFStringRef (STDMETHODCALLTYPE *copyDescription)(void *thisPointer);
+    CFArrayRef (STDMETHODCALLTYPE *getFields)(void *thisPointer);
+    CFDictionaryRef (STDMETHODCALLTYPE *getAttributes)(void *thisPointer);
+    void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer, Boolean *pbAutoLogin);
+    void (STDMETHODCALLTYPE *didBecomeDeselected)(void *thisPointer);
+    void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
+    Boolean (STDMETHODCALLTYPE *confirm)(void *thisPointer, CFErrorRef *error);
+} CUICredentialContext;
+
+typedef struct CUIProvider {
+    IUNKNOWN_C_GUTS;
+    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller,
+                                                    CUIUsageScenario usageScenario,
+                                                    CUIUsageFlags usageFlags,
+                                                    CFErrorRef *error);
+    CFArrayRef (STDMETHODCALLTYPE *copyMatchingCredentials)(void *thisPointer,
+                                                            CFDictionaryRef attributes,
+                                                            CFErrorRef *error);
+} CUIProvider;
+#endif /* defined(__cplusplus) */
+
+#ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 // F7356A4B-91A7-4455-AF3A-175D27449C9E
 #define kCUIProviderInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xF7, 0x35, 0x6A, 0x4B, 0x91, 0xA7, 0x44, 0x55, 0xAF, 0x3A, 0x17, 0x5D, 0x27, 0x44, 0x9C, 0x9E)
 
@@ -37,80 +108,14 @@ extern const CFStringRef kCUICredentialReturnCredentialFinished;
 // no credential made but force caller to return
 extern const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
+CFArrayRef
+CUICredentialContextArrayCreate(CFAllocatorRef allocator,
+                                const CUICredentialContext **contexts,
+                                CFIndex numContexts);
+
+
 #ifdef __cplusplus
 }
 #endif
-
-#ifdef __cplusplus
-class CUICredentialContext : public IUnknown {
-public:
-    /*
-     * Return a description for debugging purposes
-     */
-    virtual CFStringRef copyDescription(void) CF_RETURNS_RETAINED = 0;
-    
-    /*
-     * Get an array of CUIFieldRefs that can be used to populate the
-     * auth identity.
-     */
-    virtual CFArrayRef getFields(void) CF_RETURNS_NOT_RETAINED = 0;
-    
-    /*
-     * Pack the fields into a GSS auth identity.
-     */
-    virtual CFDictionaryRef getAttributes(void) CF_RETURNS_NOT_RETAINED = 0;
-    
-    /*
-     * Called when the user selects the credential.
-     */
-    virtual void didBecomeSelected(Boolean *pbAutoLogin) = 0;
-    virtual void didBecomeDeselected(void) = 0;
-    virtual void didSubmit(void) = 0;
-};
-
-class CUIProvider : public IUnknown {
-public:
-    /*
-     * Initialize a new credential provider
-     */
-    virtual Boolean initWithController(CUIControllerRef controller,
-                                       CUIUsageScenario usageScenario,
-                                       CUIUsageFlags usageFlags,
-                                       CFErrorRef *error) = 0;
-    
-    /*
-     * Get a CUICredentialRef for an authentication identity. Attributes may be
-     * NULL in which case it should prompt the user.
-     */
-    virtual CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
-    
-    /*
-     * Get any additional CUICredentialContexts for users that the provider knows about,
-     * for example inserted smartcards.
-     */
-    virtual CFArrayRef createOtherCredentials(CFErrorRef *error) CF_RETURNS_RETAINED = 0; // array of CUICredentialRef
-};
-
-#else
-typedef struct CUICredentialContext {
-    IUNKNOWN_C_GUTS;
-    CFStringRef (STDMETHODCALLTYPE *copyDescription)(void *thisPointer);
-    CFArrayRef (STDMETHODCALLTYPE *getFields)(void *thisPointer);
-    CFDictionaryRef (STDMETHODCALLTYPE *getAttributes)(void *thisPointer);
-    void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer, Boolean *pbAutoLogin);
-    void (STDMETHODCALLTYPE *didBecomeDeselected)(void *thisPointer);
-    void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
-} CUICredentialContext;
-
-typedef struct CUIProvider {
-    IUNKNOWN_C_GUTS;
-    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller,
-                                                    CUIUsageScenario usageScenario,
-                                                    CUIUsageFlags usageFlags,
-                                                    CFErrorRef *error);
-    CUICredentialRef (STDMETHODCALLTYPE *createCredentialWithAttributes)(CFDictionaryRef attributes, CFErrorRef *error);
-    CFArrayRef (STDMETHODCALLTYPE *createOtherCredentials)(void *thisPointer, CFErrorRef *error);
-} CUIProvider;
-#endif /* defined(__cplusplus) */
 
 #endif /* defined(__CredUI__CUIProvider__) */

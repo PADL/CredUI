@@ -56,16 +56,17 @@ public:
         return E_NOINTERFACE;
     }
   
-    CUICredentialContext *createCredentialWithAttributes(CFDictionaryRef attributes,
-                                                         CFErrorRef *error) {
+    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CFErrorRef *error) {
         CUIPasswordCredential *passwordCred = new CUIPasswordCredential();
+        const CUICredentialContext *contexts[] = { passwordCred };
         
         if (!passwordCred->initWithAttributes(attributes, _usageFlags, error)) {
             passwordCred->Release();
             return NULL;
         }
         
-        return passwordCred;
+        return CUICredentialContextArrayCreate(CFGetAllocator(_controller), contexts, 1);
     }
 
     Boolean initWithController(CUIControllerRef controller,
@@ -78,10 +79,6 @@ public:
         return true;
     }
     
-    CFArrayRef createOtherCredentials(CFErrorRef *error) {
-        return NULL;
-    }
-
     CUIPasswordCredentialProvider() {
         CFPlugInAddInstanceForFactory(kPasswordCredentialProviderFactoryID);
         _retainCount = 1;
