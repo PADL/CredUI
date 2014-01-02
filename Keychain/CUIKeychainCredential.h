@@ -68,15 +68,17 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithItemAndCredential(SecKeychainItemRef item,
-                                      CUICredentialRef credential,
-                                      CFTypeRef targetName,
-                                      CUIUsageFlags usageFlags) {
-        if (item == NULL || credential == NULL)
+    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags) {
+        if (credential == NULL)
             return false;
         
-        _item = (SecKeychainItemRef)CFRetain(item);
         _credential = (CUICredentialRef)CFRetain(credential);
+
+        _item = (SecKeychainItemRef)CFDictionaryGetValue(getAttributes(), kCUIAttrSecKeychainItemRef);
+        if (_item == NULL)
+            return false;
+        CFRetain(_item);
+
         _usageFlags = usageFlags;
         
         return true;
@@ -112,7 +114,6 @@ public:
             
             CFDictionarySetValue(query, kSecValueRef, _item);
             
-            // we don't set targetName because we don't want to clobber that
             keychainAttrs = CUICreateKeychainAttributesFromCUIAttributes(getAttributes(), NULL, &bCUIGeneric);
             if (keychainAttrs == NULL) {
                 CFRelease(query);
@@ -138,28 +139,23 @@ public:
     
     CUIKeychainCredential() {
         _retainCount = 1;
-        _targetName = NULL;
         _item = NULL;
         _credential = NULL;
-        _targetName = NULL;
         _usageFlags = 0;
     }
     
 private:
     int32_t _retainCount;
-    CFTypeRef _targetName;
-    SecKeychainItemRef _item;
     CUICredentialRef _credential;
+    SecKeychainItemRef _item;
     CUIUsageFlags _usageFlags;
     
 protected:
     ~CUIKeychainCredential() {
-        if (_item)
-            CFRelease(_item);
         if (_credential)
             CFRelease(_credential);
-        if (_targetName)
-            CFRelease(_targetName);
+        if (_item)
+            CFRelease(_item);
     }
 };
 #endif /* defined(__CredUI__CUIKeychainCredential__) */

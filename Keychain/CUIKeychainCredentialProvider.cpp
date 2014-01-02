@@ -74,7 +74,6 @@ public:
         if (items) {
             for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
                 CFDictionaryRef keychainAttrs = (CFDictionaryRef)CFArrayGetValueAtIndex(items, index);
-                SecKeychainItemRef item = (SecKeychainItemRef)CFDictionaryGetValue(keychainAttrs, kSecValueRef);
                 CFDictionaryRef attrs = CUICreateCUIAttributesFromKeychainAttributes(keychainAttrs, true);
                 
                 if (attrs == NULL)
@@ -90,7 +89,7 @@ public:
                                                                      return;
                                                                  
                                                                  itemCred = new CUIKeychainCredential();
-                                                                 if (!itemCred->initWithItemAndCredential(item, cred, targetName, _usageFlags)) {
+                                                                 if (!itemCred->initWithCredential(cred, _usageFlags)) {
                                                                      itemCred->Release();
                                                                      return;
                                                                  }

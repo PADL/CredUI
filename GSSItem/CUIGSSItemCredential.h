@@ -68,14 +68,17 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithItemAndCredential(GSSItemRef item,
-                                      CUICredentialRef credential,
-                                      CUIUsageFlags usageFlags) {
-        if (item == NULL || credential == NULL)
+    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags) {
+        if (credential == NULL)
             return false;
         
-        _item = (GSSItemRef)CFRetain(item);
         _credential = (CUICredentialRef)CFRetain(credential);
+        
+        _item = (GSSItemRef)CFDictionaryGetValue(getAttributes(), kCUIAttrGSSItemRef);
+        if (_item == NULL)
+            return false;
+        CFRetain(_item);
+        
         _usageFlags = usageFlags;
         
         return true;

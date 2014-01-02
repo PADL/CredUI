@@ -95,7 +95,7 @@ public:
                          return;
                      
                      itemCred = new CUIGSSItemCredential();
-                     if (!itemCred->initWithItemAndCredential(item, cred, _usageFlags)) {
+                     if (!itemCred->initWithCredential(cred, _usageFlags)) {
                          itemCred->Release();
                          return;
                      }
