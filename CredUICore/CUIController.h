@@ -28,8 +28,10 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsInCredOnly            = 0x00000020,
     kCUIUsageFlagsEnumerateAdmins       = 0x00000100,
     kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,
-    kCUIUsageFlagsKeepUsername          = 0x10000000,
-    kCUIUsageFlagsPasswordOnlyOK        = 0x20000000,
+    kCUIUsageFlagsExcludeCertificates   = 0x04000000,
+    kCUIUsageFlagsRequireCertificates   = 0x08000000,
+    kCUIUsageFlagsPasswordOnlyOK        = 0x10000000,
+    kCUIUsageFlagsKeepUsername          = 0x20000000,
     kCUIUsageFlagsExcludePersistedCreds = 0x40000000,
     kCUIUsageFlagsDoNotShowUI           = 0x80000000
 };

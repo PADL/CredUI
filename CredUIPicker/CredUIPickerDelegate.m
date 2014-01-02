@@ -144,7 +144,7 @@
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = @"host@browserid.padl.com";
+    self.picker.targetName = @"http@www.padl.com";
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self

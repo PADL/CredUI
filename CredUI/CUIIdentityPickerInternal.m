@@ -26,6 +26,8 @@
         usageFlags |= kCUIUsageFlagsGeneric;
     if (self.flags & CUIFlagsExcludePersistedCredentials)
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
+    if (self.flags & CUIFlagsExcludeCertificates)
+        usageFlags |= kCUIUsageFlagsExcludeCertificates;
     if (self.flags & CUIFlagsKeepUsername)
         usageFlags |= kCUIUsageFlagsKeepUsername;
     if (self.flags & CUIFlagsPasswordOnlyOK)
