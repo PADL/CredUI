@@ -1,5 +1,5 @@
 //
-//  PersonaCredentialProvider.cpp
+//  CUIKeychainCredentialProvider.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 29/12/2013.
@@ -11,22 +11,21 @@
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/CredUICore_Private.h>
 
-#include <GSS/GSS.h>
+#include <Security/Security.h>
+
 #include "CUIProviderUtilities.h"
 
-#include "GSSItem.h"
-#include "GSSItemCredentialProvider.h"
-#include "GSSItemCredential.h"
+#include "CUIKeychainCredentialProvider.h"
+#include "CUIKeychainCredential.h"
 
-
-// 2F62D1C1-F586-41CC-8096-C90683068DA5
-#define kGSSItemCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x2F, 0x62, 0xD1, 0xC1, 0xF5, 0x86, 0x41, 0xCC, 0x80, 0x96, 0xC9, 0x06, 0x83, 0x06, 0x8D, 0xA5)
+// 43022342-F1D5-424D-9D99-2973762F046D
+#define kKeychainCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x43, 0x02, 0x23, 0x42, 0xF1, 0xD5, 0x42, 0x4D, 0x9D, 0x99, 0x29, 0x73, 0x76, 0x2F, 0x04, 0x6D)
 
 extern "C" {
-    void *CUIGSSItemCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
+    void *CUIKeychainCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
 };
 
-class CUIGSSItemCredentialProvider : public CUIProvider {
+class CUIKeychainCredentialProvider : public CUIProvider {
     
 private:
     int32_t _retainCount;
@@ -65,53 +64,46 @@ public:
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CFErrorRef *error) {
-        CFDictionaryRef gssItemAttributes = NULL;
         CFArrayRef items;
         CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
                                                        0,
                                                        &kCUICredentialContextArrayCallBacks);
-
-        if (attributes)
-            gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(attributes);
-                                                                              
-        items = GSSItemCopyMatching(gssItemAttributes, error);
+        CFTypeRef targetName = CUIControllerGetTargetName(_controller);
+        
+        items = CUIKeychainCopyMatching(attributes, targetName, error);
         if (items) {
             for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
-                GSSItemRef item = (GSSItemRef)CFArrayGetValueAtIndex(items, index);
-                CFMutableDictionaryRef cuiAttributes = CUICreateCUIAttributesFromGSSItemAttributes(item->keys); // XXX private data
+                CFDictionaryRef keychainAttrs = (CFDictionaryRef)CFArrayGetValueAtIndex(items, index);
+                SecKeychainItemRef item = (SecKeychainItemRef)CFDictionaryGetValue(keychainAttrs, kSecValueRef);
+                CFDictionaryRef attrs = CUICreateCUIAttributesFromKeychainAttributes(keychainAttrs, true);
                 
-                if (cuiAttributes == NULL)
+                if (attrs == NULL)
                     continue;
                 
-                CFDictionarySetValue(cuiAttributes, kCUIAttrGSSItemRef, item);
-                
                 __CUIControllerEnumerateCredentialsExcepting(_controller,
-                                                             cuiAttributes,
-                                                             kGSSItemCredentialProviderFactoryID,
+                                                             attrs,
+                                                             kKeychainCredentialProviderFactoryID,
                                                              ^(CUICredentialRef cred, CFErrorRef err) {
-                     CUIGSSItemCredential *itemCred;
+                                                                 CUIKeychainCredential *itemCred;
                                                                  
-                     if (cred == NULL)
-                         return;
-                     
-                     itemCred = new CUIGSSItemCredential();
-                     if (!itemCred->initWithItemAndCredential(item, cred, _usageFlags)) {
-                         itemCred->Release();
-                         return;
-                     }
+                                                                 if (cred == NULL)
+                                                                     return;
                                                                  
-                     CFArrayAppendValue(creds, itemCred);
-                     itemCred->Release();
-                 });
+                                                                 itemCred = new CUIKeychainCredential();
+                                                                 if (!itemCred->initWithItemAndCredential(item, cred, targetName, _usageFlags)) {
+                                                                     itemCred->Release();
+                                                                     return;
+                                                                 }
+                                                                 
+                                                                 CFArrayAppendValue(creds, itemCred);
+                                                                 itemCred->Release();
+                                                             });
                 
-                CFRelease(cuiAttributes);
+                CFRelease(attrs);
             }
             
             CFRelease(items);
         }
-        
-        if (gssItemAttributes)
-            CFRelease(gssItemAttributes);
         
         return creds;
     }
@@ -120,7 +112,8 @@ public:
                                CUIUsageScenario usageScenario,
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error) {
-        if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsInCredOnly | kCUIUsageFlagsExcludePersistedCreds))
+        if ((usageFlags & kCUIUsageFlagsGeneric) == 0 ||
+            (usageFlags & (kCUIUsageFlagsInCredOnly | kCUIUsageFlagsExcludePersistedCreds)))
             return false;
         
         _controller = (CUIControllerRef)CFRetain(controller);
@@ -130,8 +123,8 @@ public:
         return true;
     }
     
-    CUIGSSItemCredentialProvider() {
-        CFPlugInAddInstanceForFactory(kGSSItemCredentialProviderFactoryID);
+    CUIKeychainCredentialProvider() {
+        CFPlugInAddInstanceForFactory(kKeychainCredentialProviderFactoryID);
         _retainCount = 1;
         _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
@@ -140,19 +133,19 @@ public:
     
 protected:
     
-    ~CUIGSSItemCredentialProvider() {
+    ~CUIKeychainCredentialProvider() {
         if (_controller)
             CFRelease(_controller);
-        CFPlugInRemoveInstanceForFactory(kGSSItemCredentialProviderFactoryID);
+        CFPlugInRemoveInstanceForFactory(kKeychainCredentialProviderFactoryID);
     }
     
 };
 
 __attribute__((visibility("default"))) void *
-CUIGSSItemCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
+CUIKeychainCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID)
 {
     if (CFEqual(typeID, kCUIProviderTypeID))
-        return new CUIGSSItemCredentialProvider;
+        return new CUIKeychainCredentialProvider;
     
     return NULL;
 }

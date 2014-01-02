@@ -13,6 +13,11 @@
 		D32662C818752D98004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
 		D32662CB1875308A004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
 		D32662CC187530C3004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
+		D32662D41875403F004C1F57 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
+		D32662DA1875403F004C1F57 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D32662D81875403F004C1F57 /* InfoPlist.strings */; };
+		D32662E318754060004C1F57 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D32662E418754060004C1F57 /* libCUIProviderUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */; };
+		D32662E7187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D32662E5187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp */; };
 		D336E288182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E286182B51A6009271CD /* InfoPlist.strings */; };
 		D336E293182B51A6009271CD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D336E294182B51A6009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
@@ -25,6 +30,12 @@
 		D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D37E31D218743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D37E31D018743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.h */; };
 		D37E31D318743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D37E31D118743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.m */; };
+		D384696F187540F3003EE56B /* CUIKeychainCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D384696D187540F3003EE56B /* CUIKeychainCredential.cpp */; };
+		D384697218754526003EE56B /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D38469741875452A003EE56B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38469731875452A003EE56B /* Security.framework */; };
+		D384697718754579003EE56B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38469731875452A003EE56B /* Security.framework */; };
+		D384697818754610003EE56B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38469731875452A003EE56B /* Security.framework */; };
+		D38469791875461F003EE56B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38469731875452A003EE56B /* Security.framework */; };
 		D39EAFFE186ECFB100C43A24 /* CredUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D336E28A182B51A6009271CD /* CredUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB00C186ED2B200C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB00A186ED2B200C43A24 /* InfoPlist.strings */; };
 		D39EB016186ED2B200C43A24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
@@ -139,12 +150,33 @@
 			remoteGlobalIDString = D3AA965418752BCB003852C5;
 			remoteInfo = CUIProviderUtilities;
 		};
+		D32662DF1875405B004C1F57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D32662E11875405B004C1F57 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3AA965418752BCB003852C5;
+			remoteInfo = CUIProviderUtilities;
+		};
 		D336E295182B51A6009271CD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D336E279182B51A6009271CD;
 			remoteInfo = CredUI;
+		};
+		D38469751875454B003EE56B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32662D21875403F004C1F57;
+			remoteInfo = Keychain;
 		};
 		D39EB018186ED2B200C43A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -261,6 +293,12 @@
 /* Begin PBXFileReference section */
 		D32662BF18752D01004C1F57 /* CUIProviderUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CUIProviderUtilities.cpp; path = ProviderUtilities/CUIProviderUtilities.cpp; sourceTree = "<group>"; };
 		D32662C018752D01004C1F57 /* CUIProviderUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CUIProviderUtilities.h; path = ProviderUtilities/CUIProviderUtilities.h; sourceTree = "<group>"; };
+		D32662D31875403F004C1F57 /* Keychain.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Keychain.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
+		D32662D71875403F004C1F57 /* Keychain-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keychain-Info.plist"; sourceTree = "<group>"; };
+		D32662D91875403F004C1F57 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D32662DB1875403F004C1F57 /* Keychain-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Keychain-Prefix.pch"; sourceTree = "<group>"; };
+		D32662E5187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIKeychainCredentialProvider.cpp; sourceTree = "<group>"; };
+		D32662E6187540CC004C1F57 /* CUIKeychainCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIKeychainCredentialProvider.h; sourceTree = "<group>"; };
 		D336E27A182B51A6009271CD /* CredUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CredUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D336E27D182B51A6009271CD /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D336E280182B51A6009271CD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -280,6 +318,9 @@
 		D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPicker.m; sourceTree = "<group>"; };
 		D37E31D018743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIIdentityPickerInternal+UIFactory.h"; sourceTree = "<group>"; };
 		D37E31D118743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUIIdentityPickerInternal+UIFactory.m"; sourceTree = "<group>"; };
+		D384696D187540F3003EE56B /* CUIKeychainCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIKeychainCredential.cpp; sourceTree = "<group>"; };
+		D384696E187540F3003EE56B /* CUIKeychainCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIKeychainCredential.h; sourceTree = "<group>"; };
+		D38469731875452A003EE56B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUI_Private.h; sourceTree = "<group>"; };
 		D39EB005186ED2B200C43A24 /* CredUICore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CredUICore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB009186ED2B200C43A24 /* CredUICore-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUICore-Info.plist"; sourceTree = "<group>"; };
@@ -373,6 +414,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D32662D01875403F004C1F57 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D38469741875452A003EE56B /* Security.framework in Frameworks */,
+				D384697218754526003EE56B /* GSS.framework in Frameworks */,
+				D32662E318754060004C1F57 /* CredUICore.framework in Frameworks */,
+				D32662E418754060004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
+				D32662D41875403F004C1F57 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D336E276182B51A6009271CD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -417,6 +470,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D38469791875461F003EE56B /* Security.framework in Frameworks */,
 				D32662C818752D98004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D39EB054186F131F00C43A24 /* GSS.framework in Frameworks */,
 				D39EB053186F114800C43A24 /* CredUICore.framework in Frameworks */,
@@ -462,6 +516,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D384697818754610003EE56B /* Security.framework in Frameworks */,
 				D32662CC187530C3004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D39EB0E81872532E00C43A24 /* GSS.framework in Frameworks */,
 				D39EB0E718724FD000C43A24 /* libbrowserid.0.dylib in Frameworks */,
@@ -481,6 +536,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D384697718754579003EE56B /* Security.framework in Frameworks */,
 				D32662C518752D8A004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D3AA964318751521003852C5 /* CredUICore.framework in Frameworks */,
 				D3AA96421875151C003852C5 /* GSS.framework in Frameworks */,
@@ -491,6 +547,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D32662D51875403F004C1F57 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				D32662D61875403F004C1F57 /* Supporting Files */,
+				D32662E5187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp */,
+				D32662E6187540CC004C1F57 /* CUIKeychainCredentialProvider.h */,
+				D384696D187540F3003EE56B /* CUIKeychainCredential.cpp */,
+				D384696E187540F3003EE56B /* CUIKeychainCredential.h */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		D32662D61875403F004C1F57 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D32662D71875403F004C1F57 /* Keychain-Info.plist */,
+				D32662D81875403F004C1F57 /* InfoPlist.strings */,
+				D32662DB1875403F004C1F57 /* Keychain-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D336E270182B51A6009271CD = {
 			isa = PBXGroup;
 			children = (
@@ -506,6 +584,7 @@
 				D39EB030186ED50800C43A24 /* Password */,
 				D39EB0D51872441300C43A24 /* Persona */,
 				D3F67B0E187513A1006B36C3 /* GSSItem */,
+				D32662D51875403F004C1F57 /* Keychain */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -525,6 +604,7 @@
 				D39EB0D31872441300C43A24 /* Persona.credprovider */,
 				D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */,
 				D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */,
+				D32662D31875403F004C1F57 /* Keychain.credprovider */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -532,6 +612,7 @@
 		D336E27C182B51A6009271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D38469731875452A003EE56B /* Security.framework */,
 				D3BED9011873EAA700623B92 /* libobjc.dylib */,
 				D39EB0FA1872B3F800C43A24 /* GSSKit.framework */,
 				D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */,
@@ -834,6 +915,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		D32662D21875403F004C1F57 /* Keychain */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D32662DC1875403F004C1F57 /* Build configuration list for PBXNativeTarget "Keychain" */;
+			buildPhases = (
+				D32662CF1875403F004C1F57 /* Sources */,
+				D32662D01875403F004C1F57 /* Frameworks */,
+				D32662D11875403F004C1F57 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D32662E01875405B004C1F57 /* PBXTargetDependency */,
+				D32662E21875405B004C1F57 /* PBXTargetDependency */,
+			);
+			name = Keychain;
+			productName = Keychain;
+			productReference = D32662D31875403F004C1F57 /* Keychain.credprovider */;
+			productType = "com.apple.product-type.bundle";
+		};
 		D336E279182B51A6009271CD /* CredUI */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D336E2A2182B51A6009271CD /* Build configuration list for PBXNativeTarget "CredUI" */;
@@ -938,6 +1038,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D38469761875454B003EE56B /* PBXTargetDependency */,
 				D3AA964A18751F66003852C5 /* PBXTargetDependency */,
 				D39EB0EC1872538400C43A24 /* PBXTargetDependency */,
 				D39EB0B11870408800C43A24 /* PBXTargetDependency */,
@@ -1086,11 +1187,20 @@
 				D39EB091186FB90400C43A24 /* CredUIEnumerate */,
 				D3F67B0B187513A1006B36C3 /* GSSItem */,
 				D3AA965418752BCB003852C5 /* CUIProviderUtilities */,
+				D32662D21875403F004C1F57 /* Keychain */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D32662D11875403F004C1F57 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D32662DA1875403F004C1F57 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D336E278182B51A6009271CD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1169,6 +1279,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D32662CF1875403F004C1F57 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D384696F187540F3003EE56B /* CUIKeychainCredential.cpp in Sources */,
+				D32662E7187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D336E275182B51A6009271CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1297,10 +1416,25 @@
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
 			targetProxy = D32662CD187530C7004C1F57 /* PBXContainerItemProxy */;
 		};
+		D32662E01875405B004C1F57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D32662DF1875405B004C1F57 /* PBXContainerItemProxy */;
+		};
+		D32662E21875405B004C1F57 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
+			targetProxy = D32662E11875405B004C1F57 /* PBXContainerItemProxy */;
+		};
 		D336E296182B51A6009271CD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D336E279182B51A6009271CD /* CredUI */;
 			targetProxy = D336E295182B51A6009271CD /* PBXContainerItemProxy */;
+		};
+		D38469761875454B003EE56B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32662D21875403F004C1F57 /* Keychain */;
+			targetProxy = D38469751875454B003EE56B /* PBXContainerItemProxy */;
 		};
 		D39EB019186ED2B200C43A24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1375,6 +1509,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		D32662D81875403F004C1F57 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D32662D91875403F004C1F57 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		D336E286182B51A6009271CD /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1466,6 +1608,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D32662DD1875403F004C1F57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Keychain/Keychain-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Keychain/Keychain-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Debug;
+		};
+		D32662DE1875403F004C1F57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Keychain/Keychain-Prefix.pch";
+				INFOPLIST_FILE = "Keychain/Keychain-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Release;
+		};
 		D336E2A0182B51A6009271CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1931,6 +2103,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D32662DC1875403F004C1F57 /* Build configuration list for PBXNativeTarget "Keychain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D32662DD1875403F004C1F57 /* Debug */,
+				D32662DE1875403F004C1F57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		D336E274182B51A6009271CD /* Build configuration list for PBXProject "CredUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

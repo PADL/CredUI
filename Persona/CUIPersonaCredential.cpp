@@ -9,6 +9,7 @@
 
 #include "CUIPersonaCredentialProvider.h"
 #include "CUIPersonaCredential.h"
+#include "CUIProviderUtilities.h"
 
 static gss_OID_desc GSSBrowserIDAes128MechDesc =
 { 10, (void *)"\x2B\x06\x01\x04\x01\xA9\x4A\x18\x01\x11" };
@@ -40,12 +41,16 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
 
     if (error != NULL)
         *error = NULL;
- 
-    gss_name_t gssTargetName = CUIControllerGetGssTargetName(controller);
-    if (gssTargetName) {
-        _targetName = CUIPersonaCreateTargetName(gssTargetName);
-        if (_targetName == NULL)
-            return false; // could mean BrowserID is not installed on this system
+
+    CFTypeRef targetName = CUIControllerGetTargetName(controller);
+    if (targetName) {
+        if (CFGetTypeID(targetName) == CFStringGetTypeID()) {
+            _targetName = (CFStringRef)CFRetain(targetName);
+        } else {
+            _targetName = CUIPersonaCreateTargetName((gss_name_t)targetName);
+            if (_targetName == NULL)
+                return false; // could mean BrowserID is not installed on this system
+        }
     }
 
     if (!createBrowserIDContext(controller, error))
@@ -55,7 +60,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         /*
          * We can't do anything with stored GSSItems
          */
-        if (CFDictionaryGetValue(attributes, kCUIAttrUUID))
+        if (CUIGetAttributeSource(attributes) != kCUIAttributeSourceUser)
             return false;
         
         CFTypeRef attrClass = CFDictionaryGetValue(attributes, kCUIAttrClass);

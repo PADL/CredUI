@@ -24,14 +24,14 @@ extern "C" {
  * Return an attribute dictionary suitable for passing to a GSS item API
  * from a CredUI attribute dictionary.
  */
-extern CFDictionaryRef
+extern CFMutableDictionaryRef
 CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
 
 /*
  * Return an attribute dictionary suitable for passing to a CredUI API
  * from a GSS item attribute dictionary.
  */
-extern CFDictionaryRef
+extern CFMutableDictionaryRef
 CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
 
 /*
@@ -44,12 +44,32 @@ typedef CF_ENUM(CFIndex, CUIAttributeSource) {
     kCUIAttributeSourceKeychain
 };
 
-extern Boolean
+extern CUIAttributeSource
 CUIGetAttributeSource(CFDictionaryRef attributes);
 
 extern Boolean
-CUIAddGSSItem(CFDictionaryRef attributes, CFErrorRef *error);
+CUIGSSItemAddOrUpdate(CFDictionaryRef attributes, Boolean addOnly, CFErrorRef *error);
 
+extern CFArrayRef
+CUIKeychainCopyMatching(CFDictionaryRef attributes,
+                        CFTypeRef targetName,
+                        CFErrorRef *error);
+
+extern CFMutableDictionaryRef
+CUICreateKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName, Boolean *pbCUIGeneric);
+
+extern CFMutableDictionaryRef
+CUICreateCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boolean bCUIGeneric);
+    
+extern Boolean
+CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
+                           CFDictionaryRef attributes);
+
+extern Boolean
+CUIKeychainStore(CFDictionaryRef attributes,
+                 CFTypeRef targetName,
+                 CFErrorRef *error);
+    
 #ifdef __cplusplus
 }
 #endif

@@ -60,7 +60,7 @@ public:
         CUIPasswordCredential *passwordCred = new CUIPasswordCredential();
         const CUICredentialContext *contexts[] = { passwordCred };
         
-        if (!passwordCred->initWithAttributes(attributes, _usageFlags, error)) {
+        if (!passwordCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             passwordCred->Release();
             return NULL;
         }

@@ -79,7 +79,7 @@ public:
                                CFErrorRef *error) {
         if (usageScenario != kCUIUsageScenarioNetwork)
             return false;
-        if (usageFlags & kCUIUsageFlagsDoNotShowUI)
+        if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI))
             return false;
 
         _controller = (CUIControllerRef)CFRetain(controller);
@@ -92,6 +92,7 @@ public:
     CUIPersonaCredentialProvider() {
         CFPlugInAddInstanceForFactory(kPersonaCredentialProviderFactoryID);
         _retainCount = 1;
+        _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
         _usageFlags = 0;
     }

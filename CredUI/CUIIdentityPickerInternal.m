@@ -264,25 +264,26 @@
 
 - (id)targetName
 {
-    return (__bridge id)CUIControllerGetGssTargetName(_controller);
+    return (__bridge id)CUIControllerGetTargetName(_controller);
 }
 
 - (void)setTargetName:(id)aTarget
 {
     CFTypeRef cfTarget = (__bridge CFTypeRef)aTarget;
     
-    if (CFGetTypeID(cfTarget) == CFStringGetTypeID()) {
+    if ((self.flags & CUIFlagsGenericCredentials) == 0 &&
+        CFGetTypeID(cfTarget) == CFStringGetTypeID()) {
         CFErrorRef error = NULL;
         gss_name_t gssName = GSSCreateName(cfTarget, GSS_C_NT_HOSTBASED_SERVICE, &error);
         
         if (gssName) {
-            CUIControllerSetGssTargetName(_controller, gssName);
+            CUIControllerSetTargetName(_controller, gssName);
             CFRelease(gssName);
         } else if (error) {
             CFRelease(error);
         }
     } else {
-        CUIControllerSetGssTargetName(_controller, (gss_name_t)cfTarget);
+        CUIControllerSetTargetName(_controller, cfTarget);
     }
 }
 

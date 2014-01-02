@@ -136,6 +136,11 @@ __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 extern const CFStringRef kCUIAttrCredentialMetaProvider
 __OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
 
+extern const CFStringRef kCUIAttrGSSItemRef
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+extern const CFStringRef kCUIAttrSecKeychainItemRef
+__OSX_AVAILABLE_STARTING(__MAC_10_8, __IPHONE_6_0);
+
 #ifdef __cplusplus
 }
 #endif

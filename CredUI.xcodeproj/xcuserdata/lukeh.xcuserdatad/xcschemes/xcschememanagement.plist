@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>Keychain.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
 		<key>Password.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -52,6 +57,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D32662D21875403F004C1F57</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D336E279182B51A6009271CD</key>
 		<dict>
 			<key>primary</key>

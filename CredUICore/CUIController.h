@@ -87,10 +87,10 @@ CFTypeRef
 CUIControllerGetGssContextHandle(CUIControllerRef controller);
 
 void
-CUIControllerSetGssTargetName(CUIControllerRef controller, gss_name_t target);
+CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef target);
 
-gss_name_t
-CUIControllerGetGssTargetName(CUIControllerRef controller);
+CFTypeRef
+CUIControllerGetTargetName(CUIControllerRef controller);
 
 Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef));

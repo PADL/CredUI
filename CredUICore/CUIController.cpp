@@ -22,8 +22,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
         CFRelease(controller->_authError);
     if (controller->_gssContextHandle)
         CFRelease(controller->_gssContextHandle);
-    if (controller->_gssTargetName)
-        CFRelease(controller->_gssTargetName);
+    if (controller->_targetName)
+        CFRelease(controller->_targetName);
     
 }
 static CFStringRef _CUIControllerCopyDescription(CFTypeRef cf)
@@ -262,13 +262,13 @@ CUIControllerGetGssContextHandle(CUIControllerRef controller)
 }
 
 CUI_EXPORT void
-CUIControllerSetGssTargetName(CUIControllerRef controller, gss_name_t targetName)
+CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef targetName)
 {
-    __CUISetter((CFTypeRef &)controller->_gssTargetName, (CFTypeRef)targetName);
+    __CUISetter((CFTypeRef &)controller->_targetName, targetName);
 }
 
-CUI_EXPORT gss_name_t
-CUIControllerGetGssTargetName(CUIControllerRef controller)
+CUI_EXPORT CFTypeRef
+CUIControllerGetTargetName(CUIControllerRef controller)
 {
-    return controller->_gssTargetName;
+    return controller->_targetName;
 }

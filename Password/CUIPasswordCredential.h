@@ -61,14 +61,14 @@ public:
     
     CFDictionaryRef getAttributes(void) {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, getCredentialStatus());
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PasswordCredentialProvider"));
 
         return _attributes;
     }
     
-    Boolean initWithAttributes(CFDictionaryRef attributes,
-                               CUIUsageFlags usageFlags,
-                               CFErrorRef *error);
+    Boolean initWithControllerAndAttributes(CUIControllerRef controller,
+                                            CUIUsageFlags usageFlags,
+                                            CFDictionaryRef attributes,
+                                            CFErrorRef *error);
  
     const CFStringRef getCredentialStatus(void);
 
@@ -79,24 +79,31 @@ public:
     void didBecomeDeselected(void) {
     }
     
-    void didSubmit(void) {
+    void didSubmit(void);
+    
+    Boolean isPlaceholderPassword(void) {
+        CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+        
+        return password &&
+               CFGetTypeID(password) == CFBooleanGetTypeID() &&
+               CFBooleanGetValue((CFBooleanRef)password);
     }
-   
+    
     Boolean didConfirm(CFErrorRef *error);
     
     CUIPasswordCredential() {
         _retainCount = 1;
-        _inCredUsable = false;
         _fields = NULL;
         _attributes = NULL;
+        _targetName = NULL;
     }
 
 private:
     int32_t _retainCount;
-    bool _inCredUsable;
     bool _generic;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
+    CFTypeRef _targetName;
     
 protected:
     
@@ -105,6 +112,8 @@ protected:
             CFRelease(_fields);
         if (_attributes)
             CFRelease(_attributes);
+        if (_targetName)
+            CFRelease(_targetName);
     }
 };
 

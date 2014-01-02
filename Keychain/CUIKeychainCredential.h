@@ -1,13 +1,13 @@
 //
-//  GSSItemCredential.h
+//  CUIKeychainCredential.h
 //  CredUI
 //
 //  Created by Luke Howard on 2/01/2014.
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__GSSItemCredential__
-#define __CredUI__GSSItemCredential__
+#ifndef __CredUI__CUIKeychainCredential__
+#define __CredUI__CUIKeychainCredential__
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
@@ -15,11 +15,11 @@
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/CredUICore_Private.h>
 
+#include <Security/Security.h>
+
 #include "CUIProviderUtilities.h"
 
-#include "GSSItem.h"
-
-class CUIGSSItemCredential : public CUICredentialContext {
+class CUIKeychainCredential : public CUICredentialContext {
     
 public:
     
@@ -54,9 +54,9 @@ public:
         CFStringRef desc;
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
-                                        CFSTR("<CUIGSSItemCredential %p{credential = \"%@\"}>"),
+                                        CFSTR("<CUIKeychainCredential %p{credential = \"%@\"}>"),
                                         this, _credential);
-
+        
         return desc;
     }
     
@@ -68,13 +68,14 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithItemAndCredential(GSSItemRef item,
+    Boolean initWithItemAndCredential(SecKeychainItemRef item,
                                       CUICredentialRef credential,
+                                      CFTypeRef targetName,
                                       CUIUsageFlags usageFlags) {
         if (item == NULL || credential == NULL)
             return false;
         
-        _item = (GSSItemRef)CFRetain(item);
+        _item = (SecKeychainItemRef)CFRetain(item);
         _credential = (CUICredentialRef)CFRetain(credential);
         _usageFlags = usageFlags;
         
@@ -90,48 +91,75 @@ public:
     }
     
     void didSubmit(void) {
+        // now, unlock the keychain item
+        
         CUICredentialDidSubmit(_credential);
     }
     
     Boolean didConfirm(CFErrorRef *error) {
         Boolean ret;
-       
-        /*
-         * We update any existing GSS items on behalf of the credential provider, however
-         * adding any new ones must be done by the credential provider themselves.
-         */ 
-        ret = CUICredentialDidConfirm(_credential, error);
-        if (ret && _item) {
-            CFDictionaryRef gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
         
-            if (gssItemAttributes) {
-                ret = GSSItemUpdate(_item->keys, gssItemAttributes, error);
-                CFRelease(gssItemAttributes);
+        ret = CUICredentialDidConfirm(_credential, error);
+        if (ret) {
+            Boolean bCUIGeneric;
+            CFMutableDictionaryRef query;
+            CFMutableDictionaryRef keychainAttrs;
+            OSStatus osret;
+            
+            query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+            if (query == NULL)
+                return false;
+            
+            CFDictionarySetValue(query, kSecValueRef, _item);
+            
+            // we don't set targetName because we don't want to clobber that
+            keychainAttrs = CUICreateKeychainAttributesFromCUIAttributes(getAttributes(), NULL, &bCUIGeneric);
+            if (keychainAttrs == NULL) {
+                CFRelease(query);
+                return false;
             }
+ 
+            if (!CUIKeychainSetPasswordAttr(keychainAttrs, getAttributes())) {
+                CFRelease(query);
+                CFRelease(keychainAttrs);
+                return false;
+            }
+
+            osret = SecItemUpdate(query, keychainAttrs);
+            
+            CFRelease(query);
+            CFRelease(keychainAttrs);
+            
+            ret = !osret;
         }
         
         return ret;
     }
     
-    CUIGSSItemCredential() {
+    CUIKeychainCredential() {
         _retainCount = 1;
+        _targetName = NULL;
         _item = NULL;
         _credential = NULL;
+        _targetName = NULL;
         _usageFlags = 0;
     }
     
 private:
     int32_t _retainCount;
-    GSSItemRef _item;
+    CFTypeRef _targetName;
+    SecKeychainItemRef _item;
     CUICredentialRef _credential;
     CUIUsageFlags _usageFlags;
     
 protected:
-    ~CUIGSSItemCredential() {
+    ~CUIKeychainCredential() {
         if (_item)
             CFRelease(_item);
         if (_credential)
             CFRelease(_credential);
+        if (_targetName)
+            CFRelease(_targetName);
     }
 };
-#endif /* defined(__CredUI__GSSItemCredential__) */
+#endif /* defined(__CredUI__CUIKeychainCredential__) */

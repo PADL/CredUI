@@ -49,6 +49,9 @@ CUI_CONST_TYPE(kCUICredentialReturnNoCredentialFinished,kCUICredentialReturnNoCr
 CUI_CONST_TYPE(kCUIAttrCredentialProvider,             kCUIAttrCredentialProvider);
 CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaProvider);
 
+CUI_CONST_TYPE(kCUIAttrSecKeychainItemRef,             kCUIAttrSecKeychainItemRef);
+CUI_CONST_TYPE(kCUIAttrGSSItemRef,                     kCUIAttrGSSItemRef);
+
 static CFStringRef __CUIPlugInDirectory = CFSTR("CredentialProviders");
 static CFStringRef __CUIPlugInBundleType = CFSTR("credprovider");
 

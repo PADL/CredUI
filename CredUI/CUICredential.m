@@ -153,7 +153,8 @@ extern CFArrayRef GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
     id type = self.attributes[(NSString *)kCUIAttrNameType];
     id value = self.attributes[(NSString *)kCUIAttrName];
 
-    if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSUsername])
+    if (type == nil ||
+        [type isEqual:(NSString *)kCUIAttrNameTypeGSSUsername])
         oid = GSS_C_NT_USER_NAME;
     else if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSHostBasedService])
         oid = GSS_C_NT_HOSTBASED_SERVICE;

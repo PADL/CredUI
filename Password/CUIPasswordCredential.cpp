@@ -6,26 +6,47 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include <Security/Security.h>
+
 #include "CUIPasswordCredential.h"
 #include "CUIProviderUtilities.h"
 
-Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
-                                                  CUIUsageFlags usageFlags,
-                                                  CFErrorRef *error)
+Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controller,
+                                                               CUIUsageFlags usageFlags,
+                                                               CFDictionaryRef attributes,
+                                                               CFErrorRef *error)
 {
     CFTypeRef defaultUsername = NULL;
     CUIFieldRef fields[3] = { 0 };
     size_t cFields = 0;
+    CFTypeRef targetName;
     
     if (error != NULL)
         *error = NULL;
     
-    _generic = !!(usageFlags & kCUIUsageFlagsGeneric);
+    targetName = CUIControllerGetTargetName(controller);
+    if (targetName)
+        _targetName = CFRetain(targetName);
     
     if (attributes) {
-        /*
-         * If this is a stored item (i.e. it has a UUID) and it's not a password credential, ignore it
-         */
+        switch (CUIGetAttributeSource(attributes)) {
+            case kCUIAttributeSourceGSSItem:
+                /*
+                 * Ignore GSS items if we are requesting generic credentials (i.e. the
+                 * caller expects to get a pasword back) or if we don't have a password set.
+                 */
+                if ((usageFlags & kCUIUsageFlagsGeneric) ||
+                    !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
+                return false;
+                break;
+            case kCUIAttributeSourceKeychain:
+                if ((usageFlags & kCUIUsageFlagsGeneric) == 0)
+                    return false;
+                break;
+            case kCUIAttributeSourceUser:
+                break;
+        }
+        
         if (CUIGetAttributeSource(attributes) != kCUIAttributeSourceUser &&
             !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
             return false;
@@ -35,19 +56,19 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
         if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
             defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrName);
         
-        if (defaultUsername &&
-            CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
-            _inCredUsable = true;
-        
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
-        // delete any existing cached password, because GSSItem won't be able to acquire a credential otherwise
-        CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
     
-    CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
-    
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PasswordCredentialProvider"));
+    if (usageFlags & kCUIUsageFlagsGeneric) {
+        _generic = true;
+        CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
+    } else {
+        CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
+    }
+ 
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Password Credential"), NULL);
     
     if ((usageFlags & kCUIUsageFlagsPasswordOnlyOK) == 0) {
@@ -85,30 +106,67 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
 const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
-    CFStringRef password = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
-    CFStringRef status;
-    
-    if (_inCredUsable) {
-        status = kCUICredentialReturnCredentialFinished;
-    } else if ((username && CFStringGetLength(username)) &&
-        (password && CFStringGetLength(password))) {
-        status = kCUICredentialReturnCredentialFinished;
-    } else {
-        status = kCUICredentialNotFinished;
+    CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+   
+    if (username == NULL || CFStringGetLength(username) == 0)
+        return kCUICredentialNotFinished;
+
+    if (isPlaceholderPassword() || CFStringGetLength((CFStringRef)password))
+         return kCUICredentialReturnCredentialFinished;
+    else
+        return kCUICredentialNotFinished;
+}
+
+void CUIPasswordCredential::didSubmit(void)
+{
+    if (isPlaceholderPassword()) {
+        // now we need to get the real password if it's a keychain item
+        switch (CUIGetAttributeSource(_attributes)) {
+            case kCUIAttributeSourceGSSItem:
+            case kCUIAttributeSourceUser:
+                break;
+            case kCUIAttributeSourceKeychain:
+                SecKeychainItemRef itemRef = (SecKeychainItemRef)CFDictionaryGetValue(_attributes, kCUIAttrSecKeychainItemRef);
+                
+                if (itemRef) {
+                    CFMutableDictionaryRef query;
+                    CFDataRef result = NULL;
+                    
+                    query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+                    if (query) {
+                        CFDictionarySetValue(query, kSecValueRef, itemRef);
+                        CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue);
+                        
+                        SecItemCopyMatching(query, (CFTypeRef *)&result);
+                        
+                        if (result) {
+                            CFStringRef password = CFStringCreateFromExternalRepresentation(CFGetAllocator(_attributes), result, kCFStringEncodingUTF8);
+                            if (password) {
+                                CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
+                                CFRelease(password);
+                            }
+                            CFRelease(result);
+                        }
+                        CFRelease(query);
+                    }
+                }
+                break;
+        }
     }
-    
-    return status;
 }
 
 Boolean CUIPasswordCredential::didConfirm(CFErrorRef *error)
 {
-    if (!_generic) {
-        /*
-         * If the attributes didn't come from a GSS item, then create one.
-         */
-        if (CUIGetAttributeSource(getAttributes()) != kCUIAttributeSourceGSSItem)
-            return CUIAddGSSItem(getAttributes(), error);
+    Boolean ret = false;
+
+    if (error)
+        *error = NULL;
+
+    if (_generic) {
+        ret = CUIKeychainStore(_attributes, _targetName, error);
+    } else {
+        ret = CUIGSSItemAddOrUpdate(_attributes, false, error);
     }
-    
-    return false;
+
+    return ret;
 }

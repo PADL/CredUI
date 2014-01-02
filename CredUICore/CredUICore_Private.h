@@ -48,8 +48,7 @@ struct __CUIController {
     CFErrorRef _authError;
     CFIndex _flags;
     CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
-    gss_name_t _gssTargetName;
-    
+    CFTypeRef _targetName;
 };
 
 Boolean
