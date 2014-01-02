@@ -73,6 +73,8 @@ public:
                                CUIUsageScenario usageScenario,
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error) {
+        if (usageScenario != kCUIUsageScenarioNetwork)
+            return false;
         if (usageFlags & kCUIUsageFlagsDoNotShowUI)
             return false;
 

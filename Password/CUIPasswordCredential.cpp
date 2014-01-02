@@ -8,10 +8,13 @@
 
 #include "CUIPasswordCredential.h"
 
-Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
+Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes,
+                                                  CUIUsageFlags usageFlags,
+                                                  CFErrorRef *error)
 {
     CFTypeRef defaultUsername = NULL;
     CUIFieldRef fields[3] = { 0 };
+    size_t cFields = 0;
     
     if (error != NULL)
         *error = NULL;
@@ -42,28 +45,34 @@ Boolean CUIPasswordCredential::initWithAttributes(CFDictionaryRef attributes, CF
     
     CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
     
-    fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, CFSTR("Password Credential"), NULL, NULL);
+    fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Password Credential"), NULL);
     
-    fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, kCUIAttrNameTypeGSSUsername, defaultUsername,
-                               ^(CUIFieldRef field, CFTypeRef value) {
-                                   CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
-                                   if (value) {
-                                       CFDictionarySetValue(_attributes, kCUIAttrName, value);
-                                   } else {
-                                       CFDictionaryRemoveValue(_attributes, kCUIAttrName);
-                                   }
-    });
+    if ((usageFlags & kCUIUsageFlagsPasswordOnlyOK) == 0) {
+        // kCUIUsageFlagsPasswordOnlyOK means do not allow a username to be entered
+        // kCUIUsageFlagsKeepUsername means username is read-only
+        CUIFieldClass fieldClass = (usageFlags & kCUIUsageFlagsKeepUsername) ? kCUIFieldClassSmallText : kCUIFieldClassEditText;
+        
+        fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, fieldClass, CFSTR("Username"), defaultUsername,
+                                           ^(CUIFieldRef field, CFTypeRef value) {
+                                               CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
+                                               if (value) {
+                                                   CFDictionarySetValue(_attributes, kCUIAttrName, value);
+                                               } else {
+                                                   CFDictionaryRemoveValue(_attributes, kCUIAttrName);
+                                               }
+                                           });
+    }
     
-    fields[2] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, kCUIAttrCredentialPassword, NULL,
-                               ^(CUIFieldRef field, CFTypeRef value) {
-                                   if (value) {
-                                       CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);
-                                   } else {
-                                       CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
-                                   }
-    });
+    fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), NULL,
+                                       ^(CUIFieldRef field, CFTypeRef value) {
+                                           if (value) {
+                                               CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);
+                                           } else {
+                                               CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
+                                           }
+                                       });
     
-    _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
+    _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, cFields, &kCFTypeArrayCallBacks);
     if (_fields == NULL)
         return false;
     

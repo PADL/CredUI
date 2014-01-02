@@ -64,7 +64,9 @@ public:
         return _attributes;
     }
     
-    Boolean initWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
+    Boolean initWithAttributes(CFDictionaryRef attributes,
+                               CUIUsageFlags usageFlags,
+                               CFErrorRef *error);
  
     const CFStringRef getCredentialStatus(void);
 

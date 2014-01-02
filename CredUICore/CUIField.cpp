@@ -120,7 +120,7 @@ CUIFieldCreate(
         return NULL;
     
     f->_class = fieldClass;
-    f->_title = (CFStringRef)CFRetain(title);
+    f->_title = title ? (CFStringRef)CFRetain(title) : NULL;
     f->_defaultValue = defaultValue ? CFRetain(defaultValue) : NULL;
     f->_delegate = (void (^)(CUIFieldRef, CFTypeRef))_Block_copy(fieldDidChange);
     

@@ -10,6 +10,10 @@
  * This is a thin wrapper over CUIIdentityPickerInternal, because we might want to move
  * the guts into another process sometime.
  */
+@interface CUIIdentityPicker ()
+@property (nonatomic, assign) NSModalResponse modalResponse;
+@end
+
 @implementation CUIIdentityPicker
 
 #pragma mark - Initialization
@@ -41,7 +45,7 @@
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    NSModalResponse modalResponse = [_internal _runModal:window];
+    _modalResponse = [_internal _runModal:window];
 
     NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -50,7 +54,7 @@
     [invocation setTarget:delegate];
     [invocation setSelector:didEndSelector];
     [invocation setArgument:&object atIndex:2];
-    [invocation setArgument:&modalResponse atIndex:3];
+    [invocation setArgument:&_modalResponse atIndex:3];
     [invocation setArgument:&contextInfo atIndex:4];
     [invocation invoke];
 }
@@ -97,6 +101,9 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
 - (CUICredential *)selectedCredential
 {
+    if (_modalResponse != NSModalResponseStop)
+        return;
+        
     return ((CUIIdentityPickerInternal *)_internal).selectedCredential;
 }
 

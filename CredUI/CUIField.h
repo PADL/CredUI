@@ -23,7 +23,4 @@
 
 - (void)didSubmit:(id)sender;
 
-- (BOOL)isUsernameField;
-- (BOOL)isPasswordField;
-
 @end

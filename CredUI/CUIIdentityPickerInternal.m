@@ -22,12 +22,14 @@
 {
     CUIUsageFlags usageFlags = 0;
     
-    if (self.flags & CUIShowSaveCheckBox)
-        usageFlags |= kCUIUsageFlagsSaveCheckbox;
     if (self.flags & CUIFlagsGenericCredentials)
         usageFlags |= kCUIUsageFlagsGeneric;
     if (self.flags & CUIFlagsExcludePersistedCredentials)
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
+    if (self.flags & CUIFlagsKeepUsername)
+        usageFlags |= kCUIUsageFlagsKeepUsername;
+    if (self.flags & CUIPasswordOnlyOK)
+        usageFlags |= kCUIUsageFlagsPasswordOnlyOK;
     
     return CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
 }
@@ -127,7 +129,7 @@
 
 - (NSModalResponse)_runModal:(NSWindow *)window
 {
-    __block NSModalResponse returnCode;
+    __block NSModalResponse modalResponse;
     
     if (self.title)
         self.window.title = self.title;
@@ -138,18 +140,18 @@
     
     if (window) {
         [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
-            returnCode = sheetReturnCode;
+            modalResponse = sheetReturnCode;
         }];
     } else {
         NSModalSession modalSession = [NSApp beginModalSessionForWindow:self.window];
         do {
-            returnCode = [NSApp runModalSession:modalSession];
+            modalResponse = [NSApp runModalSession:modalSession];
             [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
             if (self.autoLogin) {
                 [self willSubmitCredential:self.submitButton];
                 self.autoLogin = NO;
             }
-        } while (returnCode == NSModalResponseContinue);
+        } while (modalResponse == NSModalResponseContinue);
         
         [NSApp endModalSession:modalSession];
     }
@@ -160,14 +162,14 @@
     
     [self didSubmitCredential];
     
-    return returnCode;
+    return modalResponse;
 }
 
 #pragma mark - Credential submission
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-    [NSApp stopModalWithCode:NSModalResponseStop];
+    [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseStop : NSModalResponseAbort];
 }
 
 - (void)_updateSubmitButtonForSelectedCred
@@ -288,9 +290,10 @@
 
 - (CUICredential *)selectedCredential
 {
-    NSArray *selectedObjects = [self.credsController selectedObjects];
+    NSArray *selectedObjects;
     CUICredential *cred = nil;
-    
+        
+    selectedObjects = [self.credsController selectedObjects];
     if (selectedObjects.count)
         cred = selectedObjects[0];
     

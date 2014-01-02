@@ -24,7 +24,9 @@ class CUIPasswordCredentialProvider : public CUIProvider {
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
-    
+    CUIUsageScenario _usageScenario;
+    CUIUsageFlags _usageFlags;
+
 public:
     ULONG AddRef(void) {
         return OSAtomicIncrement32Barrier(&_retainCount);
@@ -58,7 +60,7 @@ public:
                                                          CFErrorRef *error) {
         CUIPasswordCredential *passwordCred = new CUIPasswordCredential();
         
-        if (!passwordCred->initWithAttributes(attributes, error)) {
+        if (!passwordCred->initWithAttributes(attributes, _usageFlags, error)) {
             passwordCred->Release();
             return NULL;
         }
@@ -71,6 +73,8 @@ public:
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error) {
         _controller = (CUIControllerRef)CFRetain(controller);
+        _usageScenario = usageScenario;
+        _usageFlags = usageFlags;
         return true;
     }
     
@@ -81,6 +85,8 @@ public:
     CUIPasswordCredentialProvider() {
         CFPlugInAddInstanceForFactory(kPasswordCredentialProviderFactoryID);
         _retainCount = 1;
+        _usageScenario = kCUIUsageScenarioInvalid;
+        _usageFlags = 0;
     }
 
 protected:

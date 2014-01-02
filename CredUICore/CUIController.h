@@ -24,11 +24,12 @@ typedef CF_ENUM(CFIndex, CUIUsageScenario) {
 
 typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsGeneric               = 0x00000001,
-    kCUIUsageFlagsSaveCheckbox          = 0x00000002,
     kCUIUsageFlagsMechanismOnly         = 0x00000010,
     kCUIUsageFlagsInCredOnly            = 0x00000020,
     kCUIUsageFlagsEnumerateAdmins       = 0x00000100,
     kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,
+    kCUIUsageFlagsKeepUsername          = 0x10000000,
+    kCUIUsageFlagsPasswordOnlyOK        = 0x20000000,
     kCUIUsageFlagsExcludePersistedCreds = 0x40000000,
     kCUIUsageFlagsDoNotShowUI           = 0x80000000
 };
