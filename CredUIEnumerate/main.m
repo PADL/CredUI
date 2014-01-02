@@ -19,7 +19,7 @@
 
 #include <GSSKit/GSSKit.h>
 
-#include "../CredUICore/GSSItem.h"
+#include "../GSSItem/GSSItem.h"
 
 @interface FooCredential : CUICredential
 @end
@@ -195,8 +195,7 @@ int main(int argc, const char * argv[])
     NSLog(@"OUT_CRED attributes: %@", credAttributes);
     
     NSError *error = nil;
-    GSSItem *item = [(__bridge CUICredential *)cred GSSItem];
-    
+    GSSItem *item = [(__bridge CUICredential *)cred GSSItem:YES error:&error];
     if (item) {
         GSSCredential *cred = [item acquire:credAttributes error:&error];
         NSLog(@"Got cred: %@", cred);

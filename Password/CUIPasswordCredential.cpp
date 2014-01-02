@@ -167,6 +167,7 @@ void CUIPasswordCredential::didSubmit(void)
                 break;
             }
             case kCUIAttributeSourceGSSItem:
+                // We *could* lookup the GSS item password in the keychain, but that'd be an abstraction violation
                 break;
             case kCUIAttributeSourceUser:
             default:

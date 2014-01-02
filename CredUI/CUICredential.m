@@ -9,6 +9,14 @@
 #include "CFBridgeHelper.h"
 #include "CUIProviderUtilities.h"
 
+extern CFArrayRef
+GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
+
+struct GSSItem;
+
+extern struct GSSItem *
+GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
+
 @interface CUICFCredential : CUICredential
 @end
 
@@ -79,7 +87,19 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-    [coder encodeObject:self.attributes];
+    NSMutableDictionary *codeableAttrs = [NSMutableDictionary dictionary];
+    
+    [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([obj isKindOfClass:[NSString class]] ||
+            [obj isKindOfClass:[NSData class]] ||
+            [obj isKindOfClass:[NSNumber class]] ||
+            [obj isKindOfClass:[NSUUID class]] ||
+            [obj isKindOfClass:[NSArray class]] ||
+            [obj isKindOfClass:[NSDictionary class]])
+            codeableAttrs[key] = obj;
+    }];
+    
+    [coder encodeObject:codeableAttrs];
 }
 
 - (id)initWithCoder:(NSCoder *)coder
@@ -133,16 +153,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 - (void)didSubmit
 {
     CUICredentialDidSubmit([self _credentialRef]);
-}
-
-extern CFArrayRef GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
-
-- (GSSItem *)GSSItem
-{
-    NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
-    NSArray *matchingItems = [NSMakeCollectable(GSSItemCopyMatching((CFDictionaryRef)itemAttrs, NULL)) autorelease];
-
-    return matchingItems.count ? matchingItems[0] : nil;
 }
 
 - (id)GSSName
@@ -209,6 +219,32 @@ extern CFArrayRef GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
 - (NSArray *)fields
 {
     return (NSArray *)CUICredentialGetFields([self _credentialRef]);
+}
+
+- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error;
+{
+    id item;
+    
+    if (error)
+        *error = nil;
+    
+    item = self.attributes[(__bridge NSString *)kCUIAttrGSSItemRef];
+    if (item == nil) {
+        NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
+        NSArray *matchingItems = [NSMakeCollectable(GSSItemCopyMatching((CFDictionaryRef)itemAttrs, NULL)) autorelease];
+        
+        item = matchingItems.count ? matchingItems[0] : nil;
+        if (item == nil && addIfAbsent) {
+            item = [NSMakeCollectable(GSSItemAdd((CFDictionaryRef)itemAttrs, (CFErrorRef *)error)) autorelease];
+        }
+    } else {
+        item = [[item retain] autorelease]; // in case the credentials dict goes away
+    }
+    
+    if (error)
+        [NSMakeCollectable(*error) autorelease];
+    
+    return item;
 }
 
 @end

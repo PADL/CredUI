@@ -14,7 +14,6 @@
 @class NSWindow;
 
 @class GSSContext;
-@class GSSItem;
 @class CUICredential;
 
 __attribute__((visibility("default")))

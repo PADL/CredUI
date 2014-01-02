@@ -7,7 +7,6 @@
 //
 
 @class NSDictionary;
-@class GSSItem;
 
 __attribute__((visibility("default")))
 @interface CUICredential : NSObject
@@ -31,14 +30,14 @@ __attribute__((visibility("default")))
 - (BOOL)didConfirm:(NSError * __autoreleasing *)error;
 
 /*
- * A GSS item object; this can be cast to a GSSItemRef. It is autoreleased.
- */
-- (GSSItem *)GSSItem;
-
-/*
  * A GSS name object for the credential initiator; this can be cast to
  * a gss_name_t or a GSSName * if using GSSKit. It is autoreleased.
  */
 - (id)GSSName;
+
+/*
+ * GSS item for the credential.
+ */
+- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error;
 
 @end
