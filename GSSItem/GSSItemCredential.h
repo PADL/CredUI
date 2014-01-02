@@ -15,8 +15,9 @@
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/CredUICore_Private.h>
 
+#include "CUIProviderUtilities.h"
+
 #include "GSSItem.h"
-#include "GSSItemUtilities.h"
 
 class CUIGSSItemCredential : public CUICredentialContext {
     
@@ -97,7 +98,7 @@ public:
         
         ret = CUICredentialConfirm(_credential, error);
         if (ret && _item) {
-            CFDictionaryRef gssItemAttributes = GSSItemUtilities::createGSSItemAttributes(getAttributes());
+            CFDictionaryRef gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
         
             if (gssItemAttributes) {
                 ret = GSSItemUpdate(_item->keys, gssItemAttributes, error);

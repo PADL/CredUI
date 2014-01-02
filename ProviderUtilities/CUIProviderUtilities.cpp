@@ -1,5 +1,5 @@
 //
-//  GSSItemUtilities.cpp
+//  CUIProviderUtilities.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 2/01/2014.
@@ -8,7 +8,7 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
-#include "GSSItemUtilities.h"
+#include "CUIProviderUtilities.h"
 
 static CFStringRef kCUIPrefix = CFSTR("kCUI");
 static CFStringRef kGSSPrefix = CFSTR("kGSS");
@@ -52,10 +52,12 @@ static CFDictionaryRef transformAttributes(CFDictionaryRef attrs, bool toGSS) {
     return context.transformedAttrs;
 }
 
-CFDictionaryRef GSSItemUtilities::createCUIAttributes(CFDictionaryRef attributes) {
+CFDictionaryRef CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes)
+{
     return transformAttributes(attributes, false);
 }
 
-CFDictionaryRef GSSItemUtilities::createGSSItemAttributes(CFDictionaryRef attributes) {
+CFDictionaryRef CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
+{
     return transformAttributes(attributes, true);
 }

@@ -12,11 +12,11 @@
 #include <CredUICore/CredUICore_Private.h>
 
 #include <GSS/GSS.h>
-#include "GSSItem.h"
+#include "CUIProviderUtilities.h"
 
+#include "GSSItem.h"
 #include "GSSItemCredentialProvider.h"
 #include "GSSItemCredential.h"
-#include "GSSItemUtilities.h"
 
 
 // 2F62D1C1-F586-41CC-8096-C90683068DA5
@@ -70,17 +70,18 @@ public:
                                        CFErrorRef *error) {
         CFDictionaryRef gssItemAttributes = NULL;
         CFArrayRef items;
-        CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller), 0, &kCUICredentialContextArrayCallBacks
-                                                       );
+        CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
+                                                       0,
+                                                       &kCUICredentialContextArrayCallBacks);
 
         if (attributes)
-            gssItemAttributes = GSSItemUtilities::createGSSItemAttributes(attributes);
+            gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(attributes);
                                                                               
         items = GSSItemCopyMatching(gssItemAttributes, error);
         if (items) {
             for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
                 GSSItemRef item = (GSSItemRef)CFArrayGetValueAtIndex(items, index);
-                CFDictionaryRef cuiAttributes = GSSItemUtilities::createCUIAttributes(item->keys); // XXX private data
+                CFDictionaryRef cuiAttributes = CUICreateCUIAttributesFromGSSItemAttributes(item->keys); // XXX private data
                 
                 if (cuiAttributes == NULL)
                     continue;
