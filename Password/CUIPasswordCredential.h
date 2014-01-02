@@ -82,7 +82,7 @@ public:
     void didSubmit(void) {
     }
    
-    Boolean confirm(CFErrorRef *error);
+    Boolean didConfirm(CFErrorRef *error);
     
     CUIPasswordCredential() {
         _retainCount = 1;

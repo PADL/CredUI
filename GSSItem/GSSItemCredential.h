@@ -93,10 +93,14 @@ public:
         CUICredentialDidSubmit(_credential);
     }
     
-    Boolean confirm(CFErrorRef *error) {
+    Boolean didConfirm(CFErrorRef *error) {
         Boolean ret;
-        
-        ret = CUICredentialConfirm(_credential, error);
+       
+        /*
+         * We update any existing GSS items on behalf of the credential provider, however
+         * adding any new ones must be done by the credential provider themselves.
+         */ 
+        ret = CUICredentialDidConfirm(_credential, error);
         if (ret && _item) {
             CFDictionaryRef gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
         

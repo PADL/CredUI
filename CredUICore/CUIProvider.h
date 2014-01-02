@@ -30,7 +30,7 @@ public:
      */
     virtual CFDictionaryRef getAttributes(void) CF_RETURNS_NOT_RETAINED = 0;
     
-    virtual Boolean confirm(CFErrorRef *error) = 0;
+    virtual Boolean didConfirm(CFErrorRef *error) = 0;
     
     /*
      * Called when the user selects the credential.
@@ -67,7 +67,7 @@ typedef struct CUICredentialContext {
     void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer, Boolean *pbAutoLogin);
     void (STDMETHODCALLTYPE *didBecomeDeselected)(void *thisPointer);
     void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
-    Boolean (STDMETHODCALLTYPE *confirm)(void *thisPointer, CFErrorRef *error);
+    Boolean (STDMETHODCALLTYPE *didConfirm)(void *thisPointer, CFErrorRef *error);
 } CUICredentialContext;
 
 typedef struct CUIProvider {

@@ -191,14 +191,14 @@ extern CFArrayRef GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
     return transformedDict;
 }
 
-- (BOOL)confirm:(NSError * __autoreleasing *)error
+- (BOOL)didConfirm:(NSError * __autoreleasing *)error
 {
     BOOL ret;
     
     if (error)
         *error = nil;
     
-    ret = CUICredentialConfirm([self _credentialRef], (CFErrorRef *)error);
+    ret = CUICredentialDidConfirm([self _credentialRef], (CFErrorRef *)error);
     if (error)
         [NSMakeCollectable(*error) autorelease];
     

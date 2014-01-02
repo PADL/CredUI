@@ -63,7 +63,7 @@ public:
         return _attributes;
     }
     
-    Boolean confirm(CFErrorRef *) {
+    Boolean didConfirm(CFErrorRef *) {
         return false;
     }
     

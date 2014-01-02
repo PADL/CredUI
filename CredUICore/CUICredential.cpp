@@ -317,7 +317,7 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 }
 
 CUI_EXPORT Boolean
-CUICredentialConfirm(CUICredentialRef cred, CFErrorRef *error)
+CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error)
 {
     __block CFErrorRef nsError = NULL;
     __block BOOL bCalledSubclass = true;
@@ -327,7 +327,7 @@ CUICredentialConfirm(CUICredentialRef cred, CFErrorRef *error)
         *error = NULL;
     
     bRet = ^ Boolean (CFErrorRef *nsError) {
-        CF_OBJC_FUNCDISPATCH1(__CUICredentialTypeID, Boolean, cred, "confirm:", nsError);
+        CF_OBJC_FUNCDISPATCH1(__CUICredentialTypeID, Boolean, cred, "didConfirm:", nsError);
         bCalledSubclass = false;
         return false;
     }(&nsError);
@@ -336,7 +336,7 @@ CUICredentialConfirm(CUICredentialRef cred, CFErrorRef *error)
         if (error)
             *error = (CFErrorRef)CFRetain(nsError);
     } else if (cred->_context) {
-        bRet = cred->_context->confirm(error);
+        bRet = cred->_context->didConfirm(error);
     }
 
     return bRet;

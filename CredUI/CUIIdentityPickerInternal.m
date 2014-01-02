@@ -190,7 +190,7 @@
     
     if (self.persist &&
         (self.flags & CUIFlagsExpectConfirmation) == 0)
-        [self.selectedCredential confirm:NULL];
+        [self.selectedCredential didConfirm:NULL];
 }
 
 - (void)credentialFieldDidChange:(id)sender

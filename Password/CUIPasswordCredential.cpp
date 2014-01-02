@@ -100,7 +100,7 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
     return status;
 }
 
-Boolean CUIPasswordCredential::confirm(CFErrorRef *error)
+Boolean CUIPasswordCredential::didConfirm(CFErrorRef *error)
 {
     if (!_generic) {
         /*

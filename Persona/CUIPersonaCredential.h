@@ -80,7 +80,7 @@ public:
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
  
-    Boolean confirm(CFErrorRef *error) {
+    Boolean didConfirm(CFErrorRef *error) {
         return false;
     }
 
