@@ -28,6 +28,15 @@ typedef CF_ENUM(CFIndex, CUIFieldClass) {
     kCUIFieldClassSubmitButton
 };
 
+typedef CF_OPTIONS(CFIndex, CUIFieldOptions) {
+    kCUIFieldOptionsNone                    = 0x00000000,
+#if 0
+    kCUIFieldOptionsEnablePasswordReveal    = 0x00000001,
+    kCUIFieldOptionsIsEmailAddress          = 0x00000002,
+#endif
+    kCUIFieldOptionsIsHidden                = 0x10000000
+};
+
 extern CFTypeID
 CUIFieldGetTypeID(void);
     
@@ -56,11 +65,11 @@ CUIFieldGetDefaultValue(CUIFieldRef field);
 extern void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value);
 
-const void
-CUIFieldSetHidden(CUIFieldRef field, Boolean value);
+extern void
+CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value);
 
 Boolean
-CUIFieldGetIsHidden(CUIFieldRef field);
+CUIFieldGetOptions(CUIFieldRef field);
 
 #ifdef __cplusplus
 }

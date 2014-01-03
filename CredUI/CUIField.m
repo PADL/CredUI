@@ -120,14 +120,14 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [identityPicker credentialFieldDidChange:sender];
 }
 
-- (BOOL)isHidden
+- (CUIFieldOptions)options
 {
-    return CUIFieldGetIsHidden([self _fieldRef]);
+    return CUIFieldGetOptions([self _fieldRef]);
 }
 
-- (void)setHidden:(BOOL)aValue
+- (void)setOptions:(CUIFieldOptions)aValue
 {
-    CUIFieldSetHidden([self _fieldRef], aValue);
+    CUIFieldSetOptions([self _fieldRef], aValue);
 }
 
 - (void)didSubmit:(id)sender

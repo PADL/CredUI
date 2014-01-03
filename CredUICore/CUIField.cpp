@@ -14,12 +14,12 @@ struct __CUIField {
     CFStringRef _title;
     CFTypeRef _defaultValue;
     void (^_delegate)(CUIFieldRef field, CFTypeRef value);
-    Boolean _hidden;
+    CUIFieldOptions _options;
 };
 
 static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
 static CFStringRef __CUIFieldValueProperty = CFSTR("value");
-static CFStringRef __CUIFieldHiddenProperty = CFSTR("hidden");
+static CFStringRef __CUIFieldOptionsProperty = CFSTR("options");
 
 CF_INLINE Boolean __CFEqualNullSafe(CFTypeRef cf1, CFTypeRef cf2)
 {
@@ -180,18 +180,18 @@ CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
     CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldValueProperty);
 }
 
-CUI_EXPORT const void
-CUIFieldSetHidden(CUIFieldRef field, Boolean value)
+CUI_EXPORT void
+CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value)
 {
-    CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setHidden:", value);
-    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldHiddenProperty);
-    field->_hidden = value;
-    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldHiddenProperty);
+    CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setOptions:", value);
+    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldOptionsProperty);
+    field->_options = value;
+    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldOptionsProperty);
 }
 
 CUI_EXPORT Boolean
-CUIFieldGetIsHidden(CUIFieldRef field)
+CUIFieldGetOptions(CUIFieldRef field)
 {
-    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, BOOL, field, "isHidden");
-    return field->_hidden;
+    CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, BOOL, field, "options");
+    return field->_options;
 }

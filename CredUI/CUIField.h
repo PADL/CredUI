@@ -11,7 +11,7 @@
 @property(nonatomic, readonly, assign) CUIFieldClass fieldClass;
 @property(nonatomic, readonly, copy) NSString *title;
 @property(nonatomic, readonly, copy) NSString *defaultValue;
-@property(nonatomic, getter=isHidden, setter=setHidden:) BOOL hidden;
+@property(nonatomic, assign) CUIFieldOptions options;
 
 - initWithClass:(CUIFieldClass)fieldClass
           title:(NSString *)title

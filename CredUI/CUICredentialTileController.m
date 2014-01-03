@@ -36,9 +36,11 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([keyPath isEqualTo:@"hidden"]) {
+    if ([keyPath isEqualTo:@"options"]) {
+        CUIFieldOptions options = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
         NSView *view = (__bridge NSView *)context;
-        view.hidden = [change[NSKeyValueChangeNewKey] boolValue];
+
+        view.hidden = !!(options & kCUIFieldOptionsIsHidden);
     }
 }
 
