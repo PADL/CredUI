@@ -19,7 +19,8 @@
     
     if (representedObject) {
         CUICredentialTile *tile = (CUICredentialTile *)self.view;
-        [tile setCredential:representedObject];
+        tile.tileController = self;
+        tile.credential = representedObject;
     }
 }
 
@@ -28,6 +29,17 @@
     [super setSelected:flag];
     [(CUICredentialTile *)self.view setSelected:flag];
     [self.view setNeedsDisplay:YES];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualTo:@"hidden"]) {
+        NSView *view = (__bridge NSView *)context;
+        view.hidden = [change[NSKeyValueChangeNewKey] boolValue];
+    }
 }
 
 @end

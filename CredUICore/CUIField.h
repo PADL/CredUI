@@ -55,7 +55,13 @@ CUIFieldGetDefaultValue(CUIFieldRef field);
     
 extern void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value);
-    
+
+const void
+CUIFieldSetHidden(CUIFieldRef field, Boolean value);
+
+Boolean
+CUIFieldGetIsHidden(CUIFieldRef field);
+
 #ifdef __cplusplus
 }
 #endif

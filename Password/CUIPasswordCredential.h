@@ -80,7 +80,7 @@ public:
     }
     
     void didSubmit(void) {
-    }
+   }
     
     void syncPersistedPassword(void);
     

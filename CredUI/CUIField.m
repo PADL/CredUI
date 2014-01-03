@@ -65,11 +65,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return (CUIFieldRef)self;
 }
 
-- (NSString *)description
-{
-    return [NSMakeCollectable(CFCopyDescription([self _fieldRef])) autorelease];
-}
-
 - (CFTypeID)_cfTypeID
 {
     return CUIFieldGetTypeID();
@@ -123,6 +118,16 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
     [self setValue:aValue];
     [identityPicker credentialFieldDidChange:sender];
+}
+
+- (BOOL)isHidden
+{
+    return CUIFieldGetIsHidden([self _fieldRef]);
+}
+
+- (void)setHidden:(BOOL)aValue
+{
+    CUIFieldSetHidden([self _fieldRef], aValue);
 }
 
 - (void)didSubmit:(id)sender

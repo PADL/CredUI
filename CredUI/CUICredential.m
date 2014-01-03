@@ -65,14 +65,9 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return (CUICredentialRef)self;
 }
 
-- (NSString *)description
-{
-    return [NSMakeCollectable(CFCopyDescription([self _credentialRef])) autorelease];
-}
-
 - (CFTypeID)_cfTypeID
 {
-    return CUIFieldGetTypeID();
+    return CUICredentialGetTypeID();
 }
 
 - (instancetype)init

@@ -7,10 +7,12 @@
 //
 
 @class CUICredential;
+@class CUICredentialTileController;
 
 @interface CUICredentialTile : NSView
 
 @property (weak, nonatomic) CUICredential *credential;
+@property (weak, nonatomic) CUICredentialTileController *tileController;
 @property (nonatomic, assign) BOOL selected;
 
 @end

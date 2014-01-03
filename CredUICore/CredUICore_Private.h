@@ -14,7 +14,7 @@
 #define CUI_EXPORT  __attribute__((visibility("default")))
 
 #include <CredUICore/CredUICore.h>
-#include "CFInternalHelper.h"
+#include "CFBridgeHelper.h"
 
 #ifdef __cplusplus
 static inline void
