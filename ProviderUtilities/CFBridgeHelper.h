@@ -17,7 +17,11 @@
 extern "C" {
 #endif
 OBJC_EXPORT id objc_msgSend(id self, SEL op, ...) __attribute__((weak_import));
-OBJC_EXPORT Boolean _CFIsObjC(CFTypeID typeID, CFTypeRef obj);
+
+CF_EXPORT Boolean _CFIsObjC(CFTypeID typeID, CFTypeRef obj);
+CF_EXPORT void _CFRuntimeBridgeClasses(CFTypeID cf_typeID, const char *objc_classname);
+CF_EXPORT CFTypeRef _CFTryRetain(CFTypeRef cf);
+CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
 #ifdef __cplusplus
 }
 #endif

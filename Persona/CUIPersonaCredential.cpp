@@ -14,7 +14,7 @@
 static gss_OID_desc GSSBrowserIDAes128MechDesc =
 { 10, (void *)"\x2B\x06\x01\x04\x01\xA9\x4A\x18\x01\x11" };
 
-static CFStringRef CUIPersonaCreateTargetName(gss_name_t name)
+static CFStringRef CUIPersonaMakeGssTargetName(gss_name_t name)
 {
     OM_uint32 major, minor;
     gss_name_t kerbName;
@@ -44,13 +44,15 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
 
     CFTypeRef targetName = CUIControllerGetTargetName(controller);
     if (targetName) {
-        if (CFGetTypeID(targetName) == CFStringGetTypeID()) {
-            _targetName = (CFStringRef)CFRetain(targetName);
-        } else {
-            _targetName = CUIPersonaCreateTargetName((gss_name_t)targetName);
-            if (_targetName == NULL)
-                return false; // could mean BrowserID is not installed on this system
-        }
+        // turn on GSS flags if we have a GSS target name
+        _targetName = CUIPersonaMakeGssTargetName((gss_name_t)targetName);
+        if (_targetName != NULL)
+            _contextFlags |= BID_CONTEXT_GSS | BID_CONTEXT_ECDH_KEYEX;
+        else
+            _targetName = CUICopyTargetDisplayName(targetName);
+        
+        if (_targetName == NULL)
+            return false;
     }
 
     if (!createBrowserIDContext(controller, error))
@@ -99,14 +101,10 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
 
 Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error)
 {
-    uint32_t ulContextFlags;
-
     if (error != NULL)
         *error = NULL;
 
-    ulContextFlags = BID_CONTEXT_GSS | BID_CONTEXT_USER_AGENT | BID_CONTEXT_ECDH_KEYEX;
-
-    _bidContext = BIDContextCreate(kCFAllocatorDefault, NULL, ulContextFlags, error);
+    _bidContext = BIDContextCreate(kCFAllocatorDefault, NULL, _contextFlags, error);
     if (_bidContext == NULL)
         return false;
     
@@ -126,7 +124,9 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     if (error != NULL)
         *error = NULL;
     
-    ulReqFlags = BID_ACQUIRE_FLAG_NO_CACHED | BID_ACQUIRE_FLAG_MUTUAL_AUTH;
+    ulReqFlags = BID_ACQUIRE_FLAG_NO_CACHED;
+    if (_contextFlags & BID_CONTEXT_GSS)
+        ulReqFlags |= BID_ACQUIRE_FLAG_MUTUAL_AUTH;
 
     assertion = BIDAssertionCreateUI(_bidContext,
                                      _targetName,

@@ -21,6 +21,8 @@
 @property(nonatomic, assign) CUICredUIContext *credUIContext;
 
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
+@property(nonatomic, retain, readonly) NSString *targetDisplayName;
+@property(nonatomic, retain, readonly) NSString *targetHostName;
 
 @property(nonatomic, retain) NSArrayController *credsController;
 @property(nonatomic, retain) NSCollectionView *collectionView;

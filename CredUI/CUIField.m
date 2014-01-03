@@ -13,11 +13,6 @@
 
 @implementation CUICFField
 
-+ (void)load
-{
-    _CFRuntimeBridgeClasses(CUIFieldGetTypeID(), "CUICFField");
-}
-
 + (id)allocWithZone:(NSZone *)zone
 {
     static CUICFField *placeholderField;

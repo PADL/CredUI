@@ -8,6 +8,11 @@
 
 #include "CredUICore_Private.h"
 
+struct __CUICredential {
+    CFRuntimeBase _base;
+    CUICredentialContext *_context;
+};
+
 static const void *
 _CUICredentialContextRetain(CFAllocatorRef allocator, const void *value)
 {
@@ -106,6 +111,7 @@ CUICredentialGetTypeID(void)
     dispatch_once(&onceToken, ^{
         if (__CUICredentialTypeID == _kCFRuntimeNotATypeID) {
             __CUICredentialTypeID = _CFRuntimeRegisterClass(&_CUICredentialClass);
+            _CFRuntimeBridgeClasses(__CUICredentialTypeID, "CUICFCredential");
         }
     });
     

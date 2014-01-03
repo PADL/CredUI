@@ -22,11 +22,6 @@ GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
 
 @implementation CUICFCredential
 
-+ (void)load
-{
-    _CFRuntimeBridgeClasses(CUICredentialGetTypeID(), "CUICFCredential");
-}
-
 + (id)allocWithZone:(NSZone *)zone
 {
     static CUICFCredential *placeholderCred;

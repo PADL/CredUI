@@ -32,11 +32,6 @@ __CUISetter(CFTypeRef &dst, CFTypeRef src)
 }
 #endif /* __cplusplus */
 
-struct __CUICredential {
-    CFRuntimeBase _base;
-    CUICredentialContext *_context;
-};
-
 struct __CUIController {
     CFRuntimeBase _base;
     CFArrayRef _factories;

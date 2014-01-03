@@ -272,3 +272,40 @@ CUIControllerGetTargetName(CUIControllerRef controller)
 {
     return controller->_targetName;
 }
+
+CUI_EXPORT CFStringRef
+CUICopyTargetDisplayName(CFTypeRef targetName)
+{
+    CFStringRef displayName = NULL;
+    CFTypeID targetNameTypeID;
+    
+    if (targetName == NULL)
+        return NULL;
+    
+    targetNameTypeID = CFGetTypeID(targetName);
+    if (targetNameTypeID == CFURLGetTypeID()) {
+        displayName = (CFStringRef)CFRetain(CFURLGetString((CFURLRef)targetName));
+    } else if (targetNameTypeID == CFStringGetTypeID()) {
+        displayName = (CFStringRef)CFRetain(targetName);
+    } else {
+        /* here's hoping it's a GSS name, because otherwise we will crash XXX */
+        displayName = GSSNameCreateDisplayString((gss_name_t)targetName);
+    }
+    
+    return displayName;
+}
+
+CUI_EXPORT CFStringRef
+CUICopyTargetHostName(CFTypeRef targetName)
+{
+    CFStringRef hostName = NULL;
+    
+    if (targetName == NULL)
+        return NULL;
+    
+    if (CFGetTypeID(targetName) == CFURLGetTypeID()) {
+        hostName = CFURLCopyHostName((CFURLRef)targetName);
+    }
+    
+    return hostName;
+}

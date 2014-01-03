@@ -100,6 +100,7 @@ CUIFieldGetTypeID(void)
     dispatch_once(&onceToken, ^{
         if (__CUIFieldTypeID == _kCFRuntimeNotATypeID) {
             __CUIFieldTypeID = _CFRuntimeRegisterClass(&_CUIFieldClass);
+            _CFRuntimeBridgeClasses(__CUIFieldTypeID, "CUICFField");
         }
     });
     

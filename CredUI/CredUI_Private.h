@@ -23,14 +23,10 @@
 #import "CUIIdentityPickerInternal.h"
 #import "CUIIdentityPickerInternal+UIFactory.h"
 
-CF_EXPORT void _CFRuntimeBridgeClasses(CFTypeID cf_typeID, const char *objc_classname);
-CF_EXPORT CFTypeRef _CFTryRetain(CFTypeRef cf);
-CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
-
 void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
 
 Boolean
-__CUIPromptForCredentials(gss_name_t targetName,
+__CUIPromptForCredentials(CFTypeRef targetName,
                           CFTypeRef gssContextHandle,
                           CUICredUIContext *uiContext,
                           CFErrorRef authError,

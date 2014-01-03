@@ -79,9 +79,10 @@ public:
                                CFErrorRef *error) {
         if (usageScenario != kCUIUsageScenarioNetwork)
             return false;
+
         if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI))
             return false;
-
+        
         _controller = (CUIControllerRef)CFRetain(controller);
         _usageScenario = usageScenario;
         _usageFlags = usageFlags;

@@ -8,9 +8,9 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Security/Security.h>
-
-#include <CredUICore/CUIAttributes.h>
 #include <GSS/GSS.h>
+
+#include <CredUICore/CredUICore.h>
 
 #include "CUIProviderUtilities.h"
 
@@ -202,14 +202,11 @@ CUICreateKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes,
     }
     
     if (targetName) {
-        if (CFGetTypeID(targetName) == CFStringGetTypeID()) {
-            CFDictionarySetValue(keychainAttrs, kSecAttrService, targetName);
-        } else {
-            CFStringRef gssTargetName = GSSNameCreateDisplayString((gss_name_t)targetName);
-            if (gssTargetName) {
-                CFDictionarySetValue(keychainAttrs, kSecAttrService, gssTargetName);
-                CFRelease(gssTargetName);
-            }
+        CFStringRef targetDisplayName = CUICopyTargetDisplayName(targetName);
+
+        if (targetDisplayName) {
+            CFDictionarySetValue(keychainAttrs, kSecAttrService, targetDisplayName);
+            CFRelease(targetDisplayName);
         }
     }
     

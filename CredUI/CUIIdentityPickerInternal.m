@@ -284,22 +284,7 @@ autoSubmit:
 
 - (void)setTargetName:(id)aTarget
 {
-    CFTypeRef cfTarget = (__bridge CFTypeRef)aTarget;
-    
-    if ((self.flags & CUIFlagsGenericCredentials) == 0 &&
-        CFGetTypeID(cfTarget) == CFStringGetTypeID()) {
-        CFErrorRef error = NULL;
-        gss_name_t gssName = GSSCreateName(cfTarget, GSS_C_NT_HOSTBASED_SERVICE, &error);
-        
-        if (gssName) {
-            CUIControllerSetTargetName(_controller, gssName);
-            CFRelease(gssName);
-        } else if (error) {
-            CFRelease(error);
-        }
-    } else {
-        CUIControllerSetTargetName(_controller, cfTarget);
-    }
+    CUIControllerSetTargetName(_controller, (__bridge CFTypeRef)aTarget);
 }
 
 - (CUICredential *)selectedCredential
@@ -312,6 +297,26 @@ autoSubmit:
         cred = selectedObjects[0];
     
     return cred;
+}
+
+- (NSString *)targetDisplayName
+{
+    CFTypeRef targetName = CUIControllerGetTargetName(_controller);
+    
+    if (targetName)
+        return CFBridgingRelease(CUICopyTargetDisplayName(targetName));
+    
+    return NULL;
+}
+
+- (NSString *)targetHostName
+{
+    CFTypeRef targetName = CUIControllerGetTargetName(_controller);
+    
+    if (targetName)
+        return CFBridgingRelease(CUICopyTargetHostName(targetName));
+
+    return NULL;
 }
 
 @end

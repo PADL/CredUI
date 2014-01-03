@@ -115,7 +115,7 @@
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = @"host@browserid.padl.com";
+    self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"browserid.padl.com"];
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
@@ -144,7 +144,7 @@
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = @"http@www.padl.com";
+    self.picker.targetName = [GSSName nameWithHostBasedService:@"host@www.padl.com"];
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
@@ -165,7 +165,7 @@
     
     self.picker.title = @"Generic Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = @"https://www.padl.com";
+    self.picker.targetName = [NSURL URLWithString:@"https://www.padl.com"];
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self

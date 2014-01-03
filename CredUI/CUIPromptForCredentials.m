@@ -9,7 +9,7 @@
 #import <CredUI/GSSPromptForCredentials.h>
 
 Boolean
-__CUIPromptForCredentials(gss_name_t targetName,
+__CUIPromptForCredentials(CFTypeRef targetName,
                           CFTypeRef gssContextHandle,
                           CUICredUIContext *uiContext,
                           CFErrorRef authError,
@@ -25,6 +25,7 @@ __CUIPromptForCredentials(gss_name_t targetName,
     if (identityPicker == nil)
         return false;
     
+    identityPicker.targetName = (__bridge id)targetName;
     identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
     identityPicker.credUIContext = uiContext;
     identityPicker.authError = (__bridge NSError *)authError;
@@ -57,16 +58,8 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                                        (__bridge id)kCUIAttrName : (__bridge NSString *)username,
                                        (__bridge id)kCUIAttrCredentialPassword : (__bridge NSString *)password
                                        };
-    CFErrorRef error = NULL;
-    gss_name_t target = GSSCreateName(targetName, GSS_C_NT_HOSTBASED_SERVICE, &error);
     
-    if (target == NULL) {
-        if (error)
-            CFRelease(error);
-        return false;
-    }
-        
-    return __CUIPromptForCredentials(target,
+    return __CUIPromptForCredentials(targetName,
                                      reserved,
                                      uiContext,
                                      authError,

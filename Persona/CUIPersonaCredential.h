@@ -86,6 +86,7 @@ public:
 
     CUIPersonaCredential() {
         _retainCount = 1;
+        _contextFlags = BID_CONTEXT_USER_AGENT;
         _bidContext = NULL;
         _defaultIdentity = NULL;
         _targetName = NULL;
@@ -95,6 +96,7 @@ public:
 
 private:
     int32_t _retainCount;
+    uint32_t _contextFlags;
     BIDContext _bidContext;
     CFStringRef _defaultIdentity;
     CFStringRef _targetName;

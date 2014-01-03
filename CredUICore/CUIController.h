@@ -97,6 +97,12 @@ CUIControllerGetTargetName(CUIControllerRef controller);
 Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef));
     
+CFStringRef
+CUICopyTargetDisplayName(CFTypeRef targetName);
+
+CFStringRef
+CUICopyTargetHostName(CFTypeRef targetName);
+
 #ifdef __cplusplus
 }
 #endif
