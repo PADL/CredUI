@@ -17,16 +17,16 @@ static gss_OID_desc GSSBrowserIDAes128MechDesc =
 static CFStringRef CUIPersonaMakeGssTargetName(gss_name_t name)
 {
     OM_uint32 major, minor;
-    gss_name_t kerbName;
+    gss_name_t servicePrincipalName;
     CFStringRef displayName;
     
-    major = gss_canonicalize_name(&minor, name, &GSSBrowserIDAes128MechDesc, &kerbName);
+    major = gss_canonicalize_name(&minor, name, &GSSBrowserIDAes128MechDesc, &servicePrincipalName);
     if (GSS_ERROR(major))
         return NULL;
     
-    displayName = GSSNameCreateDisplayString(kerbName);
+    displayName = GSSNameCreateDisplayString(servicePrincipalName);
     
-    CFRelease(kerbName);
+    CFRelease(servicePrincipalName);
     
     return displayName;
 }
