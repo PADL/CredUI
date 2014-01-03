@@ -18,6 +18,8 @@ struct __CUIField {
 };
 
 static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
+static CFStringRef __CUIFieldValueProperty = CFSTR("value");
+static CFStringRef __CUIFieldHiddenProperty = CFSTR("hidden");
 
 CF_INLINE Boolean __CFEqualNullSafe(CFTypeRef cf1, CFTypeRef cf2)
 {
@@ -170,13 +172,13 @@ CUIFieldGetDefaultValue(CUIFieldRef field)
 CUI_EXPORT void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
-    CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setDefaultValue:", value);
+    CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setValue:", value);
 
+    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldValueProperty);
     if (field->_delegate)
         field->_delegate(field, value);
+    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldValueProperty);
 }
-
-static CFStringRef __CUIFieldHiddenProperty = CFSTR("hidden");
 
 CUI_EXPORT const void
 CUIFieldSetHidden(CUIFieldRef field, Boolean value)
