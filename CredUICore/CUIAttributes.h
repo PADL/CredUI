@@ -113,6 +113,14 @@ extern const CFStringRef kCUIAttrCredentialMetaProvider;
 extern const CFStringRef kCUIAttrGSSItemRef;
 extern const CFStringRef kCUIAttrSecKeychainItemRef;
 
+/*
+ * For gss_aapl_initial_cred() only
+ */
+extern const CFStringRef kCUIAttrCredentialVerifyCredential;
+extern const CFStringRef kCUIAttrCredentialLKDCHostname;
+extern const CFStringRef kCUIAttrCredentialKerberosCacheName;
+extern const CFStringRef kCUIAttrCredentialAppIdentifierACL;
+
 #ifdef __cplusplus
 }
 #endif

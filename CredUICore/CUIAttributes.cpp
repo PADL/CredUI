@@ -49,3 +49,10 @@ CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaPro
 
 CUI_CONST_TYPE(kCUIAttrSecKeychainItemRef,             kCUIAttrSecKeychainItemRef);
 CUI_CONST_TYPE(kCUIAttrGSSItemRef,                     kCUIAttrGSSItemRef);
+
+/* XXX These unwieldy names are to support the kCUIAttrCredential -> kGSSIC transform */
+CUI_CONST_TYPE(kCUIAttrCredentialVerifyCredential,     kCUIAttrCredentialVerifyCredential)
+CUI_CONST_TYPE(kCUIAttrCredentialLKDCHostname,         kCUIAttrCredentialLKDCHostname)
+CUI_CONST_TYPE(kCUIAttrCredentialKerberosCacheName,    kCUIAttrCredentialKerberosCacheName)
+CUI_CONST_TYPE(kCUIAttrCredentialAppIdentifierACL,     kCUIAttrCredentialAppIdentifierACL)
+

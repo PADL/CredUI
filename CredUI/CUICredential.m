@@ -174,12 +174,16 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NSString *transformedKey;
 
-        if (attrClass == CUIAttributeClassGSSItem)
+        if (attrClass == CUIAttributeClassGSSItem) {
             transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
-        else if (attrClass == CUIAttributeClassGSSInitialCred)
-            transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
-        else
+        } else if (attrClass == CUIAttributeClassGSSInitialCred) {
+            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity])
+                transformedKey = (__bridge id)kGSSICCertificate; // special case
+        else 
+                transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
+        } else {
             transformedKey = key;
+        }
 
         transformedDict[transformedKey] = obj;
     }];
