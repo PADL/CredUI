@@ -31,6 +31,11 @@
     [self.view setNeedsDisplay:YES];
 }
 
+- (void)setOptions:(CUIFieldOptions)options forView:(NSView *)view
+{
+    view.hidden = !!(options & kCUIFieldOptionsIsHidden);
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -40,7 +45,7 @@
         CUIFieldOptions options = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
         NSView *view = (__bridge NSView *)context;
 
-        view.hidden = !!(options & kCUIFieldOptionsIsHidden);
+        [self setOptions:options forView:view];
     }
 }
 
