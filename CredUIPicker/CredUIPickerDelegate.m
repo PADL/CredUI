@@ -144,8 +144,8 @@
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = [GSSName nameWithHostBasedService:@"host@www.padl.com"];
-    
+    self.picker.targetName = [NSURL URLWithString:@"http://www.padl.com"];
+
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(GSSItem_identityPickerDidEnd:returnCode:contextInfo:)

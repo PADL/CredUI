@@ -137,4 +137,17 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     [self setValue:textView.string sender:notification.object];
 }
 
+- (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command
+{
+    if (command == @selector(insertNewline:)) {
+        id identityPicker = [[(NSView *)textView window] delegate];
+        
+        [identityPicker willSubmitCredential:control];
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
 @end

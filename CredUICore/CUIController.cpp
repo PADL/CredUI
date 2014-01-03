@@ -305,6 +305,8 @@ CUICopyTargetHostName(CFTypeRef targetName)
     
     if (CFGetTypeID(targetName) == CFURLGetTypeID()) {
         hostName = CFURLCopyHostName((CFURLRef)targetName);
+    } else {
+        // We need to do something useful for GSS service names
     }
     
     return hostName;
