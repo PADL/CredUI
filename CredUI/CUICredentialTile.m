@@ -98,7 +98,7 @@
     }
 
     if (view)
-        [field addObserver:self.tileController forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:(__bridge void *)view];
+        [field addObserver:self.delegate forKeyPath:@"hidden" options:NSKeyValueObservingOptionNew context:(__bridge void *)view];
 
     return view;
 }
@@ -108,7 +108,7 @@
     NSArray *credFields = [self.credential fields];
 
     for (CUIField *field in credFields) {
-        [field removeObserver:self.tileController forKeyPath:@"hidden"];
+        [field removeObserver:self.delegate forKeyPath:@"hidden"];
     }
 }
 

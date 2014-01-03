@@ -19,7 +19,7 @@
     
     if (representedObject) {
         CUICredentialTile *tile = (CUICredentialTile *)self.view;
-        tile.tileController = self;
+        tile.delegate = self;
         tile.credential = representedObject;
     }
 }
