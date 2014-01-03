@@ -99,7 +99,7 @@
 
     if (view) {
         // Set the initial options state
-        [self.delegate setOptions:field.options forView:view];
+        [self.delegate updateView:view withFieldOptions:field.options];
         // From now on, changes will be observed by the controller
         [field addObserver:self.delegate forKeyPath:@"options" options:NSKeyValueObservingOptionNew context:(__bridge void *)view];
     }

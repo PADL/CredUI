@@ -8,6 +8,6 @@
 
 @interface CUICredentialTileController : NSCollectionViewItem
 
-- (void)setOptions:(CUIFieldOptions)options forView:(NSView *)view;
+- (void)updateView:(NSView *)view withFieldOptions:(CUIFieldOptions)options;
 
 @end
