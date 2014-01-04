@@ -33,7 +33,7 @@
 
 - (void)updateView:(NSView *)view withFieldOptions:(CUIFieldOptions)options
 {
-#if 1
+#if 0
     NSLog(@"updateView %p: %08x", view, (unsigned int)options);
 #endif
     
