@@ -83,22 +83,12 @@ CF_CLASSIMPLEMENTATION(CUICFField)
                       delegate:nil];
 }
 
-- (CUIFieldClass)fieldClass
-{
-    return CUIFieldGetClass([self _fieldRef]);
-}
-
-- (NSString *)title
-{
-    return (NSString *)CUIFieldGetTitle([self _fieldRef]);
-}
-
-- (id)defaultValue
-{
-    return (id)CUIFieldGetDefaultValue([self _fieldRef]);
-}
-
-CF_KVO_SETTERIMPLEMENTATION_COPY(id, setValue, CUIFieldSetValue)
+CF_KVO_GETTERIMPLEMENTATION(CUIFieldClass,      fieldClass,     CUIFieldGetClass)
+CF_KVO_GETTERIMPLEMENTATION(NSString *,         title,          CUIFieldGetTitle)
+CF_KVO_GETTERIMPLEMENTATION(id,                 defaultValue,   CUIFieldGetDefaultValue)
+CF_KVO_SETTERIMPLEMENTATION_COPY(id,            setValue,       CUIFieldSetValue)
+CF_KVO_GETTERIMPLEMENTATION(CUIFieldOptions,    options,        CUIFieldGetOptions)
+CF_KVO_SETTERIMPLEMENTATION(CUIFieldOptions,    setOptions,     CUIFieldSetOptions)
 
 - (void)setValue:(id)aValue sender:(id)sender
 {
@@ -107,9 +97,6 @@ CF_KVO_SETTERIMPLEMENTATION_COPY(id, setValue, CUIFieldSetValue)
     [self setValue:aValue];
     [identityPicker credentialFieldDidChange:sender];
 }
-
-CF_KVO_GETTERIMPLEMENTATION(CUIFieldOptions, options, CUIFieldGetOptions)
-CF_KVO_SETTERIMPLEMENTATION(CUIFieldOptions, setOptions, CUIFieldSetOptions)
 
 - (void)didSubmit:(id)sender
 {
