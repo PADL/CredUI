@@ -55,6 +55,11 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 @implementation CUIField
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
+{
+    return NO;
+}
+
 - (CUIFieldRef)_fieldRef
 {
     return (CUIFieldRef)self;
@@ -83,19 +88,46 @@ CF_CLASSIMPLEMENTATION(CUICFField)
                       delegate:nil];
 }
 
-CF_KVO_GETTERIMPLEMENTATION(CUIFieldClass,      fieldClass,     CUIFieldGetClass)
-CF_KVO_GETTERIMPLEMENTATION(NSString *,         title,          CUIFieldGetTitle)
-CF_KVO_GETTERIMPLEMENTATION(id,                 defaultValue,   CUIFieldGetDefaultValue)
-CF_KVO_SETTERIMPLEMENTATION_COPY(id,            setValue,       CUIFieldSetValue)
-CF_KVO_GETTERIMPLEMENTATION(CUIFieldOptions,    options,        CUIFieldGetOptions)
-CF_KVO_SETTERIMPLEMENTATION(CUIFieldOptions,    setOptions,     CUIFieldSetOptions)
+- (CUIFieldClass)fieldClass
+{
+    return CUIFieldGetClass([self _fieldRef]);
+}
+
+- (NSString *)title
+{
+    return (NSString *)CUIFieldGetTitle([self _fieldRef]);
+}
+
+- (id)defaultValue
+{
+    return (id)CUIFieldGetDefaultValue([self _fieldRef]);
+}
+
+- (void)setValue:(id)aValue
+{
+    id aValueCopy = [aValue copy];
+
+    CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
+
+    [aValueCopy release];
+}
 
 - (void)setValue:(id)aValue sender:(id)sender
 {
     id identityPicker = [[(NSView *)sender window] delegate];
-    
+
     [self setValue:aValue];
     [identityPicker credentialFieldDidChange:sender];
+}
+
+- (CUIFieldOptions)options
+{
+    return CUIFieldGetOptions([self _fieldRef]);
+}
+
+- (void)setOptions:(CUIFieldOptions)options
+{
+    CUIFieldSetOptions([self _fieldRef], options);
 }
 
 - (void)didSubmit:(id)sender

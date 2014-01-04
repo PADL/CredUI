@@ -32,65 +32,32 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
 - (CFTypeID)_cfTypeID;
 @end
 
-#define CF_IS_SWIZZLED(obj) ([obj class] != object_getClass(obj))
-
-#define CF_DESWIZZLE                                                            \
-    Class swizzledClass = NULL;                                                 \
-    @synchronized(self) {                                                       \
-    if (CF_IS_SWIZZLED(self)) {                                                 \
-        swizzledClass = object_getClass(self);                                  \
-        object_setClass(self, [self class]);                                    \
-    }                                                                           \
-
-#define CF_RESWIZZLE                                                            \
-    if (swizzledClass)                                                          \
-        object_setClass(self, swizzledClass);                                   \
-    }                                                                           \
-
 #define CF_CLASSIMPLEMENTATION(ClassName)                                       \
 - (id)retain                                                                    \
 {                                                                               \
-    id obj = nil;                                                               \
-    CF_DESWIZZLE                                                                \
-    obj = CFRetain((CFTypeRef)self);                                            \
-    CF_RESWIZZLE                                                                \
-    return obj;                                                                 \
+    return CFRetain((CFTypeRef)self);                                           \
 }                                                                               \
                                                                                 \
 - (oneway void)release                                                          \
 {                                                                               \
-    CF_DESWIZZLE                                                                \
     CFRelease((CFTypeRef)self);                                                 \
-    CF_RESWIZZLE                                                                \
 }                                                                               \
                                                                                 \
 - (NSUInteger)retainCount                                                       \
 {                                                                               \
-    NSUInteger rc;                                                              \
-    CF_DESWIZZLE                                                                \
-    rc = CFGetRetainCount((CFTypeRef)self);                                     \
-    CF_RESWIZZLE                                                                \
-    return rc;                                                                  \
+    return CFGetRetainCount((CFTypeRef)self);                                   \
 }                                                                               \
                                                                                 \
 - (BOOL)isEqual:(id)anObject                                                    \
 {                                                                               \
-    BOOL ret;                                                                   \
     if (anObject == nil)                                                        \
         return NO;                                                              \
-    CF_DESWIZZLE                                                                \
-    ret = CFEqual((CFTypeRef)self, (CFTypeRef)anObject);                        \
-    CF_RESWIZZLE                                                                \
-    return ret;                                                                 \
+    return CFEqual((CFTypeRef)self, (CFTypeRef)anObject);                       \
 }                                                                               \
                                                                                 \
 - (NSUInteger)hash                                                              \
 {                                                                               \
-    NSUInteger hash;                                                            \
-    CF_DESWIZZLE                                                                \
-    hash = CFHash((CFTypeRef)self);                                             \
-    CF_RESWIZZLE                                                                \
-    return hash;                                                                \
+    return CFHash((CFTypeRef)self);                                             \
 }                                                                               \
                                                                                 \
 - (BOOL)allowsWeakReference                                                     \
@@ -105,59 +72,18 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
                                                                                 \
 - (BOOL)_isDeallocating                                                         \
 {                                                                               \
-    BOOL ret;                                                                   \
-    CF_DESWIZZLE                                                                \
-    ret = _CFIsDeallocating((CFTypeRef)self);                                   \
-    CF_RESWIZZLE                                                                \
-    return ret;                                                                 \
+    return _CFIsDeallocating((CFTypeRef)self);                                  \
 }                                                                               \
                                                                                 \
 - (BOOL)_tryRetain                                                              \
 {                                                                               \
-    BOOL ret;                                                                   \
-    CF_DESWIZZLE                                                                \
-    ret = _CFTryRetain((CFTypeRef)self) != NULL;                                \
-    CF_RESWIZZLE                                                                \
-    return ret;                                                                 \
+    return _CFTryRetain((CFTypeRef)self) != NULL;                               \
 }                                                                               \
                                                                                 \
 - (NSString *)description                                                       \
 {                                                                               \
-    NSString *desc;                                                             \
-    CF_DESWIZZLE                                                                \
-    desc = [NSMakeCollectable(CFCopyDescription((CFTypeRef)self)) autorelease]; \
-    CF_RESWIZZLE                                                                \
-    return desc;                                                                \
+    return [NSMakeCollectable(CFCopyDescription((CFTypeRef)self)) autorelease]; \
 }                                                                               \
-
-#define CF_KVO_GETTERIMPLEMENTATION(rettype, name, fn)                          \
-- (rettype)name                                                                 \
-{                                                                               \
-    rettype ret;                                                                \
-    CF_DESWIZZLE                                                                \
-    ret = (rettype)fn((void *)self);                                            \
-    CF_RESWIZZLE                                                                \
-    return ret;                                                                 \
-}
-
-#define CF_KVO_SETTERIMPLEMENTATION(rettype, name, fn)                          \
-- (void)name:(rettype)aValue                                                    \
-{                                                                               \
-    CF_DESWIZZLE                                                                \
-    fn((void *)self, aValue);                                                   \
-    CF_RESWIZZLE                                                                \
-}
-
-#define CF_KVO_SETTERIMPLEMENTATION_COPY(rettype, name, fn)                     \
-- (void)name:(rettype)aValue                                                    \
-{                                                                               \
-    id aCopy = [aValue copy];                                                   \
-    CF_DESWIZZLE                                                                \
-    fn((void *)self, aCopy);                                                    \
-    CF_RESWIZZLE                                                                \
-    [aCopy release];                                                            \
-}
-
 
 #endif /* __OBJC__ */
 

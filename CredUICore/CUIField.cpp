@@ -162,8 +162,10 @@ CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
     CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, void, field, "setValue:", value);
 
+    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldValueProperty);
     if (field->_delegate)
         field->_delegate(field, value);
+    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldValueProperty);
 }
 
 CUI_EXPORT void
@@ -171,7 +173,9 @@ CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value)
 {
     CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, void, field, "setOptions:", value);
     
+    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldOptionsProperty);
     field->_options = value;
+    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldOptionsProperty);
 }
 
 CUI_EXPORT CUIFieldOptions
