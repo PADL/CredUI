@@ -106,4 +106,9 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
     return ((CUIIdentityPickerInternal *)_internal).selectedCredential;
 }
 
+- (NSError *)lastError
+{
+    return ((CUIIdentityPickerInternal *)_internal).lastError;
+}
+
 @end

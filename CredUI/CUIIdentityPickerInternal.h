@@ -16,6 +16,7 @@
 @property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, retain) GSSContext *GSSContextHandle;
 @property(nonatomic, copy) id targetName;
+@property(nonatomic, copy) NSError *lastError;
 
 @property(nonatomic, assign) CUIControllerRef controller;
 @property(nonatomic, assign) CUICredUIContext *credUIContext;

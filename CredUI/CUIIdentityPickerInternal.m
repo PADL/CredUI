@@ -114,10 +114,12 @@
     [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
     
     CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred, CFErrorRef error) {
-        if (cred)
+        if (cred) {
             [self.credsController addObject:(__bridge CUICredential *)cred];
-        else if (error)
+        } else if (error) {
             NSLog(@"CUIControllerEnumerateCredentials: %@", error);
+            self.lastError = CFBridgingRelease(CFRetain(error));
+        }
     });
     
     self.credsController.selectionIndex = 0;

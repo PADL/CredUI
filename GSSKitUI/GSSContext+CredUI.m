@@ -34,7 +34,7 @@
     NSError *error;
     
     if (returnCode != NSModalResponseStop) {
-        errorContainer.error = [NSError GSSError:GSS_S_UNAVAILABLE]; /* XXX */
+        errorContainer.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
         return;
     }
     

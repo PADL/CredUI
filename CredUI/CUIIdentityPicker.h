@@ -41,11 +41,12 @@ __attribute__((visibility("default")))
 /* GSS-API context handle for NegoEx exchange */
 @property(nonatomic, retain) GSSContext *GSSContextHandle;
 
-/* Target name to display to user */
-/* This can be a GSSName or a NSString */
+/* Target name to display to user, one of NSString, NSURL or gss_name_T */
 @property(nonatomic, copy) id targetName;
 
+/* The credential that was picked */
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
+@property(nonatomic, retain, readonly) NSError *lastError;
 
 - (instancetype)initWithFlags:(CUIFlags)flags;
 
