@@ -13,6 +13,11 @@
 
 @implementation CUICFField
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
+{
+    return NO;
+}
+
 + (id)allocWithZone:(NSZone *)zone
 {
     static CUICFField *placeholderField;
@@ -54,11 +59,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 @end
 
 @implementation CUIField
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
-{
-    return NO;
-}
 
 - (CUIFieldRef)_fieldRef
 {

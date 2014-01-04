@@ -22,6 +22,11 @@ GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
 
 @implementation CUICFCredential
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
+{
+    return NO;
+}
+
 + (id)allocWithZone:(NSZone *)zone
 {
     static CUICFCredential *placeholderCred;
