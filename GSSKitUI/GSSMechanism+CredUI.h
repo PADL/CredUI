@@ -1,8 +1,8 @@
 //
-//  GSSCredential+CredUI.h
+//  GSSMechanism+CredUI.h
 //  CredUI
 //
-//  Created by Luke Howard on 1/01/2014.
+//  Created by Luke Howard on 4/01/2014.
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
@@ -15,6 +15,8 @@
  * to a minimum for now.
  */
 
-@interface GSSItem (CredUI)
-+ (NSArray *)itemsMatchingCUICredential:(CUICredential *)cuiCredential error:(NSError **)error;
+@interface GSSMechanism (CredUI)
+
++ (GSSMechanism *)mechanismForCUICredential:(CUICredential *)cuiCredential;
+
 @end

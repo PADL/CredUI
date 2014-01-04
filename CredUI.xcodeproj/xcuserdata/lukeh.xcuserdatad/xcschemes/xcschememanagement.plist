@@ -39,6 +39,11 @@
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>GSSKitUI.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>Keychain.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -108,6 +113,16 @@
 			<true/>
 		</dict>
 		<key>D3AA965418752BCB003852C5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D3B094351877EFBA006DB1DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D3B094451877EFBA006DB1DE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

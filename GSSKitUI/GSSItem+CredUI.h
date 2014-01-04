@@ -15,6 +15,8 @@
  * to a minimum for now.
  */
 
-@interface GSSCredential (CredUI)
-- (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error;
+@interface GSSItem (CredUI)
+
++ (NSArray *)itemsMatchingCUICredential:(CUICredential *)cuiCredential error:(NSError **)error;
+
 @end

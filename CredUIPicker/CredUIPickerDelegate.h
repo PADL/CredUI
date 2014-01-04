@@ -14,7 +14,7 @@
 @interface CredUIPickerDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
-- (GSSCredential *)acquireGSSCred:(CUIIdentityPicker *)identityPicker;
+@property (nonatomic, strong) CUIIdentityPicker *picker;
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender;
 - (IBAction)showIdentityPickerGSSItem:(id)sender;
