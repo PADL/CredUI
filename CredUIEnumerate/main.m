@@ -10,12 +10,15 @@
 #include <readpassphrase.h>
 
 #include <Foundation/Foundation.h>
+#include <Cocoa/Cocoa.h>
 
 #include <CredUI/CredUI.h>
-#include <CredUI/CUICredential.h>
 
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/CUIAttributes.h>
+
+#include <CredUI/CUICredential.h>
+#include <CredUI/CUIField.h>
 
 #include <GSSKit/GSSKit.h>
 
@@ -56,6 +59,7 @@
     NSLog(@"FooCredential: firstFieldWihClass: %d", (int)fieldClass);
     return nil;
 }
+
 @end
 
 static void testSubclasses(void)
@@ -64,7 +68,6 @@ static void testSubclasses(void)
     CUIFieldRef field = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
     
     NSLog(@"cred: %@", foo);
-    NSLog(@"field: %@", field);
     
     CFStringRef cfDesc = CFCopyDescription((__bridge CFTypeRef)foo);
     if (cfDesc) {
