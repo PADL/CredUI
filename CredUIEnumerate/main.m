@@ -65,7 +65,7 @@
 static void testSubclasses(void)
 {
     FooCredential *foo = [[FooCredential alloc] init];
-    CUIFieldRef field = CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
+    CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
     
     NSLog(@"cred: %@", foo);
     
