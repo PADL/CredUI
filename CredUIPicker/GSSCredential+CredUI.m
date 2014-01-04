@@ -9,6 +9,7 @@
 #import <CredUI/CredUI.h>
 
 #import "GSSCredential+CredUI.h"
+#import "GSSMechanism+CredUI.h"
 
 @implementation GSSCredential (CredUI)
 - (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error
@@ -18,7 +19,7 @@
     
     if (name) {
         cred = [self initWithName:name
-                        mechanism:[GSSMechanism mechanismWithClass:cuiCredential.attributes[@"kCUIAttrClass"]]
+                        mechanism:[GSSMechanism mechanismForCUICredential:cuiCredential]
                        attributes:[cuiCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
                             error:error];
     }

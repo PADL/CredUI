@@ -40,6 +40,11 @@
                                     <action selector="showIdentityPickerGeneric:" target="494" id="eLp-ZG-QRi"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="GSS test" keyEquivalent="4" id="4DW-kP-VCo">
+                                <connections>
+                                    <action selector="gssAuthWithIdentityPickerFallback:" target="494" id="dKC-nV-NZL"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>

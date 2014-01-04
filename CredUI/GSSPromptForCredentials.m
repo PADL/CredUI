@@ -33,7 +33,8 @@ GSSIsPromptingNeeded(CFErrorRef authError)
     if ([error.domain isEqual:@"org.h5l.GSS"]) {
         OM_uint32 major = [error.userInfo[@"kGSSMajorErrorCode"] unsignedIntValue];
 
-        return (major == GSS_S_NO_CRED || major == GSS_S_PROMPTING_NEEDED);
+        return (GSS_ROUTINE_ERROR(major) == GSS_S_NO_CRED ||
+                (major & GSS_S_PROMPTING_NEEDED));
     }
     
     return false;

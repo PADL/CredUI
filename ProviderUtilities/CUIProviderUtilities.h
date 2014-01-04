@@ -69,4 +69,10 @@ CUIKeychainStore(CFDictionaryRef attributes,
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
 
+Boolean
+CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
+
+Boolean
+CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes);
+
 #endif /* defined(__CredUI__CUIProviderUtilities__) */

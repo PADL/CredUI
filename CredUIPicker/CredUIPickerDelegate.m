@@ -7,11 +7,15 @@
 //
 
 #import <CredUI/CredUI.h>
+#import <CredUI/GSSPromptForCredentials.h>
+#import <CredUICore/CUIAttributes.h>
+
 #import <GSSKit/GSSKit.h>
 
 #import "CredUIPickerDelegate.h"
 #import "GSSCredential+CredUI.h"
 #import "GSSItem+CredUI.h"
+#import "GSSMechanism+CredUI.h"
 
 @interface CredUIPickerDelegate ()
 @property (nonatomic, strong) CUIIdentityPicker *picker;
@@ -40,8 +44,21 @@
     return cred;
 }
 
-- (NSUInteger)initAcceptGSSContext:(CUIIdentityPicker *)identityPicker
+- (NSError *)doInitAcceptGSSContext:(CUIIdentityPicker *)identityPicker
                      initiatorCred:(GSSCredential *)initiatorCred
+{
+    GSSContext *contextHandle;
+    NSError *err = [self doInitAcceptGSSContext:identityPicker.targetName
+                                  initiatorCred:initiatorCred
+                                      mechanism:[GSSMechanism mechanismForCUICredential:identityPicker.selectedCredential]
+                                  contextHandle:&contextHandle];
+    return err;
+}
+
+- (NSError *)doInitAcceptGSSContext:(id)targetName
+                     initiatorCred:(GSSCredential *)initiatorCred
+                         mechanism:(GSSMechanism *)mechanism
+                      contextHandle:(GSSContext **)contextHandle
 {
     dispatch_queue_t queue;
     GSSContext *initiatorCtx = nil, *acceptorCtx = nil;
@@ -54,15 +71,16 @@
                                                       queue:queue
                                                 isInitiator:YES];
     
-    initiatorCtx.targetName = identityPicker.targetName;
+    initiatorCtx.mechanism = mechanism;
+    initiatorCtx.targetName = targetName;
     initiatorCtx.credential = initiatorCred;
     
     acceptorCtx = [[GSSContext alloc] initWithRequestFlags:0
                                                      queue:queue
                                                isInitiator:NO];
     
-    acceptorCtx.credential = [GSSCredential credentialWithName:identityPicker.targetName
-                                                     mechanism:[GSSMechanism personaMechanism]
+    acceptorCtx.credential = [GSSCredential credentialWithName:targetName
+                                                     mechanism:initiatorCtx.mechanism
                                                     attributes:@{GSSCredentialUsage : GSSCredentialUsageAccept}
                                                          error:&err];
     
@@ -95,7 +113,8 @@
     
     NSLog(@"Initiator status %ld acceptor status %ld", [[initiatorCtx lastError] code], [[acceptorCtx lastError] code]);
 
-    return [[initiatorCtx lastError] code];
+    *contextHandle = initiatorCtx;
+    return [initiatorCtx lastError];
 }
 
 - (void)GSSIC_identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -106,7 +125,7 @@
     GSSCredential *cred = [self acquireGSSCred:identityPicker];
     
     if (cred)
-        (void) [self initAcceptGSSContext:identityPicker initiatorCred:cred];
+        (void) [self doInitAcceptGSSContext:identityPicker initiatorCred:cred];
 }
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender
@@ -115,13 +134,45 @@
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
-    self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"browserid.padl.com"];
+    self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(GSSIC_identityPickerDidEnd:returnCode:contextInfo:)
                        contextInfo:NULL];
+}
 
+- (IBAction)gssAuthWithIdentityPickerFallback:(id)sender
+{
+    GSSName *targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
+    GSSMechanism *mechanism = [GSSMechanism personaMechanism];
+    GSSCredential *cred = [GSSCredential credentialWithName:@"lukeh@padl.com" mechanism:mechanism];
+    NSError *err;
+    GSSContext *contextHandle = nil;
+    
+    err = [self doInitAcceptGSSContext:targetName initiatorCred:cred mechanism:mechanism contextHandle:&contextHandle];
+    if (err && GSSIsPromptingNeeded((__bridge CFErrorRef)err)) {
+        NSDictionary *attributes = @{
+                                     (__bridge NSString *)kCUIAttrClass: [mechanism name],
+                                     (__bridge NSString *)kCUIAttrName: [[cred name] description]
+                                     };
+        
+        self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials attributes:attributes];
+        
+        self.picker.GSSContextHandle = contextHandle;
+        self.picker.title = @"Identity Picker";
+        self.picker.message = @"Choose an identity";
+        self.picker.targetName = targetName;
+        
+        [self.picker runModalForWindow:self.window
+                         modalDelegate:self
+                        didEndSelector:@selector(GSSIC_identityPickerDidEnd:returnCode:contextInfo:)
+                           contextInfo:NULL];
+
+        err = [self doInitAcceptGSSContext:targetName initiatorCred:cred mechanism:mechanism contextHandle:&contextHandle];
+    }
+    if (err)
+        NSLog(@"failed with code: %@", err);
 }
 
 - (void)GSSItem_identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo

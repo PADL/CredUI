@@ -29,6 +29,9 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
         _targetName = CFRetain(targetName);
     
     if (attributes) {
+        if (!CUIShouldEnumerateForPasswordClass(attributes))
+            return false;
+        
         /*
          * If the attributes came from GSSItem/keychain, then don't show them unless
          * they have an associated password and the caller wants that source.

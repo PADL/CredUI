@@ -108,6 +108,7 @@
 		D3AA96421875151C003852C5 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D3AA964318751521003852C5 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D3AA964D187523B8003852C5 /* GSSItem+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */; };
+		D3B0942C1877B9D3006DB1DE /* GSSMechanism+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B0942B1877B9D3006DB1DE /* GSSMechanism+CredUI.m */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; };
 		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */; };
@@ -396,6 +397,8 @@
 		D3AA964B187523B8003852C5 /* GSSItem+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSItem+CredUI.h"; sourceTree = "<group>"; };
 		D3AA964C187523B8003852C5 /* GSSItem+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSItem+CredUI.m"; sourceTree = "<group>"; };
 		D3AA965518752BCB003852C5 /* libCUIProviderUtilities.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCUIProviderUtilities.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3B0942A1877B9D3006DB1DE /* GSSMechanism+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSMechanism+CredUI.h"; sourceTree = "<group>"; };
+		D3B0942B1877B9D3006DB1DE /* GSSMechanism+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSMechanism+CredUI.m"; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
 		D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSCredential+CredUI.h"; sourceTree = "<group>"; };
@@ -772,6 +775,8 @@
 			children = (
 				D39EB06F186FB1DA00C43A24 /* CredUIPickerDelegate.h */,
 				D39EB070186FB1DA00C43A24 /* CredUIPickerDelegate.m */,
+				D3B0942A1877B9D3006DB1DE /* GSSMechanism+CredUI.h */,
+				D3B0942B1877B9D3006DB1DE /* GSSMechanism+CredUI.m */,
 				D3BED8F41873B3BA00623B92 /* GSSCredential+CredUI.h */,
 				D3BED8F51873B3BA00623B92 /* GSSCredential+CredUI.m */,
 				D3AA964B187523B8003852C5 /* GSSItem+CredUI.h */,
@@ -1345,6 +1350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3B0942C1877B9D3006DB1DE /* GSSMechanism+CredUI.m in Sources */,
 				D39EB071186FB1DA00C43A24 /* CredUIPickerDelegate.m in Sources */,
 				D3BED8F61873B3BA00623B92 /* GSSCredential+CredUI.m in Sources */,
 				D3AA964D187523B8003852C5 /* GSSItem+CredUI.m in Sources */,

@@ -179,7 +179,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
         } else if (attrClass == CUIAttributeClassGSSInitialCred) {
             if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity])
                 transformedKey = (__bridge id)kGSSICCertificate; // special case
-        else 
+            else
                 transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
         } else {
             transformedKey = key;

@@ -333,3 +333,23 @@ CUIGetDefaultUsername(CFDictionaryRef attributes)
     
     return defaultUsername;
 }
+
+Boolean
+CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass)
+{
+    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
+    
+    if (attrClass == NULL)
+        return TRUE;
+    
+    return CFEqual(attrClass, mechClass);
+}
+
+Boolean
+CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes)
+{
+    return CUIShouldEnumerateForClass(attributes, kCUIAttrClassKerberos) ||
+    CUIShouldEnumerateForClass(attributes, kCUIAttrClassNTLM) ||
+    CUIShouldEnumerateForClass(attributes, kCUIAttrClassIAKerb) ||
+    CUIShouldEnumerateForClass(attributes, kCUIAttrClassGeneric);
+}

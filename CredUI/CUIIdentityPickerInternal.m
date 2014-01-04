@@ -45,9 +45,9 @@
     self = [super initWithWindow:panel];
     if (self) {
         _flags = flags;
+        self.controller = [self _newCUIController:flags];
         if (attributes)
             self.attributes = attributes;
-        self.controller = [self _newCUIController:flags];
         
         self.messageTextField = [self _newMessageTextField];
         [self.window.contentView addSubview:self.messageTextField];

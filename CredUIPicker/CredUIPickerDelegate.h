@@ -14,13 +14,11 @@
 @interface CredUIPickerDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
-- (NSUInteger)initAcceptGSSContext:(CUIIdentityPicker *)identityPicker
-                     initiatorCred:(GSSCredential *)initiatorCred;
-
 - (GSSCredential *)acquireGSSCred:(CUIIdentityPicker *)identityPicker;
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender;
 - (IBAction)showIdentityPickerGSSItem:(id)sender;
 - (IBAction)showIdentityPickerGeneric:(id)sender;
+- (IBAction)gssAuthWithIdentityPickerFallback:(id)sender;
 
 @end

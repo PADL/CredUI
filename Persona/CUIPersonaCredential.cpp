@@ -42,6 +42,9 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     if (error != NULL)
         *error = NULL;
 
+    if (!CUIShouldEnumerateForClass(attributes, kCUIAttrClassBrowserID))
+        return false;
+    
     CFTypeRef targetName = CUIControllerGetTargetName(controller);
     if (targetName) {
         // turn on GSS flags if we have a GSS target name
