@@ -74,6 +74,7 @@ public:
 
     void didBecomeSelected(Boolean *pbAutoLogin) {
         *pbAutoLogin = false;
+        //CUIFieldSetOptions((CUIFieldRef)CFArrayGetValueAtIndex(_fields, 2), kCUIFieldOptionsIsHidden);
     }
     
     void didBecomeDeselected(void) {
