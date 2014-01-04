@@ -23,8 +23,6 @@
 #import "CUIIdentityPickerInternal.h"
 #import "CUIIdentityPickerInternal+UIFactory.h"
 
-void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
-
 Boolean
 __CUIPromptForCredentials(CFTypeRef targetName,
                           CFTypeRef gssContextHandle,
