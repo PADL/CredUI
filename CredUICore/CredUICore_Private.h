@@ -46,6 +46,17 @@ struct __CUIController {
     CFTypeRef _targetName;
 };
 
+#if !__has_feature(objc_arc)
+struct __CUIField {
+    CFRuntimeBase _base;
+    CUIFieldClass _class;
+    CFStringRef _title;
+    CFTypeRef _defaultValue;
+    void (^_delegate)(CUIFieldRef field, CFTypeRef value);
+    CUIFieldOptions _options;
+};
+#endif
+
 Boolean
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 

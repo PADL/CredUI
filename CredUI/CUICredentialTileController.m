@@ -33,6 +33,10 @@
 
 - (void)updateView:(NSView *)view withFieldOptions:(CUIFieldOptions)options
 {
+#if 0
+    NSLog(@"updateView %p: %08x", view, (unsigned int)options);
+#endif
+    
     view.hidden = !!(options & kCUIFieldOptionsIsHidden);
 }
 

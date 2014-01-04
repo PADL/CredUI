@@ -130,7 +130,7 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
     return desc;                                                                \
 }                                                                               \
 
-#else
+#endif /* __OBJC__ */
 
 /*
  * Copyright (c) 2003 Apple Computer, Inc. All rights reserved.
@@ -163,62 +163,31 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-static inline Boolean
-__CFIsReallyObjC(CFTypeID typeID, CFTypeRef obj)
-{
-    if (objc_msgSend == NULL || !_CFIsObjC(typeID, obj))
-        return 0;
     
-    static SEL s = NULL;
-    Class (*func)(const void *, SEL) = (Class (*)(const void *, SEL))objc_msgSend;
+#define CF_IS_OBJC(typeID, obj) (objc_msgSend != NULL && _CFIsObjC(typeID, (CFTypeRef)obj))
     
-    if (!s)
-        s = sel_registerName("class");
-    
-    assert(s);
-    
-    Class swizzledClass = object_getClass((id)obj);
-    Class reportedClass = func(obj, s);
-    
-    assert(swizzledClass);
-    assert(reportedClass);
-    
-    if (swizzledClass == reportedClass)
-        return 1; /* is non-swizzled ObjC object */
-    
-    /* OK, now the tricky part */
-    objc_sync_enter((id)obj);
-    object_setClass((id)obj, reportedClass);
-    Boolean ret = _CFIsObjC(typeID, obj);
-    object_setClass((id)obj, swizzledClass);
-    objc_sync_exit((id)obj);
-    
-    return ret;
-}
-
 #define CF_OBJC_FUNCDISPATCH0(typeID, rettype, obj, sel) \
-if (__CFIsReallyObjC(typeID, (CFTypeRef)obj)) \
+if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL) = (rettype (*)(const void *, SEL))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
 return func((const void *)obj, s);}
 #define CF_OBJC_FUNCDISPATCH1(typeID, rettype, obj, sel, a1) \
-if (__CFIsReallyObjC(typeID, (CFTypeRef)obj)) \
+if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
 return func((const void *)obj, s, (a1));}
 #define CF_OBJC_FUNCDISPATCH2(typeID, rettype, obj, sel, a1, a2) \
-if (__CFIsReallyObjC(typeID, (CFTypeRef)obj)) \
+if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
 return func((const void *)obj, s, (a1), (a2));}
 #define CF_OBJC_FUNCDISPATCH3(typeID, rettype, obj, sel, a1, a2, a3) \
-if (__CFIsReallyObjC(typeID, (CFTypeRef)obj)) \
+if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
 return func((const void *)obj, s, (a1), (a2), (a3));}
 #define CF_OBJC_FUNCDISPATCH4(typeID, rettype, obj, sel, a1, a2, a3, a4) \
-if (__CFIsReallyObjC(typeID, (CFTypeRef)obj)) \
+if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
 return func((const void *)obj, s, (a1), (a2), (a3), (a4));}
@@ -233,8 +202,6 @@ if (objc_msgSend != NULL) \
 {void (*func)(const void *, SEL, CFStringRef) = (void (*)(const void *, SEL, CFStringRef))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName("didChangeValueForKey:"); \
 func((const void *)obj, s, (key));}
-    
-#endif /* __OBJC__ */
     
 #ifdef __cplusplus
 }

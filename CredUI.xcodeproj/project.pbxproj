@@ -923,8 +923,8 @@
 		D3A773501877F001009F51B7 /* ProviderUtilities */ = {
 			isa = PBXGroup;
 			children = (
-				D32662C018752D01004C1F57 /* CUIProviderUtilities.h */,
 				D340885C18763B7400A9FE4F /* CFBridgeHelper.h */,
+				D32662C018752D01004C1F57 /* CUIProviderUtilities.h */,
 				D32662BF18752D01004C1F57 /* CUIProviderUtilities.cpp */,
 			);
 			name = ProviderUtilities;

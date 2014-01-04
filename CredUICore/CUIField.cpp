@@ -8,15 +8,6 @@
 
 #include "CredUICore_Private.h"
 
-struct __CUIField {
-    CFRuntimeBase _base;
-    CUIFieldClass _class;
-    CFStringRef _title;
-    CFTypeRef _defaultValue;
-    void (^_delegate)(CUIFieldRef field, CFTypeRef value);
-    CUIFieldOptions _options;
-};
-
 static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
 static CFStringRef __CUIFieldValueProperty = CFSTR("value");
 static CFStringRef __CUIFieldOptionsProperty = CFSTR("options");
@@ -73,9 +64,9 @@ static CFStringRef _CUIFieldCopyDescription(CFTypeRef cf)
     CFStringRef desc;
     
     desc = CFStringCreateWithFormat(CFGetAllocator(cf), NULL,
-                                    CFSTR("<CUIField %p>{class = %d, title = \"%@\"}"),
+                                    CFSTR("<CUIField %p>{class = %d, title = \"%@\", options = %08x}"),
                                     field,
-                                    (int)field->_class, field->_title);
+                                    (int)field->_class, field->_title, (unsigned int)field->_options);
     
     return desc;
 }
@@ -175,24 +166,22 @@ CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
     CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setValue:", value);
 
-    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldValueProperty);
     if (field->_delegate)
         field->_delegate(field, value);
-    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldValueProperty);
 }
 
 CUI_EXPORT void
 CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value)
 {
     CF_OBJC_FUNCDISPATCH1(__CUIFieldTypeID, void, field, "setOptions:", value);
-    CF_OBJC_KVO_WILLCHANGE(field, __CUIFieldOptionsProperty);
+    
     field->_options = value;
-    CF_OBJC_KVO_DIDCHANGE(field, __CUIFieldOptionsProperty);
 }
 
-CUI_EXPORT Boolean
+CUI_EXPORT CUIFieldOptions
 CUIFieldGetOptions(CUIFieldRef field)
 {
     CF_OBJC_FUNCDISPATCH0(__CUIFieldTypeID, BOOL, field, "options");
+    
     return field->_options;
 }

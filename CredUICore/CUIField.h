@@ -68,7 +68,7 @@ CUIFieldSetValue(CUIFieldRef field, CFTypeRef value);
 extern void
 CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value);
 
-Boolean
+CUIFieldOptions
 CUIFieldGetOptions(CUIFieldRef field);
 
 #ifdef __cplusplus
