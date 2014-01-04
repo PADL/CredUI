@@ -146,7 +146,7 @@ CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
 CUI_EXPORT CFArrayRef
 CUICredentialGetFields(CUICredentialRef cred)
 {
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, CFArrayRef, cred, "fields");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, CFArrayRef, cred, "fields");
     
     if (cred->_context)
         return cred->_context->getFields();
@@ -157,7 +157,7 @@ CUICredentialGetFields(CUICredentialRef cred)
 CUI_EXPORT CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred)
 {
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, CFDictionaryRef, cred, "attributes");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, CFDictionaryRef, cred, "attributes");
     
     if (cred->_context)
         return cred->_context->getAttributes();
@@ -172,7 +172,7 @@ CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
     __block BOOL bCalledSubclass = true;
 
     ^(BOOL *v) {
-        CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, void, cred, "didBecomeSelected:", v);
+        CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "didBecomeSelected:", v);
         bCalledSubclass = false;
     }(&bAutoLogin);
 
@@ -215,7 +215,7 @@ __CUICredentialIsReturnable(CUICredentialRef cred)
 CUI_EXPORT Boolean
 CUICredentialCanSubmit(CUICredentialRef cred)
 {
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, Boolean, cred, "canSubmit");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "canSubmit");
 
     return __CUICredentialHasMandatoryKeys(cred) &&
            __CUICredentialIsReturnable(cred);
@@ -226,7 +226,7 @@ CUICredentialWillSubmit(CUICredentialRef cred)
 {
     CUIFieldRef selectedCredSubmitButton;
    
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, void, cred, "willSubmit");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "willSubmit");
 
     selectedCredSubmitButton = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassSubmitButton);
     if (selectedCredSubmitButton)
@@ -236,7 +236,7 @@ CUICredentialWillSubmit(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidSubmit(CUICredentialRef cred)
 {
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, void, cred, "didSubmit");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "didSubmit");
 
     if (cred->_context)
         cred->_context->didSubmit();
@@ -245,7 +245,7 @@ CUICredentialDidSubmit(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred)
 {
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, void, cred, "didBecomeDeselected");
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "didBecomeDeselected");
 
     if (cred->_context)
         cred->_context->didBecomeDeselected();
@@ -310,7 +310,7 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 {
     __block CUIFieldRef theField = NULL;
 
-    CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, CUIFieldRef, cred, "firstFieldWithClass:", fieldClass);
+    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, CUIFieldRef, cred, "firstFieldWithClass:", fieldClass);
     
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         if (CUIFieldGetClass(field) == fieldClass) {
@@ -333,7 +333,7 @@ CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error)
         *error = NULL;
     
     bRet = ^ Boolean (CFErrorRef *nsError) {
-        CF_OBJC_FUNCDISPATCH(__CUICredentialTypeID, Boolean, cred, "didConfirm:", nsError);
+        CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "didConfirm:", nsError);
         bCalledSubclass = false;
         return false;
     }(&nsError);

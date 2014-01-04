@@ -128,7 +128,7 @@ CUIFieldCreateCopy(
 {
     CUIFieldRef f;
     
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, CUIFieldRef, field, "copy");
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CUIFieldRef, field, "copy");
     
     f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
     if (f == NULL)
@@ -140,7 +140,7 @@ CUIFieldCreateCopy(
 CUI_EXPORT CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, CUIFieldClass, field, "fieldClass");
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CUIFieldClass, field, "fieldClass");
 
     return field->_class;
 }
@@ -148,7 +148,7 @@ CUIFieldGetClass(CUIFieldRef field)
 CUI_EXPORT CFStringRef
 CUIFieldGetTitle(CUIFieldRef field)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, CFStringRef, field, "title");
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CFStringRef, field, "title");
 
     return field->_title;
 }
@@ -156,7 +156,7 @@ CUIFieldGetTitle(CUIFieldRef field)
 CUI_EXPORT CFTypeRef
 CUIFieldGetDefaultValue(CUIFieldRef field)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, CFTypeRef, field, "defaultValue");
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CFTypeRef, field, "defaultValue");
 
     return field->_defaultValue;
 }
@@ -164,7 +164,7 @@ CUIFieldGetDefaultValue(CUIFieldRef field)
 CUI_EXPORT void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, void, field, "setValue:", value);
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, void, field, "setValue:", value);
 
     if (field->_delegate)
         field->_delegate(field, value);
@@ -173,7 +173,7 @@ CUIFieldSetValue(CUIFieldRef field, CFTypeRef value)
 CUI_EXPORT void
 CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, void, field, "setOptions:", value);
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, void, field, "setOptions:", value);
     
     field->_options = value;
 }
@@ -181,7 +181,7 @@ CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value)
 CUI_EXPORT CUIFieldOptions
 CUIFieldGetOptions(CUIFieldRef field)
 {
-    CF_OBJC_FUNCDISPATCH(__CUIFieldTypeID, BOOL, field, "options");
+    CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, BOOL, field, "options");
     
     return field->_options;
 }

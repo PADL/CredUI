@@ -194,8 +194,8 @@ extern "C" {
 #endif
     
 #define CF_IS_OBJC(typeID, obj) (objc_msgSend != NULL && _CFIsObjC(typeID, (CFTypeRef)obj))
-    
-#define CF_OBJC_FUNCDISPATCH(typeID, rettype, obj, sel, ...) \
+
+#define CF_OBJC_FUNCDISPATCHV(typeID, rettype, obj, sel, ...) \
 if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \

@@ -103,7 +103,7 @@
                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                    context:(__bridge void *)view];
     }
-
+    
     return view;
 }
 
