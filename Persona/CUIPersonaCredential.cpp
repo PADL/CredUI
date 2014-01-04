@@ -107,7 +107,7 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
     if (error != NULL)
         *error = NULL;
 
-    _bidContext = BIDContextCreate(kCFAllocatorDefault, NULL, _contextFlags, error);
+    _bidContext = BIDContextCreate(CFGetAllocator(controller), NULL, _contextFlags, error);
     if (_bidContext == NULL)
         return false;
     
@@ -140,8 +140,13 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
                                      &ulRetFlags,
                                      error);
     if (assertion) {
+        ulRetFlags |= ulReqFlags;
+        
+        CFNumberRef bidFlags = CFNumberCreate(CFGetAllocator(assertion), kCFNumberSInt32Type, (void *)&ulRetFlags);
+        
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
+        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
         
         CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
