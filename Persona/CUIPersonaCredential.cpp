@@ -143,7 +143,7 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
         ulRetFlags |= ulReqFlags;
         
         CFNumberRef bidFlags = CFNumberCreate(CFGetAllocator(assertion), kCFNumberSInt32Type, (void *)&ulRetFlags);
-        
+
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
         CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
@@ -154,6 +154,7 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
         CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
         CFDictionarySetValue(_attributes, kCUIAttrName, subject);
         
+        CFRelease(bidFlags);
         CFRelease(assertion);
         CFRelease(identity);
         CFRelease(subject);
