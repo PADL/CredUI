@@ -135,7 +135,7 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
 {                                                                               \
     rettype ret;                                                                \
     CF_DESWIZZLE                                                                \
-    ret = fn((void *)self);                                                     \
+    ret = (rettype)fn((void *)self);                                            \
     CF_RESWIZZLE                                                                \
     return ret;                                                                 \
 }
