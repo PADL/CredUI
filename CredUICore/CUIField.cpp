@@ -99,8 +99,7 @@ CUIFieldGetTypeID(void)
 }
 
 CUI_EXPORT CUIFieldRef
-CUIFieldCreate(
-               CFAllocatorRef allocator,
+CUIFieldCreate(CFAllocatorRef allocator,
                CUIFieldClass fieldClass,
                CFStringRef title,
                CFTypeRef defaultValue,
@@ -122,15 +121,12 @@ CUIFieldCreate(
 }
 
 CUI_EXPORT CUIFieldRef
-CUIFieldCreateCopy(
-                   CFAllocatorRef allocator,
+CUIFieldCreateCopy(CFAllocatorRef allocator,
                    CUIFieldRef field)
 {
-    CUIFieldRef f;
-    
     CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CUIFieldRef, field, "copy");
     
-    f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
+    CUIFieldRef f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
     if (f == NULL)
         return NULL;
     

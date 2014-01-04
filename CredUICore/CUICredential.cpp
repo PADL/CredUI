@@ -168,21 +168,13 @@ CUICredentialGetAttributes(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 {
-    __block BOOL bAutoLogin;
-    __block BOOL bCalledSubclass = true;
+    if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
+        BOOL bAutoLogin;
 
-    ^(BOOL *v) {
-        CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "didBecomeSelected:", v);
-        bCalledSubclass = false;
-    }(&bAutoLogin);
-
-    if (bCalledSubclass) {
-        *pbAutoLogin = bAutoLogin;
-    } else {
-        *pbAutoLogin = false;
-    
-        if (cred->_context)
-            cred->_context->didBecomeSelected(pbAutoLogin);
+        CF_OBJC_VOIDCALLV(cred, "didBecomeSelected:", &bAutoLogin);
+        *pbAutoLogin = (Boolean)bAutoLogin;
+    } else if (cred->_context) {
+        cred->_context->didBecomeSelected(pbAutoLogin);
     }
 }
 
@@ -224,10 +216,10 @@ CUICredentialCanSubmit(CUICredentialRef cred)
 CUI_EXPORT void
 CUICredentialWillSubmit(CUICredentialRef cred)
 {
-    CUIFieldRef selectedCredSubmitButton;
-   
     CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, void, cred, "willSubmit");
 
+    CUIFieldRef selectedCredSubmitButton;
+   
     selectedCredSubmitButton = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassSubmitButton);
     if (selectedCredSubmitButton)
         CUIFieldSetValue(selectedCredSubmitButton, kCFBooleanTrue);
@@ -308,10 +300,10 @@ CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boo
 CUI_EXPORT CUIFieldRef
 CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass)
 {
-    __block CUIFieldRef theField = NULL;
-
     CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, CUIFieldRef, cred, "firstFieldWithClass:", fieldClass);
     
+    __block CUIFieldRef theField = NULL;
+
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         if (CUIFieldGetClass(field) == fieldClass) {
             theField = (CUIFieldRef)CFRetain(field);
@@ -325,22 +317,15 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 CUI_EXPORT Boolean
 CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error)
 {
-    __block CFErrorRef nsError = NULL;
-    __block BOOL bCalledSubclass = true;
     Boolean bRet = false;
     
     if (error)
         *error = NULL;
-    
-    bRet = ^ Boolean (CFErrorRef *nsError) {
-        CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "didConfirm:", nsError);
-        bCalledSubclass = false;
-        return false;
-    }(&nsError);
-    
-    if (bCalledSubclass) {
-        if (error)
-            *error = (CFErrorRef)CFRetain(nsError);
+
+    if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
+        CF_OBJC_VOIDCALLV(cred, "didConfirm:", error);
+        if (error && *error)
+            CFRetain(*error);
     } else if (cred->_context) {
         bRet = cred->_context->didConfirm(error);
     }
