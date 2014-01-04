@@ -51,31 +51,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return NSMakeCollectable(self);
 }
 
-/*
- * XXX FIXME
- * KVO seems to cause infinite recursion if we don't have this
- */
-- (void)setValue:(id)aValue
-{
-    CUIFieldRef field = [self _fieldRef];
-    id valueCopy = [aValue copy];
-    
-    if (field->_delegate)
-        field->_delegate(field, valueCopy);
-    
-    [valueCopy release];
-}
-
-- (CUIFieldOptions)options
-{
-    return ([self _fieldRef])->_options;
-}
-
-- (void)setOptions:(CUIFieldOptions)aValue
-{
-    ([self _fieldRef])->_options = aValue;
-}
-
 @end
 
 @implementation CUIField
@@ -127,7 +102,9 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 {
     id aValueCopy = [aValue copy];
     
+    CF_DESWIZZLE
     CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
+    CF_RESWIZZLE
     
     [aValueCopy release];
 }
@@ -142,12 +119,18 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (CUIFieldOptions)options
 {
-    return CUIFieldGetOptions([self _fieldRef]);
+    CUIFieldOptions options;
+    CF_DESWIZZLE
+    options = CUIFieldGetOptions([self _fieldRef]);
+    CF_RESWIZZLE
+    return options;
 }
 
 - (void)setOptions:(CUIFieldOptions)aValue
 {
+    CF_DESWIZZLE
     CUIFieldSetOptions([self _fieldRef], aValue);
+    CF_RESWIZZLE
 }
 
 - (void)didSubmit:(id)sender
