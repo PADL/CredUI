@@ -130,6 +130,35 @@ CF_EXPORT Boolean _CFIsDeallocating(CFTypeRef cf);
     return desc;                                                                \
 }                                                                               \
 
+#define CF_KVO_GETTERIMPLEMENTATION(rettype, name, fn)                          \
+- (rettype)name                                                                 \
+{                                                                               \
+    rettype ret;                                                                \
+    CF_DESWIZZLE                                                                \
+    ret = fn((void *)self);                                                     \
+    CF_RESWIZZLE                                                                \
+    return ret;                                                                 \
+}
+
+#define CF_KVO_SETTERIMPLEMENTATION(rettype, name, fn)                          \
+- (void)name:(rettype)aValue                                                    \
+{                                                                               \
+    CF_DESWIZZLE                                                                \
+    fn((void *)self, aValue);                                                   \
+    CF_RESWIZZLE                                                                \
+}
+
+#define CF_KVO_SETTERIMPLEMENTATION_COPY(rettype, name, fn)                     \
+- (void)name:(rettype)aValue                                                    \
+{                                                                               \
+    id aCopy = [aValue copy];                                                   \
+    CF_DESWIZZLE                                                                \
+    fn((void *)self, aCopy);                                                    \
+    CF_RESWIZZLE                                                                \
+    [aCopy release];                                                            \
+}
+
+
 #endif /* __OBJC__ */
 
 /*

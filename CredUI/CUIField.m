@@ -98,40 +98,18 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return (id)CUIFieldGetDefaultValue([self _fieldRef]);
 }
 
-- (void)setValue:(id)aValue
-{
-    id aValueCopy = [aValue copy];
-    
-    CF_DESWIZZLE
-    CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
-    CF_RESWIZZLE
-    
-    [aValueCopy release];
-}
+CF_KVO_SETTERIMPLEMENTATION_COPY(id, setValue, CUIFieldSetValue)
 
 - (void)setValue:(id)aValue sender:(id)sender
 {
     id identityPicker = [[(NSView *)sender window] delegate];
-
+    
     [self setValue:aValue];
     [identityPicker credentialFieldDidChange:sender];
 }
 
-- (CUIFieldOptions)options
-{
-    CUIFieldOptions options;
-    CF_DESWIZZLE
-    options = CUIFieldGetOptions([self _fieldRef]);
-    CF_RESWIZZLE
-    return options;
-}
-
-- (void)setOptions:(CUIFieldOptions)aValue
-{
-    CF_DESWIZZLE
-    CUIFieldSetOptions([self _fieldRef], aValue);
-    CF_RESWIZZLE
-}
+CF_KVO_GETTERIMPLEMENTATION(CUIFieldOptions, options, CUIFieldGetOptions)
+CF_KVO_SETTERIMPLEMENTATION(CUIFieldOptions, setOptions, CUIFieldSetOptions)
 
 - (void)didSubmit:(id)sender
 {
