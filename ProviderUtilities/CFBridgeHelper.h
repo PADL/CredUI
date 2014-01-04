@@ -195,37 +195,18 @@ extern "C" {
     
 #define CF_IS_OBJC(typeID, obj) (objc_msgSend != NULL && _CFIsObjC(typeID, (CFTypeRef)obj))
     
-#define CF_OBJC_FUNCDISPATCH0(typeID, rettype, obj, sel) \
-if (CF_IS_OBJC(typeID, obj)) \
-{rettype (*func)(const void *, SEL) = (rettype (*)(const void *, SEL))objc_msgSend; \
-static SEL s = NULL; if (!s) s = sel_registerName(sel); \
-return func((const void *)obj, s);}
-#define CF_OBJC_FUNCDISPATCH1(typeID, rettype, obj, sel, a1) \
+#define CF_OBJC_FUNCDISPATCH(typeID, rettype, obj, sel, ...) \
 if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName(sel); \
-return func((const void *)obj, s, (a1));}
-#define CF_OBJC_FUNCDISPATCH2(typeID, rettype, obj, sel, a1, a2) \
-if (CF_IS_OBJC(typeID, obj)) \
-{rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
-static SEL s = NULL; if (!s) s = sel_registerName(sel); \
-return func((const void *)obj, s, (a1), (a2));}
-#define CF_OBJC_FUNCDISPATCH3(typeID, rettype, obj, sel, a1, a2, a3) \
-if (CF_IS_OBJC(typeID, obj)) \
-{rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
-static SEL s = NULL; if (!s) s = sel_registerName(sel); \
-return func((const void *)obj, s, (a1), (a2), (a3));}
-#define CF_OBJC_FUNCDISPATCH4(typeID, rettype, obj, sel, a1, a2, a3, a4) \
-if (CF_IS_OBJC(typeID, obj)) \
-{rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
-static SEL s = NULL; if (!s) s = sel_registerName(sel); \
-return func((const void *)obj, s, (a1), (a2), (a3), (a4));}
+return func((const void *)obj, s, ##__VA_ARGS__ );}
     
 #define CF_OBJC_KVO_WILLCHANGE(obj, key) \
 if (objc_msgSend != NULL) \
 {void (*func)(const void *, SEL, CFStringRef) = (void (*)(const void *, SEL, CFStringRef))objc_msgSend; \
 static SEL s = NULL; if (!s) s = sel_registerName("willChangeValueForKey:"); \
 func((const void *)obj, s, (key));}
+
 #define CF_OBJC_KVO_DIDCHANGE(obj, key) \
 if (objc_msgSend != NULL) \
 {void (*func)(const void *, SEL, CFStringRef) = (void (*)(const void *, SEL, CFStringRef))objc_msgSend; \
