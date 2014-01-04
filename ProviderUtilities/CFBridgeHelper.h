@@ -195,6 +195,16 @@ extern "C" {
     
 #define CF_IS_OBJC(typeID, obj) (objc_msgSend != NULL && _CFIsObjC(typeID, (CFTypeRef)obj))
 
+#define CF_OBJC_CALLV(rettype, var, obj, sel, ...) \
+{rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
+static SEL s = NULL; if (!s) s = sel_registerName(sel); \
+var = func((const void *)obj, s, ##__VA_ARGS__ );}
+
+#define CF_OBJC_VOIDCALLV(obj, sel, ...) \
+{void (*func)(const void *, SEL, ...) = (void (*)(const void *, SEL, ...))objc_msgSend; \
+static SEL s = NULL; if (!s) s = sel_registerName(sel); \
+func((const void *)obj, s, ##__VA_ARGS__ );}
+
 #define CF_OBJC_FUNCDISPATCHV(typeID, rettype, obj, sel, ...) \
 if (CF_IS_OBJC(typeID, obj)) \
 {rettype (*func)(const void *, SEL, ...) = (rettype (*)(const void *, SEL, ...))objc_msgSend; \
