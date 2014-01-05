@@ -200,7 +200,10 @@ int main(int argc, const char * argv[])
     NSError *error = nil;
     GSSItem *item = [(__bridge CUICredential *)cred GSSItem:YES error:&error];
     if (item) {
-        GSSCredential *cred = [item acquire:credAttributes error:&error];
+        GSSCredential *cred;
+        
+        cred = [item acquire:credAttributes error:&error];
+        
         NSLog(@"Got cred: %@", cred);
     } else if (error) {
         NSLog(@"Failed to find item for attributes: %@", error);

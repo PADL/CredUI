@@ -82,19 +82,17 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (void)encodeWithCoder:(NSCoder *)coder
 {
-    NSMutableDictionary *codeableAttrs = [NSMutableDictionary dictionary];
-    
-    [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if ([obj isKindOfClass:[NSString class]] ||
-            [obj isKindOfClass:[NSData class]] ||
-            [obj isKindOfClass:[NSNumber class]] ||
-            [obj isKindOfClass:[NSUUID class]] ||
-            [obj isKindOfClass:[NSArray class]] ||
-            [obj isKindOfClass:[NSDictionary class]])
-            codeableAttrs[key] = obj;
+    NSSet *codeableKeys = [self.attributes keysOfEntriesPassingTest:^ BOOL (id key, id obj, BOOL *stop) {
+        return [obj respondsToSelector:@selector(encodeWithCoder:)];
     }];
     
+    NSDictionary *codeableAttrs =
+        [[NSDictionary alloc] initWithObjects:[self.attributes objectsForKeys:codeableKeys.allObjects notFoundMarker:[NSNull null]]
+                                      forKeys:codeableKeys.allObjects];
     [coder encodeObject:codeableAttrs];
+    
+    [codeableAttrs release];
+
 }
 
 - (id)initWithCoder:(NSCoder *)coder
