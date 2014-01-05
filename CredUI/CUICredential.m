@@ -22,22 +22,22 @@ GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
 
 @implementation CUICFCredential
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
-{
-    return NO;
-}
-
 + (id)allocWithZone:(NSZone *)zone
 {
-    static CUICFCredential *placeholderCred;
+    static CUICredentialRef placeholderCred;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        if (placeholderCred == nil)
-            placeholderCred = [super allocWithZone:zone];
+        if (placeholderCred == NULL)
+            placeholderCred = CUICredentialCreate(kCFAllocatorDefault, NULL);
     });
 
-    return placeholderCred;
+    return (id)placeholderCred;
+}
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
+{
+    return NO;
 }
 
 CF_CLASSIMPLEMENTATION(CUICFCredential)

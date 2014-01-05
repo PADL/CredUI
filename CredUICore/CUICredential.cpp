@@ -122,24 +122,24 @@ CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknown *iunk)
 {
     CUICredentialRef cred;
-    CUICredentialContext *credContext;
-    
-    if (iunk == NULL)
-        return NULL;
     
     cred = (CUICredentialRef)_CFRuntimeCreateInstance(allocator, CUICredentialGetTypeID(),
                                                       sizeof(struct __CUICredential) - sizeof(CFRuntimeBase), NULL);
     if (cred == NULL)
         return NULL;
     
-    iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUICredentialInterfaceID), (void **)&credContext);
-    if (credContext == NULL) {
-        CFRelease(cred);
-        return NULL;
+    if (iunk) {
+        CUICredentialContext *credContext;
+        
+        iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUICredentialInterfaceID), (void **)&credContext);
+        if (credContext == NULL) {
+            CFRelease(cred);
+            return NULL;
+        }
+        
+        cred->_context = credContext;
     }
     
-    cred->_context = credContext;
-
     return cred;
 }
 

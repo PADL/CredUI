@@ -13,22 +13,23 @@
 
 @implementation CUICFField
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
-{
-    return NO;
-}
-
 + (id)allocWithZone:(NSZone *)zone
 {
-    static CUICFField *placeholderField;
+    static CUIFieldRef placeholderField;
     static dispatch_once_t onceToken;
     
     dispatch_once(&onceToken, ^{
-        if (placeholderField == nil)
-            placeholderField = [super allocWithZone:zone];
+        if (placeholderField == NULL)
+            placeholderField = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassInvalid,
+                                              NULL, NULL, NULL);
     });
 
-    return placeholderField;
+    return (id)placeholderField;
+}
+
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
+{
+    return NO;
 }
 
 CF_CLASSIMPLEMENTATION(CUICFField)

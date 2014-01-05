@@ -20,9 +20,21 @@
 
 #pragma mark - GSS IC picker
 
+static void testEncodeDecode(CUICredential * cred)
+{
+    NSString *filePath = @"/tmp/somecred";
+    
+    [NSKeyedArchiver archiveRootObject:cred toFile:filePath];
+    
+    id reconstitutedCred = [NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:filePath]];
+    
+    NSLog(@"reconstitutedCred: %@", reconstitutedCred);
+}
+
 - (void)identityPickerDidEndGSSIC:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if (returnCode == NSModalResponseStop) {
+        testEncodeDecode(identityPicker.selectedCredential);
         NSLog(@"IC picker did end: %@", identityPicker.selectedCredential.attributes);
         (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
     } else {
