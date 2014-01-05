@@ -16,10 +16,12 @@
 @class GSSContext;
 @class CUICredential;
 
+@class CUIIdentityPickerInternal;
+
 __attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
 {
-    id _internal;
+    CUIIdentityPickerInternal *_internal;
 }
 
 @property(nonatomic, copy) NSString *title;

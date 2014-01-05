@@ -68,14 +68,11 @@
 
 - (NSString *)description
 {
-    NSString *targetDisplayName = ((CUIIdentityPickerInternal *)_internal).targetDisplayName;
-    CUICredential *selectedCredential = ((CUIIdentityPickerInternal *)_internal).selectedCredential;
-    
     return [NSString stringWithFormat:@"<%@ %p{targetName = \"%@\", selectedCredential = %@, flags = 0x%08x}>",
             [self.class description],
             self,
-            targetDisplayName,
-            selectedCredential,
+            _internal.targetDisplayName,
+            _internal.selectedCredential,
             (unsigned int)self.flags];
 }
 
@@ -83,12 +80,12 @@
                                                                         \
 - (type)getter                                                          \
 {                                                                       \
-    return ((CUIIdentityPickerInternal *)_internal).getter;             \
+    return _internal.getter;                                            \
 }                                                                       \
                                                                         \
 - (void)setter:(type)arg                                                \
 {                                                                       \
-    ((CUIIdentityPickerInternal *)_internal).getter = arg;              \
+    _internal.getter = arg;                                                \
 }                                                                        
 
 FORWARD_PROPERTY(NSString *,            setTitle,               title)
@@ -103,12 +100,12 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
     if (_modalResponse != NSModalResponseStop)
         return nil;
         
-    return ((CUIIdentityPickerInternal *)_internal).selectedCredential;
+    return _internal.selectedCredential;
 }
 
 - (NSError *)lastError
 {
-    return ((CUIIdentityPickerInternal *)_internal).lastError;
+    return _internal.lastError;
 }
 
 @end
