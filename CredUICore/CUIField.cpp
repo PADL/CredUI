@@ -8,6 +8,15 @@
 
 #include "CredUICore_Private.h"
 
+struct __CUIField {
+    CFRuntimeBase _base;
+    CUIFieldClass _class;
+    CFStringRef _title;
+    CFTypeRef _defaultValue;
+    void (^_delegate)(CUIFieldRef field, CFTypeRef value);
+    CUIFieldOptions _options;
+};
+
 static CFTypeID __CUIFieldTypeID = _kCFRuntimeNotATypeID;
 static CFStringRef __CUIFieldValueProperty = CFSTR("value");
 static CFStringRef __CUIFieldOptionsProperty = CFSTR("options");
@@ -121,7 +130,7 @@ CUIFieldCreate(CFAllocatorRef allocator,
 }
 
 CUI_EXPORT CUIFieldRef
-CUIFieldCreateCopy(CFAllocatorRef allocator,
+    (CFAllocatorRef allocator,
                    CUIFieldRef field)
 {
     CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CUIFieldRef, field, "copy");
@@ -129,6 +138,8 @@ CUIFieldCreateCopy(CFAllocatorRef allocator,
     CUIFieldRef f = CUIFieldCreate(allocator, field->_class, field->_title, field->_defaultValue, field->_delegate);
     if (f == NULL)
         return NULL;
+    
+    f->_options = field->_options;
     
     return f;
 }
