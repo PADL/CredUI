@@ -103,6 +103,15 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return (id)CUIFieldGetDefaultValue([self _fieldRef]);
 }
 
+- (id)valueForUndefinedKey:(NSString *)key
+{
+    /* The value is actually write-only, so just return a defaultValue for KVO compliance */
+    if ([key isEqualToString:@"value"])
+        return [self defaultValue];
+    else
+        return [super valueForUndefinedKey:key];
+}
+
 - (void)setValue:(id)aValue
 {
     id aValueCopy = [aValue copy];
@@ -110,14 +119,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
 
     [aValueCopy release];
-}
-
-- (void)setValue:(id)aValue sender:(id)sender
-{
-    id identityPicker = [[(NSView *)sender window] delegate];
-
-    [self setValue:aValue];
-    [identityPicker credentialFieldDidChange:sender];
 }
 
 - (CUIFieldOptions)options
@@ -139,7 +140,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 {
     NSTextView *textView = notification.userInfo[@"NSFieldEditor"];
     
-    [self setValue:textView.string sender:notification.object];
+    [self setValue:textView.string];
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)command

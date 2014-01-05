@@ -102,6 +102,11 @@
                 forKeyPath:@"options"
                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                    context:(__bridge void *)view];
+        
+        [field addObserver:self.delegate
+                forKeyPath:@"value"
+                   options:NSKeyValueObservingOptionNew
+                   context:(__bridge void *)view];
     }
     
     return view;

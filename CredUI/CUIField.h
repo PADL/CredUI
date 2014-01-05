@@ -20,8 +20,6 @@
 
 - (CUIFieldRef)_fieldRef;
 - (void)setValue:(id)aValue;
-- (void)setValue:(id)aValue sender:(id)sender;
-
 - (void)didSubmit:(id)sender;
 
 @end

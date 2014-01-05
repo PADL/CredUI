@@ -35,8 +35,9 @@
 
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes;
 
+- (void)credentialFieldDidChange:(CUICredential *)cred;
+
 - (void)didClickPersist:(id)sender;
-- (void)credentialFieldDidChange:(id)sender;
 - (void)willSubmitCredential:(id)sender;
 - (void)didSubmitCredential;
 

@@ -27,6 +27,7 @@
     
     collectionView = [[NSCollectionView alloc] initWithFrame:[[panel contentView] frame]];
     collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
+
     collectionView.selectable = YES;
     collectionView.allowsMultipleSelection = NO;
     collectionView.autoresizingMask = (NSViewMinXMargin

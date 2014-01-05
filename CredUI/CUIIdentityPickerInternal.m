@@ -210,11 +210,9 @@ autoSubmit:
         [self.selectedCredential didConfirm:NULL];
 }
 
-- (void)credentialFieldDidChange:(id)sender
+- (void)credentialFieldDidChange:(CUICredential *)credential
 {
-    CUICredentialTile *tile = (CUICredentialTile *)[sender superview];
-    
-    if ([tile.credential isEqual:self.selectedCredential])
+    if ([credential isEqual:self.selectedCredential])
         [self _updateSubmitButtonForSelectedCred];
 }
 

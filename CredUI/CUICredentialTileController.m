@@ -33,10 +33,6 @@
 
 - (void)updateView:(NSView *)view withFieldOptions:(CUIFieldOptions)options
 {
-#if 0
-    NSLog(@"updateView %p: %08x", view, (unsigned int)options);
-#endif
-    
     view.hidden = !!(options & kCUIFieldOptionsIsHidden);
 }
 
@@ -45,11 +41,20 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
+    NSView *view = (__bridge NSView *)context;
+
+#if 0
+    NSLog(@"observeValueForKeyPath:%@ ofObject:%@ change:%@ context:%@", keyPath, object, change[NSKeyValueChangeNewKey], (__bridge id)context);
+#endif
+
     if ([keyPath isEqualTo:@"options"]) {
         CUIFieldOptions options = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
-        NSView *view = (__bridge NSView *)context;
 
         [self updateView:view withFieldOptions:options];
+    } else if ([keyPath isEqualTo:@"value"]) {
+        CUIIdentityPickerInternal *identityPicker = (CUIIdentityPickerInternal *)[view.window delegate];
+        
+        [identityPicker credentialFieldDidChange:self.representedObject];
     }
 }
 
