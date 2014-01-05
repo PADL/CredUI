@@ -16,12 +16,6 @@
 
 @property(nonatomic, readonly, assign) NSArray *fields;
 
-#ifdef __cplusplus
-- (instancetype)initWithContext:(IUnknown *)context;
-#else
-- (instancetype)initWithContext:(struct IUnknownVTbl *)context;
-#endif
-
 - (CUICredentialRef)_credentialRef;
 
 - (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass;

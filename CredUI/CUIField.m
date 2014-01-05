@@ -23,38 +23,15 @@
             placeholderField = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassInvalid,
                                               NULL, NULL, NULL);
     });
-
+    
     return (id)placeholderField;
-}
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
-{
-    return NO;
 }
 
 CF_CLASSIMPLEMENTATION(CUICFField)
 
-- initWithClass:(CUIFieldClass)fieldClass
-          title:(NSString *)title
-   defaultValue:(id)defaultValue
-       delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
 {
-    CUIFieldRef fieldRef;
-    NSString *titleCopy = [title copy];
-    id defaultValueCopy = [defaultValue copy];
-    
-    fieldRef = CUIFieldCreate(kCFAllocatorDefault,
-                              fieldClass,
-                              (CFStringRef)titleCopy,
-                              (CFTypeRef)defaultValueCopy,
-                              fieldDidChange);
-    
-    [titleCopy release];
-    [defaultValueCopy release];
-        
-    self = (id)fieldRef;
-    
-    return NSMakeCollectable(self);
+    return NO;
 }
 
 @end
@@ -69,24 +46,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 - (CFTypeID)_cfTypeID
 {
     return CUIFieldGetTypeID();
-}
-
-- initWithClass:(CUIFieldClass)fieldClass
-          title:(NSString *)title
-   defaultValue:(id)defaultValue
-       delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange
-{
-    self = [super init];
-    
-    return self;
-}
-
-- init
-{
-    return [self initWithClass:kCUIFieldClassInvalid
-                         title:nil
-                  defaultValue:nil
-                      delegate:nil];
 }
 
 - (CUIFieldClass)fieldClass

@@ -13,11 +13,6 @@
 @property(nonatomic, readonly, copy) NSString *defaultValue;
 @property(nonatomic, assign) CUIFieldOptions options;
 
-- initWithClass:(CUIFieldClass)fieldClass
-          title:(NSString *)title
-   defaultValue:(id)defaultValue
-       delegate:(void(^)(CUIFieldRef, CFTypeRef))fieldDidChange;
-
 - (CUIFieldRef)_fieldRef;
 - (void)setValue:(id)aValue;
 - (void)didSubmit:(id)sender;

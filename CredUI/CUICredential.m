@@ -31,24 +31,15 @@ GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
         if (placeholderCred == NULL)
             placeholderCred = CUICredentialCreate(kCFAllocatorDefault, NULL);
     });
-
+    
     return (id)placeholderCred;
-}
-
-+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
-{
-    return NO;
 }
 
 CF_CLASSIMPLEMENTATION(CUICFCredential)
 
-- (instancetype)initWithContext:(IUnknownVTbl *)context
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
 {
-    CUICredentialRef credentialRef = CUICredentialCreate(kCFAllocatorDefault, context);
-    
-    self = (id)credentialRef;
-    
-    return NSMakeCollectable(self);
+    return NO;
 }
 
 @end
@@ -63,16 +54,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 - (CFTypeID)_cfTypeID
 {
     return CUICredentialGetTypeID();
-}
-
-- (instancetype)init
-{
-    return [self initWithContext:NULL];
-}
-
-- (instancetype)initWithContext:(IUnknownVTbl *)context
-{
-    return [super init];
 }
 
 + (BOOL)supportsSecureCoding
