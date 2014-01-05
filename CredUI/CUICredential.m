@@ -55,11 +55,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 @implementation CUICredential
 
-+ (BOOL)supportsSecureCoding
-{
-    return YES;
-}
-
 - (CUICredentialRef)_credentialRef
 {
     return (CUICredentialRef)self;
@@ -80,6 +75,11 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return [super init];
 }
 
++ (BOOL)supportsSecureCoding
+{
+    return YES;
+}
+
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     NSSet *codeableKeys = [self.attributes keysOfEntriesPassingTest:^ BOOL (id key, id obj, BOOL *stop) {
@@ -89,10 +89,9 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     NSDictionary *codeableAttrs =
         [[NSDictionary alloc] initWithObjects:[self.attributes objectsForKeys:codeableKeys.allObjects notFoundMarker:[NSNull null]]
                                       forKeys:codeableKeys.allObjects];
-    [coder encodeObject:codeableAttrs];
+    [coder encodeObject:codeableAttrs forKey:@"attributes"];
     
     [codeableAttrs release];
-
 }
 
 - (id)initWithCoder:(NSCoder *)coder
@@ -100,7 +99,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     NSDictionary *credAttributes;
     CUICredentialRef credentialRef;
     
-    credAttributes = [coder decodeObject];
+    credAttributes = [coder decodeObjectOfClass:[NSDictionary class] forKey:@"attributes"];
     if (credAttributes == nil)
         return nil;
         
