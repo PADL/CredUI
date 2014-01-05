@@ -289,14 +289,7 @@ autoSubmit:
 
 - (CUICredential *)selectedCredential
 {
-    NSArray *selectedObjects;
-    CUICredential *cred = nil;
-        
-    selectedObjects = [self.credsController selectedObjects];
-    if (selectedObjects.count)
-        cred = selectedObjects[0];
-    
-    return cred;
+    return [[self.credsController selectedObjects] firstObject];
 }
 
 - (NSString *)targetDisplayName

@@ -229,10 +229,9 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
         NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
         NSArray *matchingItems = [NSMakeCollectable(GSSItemCopyMatching((CFDictionaryRef)itemAttrs, NULL)) autorelease];
         
-        item = matchingItems.count ? matchingItems[0] : nil;
-        if (item == nil && addIfAbsent) {
+        item = [matchingItems firstObject];
+        if (item == nil && addIfAbsent)
             item = [NSMakeCollectable(GSSItemAdd((CFDictionaryRef)itemAttrs, (CFErrorRef *)error)) autorelease];
-        }
     } else {
         item = [[item retain] autorelease]; // in case the credentials dict goes away
     }
