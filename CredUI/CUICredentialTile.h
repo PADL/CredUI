@@ -11,7 +11,7 @@
 
 @interface CUICredentialTile : NSView
 
-@property (weak, nonatomic) CUICredential *credential;
+@property (readonly) CUICredential *credential;
 @property (weak, nonatomic) CUICredentialTileController *delegate;
 @property (nonatomic, assign) BOOL selected;
 

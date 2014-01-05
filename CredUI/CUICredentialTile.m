@@ -7,7 +7,6 @@
 //
 
 @implementation CUICredentialTile
-
 - (NSTextField *)_newTextFieldForCredentialField:(CUIField *)field withFrame:(NSRect)frame
 {
     NSTextField *textField;
@@ -143,10 +142,15 @@
     }
 }
 
-- (void)setCredential:(CUICredential *)credential
+- (void)setDelegate:(CUICredentialTileController *)delegate
 {
-    _credential = credential;
+    _delegate = delegate;
     [self _updateSubviews];
+}
+
+- (CUICredential *)credential
+{
+    return self.delegate.representedObject;
 }
 
 - (void)drawRect:(NSRect)dirtyRect

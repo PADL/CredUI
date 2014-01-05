@@ -25,7 +25,8 @@ __attribute__((visibility("default")))
 
 /*
  * Acknowledges the application successfully used the credential and
- * it should be persisted.
+ * it should be persisted. The application should only call this if
+ * CUIFlagsExpectConfirmation was set, otherwise CredUI will do it.
  */
 - (BOOL)didConfirm:(NSError * __autoreleasing *)error;
 
