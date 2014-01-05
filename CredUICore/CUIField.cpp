@@ -130,7 +130,7 @@ CUIFieldCreate(CFAllocatorRef allocator,
 }
 
 CUI_EXPORT CUIFieldRef
-    (CFAllocatorRef allocator,
+CUIFieldCreateCopy(CFAllocatorRef allocator,
                    CUIFieldRef field)
 {
     CF_OBJC_FUNCDISPATCHV(__CUIFieldTypeID, CUIFieldRef, field, "copy");
