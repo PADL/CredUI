@@ -118,6 +118,7 @@
 
     for (CUIField *field in credFields) {
         [field removeObserver:self.delegate forKeyPath:@"options"];
+        [field removeObserver:self.delegate forKeyPath:@"value"];
     }
 }
 

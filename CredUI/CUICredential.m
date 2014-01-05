@@ -198,7 +198,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return (NSArray *)CUICredentialGetFields([self _credentialRef]);
 }
 
-- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error;
+- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error
 {
     id item;
     
