@@ -27,7 +27,7 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef username,
                         CFStringRef password,
                         CUICredentialRef *outCred,
-                        Boolean *save,
+                        Boolean *fSave,
                         CUIFlags flags,
                         CFErrorRef *error);
 
