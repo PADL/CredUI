@@ -17,14 +17,14 @@
 static CFStringRef kCUIPrefix = CFSTR("kCUI");
 static CFStringRef kGSSPrefix = CFSTR("kGSS");
 
-struct __CUITransformAttributesContext {
+struct _CUITransformAttributesContext {
     CFMutableDictionaryRef transformedAttrs;
     Boolean toGSS;
 };
 
-static void transformAttributesCallback(const void *key, const void *value, void *_context) {
+static void _CUITransformAttributesCallback(const void *key, const void *value, void *_context) {
     CFMutableStringRef transformedKey = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, (CFStringRef)key);
-    struct __CUITransformAttributesContext *context = (struct __CUITransformAttributesContext *)_context;
+    struct _CUITransformAttributesContext *context = (struct _CUITransformAttributesContext *)_context;
     
     if (transformedKey) {
         CFStringRef src = context->toGSS ? kCUIPrefix : kGSSPrefix;
@@ -36,8 +36,8 @@ static void transformAttributesCallback(const void *key, const void *value, void
     }
 }
 
-static CFMutableDictionaryRef transformAttributes(CFDictionaryRef attrs, bool toGSS) {
-    __CUITransformAttributesContext context;
+static CFMutableDictionaryRef _CUITransformAttributes(CFDictionaryRef attrs, bool toGSS) {
+    _CUITransformAttributesContext context;
     
     if (attrs == NULL)
         return NULL;
@@ -51,19 +51,19 @@ static CFMutableDictionaryRef transformAttributes(CFDictionaryRef attrs, bool to
     
     context.toGSS = toGSS;
     
-    CFDictionaryApplyFunction(attrs, transformAttributesCallback, (void *)&context);
+    CFDictionaryApplyFunction(attrs, _CUITransformAttributesCallback, (void *)&context);
     
     return context.transformedAttrs;
 }
 
 CFMutableDictionaryRef CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes)
 {
-    return transformAttributes(attributes, false);
+    return _CUITransformAttributes(attributes, false);
 }
 
 CFMutableDictionaryRef CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
 {
-    return transformAttributes(attributes, true);
+    return _CUITransformAttributes(attributes, true);
 }
 
 CUIAttributeSource
@@ -120,10 +120,10 @@ static CFNumberRef kGSSSecPasswordType;
 static CFNumberRef kCUISecPasswordType;
 
 static void
-__CUIKeychainProviderUtilitiesInit(void) __attribute((__constructor__));
+_CUIKeychainProviderUtilitiesInit(void) __attribute((__constructor__));
 
 static void
-__CUIKeychainProviderUtilitiesInit(void)
+_CUIKeychainProviderUtilitiesInit(void)
 {
     uint32_t num;
     
@@ -135,7 +135,7 @@ __CUIKeychainProviderUtilitiesInit(void)
 }
 
 static CFStringRef
-__CUIKeychainDefaultService(Boolean bCUIGeneric)
+_CUIKeychainDefaultService(Boolean bCUIGeneric)
 {
     static CFStringRef gss = CFSTR("GSS");
     static CFStringRef credUI = CFSTR("CredUI");
@@ -240,7 +240,7 @@ CUIKeychainCopyMatching(CFDictionaryRef attributes,
     
     if (SecItemCopyMatching(query, (CFTypeRef *)&result) != errSecSuccess) {
         if (targetName) {
-            CFDictionarySetValue(query, kSecAttrService, __CUIKeychainDefaultService(bCUIGeneric));
+            CFDictionarySetValue(query, kSecAttrService, _CUIKeychainDefaultService(bCUIGeneric));
             SecItemCopyMatching(query, (CFTypeRef *)&result);
         }
     }
@@ -281,7 +281,7 @@ CUIKeychainSave(CFDictionaryRef attributes,
     CFTypeRef itemRef = NULL;
 
     if (targetName == NULL)
-        targetName = __CUIKeychainDefaultService(true);
+        targetName = _CUIKeychainDefaultService(true);
     
     keychainAttrs = CUICreateKeychainAttributesFromCUIAttributes(attributes, targetName, &bCUIGeneric);
     if (keychainAttrs == NULL)
