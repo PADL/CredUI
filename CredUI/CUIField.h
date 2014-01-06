@@ -15,7 +15,7 @@ __attribute__((visibility("default")))
 @property(nonatomic, assign) CUIFieldOptions options;
 
 - (CUIFieldRef)_fieldRef;
-- (void)setValue:(id)aValue;
+- (void)setValue:(id)aValue; //primitive
 - (void)didSubmit:(id)sender;
 
 @end

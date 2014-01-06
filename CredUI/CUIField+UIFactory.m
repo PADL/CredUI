@@ -68,6 +68,9 @@
 {
     NSView *view = nil;
     
+    NSAssert(self.fieldClass != kCUIFieldClassInvalid, @"Field must be a valid type");
+    NSAssert(self.fieldClass != kCUIFieldClassCustom,  @"Custom field classes must override viewWithFrame:");
+    
     switch (self.fieldClass) {
         case kCUIFieldClassLargeText:
         case kCUIFieldClassSmallText:

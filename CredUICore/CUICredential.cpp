@@ -284,8 +284,6 @@ CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boo
 CUI_EXPORT CUIFieldRef
 CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass)
 {
-    CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, CUIFieldRef, cred, "firstFieldWithClass:", fieldClass);
-    
     __block CUIFieldRef theField = NULL;
 
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {

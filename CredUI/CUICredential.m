@@ -36,11 +36,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return NO;
 }
 
-- (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
-{
-    return (CUIField *)CUICredentialFindFirstFieldWithClass([self _credentialRef], fieldClass);
-}
-
 - (NSDictionary *)attributes
 {
     return (NSDictionary *)CUICredentialGetAttributes([self _credentialRef]);
@@ -167,10 +162,16 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return nil;
 }
 
-- (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
+- (NSArray *)fields
 {
     NSRequestConcreteImplementation(self, _cmd, [CUICredential class]);
     return nil;
+}
+
+- (BOOL)canSubmit
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUICredential class]);
+    return NO;
 }
 
 #pragma mark Default methods
@@ -191,11 +192,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (void)didBecomeDeselected
 {
-}
-
-- (BOOL)canSubmit
-{
-    return YES;
 }
 
 - (void)willSubmit

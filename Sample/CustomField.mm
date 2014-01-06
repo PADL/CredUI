@@ -17,6 +17,20 @@
 
 @implementation CustomField
 
+- (NSString *)defaultUsername
+{
+    NSString *defaultUserName;
+    
+    defaultUserName = self.attributes[(__bridge id)kCUIAttrNameDisplay];
+    if (!defaultUserName) {
+        id nameType = self.attributes[(__bridge id)kCUIAttrNameType];
+        if (nameType && [nameType isEqual:(__bridge id)kCUIAttrNameTypeGSSUsername])
+            defaultUserName = self.attributes[(__bridge id)kCUIAttrName];
+    }
+    
+    return defaultUserName;
+}
+
 - (void)setValue:(id)aValue
 {
     NSLog(@"CustomField: setting username to %@", aValue);
@@ -28,8 +42,11 @@
 - (NSView *)viewWithFrame:(NSRect)frame
 {
     NSTextField *textField;
+    NSString *defaultValue = [self defaultUsername];
     
     textField = [[NSTextField alloc] initWithFrame:frame];
+    if (defaultValue)
+        textField.stringValue = defaultValue;
     textField.editable = YES;
     textField.selectable = YES;
     textField.bordered = YES;

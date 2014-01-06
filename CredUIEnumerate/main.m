@@ -55,9 +55,9 @@
     return @"Hello, this is a custom field";
 }
 
-- (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass
+- (NSArray *)fields
 {
-    NSLog(@"FooCredential: firstFieldWihClass: %d", (int)fieldClass);
+    NSLog(@"FooCredential: fields");
     return nil;
 }
 
@@ -66,7 +66,7 @@
 static void testSubclasses(void)
 {
     FooCredential *foo = [[FooCredential alloc] init];
-    CUICredentialFindFirstFieldWithClass((__bridge CUICredentialRef)foo, kCUIFieldClassLargeText);
+    CUICredentialGetFields((__bridge CUICredentialRef)foo);
     
     NSLog(@"cred: %@", foo);
     

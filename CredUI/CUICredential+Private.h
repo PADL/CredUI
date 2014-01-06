@@ -14,16 +14,14 @@
 
 @interface CUICredential () <NSSecureCoding>
 
-@property(nonatomic, readonly, assign) NSArray *fields;
+@property(nonatomic, readonly, assign) NSArray *fields; //primitive
 
 - (CUICredentialRef)_credentialRef;
-
-- (CUIField *)firstFieldWithClass:(CUIFieldClass)fieldClass;
 
 - (void)didBecomeSelected:(BOOL *)pbAutoLogin;
 - (void)didBecomeDeselected;
 
-- (BOOL)canSubmit;
+- (BOOL)canSubmit; //primitive
 - (void)willSubmit;
 - (void)didSubmit;
 
