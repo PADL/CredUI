@@ -19,6 +19,8 @@
 #import <CredUICore/CredUICore_Private.h>
 
 #import "CUIField.h"
+#import "CUIField+UIFactory.h"
+
 #import "CUICredential+Private.h"
 
 #import "CUICredentialTile.h"
@@ -27,7 +29,7 @@
 #import "CUIIdentityPickerInternal.h"
 #import "CUIIdentityPickerInternal+UIFactory.h"
 
-Boolean
+extern Boolean
 __CUIPromptForCredentials(CFTypeRef targetName,
                           CFTypeRef gssContextHandle,
                           CUICredUIContext *uiContext,
@@ -37,3 +39,5 @@ __CUIPromptForCredentials(CFTypeRef targetName,
                           Boolean *pfSave,
                           CUIFlags flags,
                           CFErrorRef *error);
+
+extern void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);

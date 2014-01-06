@@ -34,20 +34,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return NO;
 }
 
-@end
-
-@implementation CUIField
-
-- (CUIFieldRef)_fieldRef
-{
-    return (CUIFieldRef)self;
-}
-
-- (CFTypeID)_cfTypeID
-{
-    return CUIFieldGetTypeID();
-}
-
 - (CUIFieldClass)fieldClass
 {
     return CUIFieldGetClass([self _fieldRef]);
@@ -63,6 +49,39 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     return (id)CUIFieldGetDefaultValue([self _fieldRef]);
 }
 
+- (CUIFieldOptions)options
+{
+    return CUIFieldGetOptions([self _fieldRef]);
+}
+
+- (void)setOptions:(CUIFieldOptions)options
+{
+    CUIFieldSetOptions([self _fieldRef], options);
+}
+
+- (void)setValue:(id)aValue
+{
+    id aValueCopy = [aValue copy];
+    
+    CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
+    
+    [aValueCopy release];
+}
+
+@end
+
+@implementation CUIField
+
+- (CUIFieldRef)_fieldRef
+{
+    return (CUIFieldRef)self;
+}
+
+- (CFTypeID)_cfTypeID
+{
+    return CUIFieldGetTypeID();
+}
+
 - (id)valueForUndefinedKey:(NSString *)key
 {
     /* The value is actually write-only, so just return a defaultValue for KVO compliance */
@@ -74,21 +93,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (void)setValue:(id)aValue
 {
-    id aValueCopy = [aValue copy];
-
-    CUIFieldSetValue([self _fieldRef], (CFTypeRef)aValueCopy);
-
-    [aValueCopy release];
-}
-
-- (CUIFieldOptions)options
-{
-    return CUIFieldGetOptions([self _fieldRef]);
-}
-
-- (void)setOptions:(CUIFieldOptions)options
-{
-    CUIFieldSetOptions([self _fieldRef], options);
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
 }
 
 - (void)didSubmit:(id)sender

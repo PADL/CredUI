@@ -25,7 +25,8 @@ typedef CF_ENUM(CFIndex, CUIFieldClass) {
     kCUIFieldClassTileImage,
     kCUIFieldClassCheckBox,
     kCUIFieldClassComboBox,
-    kCUIFieldClassSubmitButton
+    kCUIFieldClassSubmitButton,
+    kCUIFieldClassNSControl = 0x10000000
 };
 
 typedef CF_OPTIONS(CFIndex, CUIFieldOptions) {
