@@ -8,6 +8,8 @@
 
 #include "CFBridgeHelper.h"
 
+#pragma mark - CUICFField concrete class
+
 @interface CUICFField : CUIField
 @end
 
@@ -32,6 +34,12 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
 {
     return NO;
+}
+
+- init
+{
+    NSAssert(0, @"CUICFField can only be instantiated through CredUICore");
+    return nil;
 }
 
 - (CUIFieldClass)fieldClass
@@ -70,6 +78,8 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 @end
 
+#pragma mark - CUIField abstract class
+
 @implementation CUIField
 
 - (CUIFieldRef)_fieldRef
@@ -81,6 +91,8 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 {
     return CUIFieldGetTypeID();
 }
+
+#pragma mark Default methods
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
