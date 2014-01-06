@@ -281,16 +281,24 @@ CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
                            CFDictionaryRef attributes)
 {
     CFTypeRef password = CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword);
-    if (password && CFGetTypeID(password) == CFStringGetTypeID()) {
-        CFDataRef passwordData = CFStringCreateExternalRepresentation(kCFAllocatorDefault,
-                                                                      (CFStringRef)password, kCFStringEncodingUTF8, 0);
+
+    if (password) {
+        if (CFGetTypeID(password) == CFStringGetTypeID()) {
+            CFDataRef passwordData;
+
+            passwordData = CFStringCreateExternalRepresentation(kCFAllocatorDefault,
+                                                                (CFStringRef)password, kCFStringEncodingUTF8, 0);
         
-        if (passwordData == NULL) {
-            return false;
+            if (passwordData == NULL)
+                return false;
+        
+            CFDictionarySetValue(keychainAttrs, kSecValueData, passwordData);
+            CFRelease(passwordData);
+        } else if (CFGetTypeID(password) == CFDataGetTypeID()) {
+            CFDictionarySetValue(keychainAttrs, kSecValueData, password);
+        } else if (CFGetTypeID(password) != CFBooleanGetTypeID()) {
+            /* Hmm, what's going on here? */
         }
-        
-        CFDictionarySetValue(keychainAttrs, kSecValueData, passwordData);
-        CFRelease(passwordData);
     }
     
     return true;
