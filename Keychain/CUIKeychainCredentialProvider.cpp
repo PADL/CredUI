@@ -102,6 +102,7 @@ public:
                                                                  }
                                                                  
                                                                  CFArrayAppendValue(creds, credRef);
+
                                                                  CFRelease(credRef);
                                                                  itemCred->Release();
                                                              });
