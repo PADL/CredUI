@@ -269,12 +269,12 @@ autoSubmit:
 
 - (GSSContext *)GSSContextHandle
 {
-    return (__bridge GSSContext *)CUIControllerGetGssContextHandle(_controller);
+    return (__bridge GSSContext *)CUIControllerGetGSSContextHandle(_controller);
 }
 
 - (void)setGSSContextHandle:(GSSContext *)aContext
 {
-    CUIControllerSetGssContextHandle(_controller, (__bridge CFTypeRef)aContext);
+    CUIControllerSetGSSContextHandle(_controller, (__bridge CFTypeRef)aContext);
 }
 
 - (id)targetName

@@ -82,10 +82,10 @@ const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller);
 
 void
-CUIControllerSetGssContextHandle(CUIControllerRef controller, CFTypeRef ctx);
+CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef ctx);
 
 CFTypeRef
-CUIControllerGetGssContextHandle(CUIControllerRef controller);
+CUIControllerGetGSSContextHandle(CUIControllerRef controller);
 
 void
 CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef target);

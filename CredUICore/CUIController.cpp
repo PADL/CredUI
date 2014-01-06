@@ -250,13 +250,13 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 }
 
 CUI_EXPORT void
-CUIControllerSetGssContextHandle(CUIControllerRef controller, CFTypeRef gssContextHandle)
+CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef gssContextHandle)
 {
     __CUISetter(controller->_gssContextHandle, gssContextHandle);
 }
 
 CUI_EXPORT CFTypeRef
-CUIControllerGetGssContextHandle(CUIControllerRef controller)
+CUIControllerGetGSSContextHandle(CUIControllerRef controller)
 {
     return controller->_gssContextHandle;
 }
