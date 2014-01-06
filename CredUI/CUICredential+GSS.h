@@ -46,4 +46,10 @@ struct GSSItem;
  * That will also respect any mechanism selections that were made by the credential
  * provider, which the above example of gss_aapl_initial_cred does not do.
  */
+
+#if 0
+/* once gss_aapl_initial_cred() has been updated ... */
+- (gss_cred_id_t)acquireGSSCredential CF_RETURNS_RETAINED;
+#endif
+
 @end
