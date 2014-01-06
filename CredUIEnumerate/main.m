@@ -23,7 +23,7 @@
 
 #include <GSSKit/GSSKit.h>
 
-#include "../GSSItem/GSSItem.h"
+#include "GSSItem.h"
 
 @interface FooCredential : CUICredential
 @end
