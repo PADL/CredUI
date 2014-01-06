@@ -28,6 +28,7 @@
 @property(nonatomic, retain) NSArrayController *credsController;
 @property(nonatomic, retain) NSCollectionView *collectionView;
 @property(nonatomic, retain) NSTextField *messageTextField;
+@property(nonatomic, retain) NSButton *persistCheckBox;
 @property(nonatomic, retain) NSButton *submitButton;
 @property(assign) BOOL autoLogin;
 

@@ -38,7 +38,7 @@
     return CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes;
+- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     NSPanel *panel = [self _newPanel];
     
@@ -62,9 +62,10 @@
         else
             _flags |= CUIFlagsShowSaveCheckBox;
 
-        if (self.flags & CUIFlagsShowSaveCheckBox)
-            [self.window.contentView addSubview:[self _newPersistCheckBox]];
-        
+        if (self.flags & CUIFlagsShowSaveCheckBox) {
+            self.persistCheckBox = [self _newPersistCheckBox];
+            [self.window.contentView addSubview:self.persistCheckBox];
+        }
         self.submitButton = [self _newSubmitButton];
         [self.window.contentView addSubview:self.submitButton];
     }
@@ -218,7 +219,13 @@ autoSubmit:
 
 - (void)didClickPersist:(id)sender
 {
-    self.persist = ((NSButton *)sender).state;
+    _persist = ((NSButton *)sender).state;
+}
+
+- (void)setPersist:(BOOL)persist
+{
+    _persist = persist;
+    [self.persistCheckBox setState:persist];
 }
 
 #pragma mark - Accessors

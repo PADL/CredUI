@@ -92,6 +92,8 @@ FORWARD_PROPERTY(NSString *,            setTitle,               title)
 FORWARD_PROPERTY(NSString *,            setMessage,             message)
 FORWARD_PROPERTY(CUICredUIContext *,    setCredUIContext,       credUIContext)
 FORWARD_PROPERTY(NSDictionary *,        setAttributes,          attributes)
+FORWARD_PROPERTY(NSError *,             setAuthError,           authError)
+FORWARD_PROPERTY(BOOL,                  setPersist,             persist)
 FORWARD_PROPERTY(GSSContext *,          setGSSContextHandle,    GSSContextHandle)
 FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
