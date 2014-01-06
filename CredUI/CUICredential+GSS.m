@@ -59,7 +59,7 @@ struct GSSItem;
     else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSExportedName])
         oid = GSS_C_NT_EXPORT_NAME;
     
-    if (oid != GSS_C_NO_OID)
+    if (oid != GSS_C_NO_OID && value != nil)
         name = GSSCreateName((__bridge CFStringRef)value, oid, NULL);
     
     return name;
