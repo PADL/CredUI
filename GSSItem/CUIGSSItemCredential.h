@@ -19,6 +19,21 @@
 
 #include "GSSItem.h"
 
+/*
+ * Return an attribute dictionary suitable for passing to a GSS item API
+ * from a CredUI attribute dictionary.
+ */
+extern CFMutableDictionaryRef
+CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
+
+/*
+ * Return an attribute dictionary suitable for passing to a CredUI API
+ * from a GSS item attribute dictionary.
+ */
+extern CFMutableDictionaryRef
+CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
+
+
 class CUIGSSItemCredential : public CUICredentialContext {
     
 public:
@@ -95,62 +110,11 @@ public:
     void didSubmit(void) {
         CUICredentialDidSubmit(_credential);
     }
+ 
+    CFDictionaryRef copyItemAttributes(void);
+    Boolean savePersisted(CFErrorRef *error);
+    Boolean deletePersisted(CFErrorRef *error);
     
-    CFDictionaryRef copyItemAttributes(void) {
-        CFMutableDictionaryRef attrs = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
-
-        if (attrs == NULL)
-            return NULL;
-
-        CFTypeRef password = CFDictionaryGetValue(attrs, kGSSAttrCredentialPassword);
-        if (CFEqual(password, kCFBooleanTrue))
-            CFDictionaryRemoveValue(attrs, kGSSAttrCredentialPassword);
-
-        return attrs;
-    }
-    
-    Boolean savePersisted(CFErrorRef *error) {
-       CFDictionaryRef gssItemAttributes;
-       Boolean ret;
-       
-        /*
-         * We update any existing GSS items on behalf of the credential provider, however
-         * adding any new ones must be done by the credential provider themselves.
-         */ 
-        ret = CUICredentialSavePersisted(_credential, error);
-        if (!ret)
-            return ret;
-        
-        if (_item) {
-            gssItemAttributes = copyItemAttributes();
-            if (gssItemAttributes == NULL)
-                return false;
-            
-            ret = GSSItemUpdate(_item->keys, gssItemAttributes, error);
-            CFRelease(gssItemAttributes);
-        }
-        
-        return ret;
-    }
-    
-    Boolean deletePersisted(CFErrorRef *error) {
-        CFDictionaryRef gssItemAttributes;
-        Boolean ret;
-
-        ret = CUICredentialDeletePersisted(_credential, error);
-        if (!ret)
-            return ret;
-        
-        gssItemAttributes = copyItemAttributes();
-        if (gssItemAttributes == NULL)
-            return false;
-        
-        ret = GSSItemDelete(gssItemAttributes, error);
-        CFRelease(gssItemAttributes);
-        
-        return ret;
-    }
-
     CUIGSSItemCredential() {
         _retainCount = 1;
         _item = NULL;

@@ -8,10 +8,15 @@
 
 #import <CredUI/CredUI.h>
 #import <CredUI/GSSPromptForCredentials.h>
+#import <CredUI/CUICredential+GSS.h>
 #import <CredUICore/CUIAttributes.h>
 
 #import <GSSKit/GSSKit.h>
+
 #import <GSSKitUI/GSSKitUI.h>
+#import <dispatch/dispatch.h>
+
+#import "GSSItem.h"
 
 #import "CredUIPickerDelegate.h"
 #import "CredUIPickerDelegate+InitAcceptLoop.h"
@@ -62,15 +67,22 @@ static void testEncodeDecode(CUICredential * cred)
 {
     if (returnCode == NSModalResponseStop) {
         NSLog(@"Item picker did end: %@", identityPicker.selectedCredential.attributes);
-        NSError *error = nil;
+        __block NSError *error = nil;
         
         // OK, now let's try and do some GSS stuff
-        NSArray *items = [GSSItem itemsMatchingCUICredential:identityPicker.selectedCredential error:&error];
+        GSSItem *item = CFBridgingRelease([identityPicker.selectedCredential copyMatchingGSSItem:NO error:&error]);
         
-        if (items)
-            NSLog(@"Item --> %@", items);
-        else
-            NSLog(@"Item error --> %@", error);
+        NSLog(@"GSS Item: %@", item);
+        
+        NSMutableDictionary *attrs = [[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSItem] mutableCopy];
+
+        NSLog(@"acquire attrs %@", attrs);
+        id cred = [item acquire:attrs error:&error];
+        if (cred) {
+            NSLog(@"Acquire item %@: %@", item, cred);
+        } else {
+            NSLog(@"Acquire item %@ failed: %@", item, error);
+        }
     }
 }
 
@@ -81,7 +93,8 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
     self.picker.targetName = [NSURL URLWithString:@"http://www.padl.com"];
-
+    self.picker.persist = YES;
+    
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(identityPickerDidEndGSSItem:returnCode:contextInfo:)

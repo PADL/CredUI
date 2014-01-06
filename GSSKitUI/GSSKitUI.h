@@ -10,6 +10,5 @@
 #import <CredUI/CredUI.h>
 
 #import <GSSKitUI/GSSCredential+CredUI.h>
-#import <GSSKitUI/GSSItem+CredUI.h>
 #import <GSSKitUI/GSSMechanism+CredUI.h>
 #import <GSSKitUI/GSSContext+CredUI.h>

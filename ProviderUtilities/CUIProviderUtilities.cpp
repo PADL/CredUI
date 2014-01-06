@@ -13,6 +13,7 @@
 #include <CredUICore/CredUICore.h>
 
 #include "CUIProviderUtilities.h"
+#include "GSSItem.h"
 
 static CFStringRef kCUIPrefix = CFSTR("kCUI");
 static CFStringRef kGSSPrefix = CFSTR("kGSS");
@@ -63,9 +64,32 @@ CFMutableDictionaryRef CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryR
     return _CUITransformAttributes(attributes, false);
 }
 
+
 CFMutableDictionaryRef CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
 {
-    return _CUITransformAttributes(attributes, true);
+    CFMutableDictionaryRef gssAttrs = _CUITransformAttributes(attributes, true);
+    
+    if (!CFDictionaryGetCount(attributes))
+        return gssAttrs; /* query only */
+    
+    /*
+     * Can't commit a placeholder password; that just means that it hasn't
+     * changed.
+     */
+    CFTypeRef password = CFDictionaryGetValue(gssAttrs, kGSSAttrCredentialPassword);
+    if (password) {
+        if (CFEqual(password, kCFBooleanTrue))
+            CFDictionaryRemoveValue(gssAttrs, kGSSAttrCredentialPassword);
+        else
+            CFDictionarySetValue(gssAttrs, kGSSAttrCredentialStore, kCFBooleanTrue);
+    }
+    
+    CFTypeRef itemClass = CFDictionaryGetValue(gssAttrs, kGSSAttrClass);
+    if (itemClass == NULL)
+        CFDictionarySetValue(gssAttrs, kGSSAttrClass, kGSSAttrClassKerberos);
+    
+    return gssAttrs;
+
 }
 
 CUIAttributeSource

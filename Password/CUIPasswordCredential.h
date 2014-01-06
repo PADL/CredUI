@@ -89,10 +89,8 @@ public:
     
     Boolean isPlaceholderPassword(void) {
         CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
-        
-        return password &&
-               CFGetTypeID(password) == CFBooleanGetTypeID() &&
-               CFBooleanGetValue((CFBooleanRef)password);
+       
+        return password && CFEqual(password, kCFBooleanTrue);
     }
     
     Boolean savePersisted(CFErrorRef *error);

@@ -5,4 +5,5 @@ CredUI todo
 * support all field types in UI
 * run identity picker in a separate process
 * certificate credential provider
+* secure erase strings
 
