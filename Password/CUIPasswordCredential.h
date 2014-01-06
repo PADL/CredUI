@@ -95,7 +95,11 @@ public:
                CFBooleanGetValue((CFBooleanRef)password);
     }
     
-    Boolean didConfirm(CFErrorRef *error);
+    Boolean savePersisted(CFErrorRef *error);
+    
+    Boolean deletePersisted(CFErrorRef *error) {
+        return true;
+    }
     
     CUIPasswordCredential() {
         _retainCount = 1;

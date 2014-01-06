@@ -979,8 +979,8 @@
 			isa = PBXGroup;
 			children = (
 				D3F67B0F187513A1006B36C3 /* Supporting Files */,
-				D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */,
 				D3AA964818751DFB003852C5 /* GSSItem.h */,
+				D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */,
 				D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */,
 				D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */,
 			);

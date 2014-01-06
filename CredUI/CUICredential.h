@@ -28,7 +28,12 @@ __attribute__((visibility("default")))
  * it should be persisted. The application should only call this if
  * CUIFlagsExpectConfirmation was set, otherwise CredUI will do it.
  */
-- (BOOL)didConfirm:(NSError * __autoreleasing *)error;
+- (BOOL)savePersisted:(NSError * __autoreleasing *)error;
+
+/*
+ * If the credential was persisted, deletes it.
+ */
+- (BOOL)deletePersisted:(NSError * __autoreleasing *)error;
 
 /*
  * A GSS name object for the credential initiator; this can be cast to

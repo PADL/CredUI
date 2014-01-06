@@ -179,14 +179,28 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return transformedDict;
 }
 
-- (BOOL)didConfirm:(NSError * __autoreleasing *)error
+- (BOOL)savePersisted:(NSError * __autoreleasing *)error
 {
     BOOL ret;
     
     if (error)
         *error = nil;
     
-    ret = CUICredentialDidConfirm([self _credentialRef], (CFErrorRef *)error);
+    ret = CUICredentialSavePersisted([self _credentialRef], (CFErrorRef *)error);
+    if (error)
+        [NSMakeCollectable(*error) autorelease];
+    
+    return ret;
+}
+
+- (BOOL)deletePersisted:(NSError * __autoreleasing *)error
+{
+    BOOL ret;
+    
+    if (error)
+        *error = nil;
+    
+    ret = CUICredentialDeletePersisted([self _credentialRef], (CFErrorRef *)error);
     if (error)
         [NSMakeCollectable(*error) autorelease];
     

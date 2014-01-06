@@ -88,7 +88,7 @@ extern "C" {
 }
 
 Boolean
-CUIGSSItemAddOrUpdate(CFDictionaryRef attributes, Boolean addOnly, CFErrorRef *error)
+CUIGSSItemSave(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error)
 {
     CFDictionaryRef gssItemAttributes;
     Boolean ret = false;
@@ -101,12 +101,8 @@ CUIGSSItemAddOrUpdate(CFDictionaryRef attributes, Boolean addOnly, CFErrorRef *e
     if (gssItemAttributes == NULL)
         return false;
 
-    /* addOnly is useful because the GSSItem provider will handle updating */
     if (CUIGetAttributeSource(attributes) == kCUIAttributeSourceGSSItem) {
-        if (addOnly)
-            ret = GSSItemUpdate(gssItemAttributes, gssItemAttributes, error);
-        else
-            ret = true;
+        ret = GSSItemUpdate(gssItemAttributes, gssItemAttributes, error);
     } else {
         item = GSSItemAdd(gssItemAttributes, error);
         if (item) {
@@ -242,7 +238,7 @@ CUIKeychainCopyMatching(CFDictionaryRef attributes,
     CFDictionarySetValue(query, kSecReturnRef, kCFBooleanTrue);
     CFDictionarySetValue(query, kSecMatchLimit, kSecMatchLimitAll);
     
-    if (SecItemCopyMatching(query, (CFTypeRef *)&result) != noErr) {
+    if (SecItemCopyMatching(query, (CFTypeRef *)&result) != errSecSuccess) {
         if (targetName) {
             CFDictionarySetValue(query, kSecAttrService, __CUIKeychainDefaultService(bCUIGeneric));
             SecItemCopyMatching(query, (CFTypeRef *)&result);
@@ -275,9 +271,9 @@ CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
 }
 
 Boolean
-CUIKeychainStore(CFDictionaryRef attributes,
-                 CFTypeRef targetName,
-                 CFErrorRef *error)
+CUIKeychainSave(CFDictionaryRef attributes,
+                CFTypeRef targetName,
+                CFErrorRef *error)
 {
     Boolean bCUIGeneric;
     CFMutableDictionaryRef keychainAttrs;

@@ -185,18 +185,24 @@ void CUIPasswordCredential::syncPersistedPassword(void)
 /*
  * If the user wants this credential to be persisted, do so here.
  */
-Boolean CUIPasswordCredential::didConfirm(CFErrorRef *error)
+Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
 {
-    Boolean ret = false;
+    Boolean ret;
 
     if (error)
         *error = NULL;
 
-    if (_generic) {
-        ret = CUIKeychainStore(_attributes, _targetName, error);
-    } else {
-        ret = CUIGSSItemAddOrUpdate(_attributes, false, error);
-    }
+    /*
+     * We only persist new credentials, that is, credentials that are not
+     * created by the keychain os GSSItem providers.
+     */
+    if (CUIGetAttributeSource(_attributes) != kCUIAttributeSourceUser)
+        return true;
+    
+    if (_generic)
+        ret = CUIKeychainSave(_attributes, _targetName, error);
+    else
+        ret = CUIGSSItemSave(_attributes, _targetName, error);
 
     return ret;
 }

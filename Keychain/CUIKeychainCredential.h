@@ -98,41 +98,60 @@ public:
         CUICredentialDidSubmit(_credential);
     }
     
-    Boolean didConfirm(CFErrorRef *error) {
-        Boolean ret;
+    CFDictionaryRef createQuery(void) {
+        CFMutableDictionaryRef query;
+      
+        query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+        if (query == NULL)
+            return NULL;
         
-        ret = CUICredentialDidConfirm(_credential, error);
-        if (ret) {
-            Boolean bCUIGeneric;
-            CFMutableDictionaryRef query;
-            CFMutableDictionaryRef keychainAttrs;
-            OSStatus osret;
-            
-            query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-            if (query == NULL)
-                return false;
-            
-            CFDictionarySetValue(query, kSecValueRef, _item);
-            
-            keychainAttrs = CUICreateKeychainAttributesFromCUIAttributes(getAttributes(), NULL, &bCUIGeneric);
-            if (keychainAttrs == NULL) {
-                CFRelease(query);
-                return false;
-            }
- 
-            if (!CUIKeychainSetPasswordAttr(keychainAttrs, getAttributes())) {
-                CFRelease(query);
-                CFRelease(keychainAttrs);
-                return false;
-            }
+        CFDictionarySetValue(query, kSecValueRef, _item);
+        
+        return query;
+    }
+    
+    CFMutableDictionaryRef copyKeychainAttributes(void) {
+        Boolean bCUIGeneric;
+        return CUICreateKeychainAttributesFromCUIAttributes(getAttributes(), NULL, &bCUIGeneric);
+    }
+    
+    Boolean savePersisted(CFErrorRef *error) {
+        if (!CUICredentialSavePersisted(_credential, error))
+            return false;
 
-            osret = SecItemUpdate(query, keychainAttrs);
+        Boolean ret = false;
+        CFMutableDictionaryRef keychainAttrs = copyKeychainAttributes();
+        CFDictionaryRef query = createQuery();
             
-            CFRelease(query);
-            CFRelease(keychainAttrs);
-            
-            ret = !osret;
+        if (keychainAttrs && query &&
+            CUIKeychainSetPasswordAttr(keychainAttrs, getAttributes())) {
+            ret = (SecItemUpdate(query, keychainAttrs) == errSecSuccess);
+        } else {
+            ret = false;
         }
+        
+        if (query)
+            CFRelease(query);
+        if (keychainAttrs)
+            CFRelease(keychainAttrs);
+        
+        return ret;
+    }
+    
+    Boolean deletePersisted(CFErrorRef *error) {
+        if (!CUICredentialDeletePersisted(_credential, error))
+            return false;
+        
+        Boolean ret;
+        CFDictionaryRef query;
+        
+        query = createQuery();
+        if (query == NULL)
+            return false;
+        
+        ret = (SecItemDelete(query) == errSecSuccess);
+        
+        CFRelease(query);
         
         return ret;
     }

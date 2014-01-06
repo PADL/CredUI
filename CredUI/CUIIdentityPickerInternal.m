@@ -207,7 +207,7 @@ autoSubmit:
     
     if (self.persist &&
         (self.flags & CUIFlagsExpectConfirmation) == 0)
-        [self.selectedCredential didConfirm:NULL];
+        [self.selectedCredential savePersisted:NULL];
 }
 
 - (void)credentialFieldDidChange:(CUICredential *)credential

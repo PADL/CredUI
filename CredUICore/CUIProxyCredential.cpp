@@ -63,10 +63,6 @@ public:
         return _attributes;
     }
     
-    Boolean didConfirm(CFErrorRef *) {
-        return false;
-    }
-    
     Boolean initWithAttributes(CFDictionaryRef attributes) {
         if (attributes)
             _attributes = (CFDictionaryRef)CFRetain(attributes);
@@ -77,7 +73,15 @@ public:
     void didBecomeSelected(Boolean *pbAutoLogin) {}
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
+   
+    Boolean savePersisted(CFErrorRef *) {
+        return false;
+    }
     
+    Boolean deletePersisted(CFErrorRef *) {
+        return false;
+    }
+
     CUIProxyCredential() {
         _retainCount = 1;
         _attributes = NULL;

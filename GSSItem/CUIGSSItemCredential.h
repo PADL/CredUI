@@ -96,26 +96,52 @@ public:
         CUICredentialDidSubmit(_credential);
     }
     
-    Boolean didConfirm(CFErrorRef *error) {
-        Boolean ret;
+    CFDictionaryRef copyItemAttributes(void) {
+        return CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
+    }
+    
+    Boolean savePersisted(CFErrorRef *error) {
+       CFDictionaryRef gssItemAttributes;
+       Boolean ret;
        
         /*
          * We update any existing GSS items on behalf of the credential provider, however
          * adding any new ones must be done by the credential provider themselves.
          */ 
-        ret = CUICredentialDidConfirm(_credential, error);
-        if (ret && _item) {
-            CFDictionaryRef gssItemAttributes = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
+        ret = CUICredentialSavePersisted(_credential, error);
+        if (!ret)
+            return ret;
         
-            if (gssItemAttributes) {
-                ret = GSSItemUpdate(_item->keys, gssItemAttributes, error);
-                CFRelease(gssItemAttributes);
-            }
+        if (_item) {
+            gssItemAttributes = copyItemAttributes();
+            if (gssItemAttributes == NULL)
+                return false;
+            
+            ret = GSSItemUpdate(_item->keys, gssItemAttributes, error);
+            CFRelease(gssItemAttributes);
         }
         
         return ret;
     }
     
+    Boolean deletePersisted(CFErrorRef *error) {
+        CFDictionaryRef gssItemAttributes;
+        Boolean ret;
+
+        ret = CUICredentialDeletePersisted(_credential, error);
+        if (!ret)
+            return ret;
+        
+        gssItemAttributes = copyItemAttributes();
+        if (gssItemAttributes == NULL)
+            return false;
+        
+        ret = GSSItemDelete(gssItemAttributes, error);
+        CFRelease(gssItemAttributes);
+        
+        return ret;
+    }
+
     CUIGSSItemCredential() {
         _retainCount = 1;
         _item = NULL;

@@ -80,8 +80,12 @@ public:
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
  
-    Boolean didConfirm(CFErrorRef *error) {
+    Boolean savePersisted(CFErrorRef *error) {
         return false;
+    }
+
+    Boolean deletePersisted(CFErrorRef *error) {
+        return true;
     }
 
     CUIPersonaCredential() {

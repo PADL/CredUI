@@ -44,7 +44,7 @@ extern CUIAttributeSource
 CUIGetAttributeSource(CFDictionaryRef attributes);
 
 extern Boolean
-CUIGSSItemAddOrUpdate(CFDictionaryRef attributes, Boolean addOnly, CFErrorRef *error);
+CUIGSSItemSave(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
 
 extern CFArrayRef
 CUIKeychainCopyMatching(CFDictionaryRef attributes,
@@ -62,9 +62,9 @@ CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
                            CFDictionaryRef attributes);
 
 extern Boolean
-CUIKeychainStore(CFDictionaryRef attributes,
-                 CFTypeRef targetName,
-                 CFErrorRef *error);
+CUIKeychainSave(CFDictionaryRef attributes,
+                CFTypeRef targetName,
+                CFErrorRef *error);
     
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);

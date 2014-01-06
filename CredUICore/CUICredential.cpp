@@ -315,7 +315,7 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
 }
 
 CUI_EXPORT Boolean
-CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error)
+CUICredentialSavePersisted(CUICredentialRef cred, CFErrorRef *error)
 {
     Boolean bRet = false;
     
@@ -323,12 +323,31 @@ CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error)
         *error = NULL;
 
     if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
-        CF_OBJC_VOIDCALLV(cred, "didConfirm:", error);
+        CF_OBJC_VOIDCALLV(cred, "savePersisted:", error);
         if (error && *error)
             CFRetain(*error);
     } else if (cred->_context) {
-        bRet = cred->_context->didConfirm(error);
+        bRet = cred->_context->savePersisted(error);
     }
 
+    return bRet;
+}
+
+CUI_EXPORT Boolean
+CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error)
+{
+    Boolean bRet = false;
+    
+    if (error)
+        *error = NULL;
+    
+    if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
+        CF_OBJC_VOIDCALLV(cred, "deletePersisted:", error);
+        if (error && *error)
+            CFRetain(*error);
+    } else if (cred->_context) {
+        bRet = cred->_context->deletePersisted(error);
+    }
+    
     return bRet;
 }

@@ -61,8 +61,11 @@ extern void
 CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop));
 
 extern Boolean
-CUICredentialDidConfirm(CUICredentialRef cred, CFErrorRef *error);
-    
+CUICredentialSavePersisted(CUICredentialRef cred, CFErrorRef *error);
+
+extern Boolean
+CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error);
+
 #ifdef __cplusplus
 }
 #endif
