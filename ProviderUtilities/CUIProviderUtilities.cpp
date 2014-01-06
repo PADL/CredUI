@@ -22,7 +22,8 @@ struct _CUITransformAttributesContext {
     Boolean toGSS;
 };
 
-static void _CUITransformAttributesCallback(const void *key, const void *value, void *_context) {
+static void _CUITransformAttributesCallback(const void *key, const void *value, void *_context)
+{
     CFMutableStringRef transformedKey = CFStringCreateMutableCopy(kCFAllocatorDefault, 0, (CFStringRef)key);
     struct _CUITransformAttributesContext *context = (struct _CUITransformAttributesContext *)_context;
     
@@ -36,7 +37,8 @@ static void _CUITransformAttributesCallback(const void *key, const void *value, 
     }
 }
 
-static CFMutableDictionaryRef _CUITransformAttributes(CFDictionaryRef attrs, bool toGSS) {
+static CFMutableDictionaryRef _CUITransformAttributes(CFDictionaryRef attrs, bool toGSS)
+{
     _CUITransformAttributesContext context;
     
     if (attrs == NULL)
@@ -165,7 +167,7 @@ CUICreateCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Bool
     
     CFDictionarySetValue(attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     CFDictionarySetValue(attributes, kCUIAttrCredentialExists, kCFBooleanTrue);
-    CFDictionarySetValue(attributes, kCUIAttrSupportGSSCredential, bCUIGeneric ? kCFBooleanTrue : kCFBooleanFalse);
+    CFDictionarySetValue(attributes, kCUIAttrSupportGSSCredential, bCUIGeneric ? kCFBooleanFalse : kCFBooleanTrue);
     CFDictionarySetValue(attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername); // XXX
     CFDictionarySetValue(attributes, kCUIAttrCredentialPassword, kCFBooleanTrue); // XXX
     

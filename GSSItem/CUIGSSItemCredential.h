@@ -97,7 +97,16 @@ public:
     }
     
     CFDictionaryRef copyItemAttributes(void) {
-        return CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
+        CFMutableDictionaryRef attrs = CUICreateGSSItemAttributesFromCUIAttributes(getAttributes());
+
+        if (attrs == NULL)
+            return NULL;
+
+        CFTypeRef password = CFDictionaryGetValue(attrs, kGSSAttrCredentialPassword);
+        if (CFEqual(password, kCFBooleanTrue))
+            CFDictionaryRemoveValue(attrs, kGSSAttrCredentialPassword);
+
+        return attrs;
     }
     
     Boolean savePersisted(CFErrorRef *error) {
