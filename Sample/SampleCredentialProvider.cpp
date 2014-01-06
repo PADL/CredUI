@@ -58,14 +58,26 @@ public:
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CFErrorRef *error) {
         SampleCredential *passwordCred = new SampleCredential();
-        const CUICredentialContext *contexts[] = { passwordCred };
+        CUICredentialRef credRef;
+        CFArrayRef creds;
         
         if (!passwordCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             passwordCred->Release();
             return NULL;
         }
         
-        return CUICredentialContextArrayCreate(CFGetAllocator(_controller), contexts, 1);
+        credRef = CUICredentialCreate(CFGetAllocator(_controller), passwordCred);
+        if (credRef == NULL) {
+            passwordCred->Release();
+            return NULL;
+        }
+        
+        creds = CFArrayCreate(CFGetAllocator(_controller), (const void **)&credRef, 1, &kCFTypeArrayCallBacks);
+        
+        CFRelease(credRef);
+        passwordCred->Release();
+        
+        return creds;
     }
     
     Boolean initWithController(CUIControllerRef controller,

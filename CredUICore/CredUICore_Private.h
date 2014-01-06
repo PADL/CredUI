@@ -53,14 +53,4 @@ struct __CUIController {
 Boolean
 CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
-#ifdef __cplusplus
-extern "C" {
-    extern CUICredentialRef
-    CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
-}
-#else
-extern CUICredentialRef
-CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
-#endif
-
 #endif

@@ -97,8 +97,6 @@ extern "C" {
 // 20C3A840-6BC4-4B26-B705-43B4C46218E7
 #define kCUICredentialInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x20, 0xC3, 0xA8, 0x40, 0x6B, 0xC4, 0x4B, 0x26, 0xB7, 0x05, 0x43, 0xB4, 0xC4, 0x62, 0x18, 0xE7)
 
-extern CFArrayCallBacks kCUICredentialContextArrayCallBacks;
-
 extern const CFStringRef kCUIAttrCredentialStatus;
 
 // more information needed to make credential
@@ -110,11 +108,6 @@ extern const CFStringRef kCUICredentialReturnCredentialFinished;
 // no credential made but force caller to return
 extern const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
-CFArrayRef
-CUICredentialContextArrayCreate(CFAllocatorRef allocator,
-                                const CUICredentialContext **contexts,
-                                CFIndex numContexts);
-
 Boolean
 __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
                                              CFDictionaryRef attributes,
@@ -123,6 +116,16 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 
 #ifdef __cplusplus
 }
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+extern CUICredentialRef
+CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
+}
+#else
+extern CUICredentialRef
+CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 #endif
 
 #endif /* defined(__CredUI__CUIProvider__) */

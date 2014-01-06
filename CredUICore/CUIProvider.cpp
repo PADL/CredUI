@@ -171,12 +171,3 @@ cleanup:
     
     return !!controller->_providers;
 }
-
-CUI_EXPORT CFArrayRef
-CUICredentialContextArrayCreate(CFAllocatorRef allocator,
-                                const CUICredentialContext **contexts,
-                                CFIndex numContexts)
-{
-    return CFArrayCreate(allocator, (const void **)contexts,
-                         numContexts, &kCUICredentialContextArrayCallBacks);
-}

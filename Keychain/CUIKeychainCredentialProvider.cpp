@@ -67,7 +67,7 @@ public:
         CFArrayRef items;
         CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
                                                        0,
-                                                       &kCUICredentialContextArrayCallBacks);
+                                                       &kCFTypeArrayCallBacks);
         CFTypeRef targetName = CUIControllerGetTargetName(_controller);
         
         items = CUIKeychainCopyMatching(attributes, targetName, error);
@@ -84,7 +84,8 @@ public:
                                                              kKeychainCredentialProviderFactoryID,
                                                              ^(CUICredentialRef cred, CFErrorRef err) {
                                                                  CUIKeychainCredential *itemCred;
-                                                                 
+                                                                 CUICredentialRef credRef;
+
                                                                  if (cred == NULL)
                                                                      return;
                                                                  
@@ -94,7 +95,14 @@ public:
                                                                      return;
                                                                  }
                                                                  
-                                                                 CFArrayAppendValue(creds, itemCred);
+                                                                 credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
+                                                                 if (credRef == NULL) {
+                                                                     itemCred->Release();
+                                                                     return;
+                                                                 }
+                                                                 
+                                                                 CFArrayAppendValue(creds, credRef);
+                                                                 CFRelease(credRef);
                                                                  itemCred->Release();
                                                              });
                 

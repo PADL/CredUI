@@ -102,13 +102,11 @@ struct __CUIEnumerateCredentialContext {
 static void
 __CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_context)
 {
-    CUICredentialContext *credContext = (CUICredentialContext *)value;
     __CUIEnumerateCredentialContext *enumContext = (__CUIEnumerateCredentialContext *)_context;
-    CUICredentialRef cred = CUICredentialCreate(CFGetAllocator(enumContext->controller), credContext);
+    CUICredentialRef cred = (CUICredentialRef)value;
     
     if (cred) {
         enumContext->callback(cred, NULL);
-        CFRelease(cred);
         enumContext->didEnumerate = true;
     }
 }

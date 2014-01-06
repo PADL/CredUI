@@ -64,14 +64,26 @@ public:
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CFErrorRef *error) {
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
-        const CUICredentialContext *contexts[] = { personaCred };
+        CUICredentialRef credRef;
+        CFArrayRef creds;
         
         if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();
             return NULL;
         }
         
-        return CUICredentialContextArrayCreate(CFGetAllocator(_controller), contexts, 1);
+        credRef = CUICredentialCreate(CFGetAllocator(_controller), personaCred);
+        if (credRef == NULL) {
+            personaCred->Release();
+            return NULL;
+        }
+        
+        creds = CFArrayCreate(CFGetAllocator(_controller), (const void **)&credRef, 1, &kCFTypeArrayCallBacks);
+        
+        CFRelease(credRef);
+        personaCred->Release();
+
+        return creds;
     }
     
     Boolean initWithController(CUIControllerRef controller,

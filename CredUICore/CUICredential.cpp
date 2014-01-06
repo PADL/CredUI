@@ -13,14 +13,6 @@ struct __CUICredential {
     CUICredentialContext *_context;
 };
 
-static const void *
-_CUICredentialContextRetain(CFAllocatorRef allocator, const void *value)
-{
-    CUICredentialContext *credContext = (CUICredentialContext *)value;
-    credContext->AddRef();
-    return credContext;
-}
-
 static void
 _CUICredentialContextRelease(CFAllocatorRef allocator, const void *value)
 {
@@ -43,14 +35,6 @@ _CUICredentialContextEqual(const void *value1, const void *value2)
     
     return (credContext1 == credContext2);
 }
-
-CUI_EXPORT CFArrayCallBacks kCUICredentialContextArrayCallBacks = {
-    .version = 0,
-    .retain = _CUICredentialContextRetain,
-    .release = _CUICredentialContextRelease,
-    .copyDescription = _CUICredentialContextCopyDescription,
-    .equal = _CUICredentialContextEqual
-};
 
 static CFTypeID __CUICredentialTypeID = _kCFRuntimeNotATypeID;
 
