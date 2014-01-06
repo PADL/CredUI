@@ -10,7 +10,6 @@
 #define __CredUI__CUIController__
 
 #include <CoreFoundation/CoreFoundation.h>
-#include <GSS/GSS.h>
 
 #ifdef __cplusplus
 extern "C" {

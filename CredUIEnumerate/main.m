@@ -18,6 +18,7 @@
 #include <CredUICore/CUIAttributes.h>
 
 #include <CredUI/CUICredential.h>
+#include <CredUI/CUICredential+GSS.h>
 #include <CredUI/CUIField.h>
 
 #include <GSSKit/GSSKit.h>
@@ -198,7 +199,7 @@ int main(int argc, const char * argv[])
     NSLog(@"OUT_CRED attributes: %@", credAttributes);
     
     NSError *error = nil;
-    GSSItem *item = [(__bridge CUICredential *)cred GSSItem:YES error:&error];
+    GSSItem *item = CFBridgingRelease([(__bridge CUICredential *)cred copyMatchingGSSItem:YES error:&error]);
     if (item) {
         GSSCredential *cred;
         

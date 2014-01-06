@@ -9,7 +9,11 @@
 #ifndef CredUI_CredUICore_Private_h
 #define CredUI_CredUICore_Private_h
 
+#include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFPlugInCOM.h>
+#include <CoreFoundation/CFRuntime.h>
+
+#include <GSS/GSS.h>
 
 #define CUI_EXPORT  __attribute__((visibility("default")))
 

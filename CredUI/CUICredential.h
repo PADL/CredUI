@@ -35,15 +35,4 @@ __attribute__((visibility("default")))
  */
 - (BOOL)deletePersisted:(NSError * __autoreleasing *)error;
 
-/*
- * A GSS name object for the credential initiator; this can be cast to
- * a gss_name_t or a GSSName * if using GSSKit. It is autoreleased.
- */
-- (id)GSSName;
-
-/*
- * GSS item for the credential.
- */
-- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error;
-
 @end

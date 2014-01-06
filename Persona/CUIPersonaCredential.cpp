@@ -7,6 +7,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include <GSS/GSS.h>
+
 #include "CUIPersonaCredentialProvider.h"
 #include "CUIPersonaCredential.h"
 #include "CUIProviderUtilities.h"

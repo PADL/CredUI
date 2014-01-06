@@ -14,14 +14,16 @@ __CUIPromptForCredentials(CFTypeRef targetName,
                           CUICredUIContext *uiContext,
                           CFErrorRef authError,
                           CFDictionaryRef inCredAttributes,
-                          CFDictionaryRef *outCredAttributes,
+                          CUICredentialRef *outCred,
                           Boolean *pfSave,
                           CUIFlags flags,
-                          CUIAttributeClass attrClass)
+                          CFErrorRef *error)
 {
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
     CUICredential *selectedCredential;
     
+    if (error != NULL)
+        *error = NULL;
     if (identityPicker == nil)
         return false;
     
@@ -35,9 +37,11 @@ __CUIPromptForCredentials(CFTypeRef targetName,
     
     selectedCredential = identityPicker.selectedCredential;
     
-    *outCredAttributes = CFBridgingRetain([selectedCredential attributesWithClass:attrClass]);
+    *outCred = (CUICredentialRef)CFBridgingRetain(selectedCredential);
     
     *pfSave = identityPicker.persist;
+    if (error)
+        *error = (CFErrorRef)CFBridgingRetain(identityPicker.lastError);
     
     return [selectedCredential canSubmit];
 }
@@ -49,9 +53,10 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,
-                        CFDictionaryRef *outCredAttributes,
-                        Boolean *save,
-                        CUIFlags flags)
+                        CUICredentialRef *outCred,
+                        Boolean *pfSave,
+                        CUIFlags flags,
+                        CFErrorRef *error)
 {
     NSDictionary *inCredAttributes = @{
                                        (__bridge id)kCUIAttrNameType : (__bridge NSString *)kCUIAttrNameTypeGSSUsername,
@@ -64,8 +69,29 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                                      uiContext,
                                      authError,
                                      (__bridge CFDictionaryRef)inCredAttributes,
-                                     outCredAttributes,
-                                     save,
+                                     outCred,
+                                     pfSave,
                                      flags,
-                                     CUIAttributeClassGeneric);
+                                     error);
+}
+
+CUI_EXPORT Boolean
+CUIConfirmCredentials(CUICredentialRef credRef,
+                      Boolean fSave,
+                      CFErrorRef *error)
+{
+    CUICredential *credential = (__bridge CUICredential *)credRef;
+    Boolean ret = true;
+    NSError *nsError = nil;
+
+    if (error)
+        *error = NULL;
+    
+    if (fSave) {
+        ret = [credential savePersisted:&nsError];
+        if (error)
+            *error = (CFErrorRef)CFBridgingRetain(nsError);
+    }
+    
+    return ret;
 }

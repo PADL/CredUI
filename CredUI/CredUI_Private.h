@@ -6,9 +6,13 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <CoreFoundation/CoreFoundation.h>
 #import <CoreFoundation/CFPlugInCOM.h>
 
+#import <GSS/GSS.h>
+
 #import <CredUI/CredUI.h>
+#import <CredUI/CUICredential+GSS.h>
 #import <CredUI/GSSPromptForCredentials.h>
 
 #import <CredUICore/CredUICore.h>
@@ -29,8 +33,7 @@ __CUIPromptForCredentials(CFTypeRef targetName,
                           CUICredUIContext *uiContext,
                           CFErrorRef authError,
                           CFDictionaryRef inCredAttributes,
-                          CFDictionaryRef *outCredAttributes,
+                          CUICredentialRef *outCredential,
                           Boolean *pfSave,
                           CUIFlags flags,
-                          CUIAttributeClass attrClass);
-
+                          CFErrorRef *error);

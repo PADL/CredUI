@@ -10,7 +10,7 @@
 - (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error
 {
     GSSCredential *cred = nil;
-    GSSName *name = cuiCredential.GSSName;
+    GSSName *name = CFBridgingRelease([cuiCredential copyGSSName]);
     
     if (name) {
         cred = [self initWithName:name

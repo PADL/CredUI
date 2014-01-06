@@ -12,13 +12,14 @@ GSSPromptForCredentials(gss_name_t targetName,
                         CUICredUIContext *uiContext,
                         CFErrorRef authError,
                         CFDictionaryRef inCredAttributes,
-                        CFDictionaryRef *outCredAttributes,
+                        CUICredentialRef *outCred,
                         Boolean *pfSave,
-                        CUIFlags flags)
+                        CUIFlags flags,
+                        CFErrorRef *error)
 {
     return __CUIPromptForCredentials(targetName, gssContextHandle, uiContext,
-                                     authError, inCredAttributes, outCredAttributes,
-                                     pfSave, flags, CUIAttributeClassGSSInitialCred);
+                                     authError, inCredAttributes, outCred,
+                                     pfSave, flags, error);
 }
 
 #ifndef GSS_S_PROMPTING_NEEDED

@@ -10,8 +10,6 @@
 #define __CredUI__CredUICore__ 1
 
 #include <CoreFoundation/CoreFoundation.h>
-#include <CoreFoundation/CFRuntime.h>
-#include <dispatch/dispatch.h>
 #include <Availability.h>
 
 #include <CredUICore/CUIField.h>

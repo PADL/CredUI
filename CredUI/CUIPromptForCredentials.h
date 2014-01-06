@@ -10,11 +10,15 @@
 #define __CredUI__PromptForCredentials__
 
 #include <CoreFoundation/CoreFoundation.h>
+#include <CredUICore/CredUICore.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+/*
+ * Prompt the user for credentials.
+ */
 Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
@@ -22,9 +26,19 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,
-                        CFDictionaryRef *outCredAttributes,
+                        CUICredentialRef *outCred,
                         Boolean *save,
-                        CUIFlags flags);
+                        CUIFlags flags,
+                        CFErrorRef *error);
+
+/*
+ * If CUIFlagsExpectConfirmation was passed to CUIPromptForCredentials(),
+ * then call this function after the credentials have been successfully used.
+ */
+Boolean
+CUIConfirmCredentials(CUICredentialRef credRef,
+                      Boolean fSave,
+                      CFErrorRef *error);
 
 #ifdef __cplusplus
 }

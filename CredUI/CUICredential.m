@@ -9,14 +9,6 @@
 #include "CFBridgeHelper.h"
 #include "CUIProviderUtilities.h"
 
-extern CFArrayRef
-GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
-
-struct GSSItem;
-
-extern struct GSSItem *
-GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
-
 @interface CUICFCredential : CUICredential
 @end
 
@@ -128,28 +120,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     CUICredentialDidSubmit([self _credentialRef]);
 }
 
-- (id)GSSName
-{
-    gss_name_t name = GSS_C_NO_NAME;
-    gss_const_OID oid = GSS_C_NO_OID;
-
-    id type = self.attributes[(NSString *)kCUIAttrNameType];
-    id value = self.attributes[(NSString *)kCUIAttrName];
-
-    if (type == nil ||
-        [type isEqual:(NSString *)kCUIAttrNameTypeGSSUsername])
-        oid = GSS_C_NT_USER_NAME;
-    else if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSHostBasedService])
-        oid = GSS_C_NT_HOSTBASED_SERVICE;
-    else if ([type isEqual:(NSString *)kCUIAttrNameTypeGSSExportedName])
-        oid = GSS_C_NT_EXPORT_NAME;
-    
-    if (oid != GSS_C_NO_OID)
-        name = GSSCreateName(value, oid, NULL);
-    
-    return [NSMakeCollectable(name) autorelease];
-}
-
 - (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
 {
     NSMutableDictionary *transformedDict = [NSMutableDictionary dictionary];
@@ -210,31 +180,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 - (NSArray *)fields
 {
     return (NSArray *)CUICredentialGetFields([self _credentialRef]);
-}
-
-- (id)GSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error
-{
-    id item;
-    
-    if (error)
-        *error = nil;
-    
-    item = self.attributes[(__bridge NSString *)kCUIAttrGSSItemRef];
-    if (item == nil) {
-        NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
-        NSArray *matchingItems = [NSMakeCollectable(GSSItemCopyMatching((CFDictionaryRef)itemAttrs, NULL)) autorelease];
-        
-        item = [matchingItems firstObject];
-        if (item == nil && addIfAbsent)
-            item = [NSMakeCollectable(GSSItemAdd((CFDictionaryRef)itemAttrs, (CFErrorRef *)error)) autorelease];
-    } else {
-        item = [[item retain] autorelease]; // in case the credentials dict goes away
-    }
-    
-    if (error)
-        [NSMakeCollectable(*error) autorelease];
-    
-    return item;
 }
 
 @end

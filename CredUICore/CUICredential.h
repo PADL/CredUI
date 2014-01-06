@@ -13,6 +13,8 @@
 extern "C" {
 #endif
     
+struct __CUICredential;
+    
 typedef struct __CUICredential *CUICredentialRef;
 
 extern CFTypeID

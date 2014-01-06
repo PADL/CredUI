@@ -8,4 +8,8 @@
     #import <Cocoa/Cocoa.h>
 #endif
 
+#import <GSS/GSS.h>
+#import <GSSKit/GSSKit.h>
+#import <CredUI/CredUI.h>
+#import <CredUI/CUICredential+GSS.h>
 #import <GSSKitUI/GSSKitUI.h>
