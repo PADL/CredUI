@@ -72,16 +72,24 @@ static void testEncodeDecode(CUICredential * cred)
         // OK, now let's try and do some GSS stuff
         GSSItem *item = CFBridgingRelease([identityPicker.selectedCredential copyMatchingGSSItem:NO error:&error]);
         
-        NSLog(@"GSS Item: %@", item);
+        NSLog(@"*** GSS Item Test: %@", item);
         
         NSMutableDictionary *attrs = [[identityPicker.selectedCredential attributesWithClass:CUIAttributeClassGSSItem] mutableCopy];
 
         NSLog(@"acquire attrs %@", attrs);
-        id cred = [item acquire:attrs error:&error];
+        GSSCredential *cred = [item acquire:attrs error:&error];
         if (cred) {
             NSLog(@"Acquire item %@: %@", item, cred);
         } else {
             NSLog(@"Acquire item %@ failed: %@", item, error);
+        }
+        
+        NSLog(@"*** GSS Cred Test");
+        cred = [[GSSCredential alloc] initWithCUICredential:identityPicker.selectedCredential error:&error];
+        if (cred) {
+            NSLog(@"Acquire credential based on item %@: %@", item, cred);
+        } else {
+            NSLog(@"Acquire credential based on item %@ failed: %@", item, error);
         }
     }
 }
@@ -93,7 +101,7 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
     self.picker.targetName = [NSURL URLWithString:@"http://www.padl.com"];
-    self.picker.persist = YES;
+//    self.picker.persist = YES;
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self

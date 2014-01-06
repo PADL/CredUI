@@ -10,13 +10,26 @@
 - (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error
 {
     GSSCredential *cred = nil;
-    GSSName *name = CFBridgingRelease([cuiCredential copyGSSName]);
+    GSSItem *gssItem;
+    GSSName *name;
     
-    if (name) {
-        cred = [self initWithName:name
-                        mechanism:[GSSMechanism mechanismForCUICredential:cuiCredential]
-                       attributes:[cuiCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
-                            error:error];
+    /*
+     * If a GSSItem tile was selected, we do not have access to the password, so
+     * we must acquire it via the GSSItem API.
+     */
+    gssItem = cuiCredential.attributes[(__bridge NSString *)kCUIAttrGSSItemRef];
+    if (gssItem) {
+        cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
+    } else {
+        
+        name = CFBridgingRelease([cuiCredential copyGSSName]);
+        
+        if (name) {
+            cred = [self initWithName:name
+                            mechanism:[GSSMechanism mechanismForCUICredential:cuiCredential]
+                           attributes:[cuiCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
+                                error:error];
+        }
     }
     
     return cred;

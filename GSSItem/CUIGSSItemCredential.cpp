@@ -36,7 +36,6 @@ Boolean CUIGSSItemCredential::savePersisted(CFErrorRef *error)
          * create a new one, not update it, which will fail. So if we have a password
          * to store, trash the item and retry.
          */
-
 #ifdef BUGGY_GSSITEM_UPDATE
         if (CFDictionaryGetValue(gssItemAttributes, kGSSAttrCredentialPassword)) {
             GSSItemDeleteItem(_item, NULL);
