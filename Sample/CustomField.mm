@@ -12,37 +12,22 @@
 #include "CustomField.h"
 
 @interface CustomField : CUIField
-@property (nonatomic, retain) NSMutableDictionary *attributes;
+@property (nonatomic) SampleCredential *credential;
 @end
 
 @implementation CustomField
-
-- (NSString *)defaultUsername
-{
-    NSString *defaultUserName;
-    
-    defaultUserName = self.attributes[(__bridge id)kCUIAttrNameDisplay];
-    if (!defaultUserName) {
-        id nameType = self.attributes[(__bridge id)kCUIAttrNameType];
-        if (nameType && [nameType isEqual:(__bridge id)kCUIAttrNameTypeGSSUsername])
-            defaultUserName = self.attributes[(__bridge id)kCUIAttrName];
-    }
-    
-    return defaultUserName;
-}
 
 - (void)setValue:(id)aValue
 {
     NSLog(@"CustomField: setting username to %@", aValue);
 
-    self.attributes[(__bridge id)kCUIAttrNameType] = (__bridge id)kCUIAttrNameTypeGSSUsername;
-    self.attributes[(__bridge id)kCUIAttrName] = [aValue copy];
+    self.credential->setUsername((__bridge CFStringRef)aValue);
 }
 
 - (NSView *)viewWithFrame:(NSRect)frame
 {
     NSTextField *textField;
-    NSString *defaultValue = [self defaultUsername];
+    NSString *defaultValue = (__bridge NSString *)self.credential->getDefaultUsername();
     
     textField = [[NSTextField alloc] initWithFrame:frame];
     if (defaultValue)
@@ -62,15 +47,29 @@
     return kCUIFieldClassEditText;
 }
 
+- (void)setCredential:(SampleCredential *)credential
+{
+    if (_credential && _credential != credential)
+        _credential->Release();
+    credential->AddRef();
+    _credential = credential;
+}
+
+- (void)dealloc
+{
+    if (_credential)
+        _credential->Release();
+}
+
 @end
 
 CUIFieldRef
-CustomFieldCreate(CFMutableDictionaryRef attributes)
+CustomFieldCreate(SampleCredential *sampleCred)
 {
     CustomField *customField;
     
     customField = [[CustomField alloc] init];
-    customField.attributes = (__bridge NSMutableDictionary *)attributes;
+    customField.credential = sampleCred;
     
     return (CUIFieldRef)CFBridgingRetain(customField);
 }

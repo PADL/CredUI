@@ -65,6 +65,9 @@ public:
         return _attributes;
     } 
        
+    void setUsername(CFStringRef username);
+    CFStringRef getDefaultUsername(void);
+
     const CFStringRef getCredentialStatus(void);
 
     Boolean initWithControllerAndAttributes(CUIControllerRef controller,

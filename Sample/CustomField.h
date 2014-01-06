@@ -11,7 +11,12 @@
 
 #include <CredUICore/CredUICore.h>
 
+#include "SampleCredential.h"
+
+/*
+ * A custom field for setting the username.
+ */
 CUIFieldRef
-CustomFieldCreate(CFMutableDictionaryRef attributes);
+CustomFieldCreate(SampleCredential *cred);
 
 #endif /* defined(__CredUI__CustomField__) */

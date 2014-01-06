@@ -12,6 +12,31 @@
 #include "CUIProviderUtilities.h"
 #include "CustomField.h"
 
+CFStringRef SampleCredential::getDefaultUsername(void)
+{
+    CFStringRef defaultUsername;
+
+    defaultUsername = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrNameDisplay);
+    if (defaultUsername == NULL) {
+        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrNameType);
+        
+        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
+            defaultUsername = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
+    }
+    
+    return defaultUsername;
+}
+
+void SampleCredential::setUsername(CFStringRef username)
+{
+    if (username) {
+        CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
+        CFDictionarySetValue(_attributes, kCUIAttrName, CFStringCreateCopy(CFGetAllocator(_attributes), username));
+    } else {
+        CFDictionaryRemoveValue(_attributes, kCUIAttrName);
+    }
+}
+
 Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef controller,
                                                           CUIUsageFlags usageFlags,
                                                           CFDictionaryRef attributes,
@@ -42,9 +67,14 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sample Credential"), NULL);
     
     /*
-     * The username field.
+     * The username field. Normally you would just use CUIFieldCreate(kCUIFieldClassEditText) with a
+     * block that would set the username in the credential dictionary (e.g. call this->setUsername()).
+     * Instead here we create a custom subclass of CUIField.
+     *
+     * Note: this isn't recommended because it introduces a dependency on Cocoa into CredUICore which
+     * eliminates the possibility of this provider being used in a command-line application.
      */
-    fields[cFields++] = CustomFieldCreate(_attributes);
+    fields[cFields++] = CustomFieldCreate(this);
     
     /*
      * The password field.
