@@ -11,6 +11,14 @@
 
 #include "CustomField.h"
 
+/*
+ * Providers generally should only create fields using CUIFieldCreate() as it avoids
+ * creating a Cocoa dependency and ensures providers can be used with non-UI applications.
+ *
+ * However as an example we demonstrate subclassing CUIField to display a custom field.
+ * Subclasses must implement the setValue: and viewWithFrame: primitive methods.
+ */
+
 @interface CustomField : CUIField
 @property (nonatomic) SampleCredential *credential;
 @end

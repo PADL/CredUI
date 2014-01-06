@@ -54,18 +54,24 @@ public:
         CFRelease(interfaceID);
         return E_NOINTERFACE;
     }
-    
+   
+    /*
+     * This method returns an array of credentials enumerated by this provider. We only
+     * return one here.
+     */ 
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CFErrorRef *error) {
         SampleCredential *passwordCred = new SampleCredential();
         CUICredentialRef credRef;
         CFArrayRef creds;
-        
+     
+        /* Initialize a new credential */   
         if (!passwordCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             passwordCred->Release();
             return NULL;
         }
-        
+       
+        /* Wrap it up as a CUICredential and return it in an array */ 
         credRef = CUICredentialCreate(CFGetAllocator(_controller), passwordCred);
         if (credRef == NULL) {
             passwordCred->Release();
@@ -98,7 +104,6 @@ public:
     }
     
 protected:
-    
     ~SampleCredentialProvider() {
         if (_controller)
             CFRelease(_controller);

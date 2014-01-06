@@ -103,11 +103,6 @@ CF_CLASSIMPLEMENTATION(CUICFField)
         return [super valueForUndefinedKey:key];
 }
 
-- (void)setValue:(id)aValue
-{
-    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
-}
-
 - (void)didSubmit:(id)sender
 {
     [self setValue:(id)kCFBooleanTrue];
@@ -131,6 +126,13 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     }
     
     return NO;
+}
+
+#pragma mark Primitive methods
+
+- (void)setValue:(id)aValue
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
 }
 
 @end

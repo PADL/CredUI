@@ -17,7 +17,7 @@
 class SampleCredential : public CUICredentialContext {
     
 public:
-    
+
     ULONG AddRef(void) {
         return OSAtomicIncrement32Barrier(&_retainCount);
     }
@@ -44,7 +44,10 @@ public:
         CFRelease(interfaceID);
         return E_NOINTERFACE;
     }
-    
+   
+    /*
+     * A human readable description of the credential for debugging.
+     */ 
     CFStringRef copyDescription(void) {
         CFStringRef desc;
         
@@ -54,27 +57,26 @@ public:
         
         return desc;
     }
-    
+   
+    /*
+     * The fields to be rendered by the UI.
+     */ 
     CFArrayRef getFields(void) {
         return _fields;
     }
-   
+  
+    /*
+     * The attributes serialized from the completed fields.
+     */ 
     CFDictionaryRef getAttributes(void) {
         CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, getCredentialStatus());
 
         return _attributes;
     } 
-       
-    void setUsername(CFStringRef username);
-    CFStringRef getDefaultUsername(void);
 
-    const CFStringRef getCredentialStatus(void);
-
-    Boolean initWithControllerAndAttributes(CUIControllerRef controller,
-                                            CUIUsageFlags usageFlags,
-                                            CFDictionaryRef attributes,
-                                            CFErrorRef *error);
-    
+    /*
+     * Credential seleciton/submission notifications
+     */ 
     void didBecomeSelected(Boolean *pbAutoLogin) {
         *pbAutoLogin = false;
     }
@@ -92,7 +94,23 @@ public:
     Boolean deletePersisted(CFErrorRef *error) {
         return true;
     }
-    
+
+    /*
+     * Helper methods for this class
+     */   
+    void setUsername(CFStringRef username);
+    CFStringRef getDefaultUsername(void);
+
+    const CFStringRef getCredentialStatus(void);
+
+    Boolean initWithControllerAndAttributes(CUIControllerRef controller,
+                                            CUIUsageFlags usageFlags,
+                                            CFDictionaryRef attributes,
+                                            CFErrorRef *error);
+   
+     /*
+     * Constructor
+     */    
     SampleCredential() {
         _retainCount = 1;
         _fields = NULL;

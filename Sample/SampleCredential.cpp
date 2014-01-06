@@ -12,6 +12,9 @@
 #include "CUIProviderUtilities.h"
 #include "CustomField.h"
 
+/*
+ * Get the default username for this credential
+ */
 CFStringRef SampleCredential::getDefaultUsername(void)
 {
     CFStringRef defaultUsername;
@@ -27,6 +30,9 @@ CFStringRef SampleCredential::getDefaultUsername(void)
     return defaultUsername;
 }
 
+/*
+ * Set the username on this credential
+ */
 void SampleCredential::setUsername(CFStringRef username)
 {
     if (username) {
@@ -89,7 +95,10 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
                                        });
     
     /*
-     * The "submit button". This is called when the credential is about to be submitted.
+     * The "submit button". This is called when the credential is about to be submitted. It is
+     * the equivalent of having a willSubmit method; note that, unlike the other fields, CredUI
+     * may not render individual submit buttons for each provider, but rather a single one for
+     * all providers. The callback block will be invoked if and when this credential is submitted.
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL,
                                        ^(CUIFieldRef field, CFTypeRef value) {
@@ -108,10 +117,12 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
 const CFStringRef SampleCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
-    
+
+    /* Do we have a username? */    
     if (username == NULL || CFStringGetLength(username) == 0)
         return kCUICredentialNotFinished;
-    
+
+    /* Do we have a password? */    
     CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
     if (password &&
         (CFGetTypeID(password) == CFStringGetTypeID() && CFStringGetLength((CFStringRef)password)))
