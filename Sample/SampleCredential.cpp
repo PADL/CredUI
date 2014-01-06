@@ -17,7 +17,6 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
                                                           CFDictionaryRef attributes,
                                                           CFErrorRef *error)
 {
-    CFStringRef defaultUsername = NULL;
     CUIFieldRef fields[4] = { 0 };
     size_t cFields = 0;
     
