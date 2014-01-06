@@ -24,9 +24,11 @@ struct GSSItem;
 
 /*
  * Why is there no method to acquire a credential? gss_aapl_initial_cred() does not
- * yet have enough logic to support arbitrary credential dictionaries (although you
- * can acquire a password or certificate credential by passing it the result of calling
- * [cred attributesWithClass:CUIAttributeClassGSSInitialCred):
+ * yet have enough logic to support arbitrary credential dictionaries, and I don't
+ * want do duplicate the workaround logic (which currently is implemented in GSSKit)
+ * or introduce a dependency on GSSKit at this stage.
+ *
+ * You *could* acquire an initial credential using the following API:
  *
  *   OM_uint32 major, minor;
  *   CUICredential *cuiCred = ...;
@@ -37,19 +39,18 @@ struct GSSItem;
  *
  *   major = gss_aapl_initial_cred(name, GSS_SPNEGO_MECHANISM, attrs, &cred, NULL);
  *
- * It is recommended instead that you use GSSKit. CredUI does not link against GSSKit
- * in order to minimize dependencies. However, there is a separate framework, GSSKitUI
- * which lets you do the following:
+ * However, It is recommended instead that you use GSSKitUI, which let's you do the
+ * following:
  *
- *   GSSCredential *cred = [GSSCredential intiWithCUICredential:cuiCred];
+ *   GSSCredential *cred = [GSSCredential intiWithCUICredential:cuiCred error:&error];
  *
- * That will also respect any mechanism selections that were made by the credential
- * provider, which the above example of gss_aapl_initial_cred does not do.
+ * Or alternatively:
+ *
+ *   gss_cred_id_t cred = [cuiCred acquireGSSCredential:&error];
+ *
+ * (They do exactly the same thing. One returns an autoreleased object, the other doesn't.)
+ *
+ * In the future the latter API will move into CredUI.
  */
-
-#if 0
-/* once gss_aapl_initial_cred() has been updated ... */
-- (gss_cred_id_t)acquireGSSCredential CF_RETURNS_RETAINED;
-#endif
 
 @end
