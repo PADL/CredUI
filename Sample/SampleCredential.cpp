@@ -10,22 +10,7 @@
 
 #include "SampleCredential.h"
 #include "CUIProviderUtilities.h"
-
-static CFStringRef
-GetDefaultUsername(CFDictionaryRef attributes)
-{
-    CFStringRef defaultUsername;
-
-    defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
-    if (defaultUsername == NULL) {
-        CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
-        
-        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
-            defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
-    }
-    
-    return defaultUsername;
-}
+#include "CustomField.h"
 
 Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef controller,
                                                           CUIUsageFlags usageFlags,
@@ -43,7 +28,6 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
         /*
          * Get the default user name for display.
          */
-        defaultUsername = GetDefaultUsername(attributes);
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -64,21 +48,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
     /*
      * The username field.
      */
-    if ((usageFlags & kCUIUsageFlagsPasswordOnlyOK) == 0) {
-        // kCUIUsageFlagsPasswordOnlyOK means do not allow a username to be entered
-        // kCUIUsageFlagsKeepUsername means username is read-only
-        CUIFieldClass fieldClass = (usageFlags & kCUIUsageFlagsKeepUsername) ? kCUIFieldClassSmallText : kCUIFieldClassEditText;
-        
-        fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, fieldClass, CFSTR("Username"), defaultUsername,
-                                           ^(CUIFieldRef field, CFTypeRef value) {
-                                               CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
-                                               if (value) {
-                                                   CFDictionarySetValue(_attributes, kCUIAttrName, value);
-                                               } else {
-                                                   CFDictionaryRemoveValue(_attributes, kCUIAttrName);
-                                               }
-                                           });
-    }
+    fields[cFields++] = CustomFieldCreate(_attributes);
     
     /*
      * The password field.
@@ -117,7 +87,6 @@ const CFStringRef SampleCredential::getCredentialStatus(void)
         return kCUICredentialNotFinished;
     
     CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
-
     if (password &&
         (CFGetTypeID(password) == CFStringGetTypeID() && CFStringGetLength((CFStringRef)password)))
         return kCUICredentialReturnCredentialFinished;

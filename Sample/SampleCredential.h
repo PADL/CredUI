@@ -12,7 +12,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
 
-#include "CredUICore.h"
+#include <CredUICore/CredUICore.h>
 
 class SampleCredential : public CUICredentialContext {
     

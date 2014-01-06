@@ -9,7 +9,7 @@
 #ifndef __CredUI__SampleCredentialProvider__
 #define __CredUI__SampleCredentialProvider__
 
-#include "CredUICore.h"
+#include <CredUICore/CredUICore.h>
 
 class SampleCredentialProvider;
 
