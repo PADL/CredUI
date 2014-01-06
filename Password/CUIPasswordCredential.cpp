@@ -112,7 +112,7 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL,
                                        ^(CUIFieldRef field, CFTypeRef value) {
-                                           if (isPlaceholderPassword())
+                                           if (hasPlaceholderPassword())
                                                syncPersistedPassword();
                                        });
     
@@ -129,13 +129,12 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
 const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
-    CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
    
     if (username == NULL || CFStringGetLength(username) == 0)
         return kCUICredentialNotFinished;
 
-    if (isPlaceholderPassword() || (password && CFStringGetLength((CFStringRef)password)))
-         return kCUICredentialReturnCredentialFinished;
+    if (hasPassword())
+        return kCUICredentialReturnCredentialFinished;
     else
         return kCUICredentialNotFinished;
 }

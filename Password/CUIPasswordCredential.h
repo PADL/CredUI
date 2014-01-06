@@ -87,12 +87,27 @@ public:
     
     void syncPersistedPassword(void);
     
-    Boolean isPlaceholderPassword(void) {
+    Boolean hasPlaceholderPassword(void) {
         CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
        
         return password && CFEqual(password, kCFBooleanTrue);
     }
-    
+
+    Boolean hasNonPlaceholderPassword(void) {
+        CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+
+        if (password == NULL)
+            return false;
+
+        /* we're going to allow passwords to be CFDataRefs for future use */
+        return (CFGetTypeID(password) == CFStringGetTypeID() && CFStringGetLength((CFStringRef)password)) ||
+               (CFGetTypeID(password) == CFDataGetTypeID()   && CFDataGetLength((CFDataRef)password));
+    }
+   
+    Boolean hasPassword(void) {
+        return hasPlaceholderPassword() || hasNonPlaceholderPassword();
+    }
+ 
     Boolean savePersisted(CFErrorRef *error);
     
     Boolean deletePersisted(CFErrorRef *error) {
