@@ -24,9 +24,6 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
         *error = NULL;
     
     if (attributes) {
-        /*
-         * Get the default user name for display.
-         */
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);

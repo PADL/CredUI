@@ -27,8 +27,6 @@
 		D336E293182B51A6009271CD /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D336E294182B51A6009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D336E297182B51A6009271CD /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
-		D336E29D182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E29B182B51A6009271CD /* InfoPlist.strings */; };
-		D336E29F182B51A6009271CD /* CredUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E29E182B51A6009271CD /* CredUITests.m */; };
 		D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */; };
@@ -55,8 +53,6 @@
 		D39EB016186ED2B200C43A24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D39EB017186ED2B200C43A24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D39EB01A186ED2B200C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
-		D39EB020186ED2B200C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB01E186ED2B200C43A24 /* InfoPlist.strings */; };
-		D39EB022186ED2B200C43A24 /* CredUICoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB021186ED2B200C43A24 /* CredUICoreTests.m */; };
 		D39EB02F186ED50800C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D39EB035186ED50800C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB033186ED50800C43A24 /* InfoPlist.strings */; };
 		D39EB03C186EED1900C43A24 /* CUIProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB03A186EED1900C43A24 /* CUIProvider.cpp */; };
@@ -84,8 +80,6 @@
 		D39EB076186FB1DA00C43A24 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D39EB075186FB1DA00C43A24 /* Images.xcassets */; };
 		D39EB07C186FB1DA00C43A24 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D39EB07D186FB1DA00C43A24 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
-		D39EB085186FB1DA00C43A24 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D39EB083186FB1DA00C43A24 /* InfoPlist.strings */; };
-		D39EB087186FB1DA00C43A24 /* CredUIPickerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB086186FB1DA00C43A24 /* CredUIPickerTests.m */; };
 		D39EB095186FB90400C43A24 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB094186FB90400C43A24 /* main.m */; };
 		D39EB09B186FB92400C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D39EB09C186FB92900C43A24 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
@@ -137,8 +131,6 @@
 		D3B094471877EFBA006DB1DE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E292182B51A6009271CD /* XCTest.framework */; };
 		D3B094481877EFBA006DB1DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D3B0944B1877EFBA006DB1DE /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
-		D3B094511877EFBA006DB1DE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3B0944F1877EFBA006DB1DE /* InfoPlist.strings */; };
-		D3B094531877EFBA006DB1DE /* GSSKitUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3B094521877EFBA006DB1DE /* GSSKitUITests.m */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */; };
@@ -383,9 +375,6 @@
 		D336E28A182B51A6009271CD /* CredUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUI.h; sourceTree = "<group>"; };
 		D336E291182B51A6009271CD /* CredUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CredUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D336E292182B51A6009271CD /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		D336E29A182B51A6009271CD /* CredUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUITests-Info.plist"; sourceTree = "<group>"; };
-		D336E29C182B51A6009271CD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D336E29E182B51A6009271CD /* CredUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUITests.m; sourceTree = "<group>"; };
 		D336E2A9182B51DD009271CD /* GSS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSS.framework; path = System/Library/Frameworks/GSS.framework; sourceTree = SDKROOT; };
 		D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityPicker.h; sourceTree = "<group>"; };
 		D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPicker.m; sourceTree = "<group>"; };
@@ -409,9 +398,6 @@
 		D39EB00D186ED2B200C43A24 /* CredUICore-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CredUICore-Prefix.pch"; sourceTree = "<group>"; };
 		D39EB00E186ED2B200C43A24 /* CredUICore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CredUICore.h; sourceTree = "<group>"; };
 		D39EB015186ED2B200C43A24 /* CredUICoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CredUICoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D39EB01D186ED2B200C43A24 /* CredUICoreTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUICoreTests-Info.plist"; sourceTree = "<group>"; };
-		D39EB01F186ED2B200C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D39EB021186ED2B200C43A24 /* CredUICoreTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUICoreTests.m; sourceTree = "<group>"; };
 		D39EB02D186ED50800C43A24 /* Password.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Password.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB02E186ED50800C43A24 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D39EB032186ED50800C43A24 /* Password-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Password-Info.plist"; sourceTree = "<group>"; };
@@ -443,9 +429,6 @@
 		D39EB073186FB1DA00C43A24 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		D39EB075186FB1DA00C43A24 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D39EB07B186FB1DA00C43A24 /* CredUIPickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CredUIPickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D39EB082186FB1DA00C43A24 /* CredUIPickerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CredUIPickerTests-Info.plist"; sourceTree = "<group>"; };
-		D39EB084186FB1DA00C43A24 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D39EB086186FB1DA00C43A24 /* CredUIPickerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CredUIPickerTests.m; sourceTree = "<group>"; };
 		D39EB092186FB90400C43A24 /* CredUIEnumerate */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CredUIEnumerate; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39EB094186FB90400C43A24 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D39EB0A21870235F00C43A24 /* CUICredentialTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialTile.h; sourceTree = "<group>"; };
@@ -486,9 +469,6 @@
 		D3B0943C1877EFBA006DB1DE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D3B0943E1877EFBA006DB1DE /* GSSKitUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSKitUI-Prefix.pch"; sourceTree = "<group>"; };
 		D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3B0944E1877EFBA006DB1DE /* GSSKitUITests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSKitUITests-Info.plist"; sourceTree = "<group>"; };
-		D3B094501877EFBA006DB1DE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D3B094521877EFBA006DB1DE /* GSSKitUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GSSKitUITests.m; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
 		D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIProxyCredential.cpp; sourceTree = "<group>"; };
@@ -705,20 +685,17 @@
 		D336E270182B51A6009271CD = {
 			isa = PBXGroup;
 			children = (
-				D3A773501877F001009F51B7 /* ProviderUtilities */,
-				D336E283182B51A6009271CD /* CredUI */,
 				D39EB007186ED2B200C43A24 /* CredUICore */,
-				D39EB01B186ED2B200C43A24 /* CredUICoreTests */,
-				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
-				D39EB080186FB1DA00C43A24 /* CredUIPickerTests */,
-				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
+				D336E283182B51A6009271CD /* CredUI */,
+				D3B094381877EFBA006DB1DE /* GSSKitUI */,
+				D3A773501877F001009F51B7 /* ProviderUtilities */,
 				D39EB030186ED50800C43A24 /* Password */,
-				D39EB0D51872441300C43A24 /* Persona */,
 				D3F67B0E187513A1006B36C3 /* GSSItem */,
 				D32662D51875403F004C1F57 /* Keychain */,
-				D3B094381877EFBA006DB1DE /* GSSKitUI */,
-				D3B0944C1877EFBA006DB1DE /* GSSKitUITests */,
+				D39EB0D51872441300C43A24 /* Persona */,
 				D3CECCF3187ADFF30006EB36 /* Sample */,
+				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
+				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -817,25 +794,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D336E298182B51A6009271CD /* CredUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D336E29E182B51A6009271CD /* CredUITests.m */,
-				D336E299182B51A6009271CD /* Supporting Files */,
-			);
-			name = CredUITests;
-			path = ../CredUITests;
-			sourceTree = "<group>";
-		};
-		D336E299182B51A6009271CD /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D336E29A182B51A6009271CD /* CredUITests-Info.plist */,
-				D336E29B182B51A6009271CD /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		D39EB007186ED2B200C43A24 /* CredUICore */ = {
 			isa = PBXGroup;
 			children = (
@@ -864,25 +822,6 @@
 				D39EB009186ED2B200C43A24 /* CredUICore-Info.plist */,
 				D39EB00A186ED2B200C43A24 /* InfoPlist.strings */,
 				D39EB00D186ED2B200C43A24 /* CredUICore-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D39EB01B186ED2B200C43A24 /* CredUICoreTests */ = {
-			isa = PBXGroup;
-			children = (
-				D336E298182B51A6009271CD /* CredUITests */,
-				D39EB021186ED2B200C43A24 /* CredUICoreTests.m */,
-				D39EB01C186ED2B200C43A24 /* Supporting Files */,
-			);
-			path = CredUICoreTests;
-			sourceTree = "<group>";
-		};
-		D39EB01C186ED2B200C43A24 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D39EB01D186ED2B200C43A24 /* CredUICoreTests-Info.plist */,
-				D39EB01E186ED2B200C43A24 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -931,24 +870,6 @@
 				D39EB069186FB1DA00C43A24 /* main.m */,
 				D39EB06B186FB1DA00C43A24 /* CredUIPicker-Prefix.pch */,
 				D39EB06C186FB1DA00C43A24 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D39EB080186FB1DA00C43A24 /* CredUIPickerTests */ = {
-			isa = PBXGroup;
-			children = (
-				D39EB086186FB1DA00C43A24 /* CredUIPickerTests.m */,
-				D39EB081186FB1DA00C43A24 /* Supporting Files */,
-			);
-			path = CredUIPickerTests;
-			sourceTree = "<group>";
-		};
-		D39EB081186FB1DA00C43A24 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D39EB082186FB1DA00C43A24 /* CredUIPickerTests-Info.plist */,
-				D39EB083186FB1DA00C43A24 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1017,24 +938,6 @@
 				D3B0943A1877EFBA006DB1DE /* GSSKitUI-Info.plist */,
 				D3B0943B1877EFBA006DB1DE /* InfoPlist.strings */,
 				D3B0943E1877EFBA006DB1DE /* GSSKitUI-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		D3B0944C1877EFBA006DB1DE /* GSSKitUITests */ = {
-			isa = PBXGroup;
-			children = (
-				D3B094521877EFBA006DB1DE /* GSSKitUITests.m */,
-				D3B0944D1877EFBA006DB1DE /* Supporting Files */,
-			);
-			path = GSSKitUITests;
-			sourceTree = "<group>";
-		};
-		D3B0944D1877EFBA006DB1DE /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D3B0944E1877EFBA006DB1DE /* GSSKitUITests-Info.plist */,
-				D3B0944F1877EFBA006DB1DE /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1510,7 +1413,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D336E29D182B51A6009271CD /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1526,7 +1428,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB020186ED2B200C43A24 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1553,7 +1454,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB085186FB1DA00C43A24 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1577,7 +1477,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3B094511877EFBA006DB1DE /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1631,7 +1530,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D336E29F182B51A6009271CD /* CredUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1652,7 +1550,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB022186ED2B200C43A24 /* CredUICoreTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1679,7 +1576,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39EB087186FB1DA00C43A24 /* CredUIPickerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1723,7 +1619,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3B094531877EFBA006DB1DE /* GSSKitUITests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1903,26 +1798,10 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		D336E29B182B51A6009271CD /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D336E29C182B51A6009271CD /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		D39EB00A186ED2B200C43A24 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				D39EB00B186ED2B200C43A24 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D39EB01E186ED2B200C43A24 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D39EB01F186ED2B200C43A24 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1959,14 +1838,6 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		D39EB083186FB1DA00C43A24 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D39EB084186FB1DA00C43A24 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		D39EB0D81872441300C43A24 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1979,14 +1850,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				D3B0943C1877EFBA006DB1DE /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		D3B0944F1877EFBA006DB1DE /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D3B094501877EFBA006DB1DE /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
