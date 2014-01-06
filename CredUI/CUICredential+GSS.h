@@ -26,10 +26,24 @@ struct GSSItem;
  * Why is there no method to acquire a credential? gss_aapl_initial_cred() does not
  * yet have enough logic to support arbitrary credential dictionaries (although you
  * can acquire a password or certificate credential by passing it the result of calling
- * [cred attributesWithClass:CUIAttributeClassGSSInitialCred).
+ * [cred attributesWithClass:CUIAttributeClassGSSInitialCred):
  *
- * Instead, you need to use GSSKit, but at this stage I wanted to avoid creating a
- * dependency on that from CredUI. There is a separate framework, GSSKitUI, on which
- * you can use [GSSCredential initWithCUICredential:cred].
+ *   OM_uint32 major, minor;
+ *   CUICredential *cuiCred = ...;
+ *   gss_name_t name = [cuiCred copyGSSName];
+ *   CFDictionaryRef attrs = (__bridge CFDictionaryRef)[cuiCred attributesWithClass:CUIAttributeClassGSSInitialCred];
+ *   gss_cred_id_t cred = GSS_C_NO_CREDENTIAL;
+ *   CFErrorRef err;
+ *
+ *   major = gss_aapl_initial_cred(name, GSS_SPNEGO_MECHANISM, attrs, &cred, NULL);
+ *
+ * It is recommended instead that you use GSSKit. CredUI does not link against GSSKit
+ * in order to minimize dependencies. However, there is a separate framework, GSSKitUI
+ * which lets you do the following:
+ *
+ *   GSSCredential *cred = [GSSCredential intiWithCUICredential:cuiCred];
+ *
+ * That will also respect any mechanism selections that were made by the credential
+ * provider, which the above example of gss_aapl_initial_cred does not do.
  */
 @end
