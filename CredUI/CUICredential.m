@@ -125,10 +125,13 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     NSMutableDictionary *transformedDict = [NSMutableDictionary dictionary];
 
     [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        NSString *transformedKey;
+        NSString *transformedKey = nil;
 
         if (attrClass == CUIAttributeClassGSSItem) {
-            transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
+            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialPassword] && [obj boolValue])
+                transformedKey = nil; /* remove placeholder passwords */
+            else
+                transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
         } else if (attrClass == CUIAttributeClassGSSInitialCred) {
             if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity])
                 transformedKey = (__bridge id)kGSSICCertificate; // special case
@@ -138,7 +141,8 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
             transformedKey = key;
         }
 
-        transformedDict[transformedKey] = obj;
+        if (transformedKey)
+            transformedDict[transformedKey] = obj;
     }];
 
     if (attrClass == CUIAttributeClassGSSInitialCred) {
