@@ -61,6 +61,14 @@ public:
 
 class CUICredentialPersistence : public IUnknown {
 public:
+    /*
+     * A provider can use this method to ask another provider to persist
+     * a credential on its behalf. Persistence providers are responsible
+     * for enumerating and updating existing persisted credentials; 
+     * other concrete providers that wish to add a credential should call
+     * __CUIControllerCreatePersistenceForFactoryID() with the desired
+     * persistence provider's factory ID.
+     */
     virtual Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
 };
 #else
