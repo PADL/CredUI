@@ -67,8 +67,8 @@ public:
  
     /* helpers */ 
     static CFMutableDictionaryRef createQuery(CFDictionaryRef attributes);
-    static CFMutableDictionaryRef createCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boolean bCUIGeneric);
-    static CFMutableDictionaryRef createKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName, Boolean *pbCUIGeneric = NULL);
+    static CFMutableDictionaryRef createCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs);
+    static CFMutableDictionaryRef createKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName);
     static CFArrayRef copyMatching(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
     static Boolean setPasswordAttr(CFMutableDictionaryRef keychainAttrs, CFDictionaryRef attributes);
 

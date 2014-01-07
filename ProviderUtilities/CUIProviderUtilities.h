@@ -45,7 +45,4 @@ CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
 Boolean
 CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes);
 
-CUICredentialPersistence *
-CUICreatePersistenceForSource(CUIControllerRef controller, CUIAttributeSource source);
-
 #endif /* defined(__CredUI__CUIProviderUtilities__) */

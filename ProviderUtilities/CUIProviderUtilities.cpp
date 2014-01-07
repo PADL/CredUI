@@ -67,25 +67,3 @@ CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes)
     CUIShouldEnumerateForClass(attributes, kCUIAttrClassGeneric);
 }
 
-CUICredentialPersistence *
-CUICreatePersistenceForSource(CUIControllerRef controller, CUIAttributeSource source)
-{
-    CUICredentialPersistence *persistence = NULL;
-    CFUUIDRef factoryID = NULL;
-    
-    switch (source) {
-        case kCUIAttributeSourceGSSItem:
-            factoryID = kGSSItemCredentialProviderFactoryID;
-            break;
-        case kCUIAttributeSourceKeychain:
-            factoryID = kKeychainCredentialProviderFactoryID;
-            break;
-        default:
-            break;
-    }
-    
-    if (factoryID)
-        persistence = __CUIControllerCreatePersistenceForFactoryID(controller, factoryID);
-    
-    return persistence;
-}

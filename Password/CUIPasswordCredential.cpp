@@ -167,9 +167,9 @@ Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
      */
     if (CUIGetAttributeSource(_attributes) != kCUIAttributeSourceUser)
         return true;
-    
-    persistence = CUICreatePersistenceForSource(_controller,
-                                                _generic ? kCUIAttributeSourceKeychain : kCUIAttributeSourceGSSItem);
+
+    CFUUIDRef factoryID = _generic ? kKeychainCredentialProviderFactoryID : kGSSItemCredentialProviderFactoryID;
+    persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
     if (persistence) {
         ret = persistence->addCredentialWithAttributes(_attributes, error);
         persistence->Release();
