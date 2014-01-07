@@ -45,6 +45,7 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
                     return false;
                 break;
             case kCUIAttributeSourceUser:
+            case kCUIAttributeSourceUnknown:
                 break;
         }
        
@@ -109,17 +110,19 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL,
                                        ^(CUIFieldRef field, CFTypeRef value) {
-        CUICredentialPersistence *persistence;
-
         if (hasPlaceholderPassword()) {
-            persistence = CUICreatePersistenceForSource(_controller, CUIGetAttributeSource(_attributes));
-            if (persistence) {
-                CFTypeRef password = persistence->extractPassword(_attributes, NULL);
-                if (password) {
-                    CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
-                    CFRelease(password);
+            CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(_attributes, kCUIAttrPersistenceFactoryID);
+
+            if (persistenceFactoryID) {
+                CUICredentialPersistence *persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, persistenceFactoryID);
+                if (persistence) {
+                    CFTypeRef password = persistence->extractPassword(_attributes, NULL);
+                    if (password) {
+                        CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
+                        CFRelease(password);
+                    }
+                    persistence->Release();
                 }
-                persistence->Release();
             }
         }
     });

@@ -27,6 +27,7 @@
  * GSS items if they already exist.
  */
 typedef CF_ENUM(CFIndex, CUIAttributeSource) {
+    kCUIAttributeSourceUnknown = -1,
     kCUIAttributeSourceUser = 0,
     kCUIAttributeSourceGSSItem,
     kCUIAttributeSourceKeychain

@@ -18,12 +18,17 @@
 CUIAttributeSource
 CUIGetAttributeSource(CFDictionaryRef attributes)
 {
-    if (CFDictionaryGetValue(attributes, kCUIAttrGSSItemRef))
+    CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+
+    if (persistenceFactoryID == NULL)
+        return kCUIAttributeSourceUser;
+
+    if (CFEqual(persistenceFactoryID, kGSSItemCredentialProviderFactoryID))
         return kCUIAttributeSourceGSSItem;
-    else if (CFDictionaryGetValue(attributes, kCUIAttrSecKeychainItemRef))
+    else if (CFEqual(persistenceFactoryID, kKeychainCredentialProviderFactoryID))
         return kCUIAttributeSourceKeychain;
     else
-        return kCUIAttributeSourceUser;
+        return kCUIAttributeSourceUnknown;
 }
 
 CFStringRef
