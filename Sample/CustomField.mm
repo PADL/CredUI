@@ -29,7 +29,7 @@
 {
     NSLog(@"CustomField: setting username to %@", aValue);
 
-    self.credential->setUsername((__bridge CFStringRef)aValue);
+    self.credential->setUsername((__bridge CFStringRef)[aValue copy]);
 }
 
 - (NSView *)viewWithFrame:(NSRect)frame

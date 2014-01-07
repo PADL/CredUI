@@ -37,7 +37,7 @@ void SampleCredential::setUsername(CFStringRef username)
 {
     if (username) {
         CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
-        CFDictionarySetValue(_attributes, kCUIAttrName, CFStringCreateCopy(CFGetAllocator(_attributes), username));
+        CFDictionarySetValue(_attributes, kCUIAttrName, username);
     } else {
         CFDictionaryRemoveValue(_attributes, kCUIAttrName);
     }
