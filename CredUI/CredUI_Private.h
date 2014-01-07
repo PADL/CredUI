@@ -30,14 +30,14 @@
 #import "CUIIdentityPickerInternal+UIFactory.h"
 
 extern Boolean
-__CUIPromptForCredentials(CFTypeRef targetName,
-                          CFTypeRef gssContextHandle,
-                          CUICredUIContext *uiContext,
-                          CFErrorRef authError,
-                          CFDictionaryRef inCredAttributes,
-                          CUICredentialRef *outCredential,
-                          Boolean *pfSave,
-                          CUIFlags flags,
-                          CFErrorRef *error);
+_CUIPromptForCredentials(CFTypeRef targetName,
+                         CFTypeRef gssContextHandle,
+                         CUICredUIContext *uiContext,
+                         CFErrorRef authError,
+                         CFDictionaryRef inCredAttributes,
+                         CUICredentialRef *outCredential,
+                         Boolean *pfSave,
+                         CUIFlags flags,
+                         CFErrorRef *error);
 
 extern void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);

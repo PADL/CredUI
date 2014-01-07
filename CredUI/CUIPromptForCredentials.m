@@ -9,15 +9,15 @@
 #import <CredUI/GSSPromptForCredentials.h>
 
 Boolean
-__CUIPromptForCredentials(CFTypeRef targetName,
-                          CFTypeRef gssContextHandle,
-                          CUICredUIContext *uiContext,
-                          CFErrorRef authError,
-                          CFDictionaryRef inCredAttributes,
-                          CUICredentialRef *outCred,
-                          Boolean *pfSave,
-                          CUIFlags flags,
-                          CFErrorRef *error)
+_CUIPromptForCredentials(CFTypeRef targetName,
+                         CFTypeRef gssContextHandle,
+                         CUICredUIContext *uiContext,
+                         CFErrorRef authError,
+                         CFDictionaryRef inCredAttributes,
+                         CUICredentialRef *outCred,
+                         Boolean *pfSave,
+                         CUIFlags flags,
+                         CFErrorRef *error)
 {
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
     CUICredential *selectedCredential;
@@ -64,15 +64,15 @@ CUIPromptForCredentials(CUICredUIContext *uiContext,
                                        (__bridge id)kCUIAttrCredentialPassword : (__bridge NSString *)password
                                        };
     
-    return __CUIPromptForCredentials(targetName,
-                                     reserved,
-                                     uiContext,
-                                     authError,
-                                     (__bridge CFDictionaryRef)inCredAttributes,
-                                     outCred,
-                                     pfSave,
-                                     flags,
-                                     error);
+    return _CUIPromptForCredentials(targetName,
+                                    reserved,
+                                    uiContext,
+                                    authError,
+                                    (__bridge CFDictionaryRef)inCredAttributes,
+                                    outCred,
+                                    pfSave,
+                                    flags,
+                                    error);
 }
 
 CUI_EXPORT Boolean
