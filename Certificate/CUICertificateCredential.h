@@ -63,8 +63,6 @@ public:
     }
     
     CFDictionaryRef getAttributes(void) {
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
-        
         return _attributes;
     }
     

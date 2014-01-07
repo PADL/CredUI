@@ -48,6 +48,7 @@ CUICertificateCredential::initWithSecIdentity(SecIdentityRef identity,
 
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider,       kCertificateCredentialProvider);
     CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID,        kCertificateCredentialProviderFactoryID);
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus,         kCUICredentialReturnCredentialFinished);
     CFDictionarySetValue(_attributes, kCUIAttrNameType,                 kCUIAttrNameTypeGSSUsername);
     CFDictionarySetValue(_attributes, kCUIAttrCredentialExists,         kCFBooleanTrue);
     if (usageFlags & kCUIUsageFlagsGeneric) {
