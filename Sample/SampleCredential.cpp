@@ -101,23 +101,44 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
      * The password field.
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassPasswordText, CFSTR("Password"), NULL,
-                                       ^(CUIFieldRef field, CFTypeRef value) {
-                                           if (value) {
-                                               CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);
-                                           } else {
-                                               CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
-                                           }
-                                       });
+           ^(CUIFieldRef field, CFTypeRef value) {
+               if (value) {
+                   CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, value);
+               } else {
+                   CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
+               }
+           });
     
     /*
      * The "submit button". This is called when the credential is about to be submitted. It is
      * the equivalent of having a willSubmit method; note that, unlike the other fields, CredUI
      * may not render individual submit buttons for each provider, but rather a single one for
      * all providers. The callback block will be invoked if and when this credential is submitted.
+     *
+     * If the credential came from a persisted credential, we need to contact the persistence
+     * provider to extract the password.
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL,
                                        ^(CUIFieldRef field, CFTypeRef value) {
-                                       });
+           CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+           if (password && CFEqual(password, kCFBooleanTrue)) {
+               CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(_attributes, kCUIAttrPersistenceFactoryID);
+               
+               if (persistenceFactoryID) {
+                   CUICredentialPersistence *persistence;
+                   
+                   persistence = __CUIControllerCreatePersistenceForFactoryID(controller, persistenceFactoryID);
+                   if (persistence) {
+                       password = persistence->extractPassword(_attributes, NULL);
+                       if (password) {
+                           CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
+                           CFRelease(password);
+                       }
+                       persistence->Release();
+                   }
+               }
+           }
+       });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, cFields, &kCFTypeArrayCallBacks);
     if (_fields == NULL)
@@ -139,8 +160,7 @@ const CFStringRef SampleCredential::getCredentialStatus(void)
 
     /* Do we have a password? */    
     CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
-    if (password &&
-        (CFGetTypeID(password) == CFStringGetTypeID() && CFStringGetLength((CFStringRef)password)))
+    if (password)
         return kCUICredentialReturnCredentialFinished;
     else
         return kCUICredentialNotFinished;

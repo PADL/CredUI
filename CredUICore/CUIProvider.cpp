@@ -199,5 +199,3 @@ __CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUID
     
     return persistence;
 }
-
-

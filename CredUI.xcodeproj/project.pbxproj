@@ -2426,6 +2426,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "Sample/Sample-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2439,6 +2440,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Sample/Sample-Prefix.pch";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "Sample/Sample-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
