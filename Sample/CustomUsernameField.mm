@@ -1,5 +1,5 @@
 //
-//  CustomField.cpp
+//  CustomUsernameField.cpp
 //  CredUI
 //
 //  Created by Luke Howard on 7/01/2014.
@@ -9,7 +9,7 @@
 #include <CredUI/CredUI.h>
 #include <CredUI/CUIField.h>
 
-#include "CustomField.h"
+#include "CustomUsernameField.h"
 
 /*
  * Providers generally should only create fields using CUIFieldCreate() as it avoids
@@ -19,15 +19,15 @@
  * Subclasses must implement the setValue: and viewWithFrame: primitive methods.
  */
 
-@interface CustomField : CUIField
+@interface CustomUsernameField : CUIField
 @property (nonatomic) SampleCredential *credential;
 @end
 
-@implementation CustomField
+@implementation CustomUsernameField
 
 - (void)setValue:(id)aValue
 {
-    NSLog(@"CustomField: setting username to %@", aValue);
+    NSLog(@"CustomUsernameField: setting username to %@", aValue);
 
     self.credential->setUsername((__bridge CFStringRef)[aValue copy]);
 }
@@ -72,12 +72,12 @@
 @end
 
 CUIFieldRef
-CustomFieldCreate(SampleCredential *sampleCred)
+CustomUsernameFieldCreate(SampleCredential *sampleCred)
 {
-    CustomField *customField;
+    CustomUsernameField *CustomUsernameField;
     
-    customField = [[CustomField alloc] init];
-    customField.credential = sampleCred;
+    CustomUsernameField = [[CustomUsernameField alloc] init];
+    CustomUsernameField.credential = sampleCred;
     
-    return (CUIFieldRef)CFBridgingRetain(customField);
+    return (CUIFieldRef)CFBridgingRetain(CustomUsernameField);
 }

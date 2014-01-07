@@ -80,7 +80,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
      * Note: this isn't recommended because it introduces a dependency on Cocoa into CredUICore which
      * eliminates the possibility of this provider being used in a command-line application.
      */
-    fields[cFields++] = CustomFieldCreate(this);
+    fields[cFields++] = CustomUsernameFieldCreate(this);
     
     /*
      * The password field.

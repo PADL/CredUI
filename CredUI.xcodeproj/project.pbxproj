@@ -119,7 +119,7 @@
 		D3A7735C1877F077009F51B7 /* GSSMechanism+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3A773561877F077009F51B7 /* GSSMechanism+CredUI.m */; };
 		D3A7735F1877F09E009F51B7 /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
 		D3A80ABA187AE1AF00968AFF /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
-		D3A80AC1187AE4D800968AFF /* CustomField.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3A80ABF187AE4D800968AFF /* CustomField.mm */; };
+		D3A80AC1187AE4D800968AFF /* CustomUsernameField.mm in Sources */ = {isa = PBXBuildFile; fileRef = D3A80ABF187AE4D800968AFF /* CustomUsernameField.mm */; };
 		D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A80AC2187AE5F500968AFF /* CUIField+UIFactory.h */; };
 		D3A80AC5187AE5F500968AFF /* CUIField+UIFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D3A80AC3187AE5F500968AFF /* CUIField+UIFactory.m */; };
 		D3A80AC6187AE8C800968AFF /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
@@ -458,8 +458,8 @@
 		D3A773551877F077009F51B7 /* GSSMechanism+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSMechanism+CredUI.h"; sourceTree = "<group>"; };
 		D3A773561877F077009F51B7 /* GSSMechanism+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSMechanism+CredUI.m"; sourceTree = "<group>"; };
 		D3A773601877F0BA009F51B7 /* GSSKitUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSKitUI.h; sourceTree = "<group>"; };
-		D3A80ABF187AE4D800968AFF /* CustomField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomField.mm; sourceTree = "<group>"; };
-		D3A80AC0187AE4D800968AFF /* CustomField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomField.h; sourceTree = "<group>"; };
+		D3A80ABF187AE4D800968AFF /* CustomUsernameField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomUsernameField.mm; sourceTree = "<group>"; };
+		D3A80AC0187AE4D800968AFF /* CustomUsernameField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUsernameField.h; sourceTree = "<group>"; };
 		D3A80AC2187AE5F500968AFF /* CUIField+UIFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIField+UIFactory.h"; sourceTree = "<group>"; };
 		D3A80AC3187AE5F500968AFF /* CUIField+UIFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUIField+UIFactory.m"; sourceTree = "<group>"; };
 		D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGSSItemCredential.h; sourceTree = "<group>"; };
@@ -950,8 +950,8 @@
 				D3CECCFE187AE0350006EB36 /* SampleCredential.h */,
 				D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */,
 				D3CECD01187AE03D0006EB36 /* SampleCredentialProvider.h */,
-				D3A80ABF187AE4D800968AFF /* CustomField.mm */,
-				D3A80AC0187AE4D800968AFF /* CustomField.h */,
+				D3A80ABF187AE4D800968AFF /* CustomUsernameField.mm */,
+				D3A80AC0187AE4D800968AFF /* CustomUsernameField.h */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
@@ -1627,7 +1627,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3CECCFF187AE0350006EB36 /* SampleCredential.cpp in Sources */,
-				D3A80AC1187AE4D800968AFF /* CustomField.mm in Sources */,
+				D3A80AC1187AE4D800968AFF /* CustomUsernameField.mm in Sources */,
 				D3CECD02187AE03D0006EB36 /* SampleCredentialProvider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
