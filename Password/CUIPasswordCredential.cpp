@@ -174,6 +174,7 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
         factorySelector = CFSTR("CUIGenericPersistenceProviderFactory");
     else
         factorySelector = CFSTR("CUIPersistenceProviderFactory");
+    assert(factorySelector);
 
     factoryIDString = CFBundleGetValueForInfoDictionaryKey(bundle, factorySelector);
     if (factoryIDString && CFGetTypeID(factoryIDString) == CFStringGetTypeID()) {
