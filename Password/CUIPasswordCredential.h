@@ -136,7 +136,6 @@ public:
 
 private:
     int32_t _retainCount;
-    bool _generic;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
     CUIControllerRef _controller;

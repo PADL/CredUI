@@ -11,15 +11,11 @@
 #include "CUIPasswordCredential.h"
 #include "CUIProviderUtilities.h"
 
-/*
- * The password credential provider is intended to be as decoupled from the persistence
- * credential providers as possible. However, there is a leaky abstraction in that we do
- * choose one of the GSSItem or keychain providers to store new credentials. XXX
- */
-Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controller,
-                                                               CUIUsageFlags usageFlags,
-                                                               CFDictionaryRef attributes,
-                                                               CFErrorRef *error)
+Boolean
+CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controller,
+                                                       CUIUsageFlags usageFlags,
+                                                       CFDictionaryRef attributes,
+                                                       CFErrorRef *error)
 {
     CFStringRef defaultUsername = NULL;
     CUIFieldRef fields[4] = { 0 };
@@ -53,7 +49,6 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
      */ 
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PasswordCredentialProvider"));
     if (usageFlags & kCUIUsageFlagsGeneric) {
-        _generic = true;
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     } else {
         CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
@@ -127,7 +122,8 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
 /*
  * Determine whether the credential is able to be submitted.
  */
-const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
+const CFStringRef
+CUIPasswordCredential::getCredentialStatus(void)
 {
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
    
@@ -143,22 +139,38 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
 /*
  * If the user wants this credential to be persisted, do so here.
  */
-Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
+Boolean
+CUIPasswordCredential::savePersisted(CFErrorRef *error)
 {
     Boolean ret = false;
     CUICredentialPersistence *persistence;
+    CFTypeRef attrClass;
+    CFUUIDRef factoryID;
     
     if (error)
         *error = NULL;
 
     /*
-     * We only persist new credentials, that is, credentials that are not
-     * created by the keychain or GSSItem providers.
+     * If the credential was already persisted, the persistence provider is calling
+     * us and it will handle the update.
      */
     if (CUIIsPersistedCredential(_attributes))
         return true;
 
-    CFUUIDRef factoryID = _generic ? kKeychainCredentialProviderFactoryID : kGSSItemCredentialProviderFactoryID;
+    /*
+     * Now, unfortunately, we have the one leaky abstraction between the persistence
+     * providers and this provider. We need to choose somewhere to store new credentials
+     * and we do that by selecting one of the keychain or GSSItem providers based on
+     * whether this is a generic credential or not. Possibly we could make it a
+     * configuration item as to where to store new credentials. XXX
+     */
+    attrClass = CFDictionaryGetValue(_attributes, kCUIAttrClass); 
+
+    if (CFEqual(attrClass, kCUIAttrClassGeneric))
+        factoryID = kKeychainCredentialProviderFactoryID;
+    else
+        factoryID = kGSSItemCredentialProviderFactoryID;
+
     persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
     if (persistence) {
         ret = persistence->addCredentialWithAttributes(_attributes, error);
