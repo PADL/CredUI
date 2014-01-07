@@ -10,7 +10,12 @@
 
 #include "SampleCredential.h"
 #include "CUIProviderUtilities.h"
+
+#define CUSTOM_USERNAME_FIELD
+
+#ifdef CUSTOM_USERNAME_FIELD
 #include "CustomUsernameField.h"
+#endif
 
 /*
  * Get the default username for this credential
@@ -80,7 +85,17 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
      * Note: this isn't recommended because it introduces a dependency on Cocoa into CredUICore which
      * eliminates the possibility of this provider being used in a command-line application.
      */
+
+#ifdef CUSTOM_USERNAME_FIELD
     fields[cFields++] = CustomUsernameFieldCreate(this);
+#else
+    fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), getDefaultUsername(),
+                                      ^(CUIFieldRef field, CFTypeRef value) {
+                                          setUsername((CFStringRef)value);
+                                      });
+
+#endif /* CUSTOM_USERNAME_FIELD */
+    
     
     /*
      * The password field.
