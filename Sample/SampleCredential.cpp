@@ -10,7 +10,7 @@
 
 #include "SampleCredential.h"
 #include "CUIProviderUtilities.h"
-#include "CustomField.h"
+#include "CustomUsernameField.h"
 
 /*
  * Get the default username for this credential

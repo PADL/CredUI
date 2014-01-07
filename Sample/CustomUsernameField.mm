@@ -74,10 +74,10 @@
 CUIFieldRef
 CustomUsernameFieldCreate(SampleCredential *sampleCred)
 {
-    CustomUsernameField *CustomUsernameField;
+    CustomUsernameField *customUsernameField;
     
-    CustomUsernameField = [[CustomUsernameField alloc] init];
-    CustomUsernameField.credential = sampleCred;
+    customUsernameField = [[CustomUsernameField alloc] init];
+    customUsernameField.credential = sampleCred;
     
-    return (CUIFieldRef)CFBridgingRetain(CustomUsernameField);
+    return (CUIFieldRef)CFBridgingRetain(customUsernameField);
 }

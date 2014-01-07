@@ -948,8 +948,8 @@
 				D3CECCF4187ADFF30006EB36 /* Supporting Files */,
 				D3CECCFD187AE0350006EB36 /* SampleCredential.cpp */,
 				D3CECCFE187AE0350006EB36 /* SampleCredential.h */,
-				D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */,
 				D3CECD01187AE03D0006EB36 /* SampleCredentialProvider.h */,
+				D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */,
 				D3A80ABF187AE4D800968AFF /* CustomUsernameField.mm */,
 				D3A80AC0187AE4D800968AFF /* CustomUsernameField.h */,
 			);

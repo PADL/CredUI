@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CustomField__
-#define __CredUI__CustomField__
+#ifndef __CredUI__CustomUsernameField__
+#define __CredUI__CustomUsernameField__
 
 #include <CredUICore/CredUICore.h>
 
@@ -19,4 +19,4 @@
 CUIFieldRef
 CustomUsernameFieldCreate(SampleCredential *cred);
 
-#endif /* defined(__CredUI__CustomField__) */
+#endif /* defined(__CredUI__CustomUsernameField__) */
