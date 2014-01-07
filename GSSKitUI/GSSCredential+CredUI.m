@@ -21,7 +21,6 @@
     if (gssItem) {
         cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
     } else {
-        
         name = CFBridgingRelease([cuiCredential copyGSSName]);
         
         if (name) {

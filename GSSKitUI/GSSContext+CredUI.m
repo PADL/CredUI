@@ -36,7 +36,7 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     GSSName *cuiCredentialName = CFBridgingRelease([cuiCredential copyGSSName]);
     GSSName *gssCredentialName = gssCredential.name;
     
-    return [cuiCredentialName isEqualToName:gssCredentialName];
+    return ![cuiCredentialName isEqualToName:gssCredentialName];
 }
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -55,7 +55,7 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
     gssCred = [[GSSCredential alloc] initWithCUICredential:credential error:&error];
     if (gssCred == nil) {
-        error = [NSError GSSError:GSS_S_NO_CRED];
+        errorContainer.error = error ? error : [NSError GSSError:GSS_S_NO_CRED];
         return;
     }
     
@@ -67,10 +67,9 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
      * just be updating the context with, for example, trust anchors. Only replace the
      * context credential if the selected credential name is different.
      */
-    if ([self.lastError _gssError] || _GSSNeedUpdateContextCredentialP(credential, self.credential))
+    if ([self.lastError _gssError] ||
+        _GSSNeedUpdateContextCredentialP(credential, self.credential))
         self.credential = gssCred;
-    
-    errorContainer.error = error;
 }
 
 - (void)_runIdentityPicker:(id)errorContainer
@@ -78,7 +77,7 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     CUIIdentityPicker *identityPicker;
     NSDictionary *attributes = @{
                                  (__bridge NSString *)kCUIAttrClass: [[self mechanism] name],
-                                 (__bridge NSString *)kCUIAttrName: [[[self credential] name] description]
+                                 (__bridge NSString *)kCUIAttrName: [[[self credential] name] displayString]
                                  };
     
     identityPicker = [[CUIIdentityPicker alloc] initWithFlags:0 attributes:attributes];
@@ -102,9 +101,11 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     if (error)
         *error = [errorContainer error];
     
+    errorContainer.error = nil;
+    
     [self performSelectorOnMainThread:@selector(_runIdentityPicker:) withObject:errorContainer waitUntilDone:TRUE];
     
-    return !!self.credential;
+    return !errorContainer.error;
 }
 
 - (id)initWithRequestFlags:(GSSFlags)flags
