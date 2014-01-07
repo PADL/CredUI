@@ -103,6 +103,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassBrowserID);
     CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, kPersonaCredentialProvider);
+    CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID, kPersonaCredentialProviderFactoryID);
 
     return true;
 }

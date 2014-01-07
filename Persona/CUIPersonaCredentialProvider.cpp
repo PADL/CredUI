@@ -11,9 +11,6 @@
 
 #include <libkern/OSAtomic.h>
 
-// 58733A29-A6A5-4E57-93EB-200D9411F686
-#define kPersonaCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x58, 0x73, 0x3A, 0x29, 0xA6, 0xA5, 0x4E, 0x57, 0x93, 0xEB, 0x20, 0x0D, 0x94, 0x11, 0xF6, 0x86)
-
 const CFStringRef kCUIAttrCredentialBrowserIDAssertion = CFSTR("kCUIAttrCredentialBrowserIDAssertion");
 const CFStringRef kCUIAttrCredentialBrowserIDIdentity  = CFSTR("kCUIAttrCredentialBrowserIDIdentity");
 const CFStringRef kCUIAttrCredentialBrowserIDFlags     = CFSTR("kCUIAttrCredentialBrowserIDFlags");

@@ -8,6 +8,7 @@
 
 #include <Security/Security.h>
 
+#include "CUIPasswordCredentialProvider.h"
 #include "CUIPasswordCredential.h"
 #include "CUIProviderUtilities.h"
 
@@ -51,6 +52,8 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
      * Set some default attributes for this credential.
      */ 
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, kPasswordCredentialProvider);
+    CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID, kPasswordCredentialProviderFactoryID);
+
     if (usageFlags & kCUIUsageFlagsGeneric) {
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     } else {

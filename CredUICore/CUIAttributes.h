@@ -113,6 +113,7 @@ extern const CFStringRef kCUIAttrCredentialMetaProvider;
 extern const CFStringRef kCUIAttrGSSItemRef;
 extern const CFStringRef kCUIAttrSecKeychainItemRef;
 extern const CFStringRef kCUIAttrPersistenceFactoryID; /* CFUUIDRef */
+extern const CFStringRef kCUIAttrProviderFactoryID; /* CFUUIDRef */
 
 /*
  * For gss_aapl_initial_cred() only

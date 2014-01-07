@@ -8,8 +8,8 @@
 
 #include <Security/Security.h>
 
+#include "SampleCredentialProvider.h"
 #include "SampleCredential.h"
-#include "CUIProviderUtilities.h"
 
 #define CUSTOM_USERNAME_FIELD
 
@@ -69,6 +69,8 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
      * Set some default attributes for this credential.
      */
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("SampleCredentialProvider"));
+    CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID, kSampleCredentialProviderFactoryID);
+    
     if (usageFlags & kCUIUsageFlagsGeneric)
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     
