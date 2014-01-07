@@ -117,7 +117,6 @@ CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
     return true;
 }
 
-
 CFArrayRef
 CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error)
 {
@@ -223,8 +222,7 @@ CUIGSSItemCredentialProvider::updateCredential(CUICredentialRef credential, CFEr
     
     /*
      * There's a bug in Heimdal, if the keychain item already exists it will
-     * create a new one, not update it, which will fail. So if we have a password
-     * to store, trash the item and retry.
+     * create a new one, not update it, which will fail. Whoops.
      */
     ret = GSSItemUpdate(item->keys, gssItemAttributes, error);
     

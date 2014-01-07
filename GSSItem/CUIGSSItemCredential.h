@@ -81,14 +81,14 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags, CUIGSSItemCredentialProvider *persistence) {
+    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags, CUIGSSItemCredentialProvider *provider) {
         if (credential == NULL)
             return false;
         
         _credential = (CUICredentialRef)CFRetain(credential);
         _usageFlags = usageFlags;
-        _persistence = persistence;
-        _persistence->AddRef();
+        _provider = provider;
+        _provider->AddRef();
         
         return true;
     }
@@ -109,14 +109,14 @@ public:
         if (!CUICredentialSavePersisted(_credential, error))
             return false;
         
-        return _persistence->updateCredential(_credential, error);
+        return _provider->updateCredential(_credential, error);
     }
     
     Boolean deletePersisted(CFErrorRef *error) {
         if (!CUICredentialDeletePersisted(_credential, error))
             return false;
         
-        return _persistence->deleteCredential(_credential, error);
+        return _provider->deleteCredential(_credential, error);
     }
 
     CUIGSSItemCredential() {
@@ -129,7 +129,7 @@ private:
     int32_t _retainCount;
     CUICredentialRef _credential;
     CUIUsageFlags _usageFlags;
-    CUIGSSItemCredentialProvider *_persistence;
+    CUIGSSItemCredentialProvider *_provider;
     
 protected:
     ~CUIGSSItemCredential() {
