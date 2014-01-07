@@ -28,8 +28,16 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
     
+    if (controller->_factories)
+        CFRelease(controller->_factories);
     if (controller->_providers)
         CFRelease(controller->_providers);
+    if (controller->_uiContext.parentWindow)
+        CFRelease(controller->_uiContext.parentWindow);    
+    if (controller->_uiContext.messageText)
+        CFRelease(controller->_uiContext.messageText);    
+    if (controller->_uiContext.titleText)
+        CFRelease(controller->_uiContext.titleText);    
     if (controller->_attributes)
         CFRelease(controller->_attributes);
     if (controller->_authError)
@@ -38,8 +46,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
         CFRelease(controller->_gssContextHandle);
     if (controller->_targetName)
         CFRelease(controller->_targetName);
-    
 }
+
 static CFStringRef _CUIControllerCopyDescription(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
