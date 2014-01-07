@@ -25,6 +25,9 @@
 
 #pragma mark - GSS IC picker
 
+/*
+ * Test encoding/decoding of credentials
+ */
 static void testEncodeDecode(CUICredential * cred)
 {
     NSString *filePath = @"/tmp/somecred";
@@ -53,6 +56,8 @@ static void testEncodeDecode(CUICredential * cred)
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
+
+    /* The target name can be a NSString, NSURL or gss_name_t */
     self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
     
     [self.picker runModalForWindow:self.window

@@ -1,4 +1,3 @@
-
 //
 //  CUIPersonaCredential.cpp
 //  CredUI

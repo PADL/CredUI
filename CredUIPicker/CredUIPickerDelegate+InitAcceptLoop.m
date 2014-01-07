@@ -15,6 +15,9 @@
 
 #import "CredUIPickerDelegate.h"
 
+/*
+ * Establish a GSS context: for testing, this implements both the client and server side.
+ */
 @implementation CredUIPickerDelegate (InitAcceptLoop)
 
 - (void)doInitAcceptGSSContextWithIdentityPicker:(CUIIdentityPicker *)identityPicker
