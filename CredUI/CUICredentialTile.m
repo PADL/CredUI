@@ -23,14 +23,17 @@
     NSArray *credFields = [self.credential fields];
     NSRect frame = self.frame;
     NSView *lastview = nil;
-    
+
     frame.origin.y = frame.size.height;
     frame.size.height = 25;
-    
+
     for (CUIField *field in credFields) {
         NSView *subview;
-        
-        frame.origin.y -= frame.size.height;
+       
+        if (lastview) 
+            frame.origin.y -= lastview.frame.size.height;
+        else
+            frame.origin.y -= frame.size.height;
         
         subview = [field viewWithFrame:frame];
         if (subview == nil)
