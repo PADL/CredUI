@@ -60,10 +60,12 @@ public:
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error);
     Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
+    CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error);
+
     Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error);
     Boolean deleteCredential(CUICredentialRef credential, CFErrorRef *error);
   
-    CFDictionaryRef createQuery(CFDictionaryRef attributes);
+    CFMutableDictionaryRef createQuery(CFDictionaryRef attributes);
 
     CUIKeychainCredentialProvider() {
         CFPlugInAddInstanceForFactory(kKeychainCredentialProviderFactoryID);

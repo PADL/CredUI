@@ -70,6 +70,14 @@ public:
      * persistence provider's factory ID.
      */
     virtual Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
+
+    /*
+     * Persistence providers typically do not make a password available in
+     * the credential dictionary until the user is ready to authenticate,
+     * as a sensible security precaution. Concrete providers can use this
+     * method to extract the password.
+     */
+    virtual CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error) = 0;
 };
 #else
 typedef struct CUICredentialContext {
@@ -98,6 +106,7 @@ typedef struct CUIProvider {
 typedef struct CUICredentialPersistence {
     IUNKNOWN_C_GUTS;
     Boolean (STDMETHODCALLTYPE *addCredentialWithAttributes)(void *thisPointer, CFDictionaryRef credential, CFErrorRef *error);
+    CFTypeRef (STDMETHODCALLTYPE *extractPassword)(void *thisPointer, CFDictionaryRef credential, CFErrorRef *error);
 } CUICredentialPersistence;
 #endif /* defined(__cplusplus) */
 

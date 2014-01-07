@@ -185,13 +185,16 @@ _CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
     return true;
 }
 
-
-CFDictionaryRef
+CFMutableDictionaryRef
 CUIKeychainCredentialProvider::createQuery(CFDictionaryRef attributes)
 {
     CFMutableDictionaryRef query;
-    SecKeychainItemRef item = (SecKeychainItemRef)CFDictionaryGetValue(attributes, kCUIAttrSecKeychainItemRef);
-    
+    SecKeychainItemRef item;
+
+    item = (SecKeychainItemRef)CFDictionaryGetValue(attributes, kCUIAttrSecKeychainItemRef);
+    if (item == NULL)
+        return NULL;
+
     query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     if (query == NULL)
         return NULL;
@@ -270,7 +273,7 @@ CUIKeychainCredentialProvider::updateCredential(CUICredentialRef credential, CFE
 Boolean
 CUIKeychainCredentialProvider::deleteCredential(CUICredentialRef credential, CFErrorRef *error)
 {
-CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
+    CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     Boolean ret;
     CFDictionaryRef query = createQuery(attributes);
     
@@ -282,6 +285,32 @@ CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     CFRelease(query);
     
     return ret;
+}
+
+CFTypeRef
+CUIKeychainCredentialProvider::extractPassword(CFDictionaryRef attributes, CFErrorRef *error)
+{
+    CFTypeRef password = NULL;
+    CFMutableDictionaryRef query;
+    CFDataRef result = NULL;
+     
+    if (error)
+        *error = NULL;
+ 
+    query = createQuery(attributes);
+    if (query) {
+        CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue);
+        
+        SecItemCopyMatching(query, (CFTypeRef *)&result);
+    
+        if (result) {
+            password = CFStringCreateFromExternalRepresentation(CFGetAllocator(attributes), result, kCFStringEncodingUTF8);
+            CFRelease(result);
+        }
+        CFRelease(query);
+    }
+
+    return password;
 }
 
 CFArrayRef

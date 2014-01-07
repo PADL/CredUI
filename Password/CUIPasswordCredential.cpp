@@ -109,10 +109,21 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL,
                                        ^(CUIFieldRef field, CFTypeRef value) {
-                                           if (hasPlaceholderPassword())
-                                               syncPersistedPassword();
-                                       });
-    
+        CUICredentialPersistence *persistence;
+
+        if (hasPlaceholderPassword()) {
+            persistence = CUICreatePersistenceForSource(_controller, CUIGetAttributeSource(_attributes));
+            if (persistence) {
+                CFTypeRef password = persistence->extractPassword(_attributes, NULL);
+                if (password) {
+                    CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
+                    CFRelease(password);
+                }
+                persistence->Release();
+            }
+        }
+    });
+
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, cFields, &kCFTypeArrayCallBacks);
     if (_fields == NULL)
         return false;
@@ -134,48 +145,6 @@ const CFStringRef CUIPasswordCredential::getCredentialStatus(void)
         return kCUICredentialReturnCredentialFinished;
     else
         return kCUICredentialNotFinished;
-}
-
-/*
- * If we have a placeholder password, then get the actual password.
- */
-void CUIPasswordCredential::syncPersistedPassword(void)
-{
-    switch (CUIGetAttributeSource(_attributes)) {
-        case kCUIAttributeSourceKeychain: {
-            SecKeychainItemRef itemRef = (SecKeychainItemRef)CFDictionaryGetValue(_attributes, kCUIAttrSecKeychainItemRef);
-            
-            if (itemRef) {
-                CFMutableDictionaryRef query;
-                CFDataRef result = NULL;
-                
-                query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-                if (query) {
-                    CFDictionarySetValue(query, kSecValueRef, itemRef);
-                    CFDictionaryAddValue(query, kSecReturnData, kCFBooleanTrue);
-                    
-                    SecItemCopyMatching(query, (CFTypeRef *)&result);
-                    
-                    if (result) {
-                        CFStringRef password = CFStringCreateFromExternalRepresentation(CFGetAllocator(_attributes), result, kCFStringEncodingUTF8);
-                        if (password) {
-                            CFDictionarySetValue(_attributes, kCUIAttrCredentialPassword, password);
-                            CFRelease(password);
-                        }
-                        CFRelease(result);
-                    }
-                    CFRelease(query);
-                }
-            }
-            break;
-        }
-        case kCUIAttributeSourceGSSItem:
-            // We *could* lookup the GSS item password in the keychain, but that'd be an abstraction violation
-            break;
-        case kCUIAttributeSourceUser:
-        default:
-            break;
-    }
 }
 
 /*

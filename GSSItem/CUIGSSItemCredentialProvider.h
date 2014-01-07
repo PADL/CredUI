@@ -61,6 +61,9 @@ public:
     Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
     Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error);
     Boolean deleteCredential(CUICredentialRef credential, CFErrorRef *error);
+    CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error) {
+        return NULL;
+    }
     
     CUIGSSItemCredentialProvider() {
         CFPlugInAddInstanceForFactory(kGSSItemCredentialProviderFactoryID);

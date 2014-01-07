@@ -86,12 +86,6 @@ public:
             return false;
         
         _credential = (CUICredentialRef)CFRetain(credential);
-        
-        _item = (GSSItemRef)CFDictionaryGetValue(getAttributes(), kCUIAttrGSSItemRef);
-        if (_item == NULL)
-            return false;
-        CFRetain(_item);
-        
         _usageFlags = usageFlags;
         _persistence = persistence;
         _persistence->AddRef();
@@ -127,22 +121,18 @@ public:
 
     CUIGSSItemCredential() {
         _retainCount = 1;
-        _item = NULL;
         _credential = NULL;
         _usageFlags = 0;
     }
     
 private:
     int32_t _retainCount;
-    GSSItemRef _item;
     CUICredentialRef _credential;
     CUIUsageFlags _usageFlags;
     CUIGSSItemCredentialProvider *_persistence;
     
 protected:
     ~CUIGSSItemCredential() {
-        if (_item)
-            CFRelease(_item);
         if (_credential)
             CFRelease(_credential);
     }
