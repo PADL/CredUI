@@ -59,6 +59,13 @@ static Boolean _CUICredentialEqual(CFTypeRef cf1, CFTypeRef cf2)
     return equals;
 }
 
+static CFHashCode _CUICredentialHash(CFTypeRef cf)
+{
+    CUICredentialRef cred = (CUICredentialRef)cf;
+
+    return (CFHashCode)cred->_context;
+}
+
 static CFStringRef _CUICredentialCopyDescription(CFTypeRef cf)
 {
     CUICredentialRef cred = (CUICredentialRef)cf;
@@ -82,7 +89,7 @@ static const CFRuntimeClass _CUICredentialClass = {
     NULL, // copy
     _CUICredentialDeallocate,
     _CUICredentialEqual,
-    NULL, // _CUICredentialHash,
+    _CUICredentialHash,
     NULL, // _CUICredentialCopyFormattingDesc
     _CUICredentialCopyDescription
 };

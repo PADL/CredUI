@@ -64,7 +64,20 @@ static Boolean _CUIFieldEqual(CFTypeRef cf1, CFTypeRef cf2)
     }
     
     return equal;
-    
+}
+
+static CFHashCode _CUIFieldHash(CFTypeRef cf)
+{
+    CUIFieldRef f = (CUIFieldRef)cf;
+    CFHashCode hash;
+
+    hash = (CFHashCode)f->_class;
+    if (f->_title)
+        hash ^= CFHash(f->_title);
+    if (f->_defaultValue)
+        hash ^= CFHash(f->_defaultValue);
+
+    return hash;
 }
 
 static CFStringRef _CUIFieldCopyDescription(CFTypeRef cf)
@@ -87,7 +100,7 @@ static const CFRuntimeClass _CUIFieldClass = {
     _CUIFieldCopy, // copy
     _CUIFieldDeallocate,
     _CUIFieldEqual,
-    NULL, // _CUIFieldHash,
+    _CUIFieldHash,
     NULL, // _CUICopyFormattingDesc
     _CUIFieldCopyDescription
 };
