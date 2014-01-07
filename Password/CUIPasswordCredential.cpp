@@ -11,6 +11,11 @@
 #include "CUIPasswordCredential.h"
 #include "CUIProviderUtilities.h"
 
+/*
+ * The password credential provider is intended to be as decoupled from the persistence
+ * credential providers as possible. However, there is a leaky abstraction in that we do
+ * choose one of the GSSItem or keychain providers to store new credentials. XXX
+ */
 Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controller,
                                                                CUIUsageFlags usageFlags,
                                                                CFDictionaryRef attributes,
@@ -26,24 +31,13 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
     _controller = (CUIControllerRef)CFRetain(controller);
     
     if (attributes) {
-        CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
-
         if (!CUIShouldEnumerateForPasswordClass(attributes))
             return false;
         
-        /*
-         * If the attributes came from GSSItem/keychain, then don't show them unless
-         * they have an associated password and the caller wants that source.
-         */
-        if (persistenceFactoryID) {
-            if (CFEqual(persistenceFactoryID, kGSSItemCredentialProviderFactoryID)) {
-                if ((usageFlags & kCUIUsageFlagsGeneric) || !hasPassword(attributes))
-                    return false;
-            } else if (CFEqual(persistenceFactoryID, kKeychainCredentialProviderFactoryID)) {
-                if ((usageFlags & kCUIUsageFlagsGeneric) == 0 || !hasPassword(attributes))
-                    return false;
-            }
-        }
+        /* Ignore persisted credentials without a password, they're no use to us. */
+        CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+        if (persistenceFactoryID && !hasPassword(attributes))
+            return false;
         
         /*
          * Get the default user name for display.
@@ -159,7 +153,7 @@ Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
 
     /*
      * We only persist new credentials, that is, credentials that are not
-     * created by the keychain os GSSItem providers.
+     * created by the keychain or GSSItem providers.
      */
     if (CUIIsPersistedCredential(_attributes))
         return true;
