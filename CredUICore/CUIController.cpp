@@ -116,6 +116,8 @@ CUIControllerCreate(CFAllocatorRef allocator,
 
 struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
+    CFDictionaryRef attributes;
+    CFUUIDRef factory;
     CUIProvider *provider;
     void (^callback)(CUICredentialRef, CFErrorRef);
     Boolean didEnumerate;
@@ -136,27 +138,30 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
 static Boolean
 _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
                                                        CFDictionaryRef attributes,
+                                                       CFUUIDRef factory,
                                                        CUIProvider *provider,
                                                        void (^cb)(CUICredentialRef, CFErrorRef))
 {
-    CFArrayRef matchingCredContexts;
+    CFArrayRef matchingCreds;
     CFErrorRef error = NULL;
     
     CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
+        .attributes = attributes,
+        .factory = factory,
         .provider = provider,
         .callback = cb,
         .didEnumerate = false
     };
     
-    matchingCredContexts = provider->copyMatchingCredentials(attributes, &error);
-    if (matchingCredContexts) {
-        CFArrayApplyFunction(matchingCredContexts,
-                             CFRangeMake(0, CFArrayGetCount(matchingCredContexts)),
+    matchingCreds = provider->copyMatchingCredentials(attributes, &error);
+    if (matchingCreds) {
+        CFArrayApplyFunction(matchingCreds,
+                             CFRangeMake(0, CFArrayGetCount(matchingCreds)),
                              _CUIEnumerateMatchingCredentialsForProviderCallback,
                              (void *)&enumContext);
         
-        CFRelease(matchingCredContexts);
+        CFRelease(matchingCreds);
     } else if (error) {
         cb(NULL, error);
         CFRelease(error);
@@ -194,6 +199,7 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
                                                                               attributes,
+                                                                              factory,
                                                                               provider,
                                                                               cb);
     }

@@ -11,6 +11,9 @@
 #include "CUIPasswordCredential.h"
 #include "CUIProviderUtilities.h"
 
+static CFStringRef
+kPasswordCredentialProvider = CFSTR("com.padl.CredUI.Providers.PasswordCredentialProvider");
+
 Boolean
 CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controller,
                                                        CUIUsageFlags usageFlags,
@@ -47,7 +50,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
     /*
      * Set some default attributes for this credential.
      */ 
-    CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PasswordCredentialProvider"));
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, kPasswordCredentialProvider);
     if (usageFlags & kCUIUsageFlagsGeneric) {
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     } else {
@@ -145,7 +148,9 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
     Boolean ret = false;
     CUICredentialPersistence *persistence;
     CFTypeRef attrClass;
-    CFUUIDRef factoryID;
+    CFBundleRef bundle;
+    CFStringRef factorySelector;
+    CFTypeRef factoryIDString;
     
     if (error)
         *error = NULL;
@@ -157,24 +162,27 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
     if (CUIIsPersistedCredential(_attributes))
         return true;
 
-    /*
-     * Now, unfortunately, we have the one leaky abstraction between the persistence
-     * providers and this provider. We need to choose somewhere to store new credentials
-     * and we do that by selecting one of the keychain or GSSItem providers based on
-     * whether this is a generic credential or not. Possibly we could make it a
-     * configuration item as to where to store new credentials. XXX
-     */
     attrClass = CFDictionaryGetValue(_attributes, kCUIAttrClass); 
+    if (attrClass == NULL)
+        return false;
 
+    bundle = CFBundleGetBundleWithIdentifier(kPasswordCredentialProvider);
     if (CFEqual(attrClass, kCUIAttrClassGeneric))
-        factoryID = kKeychainCredentialProviderFactoryID;
+        factorySelector = CFSTR("CUIGenericPersistenceProviderFactory");
     else
-        factoryID = kGSSItemCredentialProviderFactoryID;
+        factorySelector = CFSTR("CUIPersistenceProviderFactory");
 
-    persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
-    if (persistence) {
-        ret = persistence->addCredentialWithAttributes(_attributes, error);
-        persistence->Release();
+    factoryIDString = CFBundleGetValueForInfoDictionaryKey(bundle, factorySelector);
+    if (factoryIDString && CFGetTypeID(factoryIDString) == CFStringGetTypeID()) {
+        CFUUIDRef factoryID = CFUUIDCreateFromString(kCFAllocatorDefault, (CFStringRef)factoryIDString);
+        if (factoryID) {
+            persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
+            if (persistence) {
+                ret = persistence->addCredentialWithAttributes(_attributes, error);
+                persistence->Release();
+            }
+            CFRelease(factoryID);
+        }
     }
 
     return ret;

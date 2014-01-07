@@ -16,6 +16,9 @@
 static gss_OID_desc GSSBrowserIDAes128MechDesc =
 { 10, (void *)"\x2B\x06\x01\x04\x01\xA9\x4A\x18\x01\x11" };
 
+static CFStringRef
+kPersonaCredentialProvider = CFSTR("com.padl.CredUI.Providers.PersonaCredentialProvider");
+
 static CFStringRef CUIPersonaMakeGssTargetName(gss_name_t name)
 {
     OM_uint32 major, minor;
@@ -99,7 +102,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     
     CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassBrowserID);
     CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
-    CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("PersonaCredentialProvider"));
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, kPersonaCredentialProvider);
 
     return true;
 }
