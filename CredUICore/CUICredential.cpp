@@ -163,7 +163,7 @@ CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 }
 
 static Boolean
-__CUICredentialHasMandatoryKeys(CUICredentialRef cred)
+_CUICredentialHasMandatoryKeys(CUICredentialRef cred)
 {
     CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
     
@@ -174,7 +174,7 @@ __CUICredentialHasMandatoryKeys(CUICredentialRef cred)
 }
 
 static Boolean
-__CUICredentialIsReturnable(CUICredentialRef cred)
+_CUICredentialIsReturnable(CUICredentialRef cred)
 {
     CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
     CFTypeRef status = CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus);
@@ -193,8 +193,8 @@ CUICredentialCanSubmit(CUICredentialRef cred)
 {
     CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "canSubmit");
 
-    return __CUICredentialHasMandatoryKeys(cred) &&
-           __CUICredentialIsReturnable(cred);
+    return _CUICredentialHasMandatoryKeys(cred) &&
+           _CUICredentialIsReturnable(cred);
 }
 
 CUI_EXPORT void
@@ -227,16 +227,16 @@ CUICredentialDidBecomeDeselected(CUICredentialRef cred)
         cred->_context->didBecomeDeselected();
 }
 
-struct __CUICredentialFilterFieldsContext {
+struct CUICredentialFilterFieldsContext {
     Boolean (^predicate)(CUIFieldRef);
     CFMutableArrayRef array;
 };
 
 static void
-__CUICredentialFilterFieldsWithPredicate(const void *value, void *_context)
+_CUICredentialFilterFieldsWithPredicate(const void *value, void *_context)
 {
     CUIFieldRef field = (CUIFieldRef)value;
-    __CUICredentialFilterFieldsContext *context = (__CUICredentialFilterFieldsContext *)_context;
+    CUICredentialFilterFieldsContext *context = (CUICredentialFilterFieldsContext *)_context;
     
     if (context->predicate(field))
         CFArrayAppendValue(context->array, field);
@@ -247,7 +247,7 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
                                      Boolean (^predicate)(CUIFieldRef field))
 {
     CFArrayRef fields = CUICredentialGetFields(cred);
-    __CUICredentialFilterFieldsContext context;
+    CUICredentialFilterFieldsContext context;
     
     if (fields == NULL)
         return NULL;
@@ -257,7 +257,7 @@ CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
 
     CFArrayApplyFunction(fields,
                          CFRangeMake(0, CFArrayGetCount(fields)),
-                         __CUICredentialFilterFieldsWithPredicate,
+                         _CUICredentialFilterFieldsWithPredicate,
                          (void *)&context);
     
     return context.array;

@@ -20,22 +20,6 @@
 #include <CredUICore/CredUICore.h>
 #include "CFBridgeHelper.h"
 
-#ifdef __cplusplus
-static inline void
-__CUISetter(CFTypeRef &dst, CFTypeRef src)
-{
-    if (dst != src) {
-        if (dst) {
-            CFRelease(dst);
-            dst = NULL;
-        }
-        if (src) {
-            dst = CFRetain(src);
-        }
-    }
-}
-#endif /* __cplusplus */
-
 struct __CUIController {
     CFRuntimeBase _base;
     CFArrayRef _factories;

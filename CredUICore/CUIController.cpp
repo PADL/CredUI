@@ -10,6 +10,20 @@
 
 static CFTypeID _CUIControllerTypeID = _kCFRuntimeNotATypeID;
 
+static inline void
+_CUISetter(CFTypeRef &dst, CFTypeRef src)
+{
+    if (dst != src) {
+        if (dst) {
+            CFRelease(dst);
+            dst = NULL;
+        }
+        if (src) {
+            dst = CFRetain(src);
+        }
+    }
+}
+
 static void _CUIControllerDeallocate(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
@@ -92,7 +106,7 @@ CUIControllerCreate(CFAllocatorRef allocator,
     return controller;
 }
 
-struct __CUIEnumerateCredentialContext {
+struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CUIProvider *provider;
     void (^callback)(CUICredentialRef, CFErrorRef);
@@ -100,9 +114,9 @@ struct __CUIEnumerateCredentialContext {
 };
 
 static void
-__CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_context)
+_CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_context)
 {
-    __CUIEnumerateCredentialContext *enumContext = (__CUIEnumerateCredentialContext *)_context;
+    CUIEnumerateCredentialContext *enumContext = (CUIEnumerateCredentialContext *)_context;
     CUICredentialRef cred = (CUICredentialRef)value;
     
     if (cred) {
@@ -112,7 +126,7 @@ __CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_c
 }
 
 static Boolean
-__CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
+_CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
                                                        CFDictionaryRef attributes,
                                                        CUIProvider *provider,
                                                        void (^cb)(CUICredentialRef, CFErrorRef))
@@ -120,7 +134,7 @@ __CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controll
     CFArrayRef matchingCredContexts;
     CFErrorRef error = NULL;
     
-    __CUIEnumerateCredentialContext enumContext = {
+    CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
         .provider = provider,
         .callback = cb,
@@ -131,7 +145,7 @@ __CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controll
     if (matchingCredContexts) {
         CFArrayApplyFunction(matchingCredContexts,
                              CFRangeMake(0, CFArrayGetCount(matchingCredContexts)),
-                             __CUIEnumerateMatchingCredentialsForProviderCallback,
+                             _CUIEnumerateMatchingCredentialsForProviderCallback,
                              (void *)&enumContext);
         
         CFRelease(matchingCredContexts);
@@ -170,10 +184,10 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
         if (skipThisProvider)
             continue;
         
-        didEnumerate |= __CUIControllerEnumerateMatchingCredentialsForProvider(controller,
-                                                                               attributes,
-                                                                               provider,
-                                                                               cb);
+        didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
+                                                                              attributes,
+                                                                              provider,
+                                                                              cb);
     }
 
     if (items)
@@ -191,7 +205,7 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
 }
 
 static void
-__CUICopyMutableAttributesKeys(const void *key, const void *value, void *context)
+_CUICopyMutableAttributesKeys(const void *key, const void *value, void *context)
 {
     // XXX probably should filter these
     CFDictionarySetValue((CFMutableDictionaryRef)context, key, value);
@@ -200,7 +214,7 @@ __CUICopyMutableAttributesKeys(const void *key, const void *value, void *context
 CUI_EXPORT void
 CUIControllerSetAttributes(CUIControllerRef controller, CFDictionaryRef attributes)
 {
-    CFDictionaryApplyFunction(attributes, __CUICopyMutableAttributesKeys, (void *)controller->_attributes);
+    CFDictionaryApplyFunction(attributes, _CUICopyMutableAttributesKeys, (void *)controller->_attributes);
 }
 
 CUI_EXPORT CFDictionaryRef
@@ -212,7 +226,7 @@ CUIControllerGetAttributes(CUIControllerRef controller)
 CUI_EXPORT void
 CUIControllerSetAuthError(CUIControllerRef controller, CFErrorRef authError)
 {
-    __CUISetter((CFTypeRef &)controller->_authError, authError);
+    _CUISetter((CFTypeRef &)controller->_authError, authError);
 }
 
 CUI_EXPORT CFErrorRef
@@ -232,11 +246,11 @@ CUIControllerSetCredUIContext(CUIControllerRef controller,
         return false;
     
     if (whichProps & kCUICredUIContextPropertyParentWindow)
-        __CUISetter(cuic->parentWindow, uic->parentWindow);
+        _CUISetter(cuic->parentWindow, uic->parentWindow);
     if (whichProps & kCUICredUIContextPropertyMessageText)
-        __CUISetter((CFTypeRef &)cuic->messageText, (CFTypeRef)uic->messageText);
+        _CUISetter((CFTypeRef &)cuic->messageText, (CFTypeRef)uic->messageText);
     if (whichProps & kCUICredUIContextPropertyTitleText)
-        __CUISetter((CFTypeRef &)cuic->titleText, (CFTypeRef)uic->titleText);
+        _CUISetter((CFTypeRef &)cuic->titleText, (CFTypeRef)uic->titleText);
     
     return true;
 }
@@ -250,7 +264,7 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 CUI_EXPORT void
 CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef gssContextHandle)
 {
-    __CUISetter(controller->_gssContextHandle, gssContextHandle);
+    _CUISetter(controller->_gssContextHandle, gssContextHandle);
 }
 
 CUI_EXPORT CFTypeRef
@@ -262,7 +276,7 @@ CUIControllerGetGSSContextHandle(CUIControllerRef controller)
 CUI_EXPORT void
 CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef targetName)
 {
-    __CUISetter((CFTypeRef &)controller->_targetName, targetName);
+    _CUISetter((CFTypeRef &)controller->_targetName, targetName);
 }
 
 CUI_EXPORT CFTypeRef
