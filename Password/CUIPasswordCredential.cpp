@@ -19,14 +19,11 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
     CFStringRef defaultUsername = NULL;
     CUIFieldRef fields[4] = { 0 };
     size_t cFields = 0;
-    CFTypeRef targetName;
     
     if (error != NULL)
         *error = NULL;
     
-    targetName = CUIControllerGetTargetName(controller);
-    if (targetName)
-        _targetName = CFRetain(targetName);
+    _controller = (CUIControllerRef)CFRetain(controller);
     
     if (attributes) {
         if (!CUIShouldEnumerateForPasswordClass(attributes))
@@ -186,8 +183,9 @@ void CUIPasswordCredential::syncPersistedPassword(void)
  */
 Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
 {
-    Boolean ret;
-
+    Boolean ret = false;
+    CUICredentialPersistence *persistence;
+    
     if (error)
         *error = NULL;
 
@@ -198,10 +196,12 @@ Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
     if (CUIGetAttributeSource(_attributes) != kCUIAttributeSourceUser)
         return true;
     
-    if (_generic)
-        ret = CUIKeychainSave(_attributes, _targetName, error);
-    else
-        ret = CUIGSSItemSave(_attributes, _targetName, error);
+    persistence = CUICreatePersistenceForSource(_controller,
+                                                _generic ? kCUIAttributeSourceKeychain : kCUIAttributeSourceGSSItem);
+    if (persistence) {
+        ret = persistence->addCredentialWithAttributes(_attributes, error);
+        persistence->Release();
+    }
 
     return ret;
 }

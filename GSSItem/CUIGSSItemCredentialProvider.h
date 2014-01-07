@@ -9,6 +9,75 @@
 #ifndef __CredUI__GSSItemCredentialProvider__
 #define __CredUI__GSSItemCredentialProvider__
 
-class GSSItemCredentialProvider;
+
+class CUIGSSItemCredentialProvider : public CUIProvider, public CUICredentialPersistence {
+    
+private:
+    int32_t _retainCount;
+    CUIControllerRef _controller;
+    CUIUsageScenario _usageScenario;
+    CUIUsageFlags _usageFlags;
+    
+public:
+    ULONG AddRef(void) {
+        return OSAtomicIncrement32Barrier(&_retainCount);
+    }
+    
+    ULONG Release(void) {
+        int32_t retainCount = OSAtomicDecrement32Barrier(&_retainCount);
+        
+        if (retainCount <= 0) {
+            delete this;
+            return 0;
+        }
+        return retainCount;
+    }
+    
+    HRESULT QueryInterface(REFIID riid, void **ppv) {
+        CFUUIDRef interfaceID = CFUUIDCreateFromUUIDBytes(kCFAllocatorDefault, riid);
+        
+        if (CFEqual(interfaceID, kCUIProviderInterfaceID) ||
+            CFEqual(interfaceID, IUnknownUUID))
+            *ppv = (CUIProvider *)this;
+        else if (CFEqual(interfaceID, kCUIPersistenceInterfaceID))
+            *ppv = (CUICredentialPersistence *)this;
+        else
+            *ppv = NULL;
+        
+        if (*ppv != NULL)
+            AddRef();
+        
+        CFRelease(interfaceID);
+        
+        return *ppv ? S_OK : E_NOINTERFACE;
+    }
+    
+    Boolean initWithController(CUIControllerRef controller,
+                               CUIUsageScenario usageScenario,
+                               CUIUsageFlags usageFlags,
+                               CFErrorRef *error);
+    
+    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error);
+    Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
+    Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error);
+    Boolean deleteCredential(CUICredentialRef credential, CFErrorRef *error);
+    
+    CUIGSSItemCredentialProvider() {
+        CFPlugInAddInstanceForFactory(kGSSItemCredentialProviderFactoryID);
+        _retainCount = 1;
+        _controller = NULL;
+        _usageScenario = kCUIUsageScenarioInvalid;
+        _usageFlags = 0;
+    }
+    
+protected:
+    
+    ~CUIGSSItemCredentialProvider() {
+        if (_controller)
+            CFRelease(_controller);
+        CFPlugInRemoveInstanceForFactory(kGSSItemCredentialProviderFactoryID);
+    }
+    
+};
 
 #endif /* defined(__CredUI__GSSItemCredentialProvider__) */

@@ -59,6 +59,10 @@ public:
                                                CFErrorRef *error) CF_RETURNS_RETAINED = 0;
 };
 
+class CUICredentialPersistence : public IUnknown {
+public:
+    virtual Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
+};
 #else
 typedef struct CUICredentialContext {
     IUNKNOWN_C_GUTS;
@@ -82,6 +86,11 @@ typedef struct CUIProvider {
                                                             CFDictionaryRef attributes,
                                                             CFErrorRef *error);
 } CUIProvider;
+
+typedef struct CUICredentialPersistence {
+    IUNKNOWN_C_GUTS;
+    Boolean (STDMETHODCALLTYPE *addCredentialWithAttributes)(void *thisPointer, CFDictionaryRef credential, CFErrorRef *error);
+} CUICredentialPersistence;
 #endif /* defined(__cplusplus) */
 
 #ifdef __cplusplus
@@ -96,6 +105,9 @@ extern "C" {
 
 // 20C3A840-6BC4-4B26-B705-43B4C46218E7
 #define kCUICredentialInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x20, 0xC3, 0xA8, 0x40, 0x6B, 0xC4, 0x4B, 0x26, 0xB7, 0x05, 0x43, 0xB4, 0xC4, 0x62, 0x18, 0xE7)
+
+// B4C5A7F1-1297-4AFE-BC26-533803B35389
+#define kCUIPersistenceInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xB4, 0xC5, 0xA7, 0xF1, 0x12, 0x97, 0x4A, 0xFE, 0xBC, 0x26, 0x53, 0x38, 0x03, 0xB3, 0x53, 0x89)
 
 extern const CFStringRef kCUIAttrCredentialStatus;
 
@@ -116,6 +128,9 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 
 CUIProvider *
 __CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
+
+CUICredentialPersistence *
+__CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
 
 #ifdef __cplusplus
 }

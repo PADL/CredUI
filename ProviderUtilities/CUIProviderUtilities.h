@@ -16,19 +16,11 @@
  * item or keychain specific out of CredUICore.
  */
 
-/*
- * Return an attribute dictionary suitable for passing to a GSS item API
- * from a CredUI attribute dictionary.
- */
-extern CFMutableDictionaryRef
-CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
+// 43022342-F1D5-424D-9D99-2973762F046D
+#define kKeychainCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x43, 0x02, 0x23, 0x42, 0xF1, 0xD5, 0x42, 0x4D, 0x9D, 0x99, 0x29, 0x73, 0x76, 0x2F, 0x04, 0x6D)
 
-/*
- * Return an attribute dictionary suitable for passing to a CredUI API
- * from a GSS item attribute dictionary.
- */
-extern CFMutableDictionaryRef
-CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
+// 2F62D1C1-F586-41CC-8096-C90683068DA5
+#define kGSSItemCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x2F, 0x62, 0xD1, 0xC1, 0xF5, 0x86, 0x41, 0xCC, 0x80, 0x96, 0xC9, 0x06, 0x83, 0x06, 0x8D, 0xA5)
 
 /*
  * Determine where attributes originated from. Useful for not creating
@@ -43,29 +35,6 @@ typedef CF_ENUM(CFIndex, CUIAttributeSource) {
 extern CUIAttributeSource
 CUIGetAttributeSource(CFDictionaryRef attributes);
 
-extern Boolean
-CUIGSSItemSave(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
-
-extern CFArrayRef
-CUIKeychainCopyMatching(CFDictionaryRef attributes,
-                        CFTypeRef targetName,
-                        CFErrorRef *error);
-
-extern CFMutableDictionaryRef
-CUICreateKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName, Boolean *pbCUIGeneric);
-
-extern CFMutableDictionaryRef
-CUICreateCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boolean bCUIGeneric);
-    
-extern Boolean
-CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
-                           CFDictionaryRef attributes);
-
-extern Boolean
-CUIKeychainSave(CFDictionaryRef attributes,
-                CFTypeRef targetName,
-                CFErrorRef *error);
-    
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
 
@@ -74,5 +43,8 @@ CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
 
 Boolean
 CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes);
+
+CUICredentialPersistence *
+CUICreatePersistenceForSource(CUIControllerRef controller, CUIAttributeSource source);
 
 #endif /* defined(__CredUI__CUIProviderUtilities__) */

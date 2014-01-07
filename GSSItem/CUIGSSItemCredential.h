@@ -16,8 +16,8 @@
 #include <CredUICore/CredUICore_Private.h>
 
 #include "CUIProviderUtilities.h"
-
 #include "GSSItem.h"
+#include "CUIGSSItemCredentialProvider.h"
 
 /*
  * Return an attribute dictionary suitable for passing to a GSS item API
@@ -33,9 +33,7 @@ CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
 extern CFMutableDictionaryRef
 CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
 
-
 class CUIGSSItemCredential : public CUICredentialContext {
-    
 public:
     
     ULONG AddRef(void) {
@@ -83,7 +81,7 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags) {
+    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags, CUIGSSItemCredentialProvider *persistence) {
         if (credential == NULL)
             return false;
         
@@ -95,6 +93,8 @@ public:
         CFRetain(_item);
         
         _usageFlags = usageFlags;
+        _persistence = persistence;
+        _persistence->AddRef();
         
         return true;
     }
@@ -111,10 +111,20 @@ public:
         CUICredentialDidSubmit(_credential);
     }
  
-    CFDictionaryRef copyItemAttributes(void);
-    Boolean savePersisted(CFErrorRef *error);
-    Boolean deletePersisted(CFErrorRef *error);
+    Boolean savePersisted(CFErrorRef *error) {
+        if (!CUICredentialSavePersisted(_credential, error))
+            return false;
+        
+        return _persistence->updateCredential(_credential, error);
+    }
     
+    Boolean deletePersisted(CFErrorRef *error) {
+        if (!CUICredentialDeletePersisted(_credential, error))
+            return false;
+        
+        return _persistence->deleteCredential(_credential, error);
+    }
+
     CUIGSSItemCredential() {
         _retainCount = 1;
         _item = NULL;
@@ -127,6 +137,7 @@ private:
     GSSItemRef _item;
     CUICredentialRef _credential;
     CUIUsageFlags _usageFlags;
+    CUIGSSItemCredentialProvider *_persistence;
     
 protected:
     ~CUIGSSItemCredential() {

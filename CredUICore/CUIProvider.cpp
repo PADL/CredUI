@@ -171,3 +171,33 @@ cleanup:
     
     return !!controller->_providers;
 }
+
+CUI_EXPORT CUIProvider *
+__CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
+{
+    CFIndex index = CFArrayGetFirstIndexOfValue(controller->_factories,
+                                                CFRangeMake(0, CFArrayGetCount(controller->_factories)),
+                                                (CFTypeRef)factoryID);
+    
+    if (index == kCFNotFound)
+        return NULL;
+    
+    return (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
+}
+
+CUI_EXPORT CUICredentialPersistence *
+__CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
+{
+    IUnknown *iunk = (IUnknown *)__CUIControllerFindProviderByFactoryID(controller, factoryID);
+    CUICredentialPersistence *persistence = NULL;
+    
+    if (iunk == NULL)
+        return NULL;
+    
+    iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUIPersistenceInterfaceID), (void **)&persistence);
+    iunk->Release();
+    
+    return persistence;
+}
+
+

@@ -118,7 +118,7 @@ public:
         _retainCount = 1;
         _fields = NULL;
         _attributes = NULL;
-        _targetName = NULL;
+        _controller = NULL;
     }
 
 private:
@@ -126,7 +126,7 @@ private:
     bool _generic;
     CFArrayRef _fields;
     CFMutableDictionaryRef _attributes;
-    CFTypeRef _targetName;
+    CUIControllerRef _controller;
     
 protected:
     
@@ -135,8 +135,8 @@ protected:
             CFRelease(_fields);
         if (_attributes)
             CFRelease(_attributes);
-        if (_targetName)
-            CFRelease(_targetName);
+        if (_controller)
+            CFRelease(_controller);
     }
 };
 

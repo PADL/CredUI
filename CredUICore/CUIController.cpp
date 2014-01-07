@@ -106,19 +106,6 @@ CUIControllerCreate(CFAllocatorRef allocator,
     return controller;
 }
 
-CUIProvider *
-__CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
-{
-    CFIndex index = CFArrayGetFirstIndexOfValue(controller->_factories,
-                                                CFRangeMake(0, CFArrayGetCount(controller->_factories)),
-                                                (CFTypeRef)factoryID);
-
-    if (index == kCFNotFound)
-        return NULL;
-
-    return (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
-}
-
 struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CUIProvider *provider;

@@ -17,6 +17,7 @@
 
 #include <Security/Security.h>
 
+#include "CUIKeychainCredentialProvider.h"
 #include "CUIProviderUtilities.h"
 
 class CUIKeychainCredential : public CUICredentialContext {
@@ -68,18 +69,15 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags) {
+    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags, CUIKeychainCredentialProvider *provider) {
         if (credential == NULL)
             return false;
         
         _credential = (CUICredentialRef)CFRetain(credential);
-
-        _item = (SecKeychainItemRef)CFDictionaryGetValue(getAttributes(), kCUIAttrSecKeychainItemRef);
-        if (_item == NULL)
-            return false;
-        CFRetain(_item);
-
         _usageFlags = usageFlags;
+        
+        _provider = provider;
+        _provider->AddRef();
         
         return true;
     }
@@ -98,67 +96,22 @@ public:
         CUICredentialDidSubmit(_credential);
     }
     
-    CFDictionaryRef createQuery(void) {
-        CFMutableDictionaryRef query;
-      
-        query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-        if (query == NULL)
-            return NULL;
-        
-        CFDictionarySetValue(query, kSecValueRef, _item);
-        
-        return query;
-    }
-    
-    CFMutableDictionaryRef copyKeychainAttributes(void) {
-        Boolean bCUIGeneric;
-        return CUICreateKeychainAttributesFromCUIAttributes(getAttributes(), NULL, &bCUIGeneric);
-    }
-    
     Boolean savePersisted(CFErrorRef *error) {
         if (!CUICredentialSavePersisted(_credential, error))
             return false;
 
-        Boolean ret = false;
-        CFMutableDictionaryRef keychainAttrs = copyKeychainAttributes();
-        CFDictionaryRef query = createQuery();
-            
-        if (keychainAttrs && query &&
-            CUIKeychainSetPasswordAttr(keychainAttrs, getAttributes())) {
-            ret = (SecItemUpdate(query, keychainAttrs) == errSecSuccess);
-        } else {
-            ret = false;
-        }
-        
-        if (query)
-            CFRelease(query);
-        if (keychainAttrs)
-            CFRelease(keychainAttrs);
-        
-        return ret;
+        return _provider->updateCredential(_credential, error);
     }
     
     Boolean deletePersisted(CFErrorRef *error) {
         if (!CUICredentialDeletePersisted(_credential, error))
             return false;
         
-        Boolean ret;
-        CFDictionaryRef query;
-        
-        query = createQuery();
-        if (query == NULL)
-            return false;
-        
-        ret = (SecItemDelete(query) == errSecSuccess);
-        
-        CFRelease(query);
-        
-        return ret;
+        return _provider->deleteCredential(_credential, error);
     }
     
     CUIKeychainCredential() {
         _retainCount = 1;
-        _item = NULL;
         _credential = NULL;
         _usageFlags = 0;
     }
@@ -166,15 +119,15 @@ public:
 private:
     int32_t _retainCount;
     CUICredentialRef _credential;
-    SecKeychainItemRef _item;
     CUIUsageFlags _usageFlags;
+    CUIKeychainCredentialProvider *_provider;
     
 protected:
     ~CUIKeychainCredential() {
         if (_credential)
             CFRelease(_credential);
-        if (_item)
-            CFRelease(_item);
+        if (_provider)
+            _provider->Release();
     }
 };
 #endif /* defined(__CredUI__CUIKeychainCredential__) */
