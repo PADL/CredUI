@@ -49,8 +49,8 @@ _CUIKeychainDefaultService(Boolean bCUIGeneric)
     return bCUIGeneric ? credUI : gss;
 }
 
-static CFMutableDictionaryRef
-_CUICreateCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boolean bCUIGeneric)
+CFMutableDictionaryRef
+CUIKeychainCredentialProvider::createCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boolean bCUIGeneric)
 {
     CFMutableDictionaryRef attributes;
     
@@ -86,10 +86,10 @@ _CUICreateCUIAttributesFromKeychainAttributes(CFDictionaryRef keychainAttrs, Boo
     return attributes;
 }
 
-static CFMutableDictionaryRef
-_CUICreateKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes,
-                                              CFTypeRef targetName,
-                                              Boolean *pbCUIGeneric = NULL)
+CFMutableDictionaryRef
+CUIKeychainCredentialProvider::createKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes,
+                                                                         CFTypeRef targetName,
+                                                                         Boolean *pbCUIGeneric)
 {
     CFMutableDictionaryRef keychainAttrs;
     CFStringRef name;
@@ -128,16 +128,14 @@ _CUICreateKeychainAttributesFromCUIAttributes(CFDictionaryRef attributes,
     return keychainAttrs;
 }
 
-static CFArrayRef
-_CUIKeychainCopyMatching(CFDictionaryRef attributes,
-                         CFTypeRef targetName,
-                         CFErrorRef *error)
+CFArrayRef
+CUIKeychainCredentialProvider::copyMatching(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error)
 {
     CFMutableDictionaryRef query = NULL;
     CFArrayRef result = NULL;
     Boolean bCUIGeneric;
     
-    query = _CUICreateKeychainAttributesFromCUIAttributes(attributes, targetName, &bCUIGeneric);
+    query = createKeychainAttributesFromCUIAttributes(attributes, targetName, &bCUIGeneric);
     if (query == NULL)
         return NULL;
     
@@ -157,9 +155,8 @@ _CUIKeychainCopyMatching(CFDictionaryRef attributes,
     return result;
 }
 
-static Boolean
-_CUIKeychainSetPasswordAttr(CFMutableDictionaryRef keychainAttrs,
-                            CFDictionaryRef attributes)
+Boolean
+CUIKeychainCredentialProvider::setPasswordAttr(CFMutableDictionaryRef keychainAttrs, CFDictionaryRef attributes)
 {
     CFTypeRef password = CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword);
     
@@ -216,7 +213,7 @@ CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attri
     if (targetName == NULL)
         targetName = _CUIKeychainDefaultService(true);
     
-    keychainAttrs = _CUICreateKeychainAttributesFromCUIAttributes(attributes, targetName, &bCUIGeneric);
+    keychainAttrs = createKeychainAttributesFromCUIAttributes(attributes, targetName, &bCUIGeneric);
     if (keychainAttrs == NULL)
         return false;
     
@@ -232,7 +229,7 @@ CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attri
     CFDictionarySetValue(keychainAttrs, kSecAttrLabel, description);
     CFRelease(description);
     
-    if (!_CUIKeychainSetPasswordAttr(keychainAttrs, attributes)) {
+    if (!setPasswordAttr(keychainAttrs, attributes)) {
         CFRelease(keychainAttrs);
         return false;
     }
@@ -252,11 +249,11 @@ CUIKeychainCredentialProvider::updateCredential(CUICredentialRef credential, CFE
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     Boolean ret = false, bCUIGeneric;
-    CFMutableDictionaryRef keychainAttrs = _CUICreateKeychainAttributesFromCUIAttributes(attributes, NULL, &bCUIGeneric);
+    CFMutableDictionaryRef keychainAttrs = createKeychainAttributesFromCUIAttributes(attributes, NULL, &bCUIGeneric);
     CFDictionaryRef query = createQuery(attributes);
     
     if (keychainAttrs && query &&
-        _CUIKeychainSetPasswordAttr(keychainAttrs, attributes)) {
+        setPasswordAttr(keychainAttrs, attributes)) {
         ret = (SecItemUpdate(query, keychainAttrs) == errSecSuccess);
     } else {
         ret = false;
@@ -322,11 +319,11 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                                                    &kCFTypeArrayCallBacks);
     CFTypeRef targetName = CUIControllerGetTargetName(_controller);
     
-    items = _CUIKeychainCopyMatching(attributes, targetName, error);
+    items = copyMatching(attributes, targetName, error);
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
             CFDictionaryRef keychainAttrs = (CFDictionaryRef)CFArrayGetValueAtIndex(items, index);
-            CFDictionaryRef attrs = _CUICreateCUIAttributesFromKeychainAttributes(keychainAttrs, true);
+            CFDictionaryRef attrs = createCUIAttributesFromKeychainAttributes(keychainAttrs, true);
             
             if (attrs == NULL)
                 continue;
@@ -335,29 +332,29 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                                                          attrs,
                                                          kKeychainCredentialProviderFactoryID,
                                                          ^(CUICredentialRef cred, CFErrorRef err) {
-                                                             CUIKeychainCredential *itemCred;
-                                                             CUICredentialRef credRef;
-                                                             
-                                                             if (cred == NULL)
-                                                                 return;
-                                                             
-                                                             itemCred = new CUIKeychainCredential();
-                                                             if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
-                                                                 itemCred->Release();
-                                                                 return;
-                                                             }
-                                                             
-                                                             credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
-                                                             if (credRef == NULL) {
-                                                                 itemCred->Release();
-                                                                 return;
-                                                             }
-                                                             
-                                                             CFArrayAppendValue(creds, credRef);
-                                                             
-                                                             CFRelease(credRef);
-                                                             itemCred->Release();
-                                                         });
+                 CUIKeychainCredential *itemCred;
+                 CUICredentialRef credRef;
+                 
+                 if (cred == NULL)
+                     return;
+                 
+                 itemCred = new CUIKeychainCredential();
+                 if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
+                     itemCred->Release();
+                     return;
+                 }
+                 
+                 credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
+                 if (credRef == NULL) {
+                     itemCred->Release();
+                     return;
+                 }
+                 
+                 CFArrayAppendValue(creds, credRef);
+                 
+                 CFRelease(credRef);
+                 itemCred->Release();
+             });
             
             CFRelease(attrs);
         }

@@ -68,14 +68,14 @@ _CUITransformAttributes(CFDictionaryRef attrs, bool toGSS)
     return context.transformedAttrs;
 }
 
-static CFMutableDictionaryRef
-_CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes)
+CFMutableDictionaryRef
+CUIGSSItemCredentialProvider::createCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes)
 {
     return _CUITransformAttributes(attributes, false);
 }
 
-static CFMutableDictionaryRef
-_CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
+CFMutableDictionaryRef
+CUIGSSItemCredentialProvider::createGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes)
 {
     CFMutableDictionaryRef gssAttrs = _CUITransformAttributes(attributes, true);
     
@@ -127,13 +127,13 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
                                                    &kCFTypeArrayCallBacks);
     
     if (attributes)
-        gssItemAttributes = _CUICreateGSSItemAttributesFromCUIAttributes(attributes);
+        gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
     
     items = GSSItemCopyMatching(gssItemAttributes, error);
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
             GSSItemRef item = (GSSItemRef)CFArrayGetValueAtIndex(items, index);
-            CFMutableDictionaryRef cuiAttributes = _CUICreateCUIAttributesFromGSSItemAttributes(item->keys); // XXX private data
+            CFMutableDictionaryRef cuiAttributes = createCUIAttributesFromGSSItemAttributes(item->keys); // XXX private data
             
             if (cuiAttributes == NULL)
                 continue;
@@ -141,32 +141,32 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             CFDictionarySetValue(cuiAttributes, kCUIAttrGSSItemRef, item);
             
             __CUIControllerEnumerateCredentialsExcepting(_controller,
-                                                         cuiAttributes,
-                                                         kGSSItemCredentialProviderFactoryID,
-                                                         ^(CUICredentialRef cred, CFErrorRef err) {
-                                                             CUIGSSItemCredential *itemCred;
-                                                             CUICredentialRef credRef;
-                                                             
-                                                             if (cred == NULL)
-                                                                 return;
-                                                             
-                                                             itemCred = new CUIGSSItemCredential();
-                                                             if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
-                                                                 itemCred->Release();
-                                                                 return;
-                                                             }
-                                                             
-                                                             credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
-                                                             if (credRef == NULL) {
-                                                                 itemCred->Release();
-                                                                 return;
-                                                             }
-                                                             
-                                                             CFArrayAppendValue(creds, credRef);
-                                                             
-                                                             CFRelease(credRef);
-                                                             itemCred->Release();
-                                                         });
+                 cuiAttributes,
+                 kGSSItemCredentialProviderFactoryID,
+                 ^(CUICredentialRef cred, CFErrorRef err) {
+                     CUIGSSItemCredential *itemCred;
+                     CUICredentialRef credRef;
+                     
+                     if (cred == NULL)
+                         return;
+                     
+                     itemCred = new CUIGSSItemCredential();
+                     if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
+                         itemCred->Release();
+                         return;
+                     }
+                     
+                     credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
+                     if (credRef == NULL) {
+                         itemCred->Release();
+                         return;
+                     }
+                     
+                     CFArrayAppendValue(creds, credRef);
+                     
+                     CFRelease(credRef);
+                     itemCred->Release();
+                 });
             
             CFRelease(cuiAttributes);
         }
@@ -190,7 +190,7 @@ CUIGSSItemCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attrib
     if (error)
         *error = NULL;
     
-    gssItemAttributes = _CUICreateGSSItemAttributesFromCUIAttributes(attributes);
+    gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
     if (gssItemAttributes == NULL)
         return false;
     
@@ -216,7 +216,7 @@ CUIGSSItemCredentialProvider::updateCredential(CUICredentialRef credential, CFEr
     if (item == NULL)
         return false;
     
-    gssItemAttributes = _CUICreateGSSItemAttributesFromCUIAttributes(attributes);
+    gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
     if (gssItemAttributes == NULL)
         return false;
     

@@ -64,7 +64,10 @@ public:
     CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error) {
         return NULL;
     }
-    
+
+    static CFMutableDictionaryRef createCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
+    static CFMutableDictionaryRef createGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
+
     CUIGSSItemCredentialProvider() {
         CFPlugInAddInstanceForFactory(kGSSItemCredentialProviderFactoryID);
         _retainCount = 1;
