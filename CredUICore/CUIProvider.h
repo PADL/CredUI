@@ -114,6 +114,9 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
                                              CFTypeRef notFactories,
                                              void (^cb)(CUICredentialRef, CFErrorRef));
 
+CUIProvider *
+__CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
+
 #ifdef __cplusplus
 }
 #endif
