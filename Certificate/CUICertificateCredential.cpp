@@ -66,13 +66,16 @@ CUICertificateCredential::initWithSecIdentity(SecIdentityRef identity,
     if (displayName)
         CFDictionarySetValue(_attributes, kCUIAttrNameDisplay, displayName);
 
+    /* Not sure if this is the right thing to do? */
     kerberosName = _CSCopyKerberosPrincipalForCertificate(cert);
-    if (kerberosName == NULL) {
+    if (kerberosName != NULL) {
         CFStringRef name = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%@@WELLKNOWN:COM.APPLE.LKDC"), kerberosName);
         if (name == NULL)
             goto cleanup;
         CFDictionarySetValue(_attributes, kCUIAttrName, name);
         CFRelease(name);
+    } else {
+        goto cleanup;
     }
 
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Certificate"), NULL);
