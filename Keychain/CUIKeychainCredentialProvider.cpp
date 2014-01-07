@@ -121,6 +121,7 @@ CUIKeychainCredentialProvider::copyMatching(CFDictionaryRef attributes, CFTypeRe
     if (query == NULL)
         return NULL;
     
+    CFDictionarySetValue(query, kSecClass, kSecClassGenericPassword);
     CFDictionarySetValue(query, kSecReturnAttributes, kCFBooleanTrue);
     CFDictionarySetValue(query, kSecReturnRef, kCFBooleanTrue);
     CFDictionarySetValue(query, kSecMatchLimit, kSecMatchLimitAll);
@@ -198,7 +199,7 @@ CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attri
     if (keychainAttrs == NULL)
         return false;
     
-    CFStringRef description = CFStringCreateWithFormat(NULL, NULL, CFSTR("CredUI password for %@"),
+    CFStringRef description = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("CredUI password for %@"),
                                                        CFDictionaryGetValue(attributes, kCUIAttrName));
     
     if (description == NULL) {

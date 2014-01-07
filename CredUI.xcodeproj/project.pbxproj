@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D3207E32187C240C00DC2694 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
+		D3207E38187C240C00DC2694 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3207E36187C240C00DC2694 /* InfoPlist.strings */; };
+		D3207E41187C246E00DC2694 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D3207E42187C247200DC2694 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D38469731875452A003EE56B /* Security.framework */; };
+		D3207E45187C24E500DC2694 /* CUICertificateCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3207E43187C24E500DC2694 /* CUICertificateCredential.cpp */; };
+		D3207E48187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3207E46187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp */; };
+		D3207E49187C304500DC2694 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB051186F113A00C43A24 /* CoreServices.framework */; };
 		D32517C3187A8F77000AFF9E /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D32517C5187A9A1F000AFF9E /* CUIGSSItemCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D32517C4187A9A1F000AFF9E /* CUIGSSItemCredential.cpp */; };
 		D32517C8187A9C12000AFF9E /* GSSItem.h in Headers */ = {isa = PBXBuildFile; fileRef = D32517C7187A9C12000AFF9E /* GSSItem.h */; };
@@ -148,6 +155,55 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D3207E3D187C246900DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D3207E3F187C246900DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3AA965418752BCB003852C5;
+			remoteInfo = CUIProviderUtilities;
+		};
+		D3207E4A187C307400DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB02C186ED50800C43A24;
+			remoteInfo = Password;
+		};
+		D3207E4C187C307400DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
+			remoteInfo = GSSItem;
+		};
+		D3207E4E187C307400DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32662D21875403F004C1F57;
+			remoteInfo = Keychain;
+		};
+		D3207E50187C307400DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3207E30187C240C00DC2694;
+			remoteInfo = Certificate;
+		};
+		D3207E52187C307E00DC2694 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3207E30187C240C00DC2694;
+			remoteInfo = Certificate;
+		};
 		D32662C318752D86004C1F57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
@@ -352,6 +408,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D3207E31187C240C00DC2694 /* Certificate.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Certificate.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3207E35187C240C00DC2694 /* Certificate-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Certificate-Info.plist"; sourceTree = "<group>"; };
+		D3207E37187C240C00DC2694 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D3207E39187C240C00DC2694 /* Certificate-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Certificate-Prefix.pch"; sourceTree = "<group>"; };
+		D3207E43187C24E500DC2694 /* CUICertificateCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUICertificateCredential.cpp; sourceTree = "<group>"; };
+		D3207E44187C24E500DC2694 /* CUICertificateCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICertificateCredential.h; sourceTree = "<group>"; };
+		D3207E46187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUICertificateCredentialProvider.cpp; sourceTree = "<group>"; };
+		D3207E47187C24EE00DC2694 /* CUICertificateCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICertificateCredentialProvider.h; sourceTree = "<group>"; };
 		D32517C4187A9A1F000AFF9E /* CUIGSSItemCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIGSSItemCredential.cpp; sourceTree = "<group>"; };
 		D32517C7187A9C12000AFF9E /* GSSItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GSSItem.h; path = ProviderUtilities/GSSItem.h; sourceTree = "<group>"; };
 		D32662BF18752D01004C1F57 /* CUIProviderUtilities.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CUIProviderUtilities.cpp; path = ProviderUtilities/CUIProviderUtilities.cpp; sourceTree = "<group>"; };
@@ -493,6 +557,17 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D3207E2E187C240C00DC2694 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3207E49187C304500DC2694 /* CoreServices.framework in Frameworks */,
+				D3207E42187C247200DC2694 /* Security.framework in Frameworks */,
+				D3207E41187C246E00DC2694 /* CredUICore.framework in Frameworks */,
+				D3207E32187C240C00DC2694 /* CoreFoundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D32662D01875403F004C1F57 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -660,6 +735,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D3207E33187C240C00DC2694 /* Certificate */ = {
+			isa = PBXGroup;
+			children = (
+				D3207E34187C240C00DC2694 /* Supporting Files */,
+				D3207E43187C24E500DC2694 /* CUICertificateCredential.cpp */,
+				D3207E44187C24E500DC2694 /* CUICertificateCredential.h */,
+				D3207E46187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp */,
+				D3207E47187C24EE00DC2694 /* CUICertificateCredentialProvider.h */,
+			);
+			path = Certificate;
+			sourceTree = "<group>";
+		};
+		D3207E34187C240C00DC2694 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D3207E35187C240C00DC2694 /* Certificate-Info.plist */,
+				D3207E36187C240C00DC2694 /* InfoPlist.strings */,
+				D3207E39187C240C00DC2694 /* Certificate-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		D32662D51875403F004C1F57 /* Keychain */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,6 +793,7 @@
 				D3CECCF3187ADFF30006EB36 /* Sample */,
 				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
 				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
+				D3207E33187C240C00DC2694 /* Certificate */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -719,6 +817,7 @@
 				D3B094361877EFBA006DB1DE /* GSSKitUI.framework */,
 				D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */,
 				D3CECCF1187ADFF30006EB36 /* Sample.credprovider */,
+				D3207E31187C240C00DC2694 /* Certificate.credprovider */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1052,6 +1151,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		D3207E30187C240C00DC2694 /* Certificate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3207E3A187C240C00DC2694 /* Build configuration list for PBXNativeTarget "Certificate" */;
+			buildPhases = (
+				D3207E2D187C240C00DC2694 /* Sources */,
+				D3207E2E187C240C00DC2694 /* Frameworks */,
+				D3207E2F187C240C00DC2694 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3207E3E187C246900DC2694 /* PBXTargetDependency */,
+				D3207E40187C246900DC2694 /* PBXTargetDependency */,
+			);
+			name = Certificate;
+			productName = Certificate;
+			productReference = D3207E31187C240C00DC2694 /* Certificate.credprovider */;
+			productType = "com.apple.product-type.bundle";
+		};
 		D32662D21875403F004C1F57 /* Keychain */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D32662DC1875403F004C1F57 /* Build configuration list for PBXNativeTarget "Keychain" */;
@@ -1083,6 +1201,10 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3207E4B187C307400DC2694 /* PBXTargetDependency */,
+				D3207E4D187C307400DC2694 /* PBXTargetDependency */,
+				D3207E4F187C307400DC2694 /* PBXTargetDependency */,
+				D3207E51187C307400DC2694 /* PBXTargetDependency */,
 				D32662CA18753082004C1F57 /* PBXTargetDependency */,
 				D39EB0AD1870407600C43A24 /* PBXTargetDependency */,
 			);
@@ -1175,6 +1297,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3207E53187C307E00DC2694 /* PBXTargetDependency */,
 				D3A80ABE187AE1C600968AFF /* PBXTargetDependency */,
 				D3A7735E1877F09A009F51B7 /* PBXTargetDependency */,
 				D38469761875454B003EE56B /* PBXTargetDependency */,
@@ -1388,11 +1511,20 @@
 				D3B094351877EFBA006DB1DE /* GSSKitUI */,
 				D3B094451877EFBA006DB1DE /* GSSKitUITests */,
 				D3CECCF0187ADFF30006EB36 /* Sample */,
+				D3207E30187C240C00DC2694 /* Certificate */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		D3207E2F187C240C00DC2694 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3207E38187C240C00DC2694 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D32662D11875403F004C1F57 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1499,6 +1631,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D3207E2D187C240C00DC2694 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3207E45187C24E500DC2694 /* CUICertificateCredential.cpp in Sources */,
+				D3207E48187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D32662CF1875403F004C1F57 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1644,6 +1785,41 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D3207E3E187C246900DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D3207E3D187C246900DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E40187C246900DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
+			targetProxy = D3207E3F187C246900DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E4B187C307400DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB02C186ED50800C43A24 /* Password */;
+			targetProxy = D3207E4A187C307400DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E4D187C307400DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
+			targetProxy = D3207E4C187C307400DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E4F187C307400DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32662D21875403F004C1F57 /* Keychain */;
+			targetProxy = D3207E4E187C307400DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E51187C307400DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3207E30187C240C00DC2694 /* Certificate */;
+			targetProxy = D3207E50187C307400DC2694 /* PBXContainerItemProxy */;
+		};
+		D3207E53187C307E00DC2694 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3207E30187C240C00DC2694 /* Certificate */;
+			targetProxy = D3207E52187C307E00DC2694 /* PBXContainerItemProxy */;
+		};
 		D32662C418752D86004C1F57 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
@@ -1782,6 +1958,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		D3207E36187C240C00DC2694 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D3207E37187C240C00DC2694 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		D32662D81875403F004C1F57 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1873,6 +2057,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D3207E3B187C240C00DC2694 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Certificate/Certificate-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "Certificate/Certificate-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Debug;
+		};
+		D3207E3C187C240C00DC2694 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Certificate/Certificate-Prefix.pch";
+				INFOPLIST_FILE = "Certificate/Certificate-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Release;
+		};
 		D32662DD1875403F004C1F57 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2483,6 +2697,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D3207E3A187C240C00DC2694 /* Build configuration list for PBXNativeTarget "Certificate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3207E3B187C240C00DC2694 /* Debug */,
+				D3207E3C187C240C00DC2694 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D32662DC1875403F004C1F57 /* Build configuration list for PBXNativeTarget "Keychain" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

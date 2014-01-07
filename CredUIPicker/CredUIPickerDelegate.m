@@ -52,7 +52,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates];
     
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -101,7 +101,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSItem:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:0];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludeCertificates];
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -124,7 +124,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGeneric:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI];
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI | CUIFlagsExcludeCertificates];
     
     self.picker.title = @"Generic Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -158,6 +158,33 @@ static void testEncodeDecode(CUICredential * cred)
     initiatorCtx.window = self.window;
     
     return [self doInitAcceptGSSContext:initiatorCtx];
+}
+
+- (void)identityPickerDidEndCert:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSModalResponseStop) {
+        testEncodeDecode(identityPicker.selectedCredential);
+        NSLog(@"Cert picker did end: %@", identityPicker.selectedCredential.attributes);
+        (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
+    } else {
+        NSLog(@"Cert picker aborted");
+    }
+}
+
+- (IBAction)showIdentityPickertCert:(id)sender
+{
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate];
+    
+    self.picker.title = @"Certificate Picker";
+    self.picker.message = @"Choose an identity";
+    
+    /* The target name can be a NSString, NSURL or gss_name_t */
+    self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
+    
+    [self.picker runModalForWindow:self.window
+                     modalDelegate:self
+                    didEndSelector:@selector(identityPickerDidEndGSSIC:returnCode:contextInfo:)
+                       contextInfo:NULL];
 }
 
 @end

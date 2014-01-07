@@ -31,6 +31,7 @@ CUI_CONST_TYPE(kCUIAttrTransientDefaultInClass,        kCUIAttrTransientDefaultI
 CUI_CONST_TYPE(kCUIAttrCredentialPassword,             kCUIAttrCredentialPassword);
 CUI_CONST_TYPE(kCUIAttrCredentialStore,                kCUIAttrCredentialStore);
 CUI_CONST_TYPE(kCUIAttrCredentialSecIdentity,          kCUIAttrCredentialSecIdentity);
+CUI_CONST_TYPE(kCUIAttrCredentialSecCertificate,       kCUIAttrCredentialSecCertificate);
 CUI_CONST_TYPE(kCUIAttrCredentialExists,               kCUIAttrCredentialExists);
 CUI_CONST_TYPE(kCUIAttrStatusPersistant,               kCUIAttrStatusPersistant);
 CUI_CONST_TYPE(kCUIAttrStatusAutoAcquire,              kCUIAttrStatusAutoAcquire);

@@ -96,6 +96,7 @@ extern const CFStringRef kCUIAttrTransientDefaultInClass; /* CFBooleanRef */
 extern const CFStringRef kCUIAttrCredentialPassword; /* CFStringRef */
 extern const CFStringRef kCUIAttrCredentialStore; /* CFBooleanRef */
 extern const CFStringRef kCUIAttrCredentialSecIdentity; /* SecIdentityRef */
+extern const CFStringRef kCUIAttrCredentialSecCertificate; /* SecCertificateRef */
 extern const CFStringRef kCUIAttrCredentialExists;
 
 /*

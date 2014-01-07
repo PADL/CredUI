@@ -84,10 +84,8 @@ public:
     }
     
     void didSubmit(void) {
-   }
+    }
     
-    void syncPersistedPassword(void);
-   
     static Boolean hasPlaceholderPassword(CFDictionaryRef attributes) {
         CFTypeRef password = CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword);
        

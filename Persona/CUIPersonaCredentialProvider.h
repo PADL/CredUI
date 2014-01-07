@@ -11,7 +11,7 @@
 
 #include "CredUICore.h"
 
-class PersonaCredentialProvider;
+class CUIPersonaCredentialProvider;
 
 extern const CFStringRef kCUIAttrCredentialBrowserIDAssertion;
 extern const CFStringRef kCUIAttrCredentialBrowserIDIdentity;

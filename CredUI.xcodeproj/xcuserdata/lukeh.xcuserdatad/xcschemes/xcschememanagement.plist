@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>8</integer>
 		</dict>
+		<key>Certificate.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
 		<key>CredUI.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -67,6 +72,21 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>D3207E07187C231500DC2694</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D3207E1A187C23FE00DC2694</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D3207E30187C240C00DC2694</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D32662D21875403F004C1F57</key>
 		<dict>
 			<key>primary</key>

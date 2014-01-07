@@ -45,6 +45,11 @@
                                     <action selector="gssAuthWithIdentityPickerFallback:" target="494" id="dKC-nV-NZL"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Pick Certificates" keyEquivalent="5" id="mwt-Hg-DyM">
+                                <connections>
+                                    <action selector="showIdentityPickertCert:" target="494" id="AKb-Jw-hHx"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
