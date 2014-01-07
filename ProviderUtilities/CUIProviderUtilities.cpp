@@ -43,8 +43,11 @@ CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass)
 }
 
 Boolean
-CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes)
+CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes, CUIUsageFlags usageFlags)
 {
+    if (usageFlags & kCUIUsageFlagsRequireCertificates)
+        return false;
+
     return CUIShouldEnumerateForClass(attributes, kCUIAttrClassKerberos) ||
            CUIShouldEnumerateForClass(attributes, kCUIAttrClassNTLM) ||
            CUIShouldEnumerateForClass(attributes, kCUIAttrClassIAKerb) ||

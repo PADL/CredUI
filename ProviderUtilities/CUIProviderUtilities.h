@@ -29,7 +29,7 @@ Boolean
 CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
 
 Boolean
-CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes);
+CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes, CUIUsageFlags usageFlags);
 
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes);

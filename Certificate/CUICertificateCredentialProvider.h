@@ -76,6 +76,7 @@ public:
     CUICertificateCredentialProvider() {
         CFPlugInAddInstanceForFactory(kCertificateCredentialProviderFactoryID);
         _retainCount = 1;
+        _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
         _usageFlags = 0;
     }

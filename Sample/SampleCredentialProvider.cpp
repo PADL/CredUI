@@ -96,6 +96,7 @@ public:
     SampleCredentialProvider() {
         CFPlugInAddInstanceForFactory(kSampleCredentialProviderFactoryID);
         _retainCount = 1;
+        _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
         _usageFlags = 0;
     }
