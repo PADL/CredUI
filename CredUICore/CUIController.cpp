@@ -114,9 +114,27 @@ CUIControllerCreate(CFAllocatorRef allocator,
     return controller;
 }
 
+static Boolean
+_CUIContainsValueP(CFTypeRef cf, CFTypeRef value)
+{
+    Boolean ret = false;
+
+    if (cf) {
+        if (CFGetTypeID(cf) == CFArrayGetTypeID())
+            ret = CFArrayContainsValue((CFArrayRef)cf,
+                                       CFRangeMake(0, CFArrayGetCount((CFArrayRef)cf)),
+                                       (void *)value);
+        else
+            ret = CFEqual(cf, value);
+    }
+
+    return ret;
+}
+
 struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CFDictionaryRef attributes;
+    CFTypeRef notFactories;
     CFUUIDRef factory;
     CUIProvider *provider;
     void (^callback)(CUICredentialRef, CFErrorRef);
@@ -128,7 +146,15 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
 {
     CUIEnumerateCredentialContext *enumContext = (CUIEnumerateCredentialContext *)_context;
     CUICredentialRef cred = (CUICredentialRef)value;
-    
+
+    CFUUIDRef providerFactoryID = (CFUUIDRef)CFDictionaryGetValue(CUICredentialGetAttributes(cred), kCUIAttrProviderFactoryID);
+    assert(providerFactoryID == NULL || CFGetTypeID(providerFactoryID) == CFUUIDGetTypeID());
+
+    CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(CUICredentialGetAttributes(cred), kCUIAttrPersistenceFactoryID);
+    assert(persistenceFactoryID == NULL || CFGetTypeID(persistenceFactoryID) == CFUUIDGetTypeID());
+
+    assert(CFEqual(providerFactoryID, enumContext->factory) || CFEqual(persistenceFactoryID, enumContext->factory));
+
     if (cred) {
         enumContext->callback(cred, NULL);
         enumContext->didEnumerate = true;
@@ -138,6 +164,7 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
 static Boolean
 _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
                                                        CFDictionaryRef attributes,
+                                                       CFTypeRef notFactories,
                                                        CFUUIDRef factory,
                                                        CUIProvider *provider,
                                                        void (^cb)(CUICredentialRef, CFErrorRef))
@@ -148,6 +175,7 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
     CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
         .attributes = attributes,
+        .notFactories = notFactories,
         .factory = factory,
         .provider = provider,
         .callback = cb,
@@ -183,22 +211,14 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
         CFUUIDRef factory = (CFUUIDRef)CFArrayGetValueAtIndex(controller->_factories, index);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
-        Boolean skipThisProvider = false;
-        
-        if (notFactories) {
-            if (CFGetTypeID(notFactories) == CFArrayGetTypeID())
-                skipThisProvider = CFArrayContainsValue((CFArrayRef)notFactories,
-                                                        CFRangeMake(0, CFArrayGetCount((CFArrayRef)notFactories)),
-                                                        (void *)factory);
-            else
-                skipThisProvider = CFEqual(notFactories, factory);
-        }
+        Boolean skipThisProvider = _CUIContainsValueP(notFactories, factory);
         
         if (skipThisProvider)
             continue;
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
                                                                               attributes,
+                                                                              notFactories,
                                                                               factory,
                                                                               provider,
                                                                               cb);
