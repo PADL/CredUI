@@ -15,22 +15,6 @@
 #include "CUIProviderUtilities.h"
 #include "GSSItem.h"
 
-CUIAttributeSource
-CUIGetAttributeSource(CFDictionaryRef attributes)
-{
-    CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
-
-    if (persistenceFactoryID == NULL)
-        return kCUIAttributeSourceUser;
-
-    if (CFEqual(persistenceFactoryID, kGSSItemCredentialProviderFactoryID))
-        return kCUIAttributeSourceGSSItem;
-    else if (CFEqual(persistenceFactoryID, kKeychainCredentialProviderFactoryID))
-        return kCUIAttributeSourceKeychain;
-    else
-        return kCUIAttributeSourceUnknown;
-}
-
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes)
 {
@@ -62,8 +46,15 @@ Boolean
 CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes)
 {
     return CUIShouldEnumerateForClass(attributes, kCUIAttrClassKerberos) ||
-    CUIShouldEnumerateForClass(attributes, kCUIAttrClassNTLM) ||
-    CUIShouldEnumerateForClass(attributes, kCUIAttrClassIAKerb) ||
-    CUIShouldEnumerateForClass(attributes, kCUIAttrClassGeneric);
+           CUIShouldEnumerateForClass(attributes, kCUIAttrClassNTLM) ||
+           CUIShouldEnumerateForClass(attributes, kCUIAttrClassIAKerb) ||
+           CUIShouldEnumerateForClass(attributes, kCUIAttrClassGeneric);
 }
 
+Boolean
+CUIIsPersistedCredential(CFDictionaryRef attributes)
+{
+    CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+
+    return factoryID && CFGetTypeID(factoryID) == CFUUIDGetTypeID();
+}

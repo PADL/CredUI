@@ -12,7 +12,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
 
-#include "CredUICore.h"
+#include <CredUICore/CredUICore.h>
+#include "CUIProviderUtilities.h"
 
 class CUIPasswordCredential : public CUICredentialContext {
     
@@ -86,15 +87,19 @@ public:
    }
     
     void syncPersistedPassword(void);
-    
-    Boolean hasPlaceholderPassword(void) {
-        CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+   
+    static Boolean hasPlaceholderPassword(CFDictionaryRef attributes) {
+        CFTypeRef password = CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword);
        
         return password && CFEqual(password, kCFBooleanTrue);
     }
+ 
+    Boolean hasPlaceholderPassword(void) {
+        return hasPlaceholderPassword(_attributes);
+    }
 
-    Boolean hasNonPlaceholderPassword(void) {
-        CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+    static Boolean hasNonPlaceholderPassword(CFDictionaryRef attributes) {
+        CFTypeRef password = CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword);
 
         if (password == NULL)
             return false;
@@ -103,9 +108,17 @@ public:
         return (CFGetTypeID(password) == CFStringGetTypeID() && CFStringGetLength((CFStringRef)password)) ||
                (CFGetTypeID(password) == CFDataGetTypeID()   && CFDataGetLength((CFDataRef)password));
     }
-   
+
+    Boolean hasNonPlaceholderPassword(void) {
+        return hasNonPlaceholderPassword(_attributes);
+    }
+
+    static Boolean hasPassword(CFDictionaryRef attributes) {
+        return hasPlaceholderPassword(attributes) || hasNonPlaceholderPassword(attributes);
+    }
+
     Boolean hasPassword(void) {
-        return hasPlaceholderPassword() || hasNonPlaceholderPassword();
+        return hasPassword(_attributes);
     }
  
     Boolean savePersisted(CFErrorRef *error);

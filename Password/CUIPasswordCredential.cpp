@@ -26,6 +26,8 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
     _controller = (CUIControllerRef)CFRetain(controller);
     
     if (attributes) {
+        CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+
         if (!CUIShouldEnumerateForPasswordClass(attributes))
             return false;
         
@@ -33,22 +35,16 @@ Boolean CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef 
          * If the attributes came from GSSItem/keychain, then don't show them unless
          * they have an associated password and the caller wants that source.
          */
-        switch (CUIGetAttributeSource(attributes)) {
-            case kCUIAttributeSourceGSSItem:
-                if ((usageFlags & kCUIUsageFlagsGeneric) ||
-                    !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
-                return false;
-                break;
-            case kCUIAttributeSourceKeychain:
-                if ((usageFlags & kCUIUsageFlagsGeneric) == 0 ||
-                    !CFDictionaryGetValue(attributes, kCUIAttrCredentialPassword))
+        if (persistenceFactoryID) {
+            if (CFEqual(persistenceFactoryID, kGSSItemCredentialProviderFactoryID)) {
+                if ((usageFlags & kCUIUsageFlagsGeneric) || !hasPassword(attributes))
                     return false;
-                break;
-            case kCUIAttributeSourceUser:
-            case kCUIAttributeSourceUnknown:
-                break;
+            } else if (CFEqual(persistenceFactoryID, kKeychainCredentialProviderFactoryID)) {
+                if ((usageFlags & kCUIUsageFlagsGeneric) == 0 || !hasPassword(attributes))
+                    return false;
+            }
         }
-       
+        
         /*
          * Get the default user name for display.
          */
@@ -165,7 +161,7 @@ Boolean CUIPasswordCredential::savePersisted(CFErrorRef *error)
      * We only persist new credentials, that is, credentials that are not
      * created by the keychain os GSSItem providers.
      */
-    if (CUIGetAttributeSource(_attributes) != kCUIAttributeSourceUser)
+    if (CUIIsPersistedCredential(_attributes))
         return true;
 
     CFUUIDRef factoryID = _generic ? kKeychainCredentialProviderFactoryID : kGSSItemCredentialProviderFactoryID;

@@ -67,7 +67,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         /*
          * We can't do anything with stored GSSItems
          */
-        if (CUIGetAttributeSource(attributes) != kCUIAttributeSourceUser)
+        if (CUIIsPersistedCredential(attributes))
             return false;
         
         CFTypeRef attrClass = CFDictionaryGetValue(attributes, kCUIAttrClass);

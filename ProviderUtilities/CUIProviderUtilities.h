@@ -22,20 +22,6 @@
 // 2F62D1C1-F586-41CC-8096-C90683068DA5
 #define kGSSItemCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x2F, 0x62, 0xD1, 0xC1, 0xF5, 0x86, 0x41, 0xCC, 0x80, 0x96, 0xC9, 0x06, 0x83, 0x06, 0x8D, 0xA5)
 
-/*
- * Determine where attributes originated from. Useful for not creating
- * GSS items if they already exist.
- */
-typedef CF_ENUM(CFIndex, CUIAttributeSource) {
-    kCUIAttributeSourceUnknown = -1,
-    kCUIAttributeSourceUser = 0,
-    kCUIAttributeSourceGSSItem,
-    kCUIAttributeSourceKeychain
-};
-
-extern CUIAttributeSource
-CUIGetAttributeSource(CFDictionaryRef attributes);
-
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
 
@@ -44,5 +30,8 @@ CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
 
 Boolean
 CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes);
+
+Boolean
+CUIIsPersistedCredential(CFDictionaryRef attributes);
 
 #endif /* defined(__CredUI__CUIProviderUtilities__) */
