@@ -19,12 +19,25 @@
                      :(GSSMechanism *)mech;
 + (NSError *)GSSError:(OM_uint32)majorStatus :(OM_uint32)minorStatus;
 + (NSError *)GSSError:(OM_uint32)majorStatus;
+
+- (BOOL)_gssContinueNeeded;
+- (BOOL)_gssError;
+- (BOOL)_gssPromptingNeeded;
 @end
 
 @implementation GSSKitUI_ErrorContainer
 @end
 
 @implementation GSSContext (CredUI)
+
+BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
+                                      GSSCredential *gssCredential)
+{
+    GSSName *cuiCredentialName = CFBridgingRelease([cuiCredential copyGSSName]);
+    GSSName *gssCredentialName = gssCredential.name;
+    
+    return [cuiCredentialName isEqualToName:gssCredentialName];
+}
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
@@ -47,7 +60,15 @@
     }
     
     self.targetName = identityPicker.targetName;
-    self.credential = gssCred;
+    
+    /*
+     * If the mechanism returned an error, then we need to create a new credential. If the
+     * mechanism didn't, it's a little more subtle, because the credential provider may
+     * just be updating the context with, for example, trust anchors. Only replace the
+     * context credential if the selected credential name is different.
+     */
+    if ([self.lastError _gssError] || _GSSNeedUpdateContextCredentialP(credential, self.credential))
+        self.credential = gssCred;
     
     errorContainer.error = error;
 }
@@ -62,9 +83,10 @@
     
     identityPicker = [[CUIIdentityPicker alloc] initWithFlags:0 attributes:attributes];
     
-    identityPicker.GSSContextHandle = self;
     identityPicker.title = @"Identity Picker";
     identityPicker.targetName = self.targetName;
+    identityPicker.GSSContextHandle = self;
+    identityPicker.authError = self.lastError;
     
     [identityPicker runModalForWindow:self.window
                         modalDelegate:self
