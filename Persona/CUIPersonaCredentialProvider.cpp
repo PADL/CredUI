@@ -64,7 +64,27 @@ public:
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
         CUICredentialRef credRef;
         CFArrayRef creds;
-        
+
+        /*
+         * Although BrowserID uses certificates, we're going to leave that for providers
+         * that actually deal with X.509 certificates.
+         */
+        if (_usageFlags & kCUIUsageFlagsRequireCertificates)
+            return NULL;
+
+        /*
+         * If the caller asked for BrowserID, make that the default selected credential. If
+         * the caller asked for a different mechanism, then return nothing.
+         */
+        if (attributes) {
+            CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
+
+            if (attrClass && CFEqual(attrClass, kCUIAttrClassBrowserID))
+                *defaultCredentialIndex = 0;
+            else
+                return NULL;
+        }
+ 
         if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();
             return NULL;
