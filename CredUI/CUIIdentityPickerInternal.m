@@ -232,7 +232,8 @@ autoSubmit:
 
 - (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props
 {
-    CUIControllerSetCredUIContext(_controller, props, uic);
+    if (uic)
+        CUIControllerSetCredUIContext(_controller, props, uic);
 }
 
 - (void)setCredUIContext:(CUICredUIContext *)uic

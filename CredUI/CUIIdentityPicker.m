@@ -110,10 +110,3 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 }
 
 @end
-
-/*
- * For internal use by GSSPromptForCredentials and CUIPromptForCredentials only
- */
-@implementation CUIIdentityPicker (PromptForCredentials)
-FORWARD_PROPERTY(CUICredUIContext *,    setCredUIContext,       credUIContext)
-@end

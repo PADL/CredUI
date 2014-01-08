@@ -29,10 +29,11 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     
     identityPicker.targetName = (__bridge id)targetName;
     identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
-    identityPicker.credUIContext = uiContext;
     identityPicker.authError = (__bridge NSError *)authError;
     identityPicker.persist = *pfSave;
  
+    /* Don't clobber the internal parent window, which is the window the CredUI window itself */
+    [identityPicker->_internal setCredUIContext:uiContext properties:kCUICredUIContextPropertyAll & ~(kCUICredUIContextPropertyParentWindow)];
     [identityPicker->_internal _runModal:uiContext ? (__bridge NSWindow *)uiContext->parentWindow : nil];
     
     selectedCredential = identityPicker.selectedCredential;
