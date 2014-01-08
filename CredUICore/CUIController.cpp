@@ -246,7 +246,8 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller)
      * needs more information from the user. In this case it will return
      * GSS_S_CONTINUE_NEEDED | GSS_S_PROMPTING_NEEDED.
      */
-    if (GSSIsPromptingNeeded(controller->_authError) &&
+    if (controller->_gssContextHandle != GSS_C_NO_CONTEXT &&
+        GSSIsPromptingNeeded(controller->_authError) &&
         !GSS_ERROR(CFErrorGetCode(controller->_authError))) {
         CFStringRef attrClass;
         
