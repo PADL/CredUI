@@ -261,11 +261,11 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller)
                                                        0,
                                                        &kCFTypeDictionaryKeyCallBacks,
                                                        &kCFTypeDictionaryValueCallBacks);
-            if (attributes == NULL)
-                return NULL;
-            
-            CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
-            
+            if (attributes)
+                CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
+
+            CFRelease(attrClass);
+
             return attributes;
         }
     }
