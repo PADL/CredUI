@@ -10,6 +10,7 @@
 #define CredUICore_CUICredential_h
 
 #include <CredUICore/CUIBase.h>
+#include <CredUICore/CUIField.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -140,7 +140,7 @@
 		D3B0944B1877EFBA006DB1DE /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
 		D3B37CDE187CD67800117E61 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B37CDD187CD67800117E61 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUITypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */; };
 		D3BED8FA1873B46200623B92 /* CUIProxyCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F81873B46200623B92 /* CUIProxyCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED9031873FA8600623B92 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
@@ -536,7 +536,7 @@
 		D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B37CDD187CD67800117E61 /* CUIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
-		D3BED8F21872F5FA00623B92 /* CUITypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUITypes.h; sourceTree = "<group>"; };
+		D3BED8F21872F5FA00623B92 /* CUIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIProxyCredential.cpp; sourceTree = "<group>"; };
 		D3BED8F81873B46200623B92 /* CUIProxyCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIProxyCredential.h; sourceTree = "<group>"; };
 		D3BED9011873EAA700623B92 /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = usr/lib/libobjc.dylib; sourceTree = SDKROOT; };
@@ -856,6 +856,7 @@
 			children = (
 				D336E284182B51A6009271CD /* Supporting Files */,
 				D336E28A182B51A6009271CD /* CredUI.h */,
+				D3BED8F21872F5FA00623B92 /* CUIBase.h */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D39EB0BD1871302100C43A24 /* CUIField.h */,
 				D39EB0BE1871302100C43A24 /* CUIField.m */,
@@ -876,7 +877,6 @@
 				D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */,
 				D37E31D018743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.h */,
 				D37E31D118743F53005D2B37 /* CUIIdentityPickerInternal+UIFactory.m */,
-				D3BED8F21872F5FA00623B92 /* CUITypes.h */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
 				D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */,
 				D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */,
@@ -1103,7 +1103,7 @@
 				D340885D18763B7400A9FE4F /* CFBridgeHelper.h in Headers */,
 				D32E7A19187A5ECC00A34DDA /* CUICredential+GSS.h in Headers */,
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
-				D3BED8F31872F63C00623B92 /* CUITypes.h in Headers */,
+				D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */,
 				D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */,
 				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,

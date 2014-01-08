@@ -1,13 +1,17 @@
 //
-//  CUITypes.h
+//  CUIBase.h
 //  CredUI
 //
 //  Created by Luke Howard on 31/12/2013.
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef CredUI_CUITypes_h
-#define CredUI_CUITypes_h
+#ifndef CredUI_CUIBase_h
+#define CredUI_CUIBase_h
+
+#ifndef CUI_EXPORT
+#define CUI_EXPORT CF_EXPORT
+#endif
 
 /* CredUI flags, similar to Windows CredUI API */
 typedef NS_OPTIONS(NSUInteger, CUIFlags) {
@@ -45,4 +49,4 @@ typedef NS_ENUM(NSUInteger, CUIAttributeClass) {
     CUIAttributeClassGSSItem                = 4     // attributes for GSSItemAdd
 };
 
-#endif
+#endif /* CredUI_CUIBase_h */
