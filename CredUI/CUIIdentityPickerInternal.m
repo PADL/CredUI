@@ -43,33 +43,37 @@
     NSPanel *panel = [self _newPanel];
     
     self = [super initWithWindow:panel];
-    if (self) {
-        _flags = flags;
-        self.controller = [self _newCUIController:flags];
-        if (attributes)
-            self.attributes = attributes;
-        
-        self.messageTextField = [self _newMessageTextField];
-        [self.window.contentView addSubview:self.messageTextField];
-        
-        self.collectionView = [self _newCollectionViewWithWindow:self.window];
-        [self.window.contentView addSubview:self.collectionView];
-      
-        if (self.flags & CUIFlagsPersist)
-            self.persist = YES;
-        else if (self.flags & CUIFlagsDoNotPersist)
-            self.persist = NO;
-        else
-            _flags |= CUIFlagsShowSaveCheckBox;
-
-        if (self.flags & CUIFlagsShowSaveCheckBox) {
-            self.persistCheckBox = [self _newPersistCheckBox];
-            [self.window.contentView addSubview:self.persistCheckBox];
-        }
-        self.submitButton = [self _newSubmitButton];
-        [self.window.contentView addSubview:self.submitButton];
-    }
+    if (self == nil)
+        return nil;
     
+    _flags = flags;
+    self.controller = [self _newCUIController:flags];
+    if (attributes)
+        self.attributes = attributes;
+    
+    self.messageTextField = [self _newMessageTextField];
+    [self.window.contentView addSubview:self.messageTextField];
+    
+    self.collectionView = [self _newCollectionViewWithWindow:self.window];
+    [self.window.contentView addSubview:self.collectionView];
+  
+    if (self.flags & CUIFlagsPersist)
+        self.persist = YES;
+    else if (self.flags & CUIFlagsDoNotPersist)
+        self.persist = NO;
+    else
+        _flags |= CUIFlagsShowSaveCheckBox;
+
+    if (self.flags & CUIFlagsShowSaveCheckBox) {
+        self.persistCheckBox = [self _newPersistCheckBox];
+        [self.window.contentView addSubview:self.persistCheckBox];
+    }
+    self.submitButton = [self _newSubmitButton];
+    [self.window.contentView addSubview:self.submitButton];
+    
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
+
     return self;
 }
 
@@ -104,10 +108,6 @@
 
 - (void)_populateCredentials
 {
-    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
-    
-    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyParentWindow, &uic);
-    
     self.credsController = [[NSArrayController alloc] init];
     self.credsController.selectsInsertedObjects = NO;
     
@@ -228,30 +228,16 @@ autoSubmit:
     [self.persistCheckBox setState:persist];
 }
 
-#pragma mark - Accessors
+#pragma mark - UI context accessors
 
-- (NSString *)title
+- (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props
 {
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    return (__bridge NSString *)uic->titleText;
+    CUIControllerSetCredUIContext(_controller, props, uic);
 }
 
-- (void)setTitle:(NSString *)aTitle
+- (void)setCredUIContext:(CUICredUIContext *)uic
 {
-    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aTitle };
-    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyTitleText, &uic);
-}
-
-- (NSString *)message
-{
-    const CUICredUIContext *uic = CUIControllerGetCredUIContext(_controller);
-    return (__bridge NSString *)uic->messageText;
-}
-
-- (void)setMessage:(NSString *)aMessage
-{
-    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aMessage };
-    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyMessageText, &uic);
+    [self setCredUIContext:uic properties:kCUICredUIContextPropertyAll];
 }
 
 - (CUICredUIContext *)credUIContext
@@ -259,9 +245,33 @@ autoSubmit:
     return (CUICredUIContext *)CUIControllerGetCredUIContext(_controller);
 }
 
-- (void)setCredUIContext:(CUICredUIContext *)uic
+- (NSString *)title
 {
-    CUIControllerSetCredUIContext(_controller, kCUICredUIContextPropertyAll, uic);
+    return (__bridge NSString *)self.credUIContext->titleText;
+}
+
+- (void)setTitle:(NSString *)aTitle
+{
+    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aTitle };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyTitleText];
+}
+
+- (NSString *)message
+{
+    return (__bridge NSString *)self.credUIContext->messageText;
+}
+
+- (void)setMessage:(NSString *)aMessage
+{
+    CUICredUIContext uic = { .version = 0, .titleText = (__bridge CFStringRef)aMessage };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyMessageText];
+}
+
+#pragma mark - Other accessors
+
+- (CUICredential *)selectedCredential
+{
+    return [[self.credsController selectedObjects] firstObject];
 }
 
 - (NSDictionary *)attributes
@@ -292,11 +302,6 @@ autoSubmit:
 - (void)setTargetName:(id)aTarget
 {
     CUIControllerSetTargetName(_controller, (__bridge CFTypeRef)aTarget);
-}
-
-- (CUICredential *)selectedCredential
-{
-    return [[self.credsController selectedObjects] firstObject];
 }
 
 - (NSString *)targetDisplayName

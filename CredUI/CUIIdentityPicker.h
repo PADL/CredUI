@@ -21,12 +21,13 @@
 __attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
 {
+    @package
     CUIIdentityPickerInternal *_internal;
 }
 
+/* Title and message of CredUI window */
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
-@property(nonatomic, assign) CUICredUIContext *credUIContext;
 
 /* Credentials dictionary */
 @property(nonatomic, copy) NSDictionary *attributes;
@@ -40,11 +41,11 @@ __attribute__((visibility("default")))
 /* CredUI flags */
 @property(nonatomic, readonly) CUIFlags flags;
 
-/* GSS-API context handle for NegoEx exchange */
-@property(nonatomic, retain) GSSContext *GSSContextHandle;
-
 /* Target name to display to user, one of NSString, NSURL or gss_name_T */
 @property(nonatomic, copy) id targetName;
+
+/* GSS-API context handle for NegoEx exchange */
+@property(nonatomic, retain) GSSContext *GSSContextHandle;
 
 /* The credential that was picked */
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;

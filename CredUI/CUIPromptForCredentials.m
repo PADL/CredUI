@@ -33,7 +33,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     identityPicker.authError = (__bridge NSError *)authError;
     identityPicker.persist = *pfSave;
  
-    [identityPicker runModal];
+    [identityPicker->_internal _runModal:uiContext ? (__bridge NSWindow *)uiContext->parentWindow : nil];
     
     selectedCredential = identityPicker.selectedCredential;
     

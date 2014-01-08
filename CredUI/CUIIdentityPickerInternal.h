@@ -42,4 +42,10 @@
 - (void)willSubmitCredential:(id)sender;
 - (void)didSubmitCredential;
 
+- (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props;
+
+@end
+
+@interface CUIIdentityPicker (PromptForCredentials)
+@property(nonatomic, assign) CUICredUIContext *credUIContext;
 @end
