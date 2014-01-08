@@ -25,11 +25,24 @@
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
 
-Boolean
-CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass);
+typedef CF_ENUM(CFIndex, CUIClassMatchResult) {
+    CUIClassAbsent = -1,
+    CUIClassMismatch = 0,
+    CUIClassMatch  = 1
+};
 
-Boolean
-CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes, CUIUsageFlags usageFlags);
+#if 0
+CUIClassMatchResult
+CUIAuthErrorMatchesClass(CUIControllerRef controller, CFStringRef assertedClass);
+#endif
+
+CUIClassMatchResult
+CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass);
+
+CUIClassMatchResult
+CUIShouldEnumerateForPasswordClass(CUIControllerRef controller,
+                                   CUIUsageFlags usageFlags,
+                                   CFDictionaryRef attributes);
 
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes);

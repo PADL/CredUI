@@ -31,27 +31,99 @@ CUIGetDefaultUsername(CFDictionaryRef attributes)
     return defaultUsername;
 }
 
-Boolean
-CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef mechClass)
+#if 0
+static CFStringRef
+_CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid)
 {
-    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
-    
-    if (attrClass == NULL)
-        return TRUE;
-    
-    return CFEqual(attrClass, mechClass);
+    if (errMechName) {
+        if (CFEqual(errMechName, CFSTR("krb5")))
+            return kCUIAttrClassKerberos;
+        else if (CFEqual(errMechName, CFSTR("ntlm")))
+            return kCUIAttrClassNTLM;
+        else if (CFEqual(errMechName, CFSTR("iakerb")))
+            return kCUIAttrClassIAKerb;
+    }
+
+    return errMechOid;
 }
 
 Boolean
-CUIShouldEnumerateForPasswordClass(CFDictionaryRef attributes, CUIUsageFlags usageFlags)
+_CUIIsGSSError(CFErrorRef error)
 {
-    if (usageFlags & kCUIUsageFlagsRequireCertificates)
-        return false;
+    CFStringRef domain = error ? CFErrorGetDomain(error) : NULL;
 
-    return CUIShouldEnumerateForClass(attributes, kCUIAttrClassKerberos) ||
-           CUIShouldEnumerateForClass(attributes, kCUIAttrClassNTLM) ||
-           CUIShouldEnumerateForClass(attributes, kCUIAttrClassIAKerb) ||
-           CUIShouldEnumerateForClass(attributes, kCUIAttrClassGeneric);
+    return domain && CFEqual(domain, CFSTR("org.h5l.GSS"));
+}
+
+CUIClassMatchResult
+CUIAuthErrorMatchesClass(CUIControllerRef controller, CFStringRef assertedClass)
+{
+    CFErrorRef authError = CUIControllerGetAuthError(controller);
+    CUIClassMatchResult ret = CUIClassAbsent;
+
+    if (_CUIIsGSSError(authError)) {
+        CFDictionaryRef userInfo = CFErrorCopyUserInfo(authError);
+
+        if (userInfo) {
+            CFStringRef mechOid = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanismOID"));
+            CFStringRef mechName = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanism"));
+            CFStringRef mechClass = _CUIAttrClassForMech(mechName, mechOid);
+
+            if (mechClass)
+                ret = CFEqual(mechClass, assertedClass) ? CUIClassMatch : CUIClassMismatch;
+
+            CFRelease(userInfo);
+        }
+    }
+
+    return ret;
+}
+#endif
+
+CUIClassMatchResult
+CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass)
+{
+    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
+
+    if (attrClass == NULL)
+        return CUIClassAbsent;
+
+    return CFEqual(attrClass, assertedClass) ? CUIClassMatch : CUIClassMismatch;
+}
+
+static CFStringRef
+_CUIDefaultPasswordCapableClasses[] = {
+    kCUIAttrClassKerberos,
+    kCUIAttrClassNTLM,
+    kCUIAttrClassIAKerb,
+    kCUIAttrClassGeneric
+};
+
+CUIClassMatchResult
+CUIShouldEnumerateForPasswordClass(CUIControllerRef controller,
+                                   CUIUsageFlags usageFlags,
+                                   CFDictionaryRef attributes)
+{
+    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
+    CFIndex i;
+    CUIClassMatchResult ret = CUIClassMismatch;
+
+    if (usageFlags & kCUIUsageFlagsRequireCertificates)
+        return CUIClassMismatch;
+
+    if (attrClass == NULL)
+        return CUIClassAbsent;
+
+    for (i = 0; i < sizeof(_CUIDefaultPasswordCapableClasses) / sizeof(_CUIDefaultPasswordCapableClasses[0]); i++) {
+        CFStringRef thisClass =  _CUIDefaultPasswordCapableClasses[i];
+
+        if (CUIShouldEnumerateForClass(attributes, thisClass)) {
+            ret = CUIClassMatch;
+            break;
+        }
+    }
+
+    return ret;
 }
 
 Boolean

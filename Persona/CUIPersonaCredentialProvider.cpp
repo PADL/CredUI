@@ -8,6 +8,7 @@
 
 #include "CUIPersonaCredentialProvider.h"
 #include "CUIPersonaCredential.h"
+#include "CUIProviderUtilities.h"
 
 #include <libkern/OSAtomic.h>
 
@@ -64,6 +65,7 @@ public:
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
         CUICredentialRef credRef;
         CFArrayRef creds;
+        CUIClassMatchResult classMatch;
 
         /*
          * Although BrowserID uses certificates, we're going to leave that for providers
@@ -72,18 +74,11 @@ public:
         if (_usageFlags & kCUIUsageFlagsRequireCertificates)
             return NULL;
 
-        /*
-         * If the caller asked for BrowserID, make that the default selected credential. If
-         * the caller asked for a different mechanism, then return nothing.
-         */
-        if (attributes) {
-            CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
-
-            if (attrClass && CFEqual(attrClass, kCUIAttrClassBrowserID))
-                *defaultCredentialIndex = 0;
-            else
-                return NULL;
-        }
+        classMatch = CUIShouldEnumerateForClass(attributes, kCUIAttrClassBrowserID);
+        if (classMatch == CUIClassMismatch)
+            return NULL;
+        else if (classMatch == CUIClassMatch)
+            *defaultCredentialIndex = 0;
  
         if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();

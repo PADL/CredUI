@@ -75,9 +75,18 @@ BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 - (void)_runIdentityPicker:(id)errorContainer
 {
     CUIIdentityPicker *identityPicker;
+    GSSMechanism *identityPickerMech = nil;
+    
+    if (self.lastError._gssError)
+        identityPickerMech = [GSSMechanism mechanismWithOIDString:self.lastError.userInfo[GSSMechanismOIDKey]];
+    if (identityPickerMech == nil)
+        identityPickerMech = self.mechanism;
+    
     NSDictionary *attributes = @{
-                                 (__bridge NSString *)kCUIAttrClass: [[self mechanism] name],
-                                 (__bridge NSString *)kCUIAttrName: [[[self credential] name] displayString]
+                                 (__bridge id)kCUIAttrClass : identityPickerMech.mechanismClass,
+                                 (__bridge id)kCUIAttrNameType : (__bridge NSString *)kCUIAttrNameTypeGSSUsername,
+                                 (__bridge id)kCUIAttrName : self.credential.name.displayString,
+                                 (__bridge id)kCUIAttrSupportGSSCredential : (__bridge id)kCFBooleanTrue
                                  };
     
     identityPicker = [[CUIIdentityPicker alloc] initWithFlags:0 attributes:attributes];
