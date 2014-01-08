@@ -15,10 +15,11 @@
 
 #include <GSS/GSS.h>
 
-#define CUI_EXPORT  __attribute__((visibility("default")))
-
 #include <CredUICore/CredUICore.h>
 #include "CFBridgeHelper.h"
+
+#undef CUI_EXPORT
+#define CUI_EXPORT  __attribute__((visibility("default")))
 
 struct __CUIController {
     CFRuntimeBase _base;
@@ -35,6 +36,6 @@ struct __CUIController {
 };
 
 Boolean
-CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
+_CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 
 #endif

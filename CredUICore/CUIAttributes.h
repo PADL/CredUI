@@ -44,16 +44,16 @@ extern "C" {
  * Type is any of the kCUIAttrTypeNNN credential types below, type are
  * strings
  */
-extern const CFStringRef kCUIAttrClass;
-extern const CFStringRef kCUIAttrClassKerberos;
-extern const CFStringRef kCUIAttrClassNTLM;
-extern const CFStringRef kCUIAttrClassIAKerb;
-extern const CFStringRef kCUIAttrClassGeneric;
+CUI_EXPORT const CFStringRef kCUIAttrClass;
+CUI_EXPORT const CFStringRef kCUIAttrClassKerberos;
+CUI_EXPORT const CFStringRef kCUIAttrClassNTLM;
+CUI_EXPORT const CFStringRef kCUIAttrClassIAKerb;
+CUI_EXPORT const CFStringRef kCUIAttrClassGeneric;
     
 /*
  * Item supports acquiring a gss_cred_id_t with GSSItemOperation
  */
-extern const CFStringRef kCUIAttrSupportGSSCredential;
+CUI_EXPORT const CFStringRef kCUIAttrSupportGSSCredential;
 
 /*
  * kCUIAttrNameGSSExportedName, kCUIAttrNameGSSUsername,
@@ -62,28 +62,28 @@ extern const CFStringRef kCUIAttrSupportGSSCredential;
  * kCUIAttrNameDisplay can only be returned, constructed from the
  * other name types after creation.
  */
-extern const CFStringRef kCUIAttrNameType;
-extern const CFStringRef kCUIAttrNameTypeGSSExportedName; /* CFDataRef */
-extern const CFStringRef kCUIAttrNameTypeGSSUsername; /* CFStringRef */
-extern const CFStringRef kCUIAttrNameTypeGSSHostBasedService; /* CFStringRef */
+CUI_EXPORT const CFStringRef kCUIAttrNameType;
+CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSExportedName; /* CFDataRef */
+CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSUsername; /* CFStringRef */
+CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSHostBasedService; /* CFStringRef */
 
-extern const CFStringRef kCUIAttrName;
+CUI_EXPORT const CFStringRef kCUIAttrName;
 
 /* name suiteable to display to user */
-extern const CFStringRef kCUIAttrNameDisplay; /* CFStringRef */
+CUI_EXPORT const CFStringRef kCUIAttrNameDisplay; /* CFStringRef */
 
 /*
  * Unique UUID for this entry
  */
-extern const CFStringRef kCUIAttrUUID; /* CFUUIDRef */
+CUI_EXPORT const CFStringRef kCUIAttrUUID; /* CFUUIDRef */
 
 
 /*
  * If the item is a transient credential it can have associated
  * expiration time.
  */
-extern const CFStringRef kCUIAttrTransientExpire;	/* CFDateRef */
-extern const CFStringRef kCUIAttrTransientDefaultInClass; /* CFBooleanRef */
+CUI_EXPORT const CFStringRef kCUIAttrTransientExpire;	/* CFDateRef */
+CUI_EXPORT const CFStringRef kCUIAttrTransientDefaultInClass; /* CFBooleanRef */
 /*
  * Credential to use to use when acquiring with with
  * GSSItemOperation(kCUIOperationAcquire) or when dealing with a
@@ -93,36 +93,36 @@ extern const CFStringRef kCUIAttrTransientDefaultInClass; /* CFBooleanRef */
  * the cfobject kCUIAttrCredentialExists when queried.
  */
 
-extern const CFStringRef kCUIAttrCredentialPassword; /* CFStringRef */
-extern const CFStringRef kCUIAttrCredentialStore; /* CFBooleanRef */
-extern const CFStringRef kCUIAttrCredentialSecIdentity; /* SecIdentityRef */
-extern const CFStringRef kCUIAttrCredentialSecCertificate; /* SecCertificateRef */
-extern const CFStringRef kCUIAttrCredentialExists;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialPassword; /* CFStringRef */
+CUI_EXPORT const CFStringRef kCUIAttrCredentialStore; /* CFBooleanRef */
+CUI_EXPORT const CFStringRef kCUIAttrCredentialSecIdentity; /* SecIdentityRef */
+CUI_EXPORT const CFStringRef kCUIAttrCredentialSecCertificate; /* SecCertificateRef */
+CUI_EXPORT const CFStringRef kCUIAttrCredentialExists;
 
 /*
  * Status of a credentials
  */
 
-extern const CFStringRef kCUIAttrStatusPersistant;
-extern const CFStringRef kCUIAttrStatusAutoAcquire;
-extern const CFStringRef kCUIAttrStatusAutoAcquireStatus;
-extern const CFStringRef kCUIAttrStatusTransient;
+CUI_EXPORT const CFStringRef kCUIAttrStatusPersistant;
+CUI_EXPORT const CFStringRef kCUIAttrStatusAutoAcquire;
+CUI_EXPORT const CFStringRef kCUIAttrStatusAutoAcquireStatus;
+CUI_EXPORT const CFStringRef kCUIAttrStatusTransient;
 
-extern const CFStringRef kCUIAttrCredentialProvider;
-extern const CFStringRef kCUIAttrCredentialMetaProvider;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialProvider;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialMetaProvider;
 
-extern const CFStringRef kCUIAttrGSSItemRef;
-extern const CFStringRef kCUIAttrSecKeychainItemRef;
-extern const CFStringRef kCUIAttrPersistenceFactoryID; /* CFUUIDRef */
-extern const CFStringRef kCUIAttrProviderFactoryID; /* CFUUIDRef */
+CUI_EXPORT const CFStringRef kCUIAttrGSSItemRef;
+CUI_EXPORT const CFStringRef kCUIAttrSecKeychainItemRef;
+CUI_EXPORT const CFStringRef kCUIAttrPersistenceFactoryID; /* CFUUIDRef */
+CUI_EXPORT const CFStringRef kCUIAttrProviderFactoryID; /* CFUUIDRef */
 
 /*
  * For gss_aapl_initial_cred() only
  */
-extern const CFStringRef kCUIAttrCredentialVerifyCredential;
-extern const CFStringRef kCUIAttrCredentialLKDCHostname;
-extern const CFStringRef kCUIAttrCredentialKerberosCacheName;
-extern const CFStringRef kCUIAttrCredentialAppIdentifierACL;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialVerifyCredential;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialLKDCHostname;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialKerberosCacheName;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialAppIdentifierACL;
 
 #ifdef __cplusplus
 }

@@ -17,55 +17,55 @@ struct __CUICredential;
     
 typedef struct __CUICredential *CUICredentialRef;
 
-extern CFTypeID
+CUI_EXPORT CFTypeID
 CUICredentialGetTypeID(void);    
     
-extern CFArrayRef
+CUI_EXPORT CFArrayRef
 CUICredentialGetFields(CUICredentialRef cred);
 
-extern CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldClass);
     
-extern CFArrayRef
+CUI_EXPORT CFArrayRef
 CUICredentialCopyFieldsWithPredicate(CUICredentialRef cred,
                                      Boolean (^predicate)(CUIFieldRef field));
 
-extern CFDictionaryRef
+CUI_EXPORT CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred);
     
-extern void
+CUI_EXPORT void
 CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin);
 
-extern void
+CUI_EXPORT void
 CUICredentialDidBecomeDeselected(CUICredentialRef cred);
 
 /*
  * Call this once the user has selected a credential and you want to use it
  */
-extern void
+CUI_EXPORT void
 CUICredentialWillSubmit(CUICredentialRef cred);
 
 /*
  * Call CUICredentialCanSubmit after CUICredentialWillSubmit to validate
  * the credential has any mandatory attributes.
  */
-extern Boolean
+CUI_EXPORT Boolean
 CUICredentialCanSubmit(CUICredentialRef cred);
 
 /*
  * Call CUICredentialDidSubmit after the credential has been submitted to
  * notify the provider.
  */
-extern void
+CUI_EXPORT void
 CUICredentialDidSubmit(CUICredentialRef cred);
     
-extern void
+CUI_EXPORT void
 CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boolean *stop));
 
-extern Boolean
+CUI_EXPORT Boolean
 CUICredentialSavePersisted(CUICredentialRef cred, CFErrorRef *error);
 
-extern Boolean
+CUI_EXPORT Boolean
 CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error);
 
 #ifdef __cplusplus

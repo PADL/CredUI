@@ -38,10 +38,10 @@ typedef CF_OPTIONS(CFIndex, CUIFieldOptions) {
     kCUIFieldOptionsIsHidden                = 0x10000000
 };
 
-extern CFTypeID
+CUI_EXPORT CFTypeID
 CUIFieldGetTypeID(void);
     
-extern CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUIFieldCreate(
     CFAllocatorRef allocator,
     CUIFieldClass fieldClass,
@@ -49,27 +49,27 @@ CUIFieldCreate(
     CFTypeRef defaultValue,
     void (^fieldDidChange)(CUIFieldRef field, CFTypeRef value));
 
-extern CUIFieldRef
+CUI_EXPORT CUIFieldRef
 CUIFieldCreateCopy(
     CFAllocatorRef allocator,
     CUIFieldRef field);
     
-extern CUIFieldClass
+CUI_EXPORT CUIFieldClass
 CUIFieldGetClass(CUIFieldRef field);
     
-extern CFStringRef
+CUI_EXPORT CFStringRef
 CUIFieldGetTitle(CUIFieldRef field);
     
-extern CFTypeRef
+CUI_EXPORT CFTypeRef
 CUIFieldGetDefaultValue(CUIFieldRef field);
     
-extern void
+CUI_EXPORT void
 CUIFieldSetValue(CUIFieldRef field, CFTypeRef value);
 
-extern void
+CUI_EXPORT void
 CUIFieldSetOptions(CUIFieldRef field, CUIFieldOptions value);
 
-CUIFieldOptions
+CUI_EXPORT CUIFieldOptions
 CUIFieldGetOptions(CUIFieldRef field);
 
 #ifdef __cplusplus

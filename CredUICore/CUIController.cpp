@@ -97,7 +97,7 @@ CUIControllerCreate(CFAllocatorRef allocator,
     controller->_usage = usage;
     controller->_usageFlags = usageFlags;
 
-    if (!CUIProvidersCreate(allocator, controller)) {
+    if (!_CUIProvidersCreate(allocator, controller)) {
         CFRelease(controller);
         return NULL;
     }
@@ -199,10 +199,10 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
 }
 
 CUI_EXPORT Boolean
-__CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
-                                             CFDictionaryRef attributes,
-                                             CFTypeRef notFactories,
-                                             void (^cb)(CUICredentialRef, CFErrorRef))
+_CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                            CFDictionaryRef attributes,
+                                            CFTypeRef notFactories,
+                                            void (^cb)(CUICredentialRef, CFErrorRef))
 {
     CFArrayRef items = NULL;
     CFErrorRef error = NULL;
@@ -235,7 +235,7 @@ __CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 CUI_EXPORT Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
 {
-    return __CUIControllerEnumerateCredentialsExcepting(controller, controller->_attributes, NULL, cb);
+    return _CUIControllerEnumerateCredentialsExcepting(controller, controller->_attributes, NULL, cb);
 }
 
 static void

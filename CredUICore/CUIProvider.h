@@ -66,7 +66,7 @@ public:
      * a credential on its behalf. Persistence providers are responsible
      * for enumerating and updating existing persisted credentials; 
      * other concrete providers that wish to add a credential should call
-     * __CUIControllerCreatePersistenceForFactoryID() with the desired
+     * CUIControllerCreatePersistenceForFactoryID() with the desired
      * persistence provider's factory ID.
      */
     virtual Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
@@ -126,28 +126,28 @@ extern "C" {
 // B4C5A7F1-1297-4AFE-BC26-533803B35389
 #define kCUIPersistenceInterfaceID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xB4, 0xC5, 0xA7, 0xF1, 0x12, 0x97, 0x4A, 0xFE, 0xBC, 0x26, 0x53, 0x38, 0x03, 0xB3, 0x53, 0x89)
 
-extern const CFStringRef kCUIAttrCredentialStatus;
+CUI_EXPORT const CFStringRef kCUIAttrCredentialStatus;
 
 // more information needed to make credential
-extern const CFStringRef kCUICredentialNotFinished;
+CUI_EXPORT const CFStringRef kCUICredentialNotFinished;
 // credential provider complete but no credential made
-extern const CFStringRef kCUICredentialFinished;
+CUI_EXPORT const CFStringRef kCUICredentialFinished;
 // credential made
-extern const CFStringRef kCUICredentialReturnCredentialFinished;
+CUI_EXPORT const CFStringRef kCUICredentialReturnCredentialFinished;
 // no credential made but force caller to return
-extern const CFStringRef kCUICredentialReturnNoCredentialFinished;
+CUI_EXPORT const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
-Boolean
-__CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
-                                             CFDictionaryRef attributes,
-                                             CFTypeRef notFactories,
-                                             void (^cb)(CUICredentialRef, CFErrorRef));
+CUI_EXPORT Boolean
+_CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                            CFDictionaryRef attributes,
+                                            CFTypeRef notFactories,
+                                            void (^cb)(CUICredentialRef, CFErrorRef));
 
-CUIProvider *
-__CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
+CUI_EXPORT CUIProvider *
+CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
 
-CUICredentialPersistence *
-__CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
+CUI_EXPORT CUICredentialPersistence *
+CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
 
 #ifdef __cplusplus
 }
@@ -155,11 +155,11 @@ __CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUID
 
 #ifdef __cplusplus
 extern "C" {
-extern CUICredentialRef
+CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknown *context);
 }
 #else
-extern CUICredentialRef
+CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 #endif
 

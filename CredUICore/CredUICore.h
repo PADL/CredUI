@@ -9,9 +9,7 @@
 #ifndef __CredUI__CredUICore__
 #define __CredUI__CredUICore__ 1
 
-#include <CoreFoundation/CoreFoundation.h>
-#include <Availability.h>
-
+#include <CredUICore/CUIBase.h>
 #include <CredUICore/CUIField.h>
 #include <CredUICore/CUICredential.h>
 #include <CredUICore/CUIProxyCredential.h>

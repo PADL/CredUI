@@ -13,7 +13,7 @@
 extern "C" {
 #endif
     
-CUICredentialRef
+CUI_EXPORT CUICredentialRef
 CUICredentialCreateProxy(CFAllocatorRef allocator,
                          CFDictionaryRef credAttributes);
 

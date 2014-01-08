@@ -105,7 +105,7 @@ CFArrayCallBacks kCUIProviderArrayCallBacks = {
 };
 
 Boolean
-CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
+_CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
 {
     static dispatch_once_t onceToken;
     CFArrayRef factories = NULL;
@@ -173,7 +173,7 @@ cleanup:
 }
 
 CUI_EXPORT CUIProvider *
-__CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
+CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
 {
     CFIndex index = CFArrayGetFirstIndexOfValue(controller->_factories,
                                                 CFRangeMake(0, CFArrayGetCount(controller->_factories)),
@@ -186,9 +186,9 @@ __CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef fa
 }
 
 CUI_EXPORT CUICredentialPersistence *
-__CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
+CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
 {
-    IUnknown *iunk = (IUnknown *)__CUIControllerFindProviderByFactoryID(controller, factoryID);
+    IUnknown *iunk = (IUnknown *)CUIControllerFindProviderByFactoryID(controller, factoryID);
     CUICredentialPersistence *persistence = NULL;
     
     if (iunk == NULL)

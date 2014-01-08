@@ -15,91 +15,55 @@
 extern "C" {
 #endif
 
-typedef CF_ENUM(CFIndex, CUIUsageScenario) {
-    kCUIUsageScenarioInvalid = 0,
-    kCUIUsageScenarioLogin,
-    kCUIUsageScenarioNetwork
-};
-
-typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
-    kCUIUsageFlagsGeneric               = 0x00000001,
-    kCUIUsageFlagsMechanismOnly         = 0x00000010,
-    kCUIUsageFlagsInCredOnly            = 0x00000020,
-    kCUIUsageFlagsEnumerateAdmins       = 0x00000100,
-    kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,
-    kCUIUsageFlagsExcludeCertificates   = 0x04000000,
-    kCUIUsageFlagsRequireCertificates   = 0x08000000,
-    kCUIUsageFlagsPasswordOnlyOK        = 0x10000000,
-    kCUIUsageFlagsKeepUsername          = 0x20000000,
-    kCUIUsageFlagsExcludePersistedCreds = 0x40000000,
-    kCUIUsageFlagsDoNotShowUI           = 0x80000000
-};
-
-typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
-    kCUICredUIContextPropertyParentWindow   = 0x1,
-    kCUICredUIContextPropertyMessageText    = 0x2,
-    kCUICredUIContextPropertyTitleText      = 0x4,
-    kCUICredUIContextPropertyAll            = 0xf
-};
-    
-#ifndef CredUI_CUITypes_h
-typedef struct __CUICredUIContext {
-    CFIndex version;
-    CFTypeRef parentWindow;
-    CFStringRef messageText;
-    CFStringRef titleText;
-} CUICredUIContext;
-#endif
-
 typedef struct __CUIController *CUIControllerRef;
 
-CFTypeID
+CUI_EXPORT CFTypeID
 CUIControllerGetTypeID(void);
 
-CUIControllerRef
+CUI_EXPORT CUIControllerRef
 CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageScenario usage,
                     CUIUsageFlags usageFlags);
     
-void
+CUI_EXPORT void
 CUIControllerSetAttributes(CUIControllerRef controller, CFDictionaryRef authIdentity);
 
-CFDictionaryRef
+CUI_EXPORT CFDictionaryRef
 CUIControllerGetAttributes(CUIControllerRef controller);
 
-void
+CUI_EXPORT void
 CUIControllerSetAuthError(CUIControllerRef controller, CFErrorRef authError);
 
-CFErrorRef
+CUI_EXPORT CFErrorRef
 CUIControllerGetAuthError(CUIControllerRef controller);
 
-Boolean
+CUI_EXPORT Boolean
 CUIControllerSetCredUIContext(CUIControllerRef controller,
                               CUICredUIContextProperties whichProperties,
                               const CUICredUIContext *context);
 
-const CUICredUIContext *
+CUI_EXPORT const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller);
 
-void
+CUI_EXPORT void
 CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef ctx);
 
-CFTypeRef
+CUI_EXPORT CFTypeRef
 CUIControllerGetGSSContextHandle(CUIControllerRef controller);
 
-void
+CUI_EXPORT void
 CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef target);
 
-CFTypeRef
+CUI_EXPORT CFTypeRef
 CUIControllerGetTargetName(CUIControllerRef controller);
 
-Boolean
+CUI_EXPORT Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef));
     
-CFStringRef
+CUI_EXPORT CFStringRef
 CUICopyTargetDisplayName(CFTypeRef targetName);
 
-CFStringRef
+CUI_EXPORT CFStringRef
 CUICopyTargetHostName(CFTypeRef targetName);
 
 #ifdef __cplusplus
