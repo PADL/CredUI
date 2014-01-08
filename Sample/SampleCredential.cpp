@@ -132,7 +132,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
                if (persistenceFactoryID) {
                    CUICredentialPersistence *persistence;
                    
-                   persistence = __CUIControllerCreatePersistenceForFactoryID(controller, persistenceFactoryID);
+                   persistence = CUIControllerCreatePersistenceForFactoryID(controller, persistenceFactoryID);
                    if (persistence) {
                        password = persistence->extractPassword(_attributes, NULL);
                        if (password) {

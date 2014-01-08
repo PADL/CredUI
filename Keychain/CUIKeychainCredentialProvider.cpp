@@ -310,10 +310,10 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
             if (attrs == NULL)
                 continue;
             
-            __CUIControllerEnumerateCredentialsExcepting(_controller,
-                                                         attrs,
-                                                         kKeychainCredentialProviderFactoryID,
-                                                         ^(CUICredentialRef cred, CFErrorRef err) {
+            _CUIControllerEnumerateCredentialsExcepting(_controller,
+                                                        attrs,
+                                                        kKeychainCredentialProviderFactoryID,
+                                                        ^(CUICredentialRef cred, CFErrorRef err) {
                  CUIKeychainCredential *itemCred;
                  CUICredentialRef credRef;
                  

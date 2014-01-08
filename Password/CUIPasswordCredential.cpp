@@ -105,7 +105,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
             CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(_attributes, kCUIAttrPersistenceFactoryID);
 
             if (persistenceFactoryID) {
-                CUICredentialPersistence *persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, persistenceFactoryID);
+                CUICredentialPersistence *persistence = CUIControllerCreatePersistenceForFactoryID(_controller, persistenceFactoryID);
                 if (persistence) {
                     CFTypeRef password = persistence->extractPassword(_attributes, NULL);
                     if (password) {
@@ -180,7 +180,7 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
     if (factoryIDString && CFGetTypeID(factoryIDString) == CFStringGetTypeID()) {
         CFUUIDRef factoryID = CFUUIDCreateFromString(kCFAllocatorDefault, (CFStringRef)factoryIDString);
         if (factoryID) {
-            persistence = __CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
+            persistence = CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
             if (persistence) {
                 ret = persistence->addCredentialWithAttributes(_attributes, error);
                 persistence->Release();
