@@ -59,6 +59,7 @@ public:
     }
 
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error) {
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
         CUICredentialRef credRef;

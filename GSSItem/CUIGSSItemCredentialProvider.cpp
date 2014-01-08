@@ -117,10 +117,13 @@ CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
 }
 
 CFArrayRef
-CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error)
+CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                      CFIndex *defaultCredentialIndex,
+                                                      CFErrorRef *error)
 {
     CFDictionaryRef gssItemAttributes = NULL;
     CFArrayRef items;
+    __block CFIndex cCreds = 0;
     CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
                                                    0,
                                                    &kCFTypeArrayCallBacks);
@@ -143,13 +146,15 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             _CUIControllerEnumerateCredentialsExcepting(_controller,
                  cuiAttributes,
                  kGSSItemCredentialProviderFactoryID,
-                 ^(CUICredentialRef cred, CFErrorRef err) {
+                 ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                      CUIGSSItemCredential *itemCred;
                      CUICredentialRef credRef;
                      
-                     if (cred == NULL)
-                         return;
-                     
+                     assert(cred);
+
+                     if (isDefault)
+                         *defaultCredentialIndex = cCreds;
+
                      itemCred = new CUIGSSItemCredential();
                      if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
                          itemCred->Release();
@@ -163,7 +168,8 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
                      }
                      
                      CFArrayAppendValue(creds, credRef);
-                     
+                     cCreds++;
+
                      CFRelease(credRef);
                      itemCred->Release();
                  });

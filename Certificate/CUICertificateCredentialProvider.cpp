@@ -42,7 +42,9 @@ CUICertificateCredentialProvider::copyMatchingIdentities(CFDictionaryRef attribu
 }
 
 CFArrayRef
-CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error)
+CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                          CFIndex *defaultCredentialIndex,
+                                                          CFErrorRef *error)
 {
     CFArrayRef identities;
     CFTypeRef targetName = CUIControllerGetTargetName(_controller);

@@ -137,7 +137,7 @@ int main(int argc, const char * argv[])
     
     NSMutableArray *creds = [NSMutableArray array];
     
-    CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred, CFErrorRef err) {
+    CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
         if (cred)
             [creds addObject:(__bridge id)cred];
     });

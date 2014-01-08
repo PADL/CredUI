@@ -291,14 +291,17 @@ CUIKeychainCredentialProvider::extractPassword(CFDictionaryRef attributes, CFErr
 }
 
 CFArrayRef
-CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error)
+CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                       CFIndex *defaultCredentialIndex,
+                                                       CFErrorRef *error)
 {
     CFArrayRef items;
     CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
                                                    0,
                                                    &kCFTypeArrayCallBacks);
     CFTypeRef targetName = CUIControllerGetTargetName(_controller);
-    
+    __block CFIndex cCreds = 0;
+
     items = copyMatching(attributes, targetName, error);
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
@@ -311,12 +314,14 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
             _CUIControllerEnumerateCredentialsExcepting(_controller,
                                                         attrs,
                                                         kKeychainCredentialProviderFactoryID,
-                                                        ^(CUICredentialRef cred, CFErrorRef err) {
+                                                        ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                  CUIKeychainCredential *itemCred;
                  CUICredentialRef credRef;
                  
-                 if (cred == NULL)
-                     return;
+                 assert(cred);
+
+                 if (isDefault)
+                     *defaultCredentialIndex = cCreds;
                  
                  itemCred = new CUIKeychainCredential();
                  if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
@@ -331,6 +336,7 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                  }
                  
                  CFArrayAppendValue(creds, credRef);
+                 cCreds++;
                  
                  CFRelease(credRef);
                  itemCred->Release();

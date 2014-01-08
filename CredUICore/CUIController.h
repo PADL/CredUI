@@ -58,7 +58,7 @@ CUI_EXPORT CFTypeRef
 CUIControllerGetTargetName(CUIControllerRef controller);
 
 CUI_EXPORT Boolean
-CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef));
+CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, Boolean, CFErrorRef));
     
 CUI_EXPORT CFStringRef
 CUICopyTargetDisplayName(CFTypeRef targetName);

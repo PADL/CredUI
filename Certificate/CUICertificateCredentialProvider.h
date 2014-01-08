@@ -66,6 +66,7 @@ public:
     }
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
     
     CFMutableDictionaryRef createCertificateAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName);

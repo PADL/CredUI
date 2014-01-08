@@ -114,17 +114,20 @@
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
     [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
     
-    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred, CFErrorRef error) {
+    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef error) {
         if (cred) {
             [self.credsController addObject:(__bridge CUICredential *)cred];
+            if (isDefault)
+                self.credsController.selectionIndex = [self.credsController.arrangedObjects count] - 1;
         } else if (error) {
             NSLog(@"CUIControllerEnumerateCredentials: %@", error);
             self.lastError = CFBridgingRelease(CFRetain(error));
         }
     });
     
-    self.credsController.selectionIndex = 0;
-    
+    if (self.credsController.selectionIndex == NSNotFound)
+        self.credsController.selectionIndex = 0;
+
     [self.collectionView addObserver:self
                           forKeyPath:@"selectionIndexes"
                              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial

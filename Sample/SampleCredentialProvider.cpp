@@ -57,6 +57,7 @@ public:
      * return one here.
      */ 
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error) {
         SampleCredential *passwordCred = new SampleCredential();
         CUICredentialRef credRef;

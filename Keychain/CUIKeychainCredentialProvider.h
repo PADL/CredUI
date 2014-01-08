@@ -58,7 +58,7 @@ public:
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error);
     
-    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes, CFErrorRef *error);
+    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes, CFIndex *defaultCredentialIndex, CFErrorRef *error);
     Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
     CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error);
 

@@ -137,7 +137,9 @@ struct CUIEnumerateCredentialContext {
     CFTypeRef notFactories;
     CFUUIDRef factory;
     CUIProvider *provider;
-    void (^callback)(CUICredentialRef, CFErrorRef);
+    void (^callback)(CUICredentialRef, Boolean, CFErrorRef);
+    CFIndex index;
+    CFIndex defaultCredentialIndex;
     Boolean didEnumerate;
 };
 
@@ -154,11 +156,12 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
     assert(persistenceFactoryID == NULL || CFGetTypeID(persistenceFactoryID) == CFUUIDGetTypeID());
 
     assert(CFEqual(providerFactoryID, enumContext->factory) || CFEqual(persistenceFactoryID, enumContext->factory));
+    assert(cred);
 
-    if (cred) {
-        enumContext->callback(cred, NULL);
-        enumContext->didEnumerate = true;
-    }
+    enumContext->callback(cred, (enumContext->index == enumContext->defaultCredentialIndex), NULL);
+    enumContext->didEnumerate = true;
+
+    enumContext->index++;
 }
 
 static Boolean
@@ -167,11 +170,11 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
                                                        CFTypeRef notFactories,
                                                        CFUUIDRef factory,
                                                        CUIProvider *provider,
-                                                       void (^cb)(CUICredentialRef, CFErrorRef))
+                                                       void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
     CFArrayRef matchingCreds;
     CFErrorRef error = NULL;
-    
+
     CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
         .attributes = attributes,
@@ -179,10 +182,12 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
         .factory = factory,
         .provider = provider,
         .callback = cb,
-        .didEnumerate = false
+        .didEnumerate = false,
+        .index = 0,
+        .defaultCredentialIndex = kCFNotFound
     };
     
-    matchingCreds = provider->copyMatchingCredentials(attributes, &error);
+    matchingCreds = provider->copyMatchingCredentials(attributes, &enumContext.defaultCredentialIndex, &error);
     if (matchingCreds) {
         CFArrayApplyFunction(matchingCreds,
                              CFRangeMake(0, CFArrayGetCount(matchingCreds)),
@@ -191,7 +196,7 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
         
         CFRelease(matchingCreds);
     } else if (error) {
-        cb(NULL, error);
+        cb(NULL, kCFNotFound, error);
         CFRelease(error);
     }
     
@@ -202,7 +207,7 @@ CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
                                             CFDictionaryRef attributes,
                                             CFTypeRef notFactories,
-                                            void (^cb)(CUICredentialRef, CFErrorRef))
+                                            void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
     CFArrayRef items = NULL;
     CFErrorRef error = NULL;
@@ -233,7 +238,7 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 }
 
 CUI_EXPORT Boolean
-CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, CFErrorRef))
+CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
     return _CUIControllerEnumerateCredentialsExcepting(controller, controller->_attributes, NULL, cb);
 }

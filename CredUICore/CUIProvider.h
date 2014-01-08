@@ -56,6 +56,7 @@ public:
      * may be NULL).
      */
     virtual CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                               CFIndex *defaultCredentialIndex,
                                                CFErrorRef *error) CF_RETURNS_RETAINED = 0;
 };
 
@@ -100,6 +101,7 @@ typedef struct CUIProvider {
                                                     CFErrorRef *error);
     CFArrayRef (STDMETHODCALLTYPE *copyMatchingCredentials)(void *thisPointer,
                                                             CFDictionaryRef attributes,
+                                                            CFIndex *defaultCredentialIndex,
                                                             CFErrorRef *error);
 } CUIProvider;
 
@@ -141,7 +143,7 @@ CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
                                             CFDictionaryRef attributes,
                                             CFTypeRef notFactories,
-                                            void (^cb)(CUICredentialRef, CFErrorRef));
+                                            void (^cb)(CUICredentialRef, Boolean, CFErrorRef));
 
 CUI_EXPORT CUIProvider *
 CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
