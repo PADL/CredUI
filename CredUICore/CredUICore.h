@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CredUICore__
-#define __CredUI__CredUICore__ 1
+#ifndef CredUICore_CredUICore_h
+#define CredUICore_CredUICore_h 1
 
 #include <CredUICore/CUIBase.h>
 #include <CredUICore/CUIField.h>
@@ -17,4 +17,4 @@
 #include <CredUICore/CUIProvider.h>
 #include <CredUICore/CUIAttributes.h>
 
-#endif /* __CredUI__CredUICore__ */
+#endif /* CredUICore_CredUICore_h */

@@ -33,8 +33,10 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <CoreFoundation/CoreFoundation.h>
-#import <Availability.h>
+#ifndef CredUICore_CUIAttributes_h
+#define CredUICore_CUIAttributes_h
+
+#include <CredUICore/CUIBase.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -127,3 +129,5 @@ CUI_EXPORT const CFStringRef kCUIAttrCredentialAppIdentifierACL;
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* CredUICore_CUIAttributes_h */

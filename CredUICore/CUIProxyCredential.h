@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUIProxyCredential__
-#define __CredUI__CUIProxyCredential__
+#ifndef CredUICore_CUIProxyCredential_h
+#define CredUICore_CUIProxyCredential_h
+
+#include <CredUICore/CUIBase.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,4 +23,4 @@ CUICredentialCreateProxy(CFAllocatorRef allocator,
 }
 #endif
 
-#endif /* defined(__CredUI__CUIProxyCredential__) */
+#endif /* CredUICore_CUIProxyCredential_h */

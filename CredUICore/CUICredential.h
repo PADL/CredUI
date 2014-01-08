@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUICredential__
-#define __CredUI__CUICredential__
+#ifndef CredUICore_CUICredential_h
+#define CredUICore_CUICredential_h
+
+#include <CredUICore/CUIBase.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -72,4 +74,4 @@ CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error);
 }
 #endif
 
-#endif /* defined(__CredUI__CUICredential__) */
+#endif /* CredUICore_CUICredential_h */

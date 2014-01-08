@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUIController__
-#define __CredUI__CUIController__
+#ifndef CredUICore_CUIController_h
+#define CredUICore_CUIController_h
 
-#include <CoreFoundation/CoreFoundation.h>
+#include <CredUICore/CUIBase.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -70,4 +70,4 @@ CUICopyTargetHostName(CFTypeRef targetName);
 }
 #endif
 
-#endif /* defined(__CredUI__CUIController__) */
+#endif /* CredUICore_CUIController_h */

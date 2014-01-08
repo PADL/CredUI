@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef CredUI_CUIBase_h
-#define CredUI_CUIBase_h
+#ifndef CredUICore_CUIBase_h
+#define CredUICore_CUIBase_h
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Availability.h>
@@ -16,8 +16,10 @@
 extern "C" {
 #endif
 
+#ifndef CUI_EXPORT
 #define CUI_EXPORT CF_EXPORT
-
+#endif
+    
 typedef CF_ENUM(CFIndex, CUIUsageScenario) {
     kCUIUsageScenarioInvalid = 0,
     kCUIUsageScenarioLogin,
@@ -45,7 +47,7 @@ typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
     kCUICredUIContextPropertyAll            = 0xf
 };
 
-#ifndef CredUI_CUITypes_h
+#ifndef CredUI_CUIBase_h
 typedef struct __CUICredUIContext {
     CFIndex version;
     CFTypeRef parentWindow;
@@ -58,4 +60,4 @@ typedef struct __CUICredUIContext {
 }
 #endif
 
-#endif /* CredUI_CUIBase_h */
+#endif /* CredUICore_CUIBase_h */

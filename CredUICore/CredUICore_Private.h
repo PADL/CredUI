@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef CredUI_CredUICore_Private_h
-#define CredUI_CredUICore_Private_h
+#ifndef CredUICore_CredUICore_Private_h
+#define CredUICore_CredUICore_Private_h
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFPlugInCOM.h>

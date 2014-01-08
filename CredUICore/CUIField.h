@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUIField__
-#define __CredUI__CUIField__
+#ifndef CredUICore_CUIField_h
+#define CredUICore_CUIField_h
+
+#include <CredUICore/CUIBase.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -76,4 +78,4 @@ CUIFieldGetOptions(CUIFieldRef field);
 }
 #endif
 
-#endif /* defined(__CredUI__CUIField__) */
+#endif /* CredUICore_CUIField_h */

@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUIProvider__
-#define __CredUI__CUIProvider__
+#ifndef CredUICore_CUIProvider_h
+#define CredUICore_CUIProvider_h
 
 #include <CoreFoundation/CFPlugInCOM.h>
 
@@ -163,4 +163,4 @@ CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 #endif
 
-#endif /* defined(__CredUI__CUIProvider__) */
+#endif /* CredUICore_CUIProvider_h */
