@@ -396,6 +396,13 @@
 			remoteGlobalIDString = D3B094351877EFBA006DB1DE;
 			remoteInfo = GSSKitUI;
 		};
+		D3ECB3D1187D8E18004B0B80 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D336E279182B51A6009271CD;
+			remoteInfo = CredUI;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -1445,6 +1452,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D3ECB3D2187D8E18004B0B80 /* PBXTargetDependency */,
 				D3A80ABC187AE1BD00968AFF /* PBXTargetDependency */,
 			);
 			name = Sample;
@@ -1966,6 +1974,11 @@
 			isa = PBXTargetDependency;
 			target = D3B094351877EFBA006DB1DE /* GSSKitUI */;
 			targetProxy = D3B094491877EFBA006DB1DE /* PBXContainerItemProxy */;
+		};
+		D3ECB3D2187D8E18004B0B80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D336E279182B51A6009271CD /* CredUI */;
+			targetProxy = D3ECB3D1187D8E18004B0B80 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
