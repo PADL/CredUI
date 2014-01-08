@@ -31,11 +31,6 @@ typedef CF_ENUM(CFIndex, CUIClassMatchResult) {
     CUIClassMatch  = 1
 };
 
-#if 0
-CUIClassMatchResult
-CUIAuthErrorMatchesClass(CUIControllerRef controller, CFStringRef assertedClass);
-#endif
-
 CUIClassMatchResult
 CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass);
 

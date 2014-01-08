@@ -16,6 +16,7 @@
 #include <GSS/GSS.h>
 
 #include <CredUICore/CredUICore.h>
+#include <CredUICore/GSSIsPromptingNeeded.h>
 #include "CFBridgeHelper.h"
 
 #undef CUI_EXPORT
@@ -37,5 +38,8 @@ struct __CUIController {
 
 Boolean
 _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
+
+CFStringRef
+_CUICopyAttrClassForAuthError(CFErrorRef authError);
 
 #endif

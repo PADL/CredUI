@@ -237,10 +237,54 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     return didEnumerate;
 }
 
+static CFDictionaryRef
+_CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller)
+{
+    /*
+     * This is to handle a special case which is not yet supported by Heimdal,
+     * that is when a mechanism is in play to successfully authenticate but
+     * needs more information from the user. In this case it will return
+     * GSS_S_CONTINUE_NEEDED | GSS_S_PROMPTING_NEEDED.
+     */
+    if (GSSIsPromptingNeeded(controller->_authError) &&
+        !GSS_ERROR(CFErrorGetCode(controller->_authError))) {
+        CFStringRef attrClass;
+        
+        attrClass = _CUICopyAttrClassForAuthError(controller->_authError);
+        if (attrClass) {
+            CFMutableDictionaryRef attributes;
+            
+            if (controller->_attributes)
+                attributes = CFDictionaryCreateMutableCopy(CFGetAllocator(controller), 0, controller->_attributes);
+            else
+                attributes = CFDictionaryCreateMutable(CFGetAllocator(controller),
+                                                       0,
+                                                       &kCFTypeDictionaryKeyCallBacks,
+                                                       &kCFTypeDictionaryValueCallBacks);
+            if (attributes == NULL)
+                return NULL;
+            
+            CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
+            
+            return attributes;
+        }
+    }
+    
+    return controller->_attributes ? (CFDictionaryRef)CFRetain(controller->_attributes) : NULL;
+}
+
 CUI_EXPORT Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
-    return _CUIControllerEnumerateCredentialsExcepting(controller, controller->_attributes, NULL, cb);
+    CFDictionaryRef attributes = _CUIControllerCreateAttributesAdjustedForAuthError(controller);
+    Boolean ret;
+    
+    ret = _CUIControllerEnumerateCredentialsExcepting(controller, attributes, NULL, cb);
+    
+    if (attributes)
+        CFRelease(attributes);
+
+    return ret;
 }
 
 static void

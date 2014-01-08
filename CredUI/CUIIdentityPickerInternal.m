@@ -285,7 +285,17 @@ autoSubmit:
 
 - (void)setAttributes:(NSDictionary *)someAttributes
 {
-    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttributes	);
+    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttributes);
+}
+
+- (NSError *)authError
+{
+    return (__bridge NSError *)CUIControllerGetAuthError(_controller);
+}
+
+- (void)setAuthError:(NSError *)someError
+{
+    CUIControllerSetAuthError(_controller, (__bridge CFErrorRef)someError);
 }
 
 - (GSSContext *)GSSContextHandle

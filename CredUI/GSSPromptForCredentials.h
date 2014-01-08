@@ -12,6 +12,7 @@
 #include <GSS/GSS.h>
 #include <CredUI/CUIBase.h>
 #include <CredUICore/CUICredential.h>
+#include <CredUICore/GSSIsPromptingNeeded.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,9 +28,6 @@ GSSPromptForCredentials(gss_name_t targetName,
                         Boolean *pfSave,
                         CUIFlags flags,
                         CFErrorRef *error);
-
-CUI_EXPORT Boolean
-GSSIsPromptingNeeded(CFErrorRef authError);
 
 #ifdef __cplusplus
 }

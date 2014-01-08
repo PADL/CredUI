@@ -31,55 +31,6 @@ CUIGetDefaultUsername(CFDictionaryRef attributes)
     return defaultUsername;
 }
 
-#if 0
-static CFStringRef
-_CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid)
-{
-    if (errMechName) {
-        if (CFEqual(errMechName, CFSTR("krb5")))
-            return kCUIAttrClassKerberos;
-        else if (CFEqual(errMechName, CFSTR("ntlm")))
-            return kCUIAttrClassNTLM;
-        else if (CFEqual(errMechName, CFSTR("iakerb")))
-            return kCUIAttrClassIAKerb;
-    }
-
-    return errMechOid;
-}
-
-Boolean
-_CUIIsGSSError(CFErrorRef error)
-{
-    CFStringRef domain = error ? CFErrorGetDomain(error) : NULL;
-
-    return domain && CFEqual(domain, CFSTR("org.h5l.GSS"));
-}
-
-CUIClassMatchResult
-CUIAuthErrorMatchesClass(CUIControllerRef controller, CFStringRef assertedClass)
-{
-    CFErrorRef authError = CUIControllerGetAuthError(controller);
-    CUIClassMatchResult ret = CUIClassAbsent;
-
-    if (_CUIIsGSSError(authError)) {
-        CFDictionaryRef userInfo = CFErrorCopyUserInfo(authError);
-
-        if (userInfo) {
-            CFStringRef mechOid = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanismOID"));
-            CFStringRef mechName = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanism"));
-            CFStringRef mechClass = _CUIAttrClassForMech(mechName, mechOid);
-
-            if (mechClass)
-                ret = CFEqual(mechClass, assertedClass) ? CUIClassMatch : CUIClassMismatch;
-
-            CFRelease(userInfo);
-        }
-    }
-
-    return ret;
-}
-#endif
-
 CUIClassMatchResult
 CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass)
 {

@@ -153,6 +153,8 @@
 		D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3F67B11187513A1006B36C3 /* InfoPlist.strings */; };
 		D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */; };
+		D3F68724187D7FEE00E8A080 /* GSSIsPromptingNeeded.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3F68726187D87D000E8A080 /* GSSIsPromptingNeeded.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -556,6 +558,8 @@
 		D3F67B14187513A1006B36C3 /* GSSItem-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSItem-Prefix.pch"; sourceTree = "<group>"; };
 		D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIGSSItemCredentialProvider.cpp; sourceTree = "<group>"; };
 		D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGSSItemCredentialProvider.h; sourceTree = "<group>"; };
+		D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSIsPromptingNeeded.h; sourceTree = "<group>"; };
+		D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSIsPromptingNeeded.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -906,6 +910,8 @@
 				D384697E18759458003EE56B /* CUIAttributes.cpp */,
 				D39EB055186F18E500C43A24 /* CUIController.cpp */,
 				D39EB056186F18E500C43A24 /* CUIController.h */,
+				D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */,
+				D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */,
 				D39EB03A186EED1900C43A24 /* CUIProvider.cpp */,
 				D39EB03B186EED1900C43A24 /* CUIProvider.h */,
 				D39EB03E186EF06D00C43A24 /* CUICredential.cpp */,
@@ -1126,6 +1132,7 @@
 				D3BED8FA1873B46200623B92 /* CUIProxyCredential.h in Headers */,
 				D39EB05C186FAC9F00C43A24 /* CredUICore.h in Headers */,
 				D3B37CDE187CD67800117E61 /* CUIBase.h in Headers */,
+				D3F68724187D7FEE00E8A080 /* GSSIsPromptingNeeded.h in Headers */,
 				D39EB041186EF06D00C43A24 /* CUICredential.h in Headers */,
 				D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */,
 			);
@@ -1684,6 +1691,7 @@
 			files = (
 				D384697F18759458003EE56B /* CUIAttributes.cpp in Sources */,
 				D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */,
+				D3F68726187D87D000E8A080 /* GSSIsPromptingNeeded.cpp in Sources */,
 				D39EB057186F18E500C43A24 /* CUIController.cpp in Sources */,
 				D39EB044186EF07500C43A24 /* CUIField.cpp in Sources */,
 				D39EB040186EF06D00C43A24 /* CUICredential.cpp in Sources */,

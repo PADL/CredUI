@@ -66,6 +66,7 @@ CUICopyTargetDisplayName(CFTypeRef targetName);
 CUI_EXPORT CFStringRef
 CUICopyTargetHostName(CFTypeRef targetName);
 
+    
 #ifdef __cplusplus
 }
 #endif
