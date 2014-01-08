@@ -49,9 +49,27 @@ typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
 
 #ifndef CredUI_CUIBase_h
 typedef struct __CUICredUIContext {
+    /*
+     * Version of structure, must be zero.
+     */
     CFIndex version;
+    /*
+     * When calling GSSPromptForCredentials/CUIPromptForCredentials, this is
+     * the application's window (if the application wants to run CredUI as a
+     * sheet inside it).
+     *
+     * To the provider, this is the window containing the CredUI.
+     *
+     * Either way, it is safe to cast to a NSWindow.
+     */
     CFTypeRef parentWindow;
+    /*
+     * CredUI message text.
+     */
     CFStringRef messageText;
+    /*
+     * CredUI title text.
+     */
     CFStringRef titleText;
 } CUICredUIContext;
 #endif
