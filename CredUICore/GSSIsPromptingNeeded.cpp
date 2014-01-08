@@ -21,7 +21,8 @@ _CUIIsGSSError(CFErrorRef error)
 }
 
 /*
- * XXX This unfortunately is very brittle.
+ * XXX This unfortunately is very brittle. It would be much simpler if
+ * the class strings were OIDs.
  */
 static CFStringRef
 _CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid)
