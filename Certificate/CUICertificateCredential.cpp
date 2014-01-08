@@ -15,14 +15,6 @@
 static CFStringRef
 kCertificateCredentialProvider = CFSTR("com.padl.CredUI.Providers.CertificateCredentialProvider");
 
-extern "C" {
-    CFStringRef
-    _CSCopyAppleIDAccountForAppleIDCertificate(SecCertificateRef, CFErrorRef *);
-
-    CFStringRef
-    _CSCopyKerberosPrincipalForCertificate(SecCertificateRef);
-};
-
 Boolean
 CUICertificateCredential::initWithSecIdentity(SecIdentityRef identity,
                                               CUIUsageFlags usageFlags,
@@ -69,11 +61,15 @@ CUICertificateCredential::initWithSecIdentity(SecIdentityRef identity,
     /* Not sure if this is the right thing to do? */
     kerberosName = _CSCopyKerberosPrincipalForCertificate(cert);
     if (kerberosName != NULL) {
+#if 0
         CFStringRef name = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("%@@WELLKNOWN:COM.APPLE.LKDC"), kerberosName);
         if (name == NULL)
             goto cleanup;
         CFDictionarySetValue(_attributes, kCUIAttrName, name);
         CFRelease(name);
+#else
+        CFDictionarySetValue(_attributes, kCUIAttrName, kerberosName);
+#endif
     } else {
         goto cleanup;
     }

@@ -58,7 +58,10 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
     
     if (error != NULL)
         *error = NULL;
-    
+   
+    if (usageFlags & kCUIUsageFlagsRequireCertificates)
+        return false;
+ 
     if (attributes) {
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {
@@ -70,7 +73,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
      */
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, CFSTR("SampleCredentialProvider"));
     CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID, kSampleCredentialProviderFactoryID);
-    
+   
     if (usageFlags & kCUIUsageFlagsGeneric)
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
     

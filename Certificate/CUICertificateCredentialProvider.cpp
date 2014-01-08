@@ -13,61 +13,28 @@ extern "C" {
     void *CUICertificateCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
 };
 
-CFMutableDictionaryRef
-CUICertificateCredentialProvider::createCertificateAttributesFromCUIAttributes(CFDictionaryRef attributes,
-                                                                               CFTypeRef targetName)
-{
-    CFMutableDictionaryRef keychainAttrs;
-    CFStringRef name;
-    
-    keychainAttrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
-                                              &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    if (keychainAttrs == NULL) {
-        return NULL;
-    }
-    
-    if (targetName) {
-        CFStringRef targetDisplayName = CUICopyTargetDisplayName(targetName);
-        
-        if (targetDisplayName) {
-            CFDictionarySetValue(keychainAttrs, kSecAttrService, targetDisplayName);
-            CFRelease(targetDisplayName);
-        }
-    }
-    
-    CFDictionarySetValue(keychainAttrs, kSecClass, kSecClassIdentity);
-    if (attributes) {
-        name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
-        if (name)
-            CFDictionarySetValue(keychainAttrs, kSecAttrAccount, name);
-    }
-    
-    CFTypeRef accessGroup = CFDictionaryGetValue(keychainAttrs, kSecAttrAccessGroup);
-    if (accessGroup)
-        CFDictionarySetValue(keychainAttrs, kSecAttrAccessGroup, accessGroup);
-    
-    return keychainAttrs;
-}
-
 CFArrayRef
 CUICertificateCredentialProvider::copyMatchingIdentities(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error)
 {
     CFMutableDictionaryRef query = NULL;
     CFArrayRef result = NULL;
+    CFStringRef name;
     
-    query = createCertificateAttributesFromCUIAttributes(attributes, targetName);
+    query = CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
+                                      &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     if (query == NULL)
         return NULL;
-    
-    CFDictionarySetValue(query, kSecReturnRef,        kCFBooleanTrue);
-    CFDictionarySetValue(query, kSecMatchLimit,       kSecMatchLimitAll);
-    
-    if (SecItemCopyMatching(query, (CFTypeRef *)&result) != errSecSuccess) {
-        if (targetName) {
-            CFDictionaryRemoveValue(query, kSecAttrService);
-            SecItemCopyMatching(query, (CFTypeRef *)&result);
-        }
+
+    if (attributes &&
+        (name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName))) {
+        CFDictionarySetValue(query, kSecMatchSubjectContains, name);
     }
+
+    CFDictionarySetValue(query, kSecClass,      kSecClassIdentity);
+    CFDictionarySetValue(query, kSecReturnRef,  kCFBooleanTrue);
+    CFDictionarySetValue(query, kSecMatchLimit, kSecMatchLimitAll);
+
+    SecItemCopyMatching(query, (CFTypeRef *)&result);
     
     CFRelease(query);
     

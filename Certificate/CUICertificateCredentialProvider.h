@@ -9,9 +9,21 @@
 #ifndef __CredUI__CertificateCredentialProvider__
 #define __CredUI__CertificateCredentialProvider__
 
+#include <Security/Security.h>
 #include <libkern/OSAtomic.h>
 
 #include "CredUICore.h"
+
+extern "C" {
+    CFStringRef
+    _CSCopyAppleIDAccountForAppleIDCertificate(SecCertificateRef, CFErrorRef *);
+    
+    CFStringRef
+    _CSCopyKerberosPrincipalForCertificate(SecCertificateRef);
+    
+    SecIdentityRef
+    _CSCopySecIdentityForAppleID(CFStringRef appleId, CFErrorRef *error);
+};
 
 // A9AB1DDF-974F-4883-BAC7-DBF1BE391D65
 #define kCertificateCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0xA9, 0xAB, 0x1D, 0xDF, 0x97, 0x4F, 0x48, 0x83, 0xBA, 0xC7, 0xDB, 0xF1, 0xBE, 0x39, 0x1D, 0x65)

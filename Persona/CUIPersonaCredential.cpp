@@ -46,7 +46,8 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     if (error != NULL)
         *error = NULL;
 
-    if (!CUIShouldEnumerateForClass(attributes, kCUIAttrClassBrowserID))
+    if (!CUIShouldEnumerateForClass(attributes, kCUIAttrClassBrowserID) ||
+        (usageFlags & kCUIUsageFlagsRequireCertificates))
         return false;
     
     CFTypeRef targetName = CUIControllerGetTargetName(controller);
