@@ -98,7 +98,7 @@
 		D39EB0A51870235F00C43A24 /* CUICredentialTile.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0A31870235F00C43A24 /* CUICredentialTile.m */; };
 		D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0B818704B3100C43A24 /* CUICredentialTileController.h */; };
 		D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0B918704B3100C43A24 /* CUICredentialTileController.m */; };
-		D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB04B186F08BB00C43A24 /* CredUICore_Private.h */; };
 		D39EB0BF1871302100C43A24 /* CUIField.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0BD1871302100C43A24 /* CUIField.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D39EB0C01871302100C43A24 /* CUIField.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0BE1871302100C43A24 /* CUIField.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0CB18714ED200C43A24 /* CUICredential.h */; settings = {ATTRIBUTES = (Public, ); }; };

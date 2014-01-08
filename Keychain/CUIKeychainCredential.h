@@ -12,10 +12,9 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
 
-#include <CredUICore/CredUICore.h>
-#include <CredUICore/CredUICore_Private.h>
-
 #include <Security/Security.h>
+
+#include <CredUICore/CredUICore.h>
 
 #include "CUIKeychainCredentialProvider.h"
 #include "CUIProviderUtilities.h"

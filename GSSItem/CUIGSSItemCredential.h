@@ -9,14 +9,13 @@
 #ifndef __CredUI__GSSItemCredential__
 #define __CredUI__GSSItemCredential__
 
-#include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 #include <CredUICore/CredUICore.h>
-#include <CredUICore/CredUICore_Private.h>
 
-#include "CUIProviderUtilities.h"
 #include "GSSItem.h"
+#include "CUIProviderUtilities.h"
 #include "CUIGSSItemCredentialProvider.h"
 
 /*

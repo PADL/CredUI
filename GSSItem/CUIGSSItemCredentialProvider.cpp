@@ -8,13 +8,12 @@
 
 #include <libkern/OSAtomic.h>
 
-#include <CredUICore/CredUICore.h>
-#include <CredUICore/CredUICore_Private.h>
-
 #include <GSS/GSS.h>
-#include "CUIProviderUtilities.h"
+
+#include <CredUICore/CredUICore.h>
 
 #include "GSSItem.h"
+#include "CUIProviderUtilities.h"
 #include "CUIGSSItemCredentialProvider.h"
 #include "CUIGSSItemCredential.h"
 
