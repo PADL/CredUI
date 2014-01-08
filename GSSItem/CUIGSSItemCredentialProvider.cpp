@@ -150,7 +150,8 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
                      CUIGSSItemCredential *itemCred;
                      CUICredentialRef credRef;
                      
-                     assert(cred);
+                     if (cred == NULL)
+                         return;
 
                      if (isDefault)
                          *defaultCredentialIndex = cCreds;

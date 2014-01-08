@@ -318,7 +318,8 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                  CUIKeychainCredential *itemCred;
                  CUICredentialRef credRef;
                  
-                 assert(cred);
+                 if (cred == NULL)
+                     return;
 
                  if (isDefault)
                      *defaultCredentialIndex = cCreds;
