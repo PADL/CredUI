@@ -82,7 +82,14 @@
             NSLog(@"Sending acceptor token %@", acceptorToken);
         } while ([initiatorCtx isContinueNeeded]);
         
-        NSLog(@"Initiator status %ld acceptor status %ld", [[initiatorCtx lastError] code], [[acceptorCtx lastError] code]);
+        if (initiatorCtx.lastError.code)
+            NSLog(@"Initiator error: %@", initiatorCtx.lastError);
+        else
+            NSLog(@"Initiator succeeded!");
+        if (acceptorCtx.lastError.code)
+            NSLog(@"Acceptor error: %@", acceptorCtx.lastError);
+        else
+            NSLog(@"Acceptor succeeded! Initiator name is %@", acceptorCtx.initiatorName.displayString);
     });
 }
 
