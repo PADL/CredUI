@@ -154,8 +154,8 @@
 {
     NSModalSession modalSession = NULL;
 
-    assert(_modalResponse != NSModalResponseContinue);
-    
+    NSAssert(_modalResponse != NSModalResponseContinue, @"Modal loop re-entered");
+
     _modalResponse = NSModalResponseStop;
     
     if (self.title)
