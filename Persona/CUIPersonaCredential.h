@@ -12,8 +12,8 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <libkern/OSAtomic.h>
 
-#include <browserid.h>
-#include <CFBrowserID.h>
+#include <BrowserID/browserid.h>
+#include <BrowserID/CFBrowserID.h>
 
 #include "CredUICore.h"
 
