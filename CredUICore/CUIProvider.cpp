@@ -114,19 +114,13 @@ CUILoadProviders(void)
     return true;
 }
 
-void
-CUIUnloadProviders(void)
+static void
+_CUILibraryFinalize(void)
 {
     if (plugins) {
         CFRelease(plugins);
         plugins = NULL;
     }
-}
-
-static void
-_CUILibraryFinalize(void)
-{
-    CUIUnloadProviders();
 }
 
 static const void *
