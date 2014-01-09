@@ -70,7 +70,6 @@ public:
     Boolean createBrowserIDAssertion(CFErrorRef *error);
 
     Boolean initWithControllerAndAttributes(CUIControllerRef controller,
-                                            CUIUsageFlags usageFlags,
                                             CFDictionaryRef attributes,
                                             CFErrorRef *error);
     

@@ -66,14 +66,7 @@ public:
         CUICredentialRef credRef;
         CFArrayRef creds;
 
-        /*
-         * Although BrowserID uses certificates, we're going to leave that for providers
-         * that actually deal with X.509 certificates.
-         */
-        if (_usageFlags & kCUIUsageFlagsRequireCertificates)
-            return NULL;
-
-        if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
+        if (!personaCred->initWithControllerAndAttributes(_controller, attributes, error)) {
             personaCred->Release();
             return NULL;
         }
@@ -99,7 +92,7 @@ public:
         if (usageScenario != kCUIUsageScenarioNetwork)
             return false;
 
-        if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI))
+        if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI | kCUIUsageFlagsRequireCertificates))
             return false;
         
         _controller = (CUIControllerRef)CFRetain(controller);

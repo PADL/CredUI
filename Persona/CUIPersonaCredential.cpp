@@ -37,7 +37,6 @@ static CFStringRef CUIPersonaMakeGssTargetName(gss_name_t name)
 
 Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     CUIControllerRef controller,
-    CUIUsageFlags usageFlags,
     CFDictionaryRef attributes,
     CFErrorRef *error)
 {

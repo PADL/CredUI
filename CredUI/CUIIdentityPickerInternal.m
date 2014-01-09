@@ -8,6 +8,8 @@
 
 @interface CUIIdentityPickerInternal ()
 - (CUIControllerRef)_newCUIController:(CUIFlags)flags;
+- (void)_populateCredentials;
+- (void)_updateSubmitButtonForSelectedCred;
 @end
 
 @implementation CUIIdentityPickerInternal

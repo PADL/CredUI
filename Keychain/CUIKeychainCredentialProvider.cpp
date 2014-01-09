@@ -359,7 +359,7 @@ Boolean CUIKeychainCredentialProvider::initWithController(CUIControllerRef contr
                                                           CFErrorRef *error)
 {
     if ((usageFlags & kCUIUsageFlagsGeneric) == 0 ||
-        (usageFlags & kCUIUsageFlagsExcludePersistedCreds))
+        (usageFlags & (kCUIUsageFlagsRequireCertificates | kCUIUsageFlagsExcludePersistedCreds)))
         return false;
     
     _controller = (CUIControllerRef)CFRetain(controller);

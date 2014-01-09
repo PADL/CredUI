@@ -32,8 +32,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
     
     if (attributes) {
         /* Ignore persisted credentials without a password, they're no use to us. */
-        CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
-        if (persistenceFactoryID && !hasPassword(attributes))
+        if (CUIIsPersistedCredential(attributes) && !hasPassword(attributes))
             return false;
         
         /*

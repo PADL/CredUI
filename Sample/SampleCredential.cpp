@@ -59,9 +59,6 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
     if (error != NULL)
         *error = NULL;
    
-    if (usageFlags & kCUIUsageFlagsRequireCertificates)
-        return false;
- 
     if (attributes) {
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {

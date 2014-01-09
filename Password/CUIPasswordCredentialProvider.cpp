@@ -82,6 +82,9 @@ public:
                                CUIUsageScenario usageScenario,
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error) {
+        if (usageFlags & kCUIUsageFlagsRequireCertificates)
+            return false;
+
         _controller = (CUIControllerRef)CFRetain(controller);
         _usageScenario = usageScenario;
         _usageFlags = usageFlags;
