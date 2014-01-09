@@ -96,6 +96,13 @@ FORWARD_PROPERTY(BOOL,                  setPersist,             persist)
 FORWARD_PROPERTY(GSSContext *,          setGSSContextHandle,    GSSContextHandle)
 FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
+/* readonly properties */
+
+- (CUIFlags)flags
+{
+    return _internal.flags;
+}
+
 - (CUICredential *)selectedCredential
 {
     if (_modalResponse != NSModalResponseStop)
