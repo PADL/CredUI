@@ -326,7 +326,7 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                      *defaultCredentialIndex = cCreds;
                  
                  itemCred = new CUIKeychainCredential();
-                 if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
+                 if (!itemCred->initWithCredential(cred, this)) {
                      itemCred->Release();
                      return;
                  }

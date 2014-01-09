@@ -158,7 +158,7 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
                          *defaultCredentialIndex = cCreds;
 
                      itemCred = new CUIGSSItemCredential();
-                     if (!itemCred->initWithCredential(cred, _usageFlags, this)) {
+                     if (!itemCred->initWithCredential(cred, this)) {
                          itemCred->Release();
                          return;
                      }

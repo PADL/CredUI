@@ -68,12 +68,11 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUIUsageFlags usageFlags, CUIKeychainCredentialProvider *provider) {
+    Boolean initWithCredential(CUICredentialRef credential, CUIKeychainCredentialProvider *provider) {
         if (credential == NULL)
             return false;
         
         _credential = (CUICredentialRef)CFRetain(credential);
-        _usageFlags = usageFlags;
         
         _provider = provider;
         _provider->AddRef();
@@ -112,13 +111,11 @@ public:
     CUIKeychainCredential() {
         _retainCount = 1;
         _credential = NULL;
-        _usageFlags = 0;
     }
     
 private:
     int32_t _retainCount;
     CUICredentialRef _credential;
-    CUIUsageFlags _usageFlags;
     CUIKeychainCredentialProvider *_provider;
     
 protected:
