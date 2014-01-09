@@ -6,14 +6,9 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include <CoreFoundation/CoreFoundation.h>
-#include <Security/Security.h>
-#include <GSS/GSS.h>
-
 #include <CredUICore/CredUICore.h>
 
 #include "CUIProviderUtilities.h"
-#include "GSSItem.h"
 
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes)
