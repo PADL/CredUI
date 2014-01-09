@@ -18,7 +18,6 @@
 @property(nonatomic, copy) id targetName;
 @property(nonatomic, copy) NSError *lastError;
 
-@property(nonatomic, assign) CUIControllerRef controller;
 @property(nonatomic, assign) CUICredUIContext *credUIContext;
 
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;

@@ -11,6 +11,10 @@
 @end
 
 @implementation CUIIdentityPickerInternal
+{
+    CUIControllerRef _controller;
+    NSModalResponse _modalResponse;
+}
 
 - (void)dealloc
 {
@@ -47,7 +51,7 @@
         return nil;
     
     _flags = flags;
-    self.controller = [self _newCUIController:flags];
+    _controller = [self _newCUIController:flags];
     if (attributes)
         self.attributes = attributes;
     
@@ -82,8 +86,6 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    NSModalResponse *modalResponse = (NSModalResponse *)context;
-    
     if ([keyPath isEqualTo:@"selectionIndexes"]) {
         NSUInteger index;
         NSArray *creds = [object content];
@@ -103,7 +105,7 @@
              * selected a credential (observing a changed, not initial, value), unless there
              * was only one credential.
              */
-            if (autoLogin && creds.count > 1 && *modalResponse == NSModalResponseStop)
+            if (autoLogin && creds.count > 1 && _modalResponse == NSModalResponseStop)
                 autoLogin = NO;
             
             if (autoLogin) {
@@ -116,7 +118,7 @@
     }
 }
 
-- (void)_populateCredentials:(NSModalResponse *)modalResponse
+- (void)_populateCredentials
 {
     self.credsController = [[NSArrayController alloc] init];
     self.credsController.selectsInsertedObjects = NO;
@@ -141,22 +143,23 @@
     [self.collectionView addObserver:self
                           forKeyPath:@"selectionIndexes"
                              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                             context:modalResponse];
+                             context:NULL];
 }
 
 #pragma mark - Run Loop
 
 - (NSModalResponse)_runModal:(NSWindow *)window
 {
-    __block NSModalResponse modalResponse = NSModalResponseStop;
     NSModalSession modalSession = NULL;
+
+    _modalResponse = NSModalResponseStop;
     
     if (self.title)
         self.window.title = self.title;
     if (self.message)
         self.messageTextField.stringValue = self.message;
     
-    [self _populateCredentials:&modalResponse];
+    [self _populateCredentials];
    
     /*
      * Generic credentials can be automatically submitted if there is an available
@@ -169,19 +172,19 @@
 
     if (window) {
         [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
-            modalResponse = sheetReturnCode;
+            _modalResponse = sheetReturnCode;
         }];
     } else {
         modalSession = [NSApp beginModalSessionForWindow:self.window];
         do {
-            modalResponse = [NSApp runModalSession:modalSession];
+            _modalResponse = [NSApp runModalSession:modalSession];
             [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
             if (self.autoLogin) {
 autoSubmit:
                 [self willSubmitCredential:self.submitButton];
                 self.autoLogin = NO;
             }
-        } while (modalResponse == NSModalResponseContinue);
+        } while (_modalResponse == NSModalResponseContinue);
         
         if (modalSession)
             [NSApp endModalSession:modalSession];
@@ -193,7 +196,7 @@ autoSubmit:
     
     [self didSubmitCredential];
     
-    return modalResponse;
+    return _modalResponse;
 }
 
 #pragma mark - Credential submission
