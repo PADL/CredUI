@@ -42,41 +42,6 @@ CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass
     return CFEqual(attrClass, assertedClass) ? CUIClassMatch : CUIClassMismatch;
 }
 
-static CFStringRef
-_CUIDefaultPasswordCapableClasses[] = {
-    kCUIAttrClassKerberos,
-    kCUIAttrClassNTLM,
-    kCUIAttrClassIAKerb,
-    kCUIAttrClassGeneric
-};
-
-CUIClassMatchResult
-CUIShouldEnumerateForPasswordClass(CUIControllerRef controller,
-                                   CUIUsageFlags usageFlags,
-                                   CFDictionaryRef attributes)
-{
-    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
-    CFIndex i;
-    CUIClassMatchResult ret = CUIClassMismatch;
-
-    if (usageFlags & kCUIUsageFlagsRequireCertificates)
-        return CUIClassMismatch;
-
-    if (attrClass == NULL)
-        return CUIClassAbsent;
-
-    for (i = 0; i < sizeof(_CUIDefaultPasswordCapableClasses) / sizeof(_CUIDefaultPasswordCapableClasses[0]); i++) {
-        CFStringRef thisClass =  _CUIDefaultPasswordCapableClasses[i];
-
-        if (CUIShouldEnumerateForClass(attributes, thisClass)) {
-            ret = CUIClassMatch;
-            break;
-        }
-    }
-
-    return ret;
-}
-
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes)
 {

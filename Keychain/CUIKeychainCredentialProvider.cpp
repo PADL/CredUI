@@ -312,6 +312,7 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                 continue;
             
             _CUIControllerEnumerateCredentialsExcepting(_controller,
+                                                        0,
                                                         attrs,
                                                         kKeychainCredentialProviderFactoryID,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {

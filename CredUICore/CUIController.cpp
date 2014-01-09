@@ -10,6 +10,9 @@
 
 static CFTypeID _CUIControllerTypeID = _kCFRuntimeNotATypeID;
 
+void
+_CUIControllerShowProviders(CUIControllerRef controller);
+
 static inline void
 _CUISetter(CFTypeRef &dst, CFTypeRef src)
 {
@@ -28,8 +31,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
     
-    if (controller->_factories)
-        CFRelease(controller->_factories);
+    if (controller->_providersAttributes)
+        CFRelease(controller->_providersAttributes);
     if (controller->_providers)
         CFRelease(controller->_providers);
     if (controller->_uiContext.parentWindow)
@@ -135,7 +138,7 @@ struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CFDictionaryRef attributes;
     CFTypeRef notFactories;
-    CFUUIDRef factory;
+    CFDictionaryRef providerAttributes;
     CUIProvider *provider;
     void (^callback)(CUICredentialRef, Boolean, CFErrorRef);
     CFIndex index;
@@ -149,13 +152,6 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
     CUIEnumerateCredentialContext *enumContext = (CUIEnumerateCredentialContext *)_context;
     CUICredentialRef cred = (CUICredentialRef)value;
 
-    CFUUIDRef providerFactoryID = (CFUUIDRef)CFDictionaryGetValue(CUICredentialGetAttributes(cred), kCUIAttrProviderFactoryID);
-    assert(providerFactoryID == NULL || CFGetTypeID(providerFactoryID) == CFUUIDGetTypeID());
-
-    CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(CUICredentialGetAttributes(cred), kCUIAttrPersistenceFactoryID);
-    assert(persistenceFactoryID == NULL || CFGetTypeID(persistenceFactoryID) == CFUUIDGetTypeID());
-
-    assert(CFEqual(providerFactoryID, enumContext->factory) || CFEqual(persistenceFactoryID, enumContext->factory));
     assert(cred);
 
     enumContext->callback(cred, (enumContext->index == enumContext->defaultCredentialIndex), NULL);
@@ -166,11 +162,12 @@ _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_co
 
 static Boolean
 _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
-                                                       CFDictionaryRef attributes,
-                                                       CFTypeRef notFactories,
-                                                       CFUUIDRef factory,
-                                                       CUIProvider *provider,
-                                                       void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
+                                                      CUIUsageFlags usageFlags,
+                                                      CFDictionaryRef attributes,
+                                                      CFTypeRef notFactories,
+                                                      CFDictionaryRef providerAttributes,
+                                                      CUIProvider *provider,
+                                                      void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
     CFArrayRef matchingCreds;
     CFErrorRef error = NULL;
@@ -179,13 +176,27 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
         .controller = controller,
         .attributes = attributes,
         .notFactories = notFactories,
-        .factory = factory,
+        .providerAttributes = providerAttributes,
         .provider = provider,
         .callback = cb,
         .didEnumerate = false,
         .index = 0,
         .defaultCredentialIndex = kCFNotFound
     };
+    
+    /*
+     * If kCUIUsageFlagsMechanismOnly was set, then don't call this provider if it
+     * wouldn't support the desired mechanism.
+     */
+    if (attributes && (usageFlags & kCUIUsageFlagsMechanismOnly)) {
+        CFArrayRef supportedClasses = (CFArrayRef)CFDictionaryGetValue(providerAttributes, kCUIAttrClass);
+        CFTypeRef desiredMech = CFDictionaryGetValue(attributes, kCUIAttrClass);
+        
+        if (supportedClasses &&
+            desiredMech &&
+            !CFArrayContainsValue(supportedClasses, CFRangeMake(0, CFArrayGetCount(supportedClasses)), desiredMech))
+            return false;
+    }
     
     matchingCreds = provider->copyMatchingCredentials(attributes, &enumContext.defaultCredentialIndex, &error);
     if (matchingCreds) {
@@ -205,6 +216,7 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
 
 CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                            CUIUsageFlags extraUsageFlags,
                                             CFDictionaryRef attributes,
                                             CFTypeRef notFactories,
                                             void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
@@ -214,17 +226,19 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     Boolean didEnumerate = false;
     
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
-        CFUUIDRef factory = (CFUUIDRef)CFArrayGetValueAtIndex(controller->_factories, index);
+        CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
+        CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(providerAttributes, kCUIAttrProviderFactoryID);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
-        Boolean skipThisProvider = _CUIContainsValueP(notFactories, factory);
+        Boolean skipThisProvider = _CUIContainsValueP(notFactories, factoryID);
         
         if (skipThisProvider)
             continue;
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
+                                                                              controller->_usageFlags | extraUsageFlags,
                                                                               attributes,
                                                                               notFactories,
-                                                                              factory,
+                                                                              providerAttributes,
                                                                               provider,
                                                                               cb);
     }
@@ -237,9 +251,13 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     return didEnumerate;
 }
 
-static CFDictionaryRef
-_CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller)
+static Boolean
+_CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller,
+                                                   CUIUsageFlags *extraUsageFlags,
+                                                   CFDictionaryRef *adjustedAttributes)
 {
+    *adjustedAttributes = NULL;
+
     /*
      * This is to handle a special case which is not yet supported by Heimdal,
      * that is when a mechanism is in play to successfully authenticate but
@@ -262,29 +280,41 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller)
                                                        0,
                                                        &kCFTypeDictionaryKeyCallBacks,
                                                        &kCFTypeDictionaryValueCallBacks);
-            if (attributes)
-                CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
-
+            if (attributes == NULL) {
+                CFRelease(attrClass);
+                return false;
+            }
+            
+            CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
             CFRelease(attrClass);
 
-            return attributes;
+            *adjustedAttributes = attributes;
+            *extraUsageFlags |= kCUIUsageFlagsMechanismOnly;
+            return true;
         }
     }
     
-    return controller->_attributes ? (CFDictionaryRef)CFRetain(controller->_attributes) : NULL;
+    if (*adjustedAttributes == NULL && controller->_attributes)
+        *adjustedAttributes = (CFDictionaryRef)CFRetain(controller->_attributes);
+    
+    return true;
 }
 
 CUI_EXPORT Boolean
 CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
-    CFDictionaryRef attributes = _CUIControllerCreateAttributesAdjustedForAuthError(controller);
     Boolean ret;
+    CFDictionaryRef attributes = NULL;
+    CUIUsageFlags extraUsageFlags = 0;
+ 
+    if (!_CUIControllerCreateAttributesAdjustedForAuthError(controller, &extraUsageFlags, &attributes))
+        return false;
     
-    ret = _CUIControllerEnumerateCredentialsExcepting(controller, attributes, NULL, cb);
+    ret = _CUIControllerEnumerateCredentialsExcepting(controller, extraUsageFlags, attributes, NULL, cb);
     
     if (attributes)
         CFRelease(attributes);
-
+    
     return ret;
 }
 
@@ -406,4 +436,18 @@ CUICopyTargetHostName(CFTypeRef targetName)
     }
     
     return hostName;
+}
+
+void
+_CUIControllerShowProviders(CUIControllerRef controller)
+{
+    CFIndex index;
+    
+    assert(CFArrayGetCount(controller->_providersAttributes) == CFArrayGetCount(controller->_providers));
+    
+    if (controller->_providersAttributes) {
+        for (index = 0; index < CFArrayGetCount(controller->_providersAttributes); index++) {
+            CFShow(CFArrayGetValueAtIndex(controller->_providersAttributes, index));
+        }
+    }
 }

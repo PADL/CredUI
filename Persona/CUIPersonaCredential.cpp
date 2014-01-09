@@ -69,12 +69,6 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         if (CUIIsPersistedCredential(attributes))
             return false;
         
-        CFTypeRef attrClass = CFDictionaryGetValue(attributes, kCUIAttrClass);
-        if ((usageFlags & kCUIUsageFlagsMechanismOnly) &&
-            attrClass &&
-            !CFEqual(attrClass, kCUIAttrClassBrowserID))
-            return false;
-        
         _defaultIdentity = CUIGetDefaultUsername(attributes);
         if (_defaultIdentity)
             CFRetain(_defaultIdentity);        

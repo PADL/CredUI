@@ -19,6 +19,51 @@ extern CFArrayRef CFCopySearchPathForDirectoriesInDomains(CFIndex directory, CFI
 
 static CFMutableArrayRef plugins;
 
+static void
+_CUICopyInfoDictionaryForFactoryCallback(const void *key, const void *value, void *context)
+{
+    if (CFGetTypeID(key) == CFStringGetTypeID()) {
+        CFUUIDRef uuid = CFUUIDCreateFromString(kCFAllocatorDefault, (CFStringRef)key);
+        if (uuid) {
+            CFArrayAppendValue((CFMutableArrayRef)context, uuid);
+            CFRelease(uuid);
+        }
+    }
+}
+
+static CFDictionaryRef
+_CUICopyInfoDictionaryForFactory(CFUUIDRef factory)
+{
+    CFIndex index;
+    CFDictionaryRef foundInfo = NULL;
+    
+    if (plugins == NULL)
+        return NULL;
+    
+    for (index = 0; index < CFArrayGetCount(plugins); index++) {
+        CFDictionaryRef info = (CFDictionaryRef)CFBundleGetInfoDictionary((CFBundleRef)CFArrayGetValueAtIndex(plugins, index));
+        
+        if (info == NULL)
+            continue;
+        
+        CFDictionaryRef factoryDict = (CFDictionaryRef)CFDictionaryGetValue(info, kCFPlugInFactoriesKey);
+        if (factoryDict && CFGetTypeID(factoryDict) == CFDictionaryGetTypeID()) {
+            CFMutableArrayRef uuids = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
+            CFDictionaryApplyFunction(factoryDict, _CUICopyInfoDictionaryForFactoryCallback, uuids);
+
+            if (CFArrayContainsValue(uuids, CFRangeMake(0, CFArrayGetCount(uuids)), factory))
+                foundInfo = (CFDictionaryRef)CFRetain(info);
+
+            CFRelease(uuids);
+
+            if (foundInfo)
+                break;
+        }
+    }
+
+    return foundInfo;
+}
+
 static Boolean
 CUILoadProviders(void)
 {
@@ -119,8 +164,8 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
     if (controller->_providers == NULL)
         goto cleanup;
 
-    controller->_factories = CFArrayCreateMutable(allocator, 0, &kCFTypeArrayCallBacks);
-    if (controller->_factories == NULL)
+    controller->_providersAttributes = CFArrayCreateMutable(allocator, 0, &kCFTypeArrayCallBacks);
+    if (controller->_providersAttributes == NULL)
         goto cleanup;
 
     factories = CFPlugInFindFactoriesForPlugInType(kCUIProviderTypeID);
@@ -132,12 +177,22 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         IUnknown *iunk = (IUnknown *)CFPlugInInstanceCreate(allocator, factoryID, kCUIProviderTypeID);
         CUIProvider *provider = NULL;
         CFErrorRef error = NULL;
+        CFMutableDictionaryRef providerAttributes = NULL;
         
         if (iunk == NULL)
             continue;
         
         iunk->QueryInterface(CFUUIDGetUUIDBytes(kCUIProviderInterfaceID), (void **)&provider);
         iunk->Release();
+    
+        providerAttributes = CFDictionaryCreateMutable(allocator,
+                                                       0,
+                                                       &kCFTypeDictionaryKeyCallBacks,
+                                                       &kCFTypeDictionaryValueCallBacks);
+        if (providerAttributes == NULL) {
+            provider->Release();
+            goto cleanup;
+        }
         
         if (!provider->initWithController(controller,
                                           controller->_usage,
@@ -145,22 +200,45 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
                                           &error)) {
             if (error)
                 CFRelease(error);
+            CFRelease(providerAttributes);
             provider->Release();
             continue;
         }
         
-        CFArrayAppendValue((CFMutableArrayRef)controller->_factories, factoryID);
+        CFDictionaryRef infoDict = _CUICopyInfoDictionaryForFactory(factoryID);
+        if (infoDict == NULL) {
+            CFRelease(providerAttributes);
+            provider->Release();
+            continue;
+        }
+        
+        CFTypeRef isPersistenceProvider = CFDictionaryGetValue(infoDict, CFSTR("CUIIsPersistenceProvider"));
+        if (isPersistenceProvider &&
+            CFGetTypeID(isPersistenceProvider) == CFBooleanGetTypeID() &&
+            CFBooleanGetValue((CFBooleanRef)isPersistenceProvider))
+            CFDictionarySetValue(providerAttributes, kCUIAttrPersistenceFactoryID, factoryID);
+        
+        CFDictionarySetValue(providerAttributes, kCUIAttrProviderFactoryID, factoryID);
+
+        CFTypeRef supportedClasses = CFDictionaryGetValue(infoDict, CFSTR("CUISupportedClasses"));
+        if (supportedClasses && CFGetTypeID(supportedClasses) == CFArrayGetTypeID())
+            CFDictionarySetValue(providerAttributes, kCUIAttrClass, supportedClasses);
+        
+        CFArrayAppendValue((CFMutableArrayRef)controller->_providersAttributes, providerAttributes);
         CFArrayAppendValue((CFMutableArrayRef)controller->_providers, provider);
+        
+        CFRelease(providerAttributes);
+        CFRelease(infoDict);
     }
     
 cleanup:
     if (factories)
         CFRelease(factories);
     
-    if (controller->_factories &&
-        CFArrayGetCount(controller->_factories) == 0) {
-        CFRelease(controller->_factories);
-        controller->_factories = NULL;
+    if (controller->_providersAttributes &&
+        CFArrayGetCount(controller->_providersAttributes) == 0) {
+        CFRelease(controller->_providersAttributes);
+        controller->_providersAttributes = NULL;
     }
 
     if (controller->_providers &&
@@ -172,23 +250,43 @@ cleanup:
     return !!controller->_providers;
 }
 
+static IUnknown *
+_CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef desiredFactoryID, Boolean persistence)
+{
+    CFIndex index;
+    
+    for (index = 0; index < CFArrayGetCount(controller->_providersAttributes); index++) {
+        CFDictionaryRef attributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
+        CFUUIDRef factoryID;
+        Boolean found = false;
+        
+        if (!persistence) {
+            factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrProviderFactoryID);
+            found = factoryID && CFEqual(factoryID, desiredFactoryID);
+        }
+        
+        if (!found) {
+            factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+            found = factoryID && CFEqual(factoryID, desiredFactoryID);
+        }
+        
+        if (found)
+            return (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
+    }
+
+    return NULL;
+}
+
 CUI_EXPORT CUIProvider *
 CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
 {
-    CFIndex index = CFArrayGetFirstIndexOfValue(controller->_factories,
-                                                CFRangeMake(0, CFArrayGetCount(controller->_factories)),
-                                                (CFTypeRef)factoryID);
-    
-    if (index == kCFNotFound)
-        return NULL;
-    
-    return (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
+    return (CUIProvider *)_CUIControllerFindProviderByFactoryID(controller, factoryID, false);
 }
 
 CUI_EXPORT CUICredentialPersistence *
 CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID)
 {
-    IUnknown *iunk = (IUnknown *)CUIControllerFindProviderByFactoryID(controller, factoryID);
+    IUnknown *iunk = _CUIControllerFindProviderByFactoryID(controller, factoryID, true);
     CUICredentialPersistence *persistence = NULL;
     
     if (iunk == NULL)

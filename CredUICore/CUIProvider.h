@@ -141,6 +141,7 @@ CUI_EXPORT const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
 CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+                                            CUIUsageFlags extraUsageFlags,
                                             CFDictionaryRef attributes,
                                             CFTypeRef notFactories,
                                             void (^cb)(CUICredentialRef, Boolean, CFErrorRef));

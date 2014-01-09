@@ -34,11 +34,6 @@ typedef CF_ENUM(CFIndex, CUIClassMatchResult) {
 CUIClassMatchResult
 CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass);
 
-CUIClassMatchResult
-CUIShouldEnumerateForPasswordClass(CUIControllerRef controller,
-                                   CUIUsageFlags usageFlags,
-                                   CFDictionaryRef attributes);
-
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes);
 

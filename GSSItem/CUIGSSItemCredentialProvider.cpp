@@ -144,9 +144,10 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             CFDictionarySetValue(cuiAttributes, kCUIAttrPersistenceFactoryID, kGSSItemCredentialProviderFactoryID);
  
             _CUIControllerEnumerateCredentialsExcepting(_controller,
-                 cuiAttributes,
-                 kGSSItemCredentialProviderFactoryID,
-                 ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
+                                                        0,
+                                                        cuiAttributes,
+                                                        kGSSItemCredentialProviderFactoryID,
+                                                        ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                      CUIGSSItemCredential *itemCred;
                      CUICredentialRef credRef;
                      

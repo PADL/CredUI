@@ -42,5 +42,9 @@
 	<string></string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2013 PADL Software Pty Ltd. All rights reserved.</string>
+	<key>CUISupportedClasses</key>
+        <array>
+		<string>1.3.6.1.4.1.5322.24.1.17</string>
+	</array>
 </dict>
 </plist>

@@ -31,9 +31,6 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
     _controller = (CUIControllerRef)CFRetain(controller);
     
     if (attributes) {
-        if (CUIShouldEnumerateForPasswordClass(controller, usageFlags, attributes) == CUIClassMismatch)
-            return false;
-        
         /* Ignore persisted credentials without a password, they're no use to us. */
         CFUUIDRef persistenceFactoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
         if (persistenceFactoryID && !hasPassword(attributes))
