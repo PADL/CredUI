@@ -8,6 +8,7 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <CoreFoundation/CFPlugInCOM.h>
+#import <CoreFoundation/CFBridgingPriv.h>
 
 #import <GSS/GSS.h>
 

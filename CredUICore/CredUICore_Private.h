@@ -12,12 +12,12 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFPlugInCOM.h>
 #include <CoreFoundation/CFRuntime.h>
+#include <CoreFoundation/CFBridgingPriv.h>
 
 #include <GSS/GSS.h>
 
 #include <CredUICore/CredUICore.h>
 #include <CredUICore/GSSIsPromptingNeeded.h>
-#include "CFBridgeHelper.h"
 
 #undef CUI_EXPORT
 #define CUI_EXPORT  __attribute__((visibility("default")))

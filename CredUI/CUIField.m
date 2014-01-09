@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CFBridgeHelper.h"
-
 #pragma mark - CUICFField concrete class
 
 @interface CUICFField : CUIField

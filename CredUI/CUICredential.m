@@ -6,9 +6,6 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include "CFBridgeHelper.h"
-#include "CUIProviderUtilities.h"
-
 #pragma mark - CUICFCredential concrete class
 
 @interface CUICFCredential : CUICredential
