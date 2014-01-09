@@ -93,7 +93,10 @@ CUIControllerCreate(CFAllocatorRef allocator,
 {
     CUIControllerRef controller;
     
-    controller = (CUIControllerRef)_CFRuntimeCreateInstance(allocator, CUIControllerGetTypeID(), sizeof(struct __CUIController) - sizeof(CFRuntimeBase), NULL);
+    controller = (CUIControllerRef)_CFRuntimeCreateInstance(allocator,
+                                                            CUIControllerGetTypeID(),
+                                                            sizeof(struct __CUIController) - sizeof(CFRuntimeBase),
+                                                            NULL);
     if (controller == NULL)
         return NULL;
     
@@ -230,9 +233,11 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     CUIUsageFlags usageFlags = controller->_usageFlags | extraUsageFlags;
     
     /*
-     * If kCUIUsageFlagsInCredOnly is specified, we must have an input set of attributes.
+     * If kCUIUsageFlagsInCredOnly or kCUIUsageFlagsInClassOnly is specified, we must
+     * have an input set of attributes.
      */
-    if (controller->_attributes == NULL && (usageFlags & kCUIUsageFlagsInCredOnly))
+    if (controller->_attributes == NULL &&
+        (usageFlags & (kCUIUsageFlagsInClassOnly | kCUIUsageFlagsInCredOnly)))
         return false;
 
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
@@ -262,9 +267,9 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 }
 
 static Boolean
-_CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller,
-                                                   CUIUsageFlags *extraUsageFlags,
-                                                   CFDictionaryRef *adjustedAttributes)
+_CUIControllerCopyAttributesAdjustedForAuthError(CUIControllerRef controller,
+                                                 CUIUsageFlags *extraUsageFlags,
+                                                 CFDictionaryRef *adjustedAttributes)
 {
     *adjustedAttributes = NULL;
 
@@ -274,11 +279,11 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller,
      * needs more information from the user. In this case it will return
      * GSS_S_CONTINUE_NEEDED | GSS_S_PROMPTING_NEEDED.
      */
-    if (controller->_gssContextHandle != GSS_C_NO_CONTEXT &&
-        GSSIsPromptingNeeded(controller->_authError) &&
-        !GSS_ERROR(CFErrorGetCode(controller->_authError))) {
+    if (controller->_gssContextHandle != GSS_C_NO_CONTEXT &&        /* context in play */
+        GSSIsPromptingNeeded(controller->_authError) &&             /* GSS_S_PROMPTING_NEEDED */
+        !GSS_ERROR(CFErrorGetCode(controller->_authError))) {       /* GSS_S_CONTINUE_NEEDED or non-fatal */
         CFStringRef attrClass;
-        
+
         attrClass = _CUICopyAttrClassForAuthError(controller->_authError);
         if (attrClass) {
             CFMutableDictionaryRef attributes;
@@ -294,11 +299,13 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller,
                 CFRelease(attrClass);
                 return false;
             }
-            
+
+            /* replace the class with that of the mechanism */            
             CFDictionarySetValue(attributes, kCUIAttrClass, attrClass);
             CFRelease(attrClass);
 
             *adjustedAttributes = attributes;
+            /* ensure that only the mechanism class is enumerated */
             *extraUsageFlags |= kCUIUsageFlagsInClassOnly;
             return true;
         }
@@ -317,7 +324,7 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
     CFDictionaryRef attributes = NULL;
     CUIUsageFlags extraUsageFlags = 0;
  
-    if (!_CUIControllerCreateAttributesAdjustedForAuthError(controller, &extraUsageFlags, &attributes))
+    if (!_CUIControllerCopyAttributesAdjustedForAuthError(controller, &extraUsageFlags, &attributes))
         return false;
     
     ret = _CUIControllerEnumerateCredentialsExcepting(controller, extraUsageFlags, attributes, NULL, cb);

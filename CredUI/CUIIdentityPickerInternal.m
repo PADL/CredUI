@@ -154,6 +154,8 @@
 {
     NSModalSession modalSession = NULL;
 
+    assert(_modalResponse != NSModalResponseContinue);
+    
     _modalResponse = NSModalResponseStop;
     
     if (self.title)
