@@ -185,10 +185,10 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
     };
     
     /*
-     * If kCUIUsageFlagsMechanismOnly was set, then don't call this provider if it
+     * If kCUIUsageFlagsInClassOnly was set, then don't call this provider if it
      * wouldn't support the desired mechanism.
      */
-    if (attributes && (usageFlags & kCUIUsageFlagsMechanismOnly)) {
+    if (attributes && (usageFlags & kCUIUsageFlagsInClassOnly)) {
         CFArrayRef supportedClasses = (CFArrayRef)CFDictionaryGetValue(providerAttributes, kCUIAttrClass);
         CFTypeRef desiredMech = CFDictionaryGetValue(attributes, kCUIAttrClass);
         
@@ -224,7 +224,14 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
     CFArrayRef items = NULL;
     CFErrorRef error = NULL;
     Boolean didEnumerate = false;
+    CUIUsageFlags usageFlags = controller->_usageFlags | extraUsageFlags;
     
+    /*
+     * If kCUIUsageFlagsInCredOnly is specified, we must have an input set of attributes.
+     */
+    if (controller->_attributes == NULL && (usageFlags & kCUIUsageFlagsInCredOnly))
+        return false;
+
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
         CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
         CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(providerAttributes, kCUIAttrProviderFactoryID);
@@ -235,7 +242,7 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
             continue;
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
-                                                                              controller->_usageFlags | extraUsageFlags,
+                                                                              usageFlags,
                                                                               attributes,
                                                                               notFactories,
                                                                               providerAttributes,
@@ -289,7 +296,7 @@ _CUIControllerCreateAttributesAdjustedForAuthError(CUIControllerRef controller,
             CFRelease(attrClass);
 
             *adjustedAttributes = attributes;
-            *extraUsageFlags |= kCUIUsageFlagsMechanismOnly;
+            *extraUsageFlags |= kCUIUsageFlagsInClassOnly;
             return true;
         }
     }

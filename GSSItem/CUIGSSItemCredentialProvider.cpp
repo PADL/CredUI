@@ -106,7 +106,7 @@ CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
                                                  CUIUsageFlags usageFlags,
                                                  CFErrorRef *error)
 {
-    if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsInCredOnly | kCUIUsageFlagsExcludePersistedCreds))
+    if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsExcludePersistedCreds))
         return false;
     
     _controller = (CUIControllerRef)CFRetain(controller);

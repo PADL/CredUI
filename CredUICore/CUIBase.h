@@ -22,22 +22,22 @@ extern "C" {
     
 typedef CF_ENUM(CFIndex, CUIUsageScenario) {
     kCUIUsageScenarioInvalid = 0,
-    kCUIUsageScenarioLogin,
-    kCUIUsageScenarioNetwork
+    kCUIUsageScenarioLogin,                             /* loginwindow, unimplemented */
+    kCUIUsageScenarioNetwork                            /* GSS or other network caller */
 };
 
 typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
-    kCUIUsageFlagsGeneric               = 0x00000001,
-    kCUIUsageFlagsMechanismOnly         = 0x00000010,
-    kCUIUsageFlagsInCredOnly            = 0x00000020,
-    kCUIUsageFlagsEnumerateAdmins       = 0x00000100,
-    kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,
-    kCUIUsageFlagsExcludeCertificates   = 0x04000000,
-    kCUIUsageFlagsRequireCertificates   = 0x08000000,
-    kCUIUsageFlagsPasswordOnlyOK        = 0x10000000,
-    kCUIUsageFlagsKeepUsername          = 0x20000000,
-    kCUIUsageFlagsExcludePersistedCreds = 0x40000000,
-    kCUIUsageFlagsDoNotShowUI           = 0x80000000
+    kCUIUsageFlagsGeneric               = 0x00000001,   /* generic (non-GSS) credentials */
+    kCUIUsageFlagsInClassOnly           = 0x00000010,   /* only enumerate providers that support this class */
+    kCUIUsageFlagsInCredOnly            = 0x00000020,   /* only enumerate credentials in controller attributes */
+    kCUIUsageFlagsEnumerateAdmins       = 0x00000100,   /* unimplemented, login scenario only */
+    kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,   /* unimplemented, login scenario only */
+    kCUIUsageFlagsExcludeCertificates   = 0x04000000,   /* do not enumerate certificate credentials */
+    kCUIUsageFlagsRequireCertificates   = 0x08000000,   /* only enumerate certificate credentials */
+    kCUIUsageFlagsPasswordOnlyOK        = 0x10000000,   /* do not display username field */
+    kCUIUsageFlagsKeepUsername          = 0x20000000,   /* username field is readonly */
+    kCUIUsageFlagsExcludePersistedCreds = 0x40000000,   /* do not enumerate persisted credentials */
+    kCUIUsageFlagsDoNotShowUI           = 0x80000000    /* caller is a console app */
 };
 
 typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
