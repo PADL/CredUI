@@ -54,6 +54,9 @@ static void testEncodeDecode(CUICredential * cred)
 {
     self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates];
     
+//  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : (__bridge id)kCUIAttrClassKerberos };
+//  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : @"1.3.6.1.4.1.5322.24.1.17" };
+
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
 

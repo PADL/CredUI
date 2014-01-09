@@ -65,7 +65,6 @@ public:
         CUIPersonaCredential *personaCred = new CUIPersonaCredential();
         CUICredentialRef credRef;
         CFArrayRef creds;
-        CUIClassMatchResult classMatch;
 
         /*
          * Although BrowserID uses certificates, we're going to leave that for providers
@@ -74,12 +73,6 @@ public:
         if (_usageFlags & kCUIUsageFlagsRequireCertificates)
             return NULL;
 
-        classMatch = CUIShouldEnumerateForClass(attributes, kCUIAttrClassBrowserID);
-        if (classMatch == CUIClassMismatch)
-            return NULL;
-        else if (classMatch == CUIClassMatch)
-            *defaultCredentialIndex = 0;
- 
         if (!personaCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
             personaCred->Release();
             return NULL;

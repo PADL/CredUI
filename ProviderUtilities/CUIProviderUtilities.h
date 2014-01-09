@@ -25,15 +25,6 @@
 CFStringRef
 CUIGetDefaultUsername(CFDictionaryRef attributes);
 
-typedef CF_ENUM(CFIndex, CUIClassMatchResult) {
-    CUIClassAbsent = -1,
-    CUIClassMismatch = 0,
-    CUIClassMatch  = 1
-};
-
-CUIClassMatchResult
-CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass);
-
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes);
 

@@ -31,17 +31,6 @@ CUIGetDefaultUsername(CFDictionaryRef attributes)
     return defaultUsername;
 }
 
-CUIClassMatchResult
-CUIShouldEnumerateForClass(CFDictionaryRef attributes, CFStringRef assertedClass)
-{
-    CFStringRef attrClass = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass);
-
-    if (attrClass == NULL)
-        return CUIClassAbsent;
-
-    return CFEqual(attrClass, assertedClass) ? CUIClassMatch : CUIClassMismatch;
-}
-
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes)
 {
