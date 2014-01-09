@@ -140,10 +140,9 @@ CUI_EXPORT const CFStringRef kCUICredentialReturnCredentialFinished;
 CUI_EXPORT const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
 CUI_EXPORT Boolean
-_CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+_CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
                                             CUIUsageFlags extraUsageFlags,
                                             CFDictionaryRef attributes,
-                                            CFTypeRef notFactories,
                                             void (^cb)(CUICredentialRef, Boolean, CFErrorRef));
 
 CUI_EXPORT CUIProvider *

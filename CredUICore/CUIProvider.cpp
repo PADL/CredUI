@@ -217,8 +217,8 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
             CFGetTypeID(isPersistenceProvider) == CFBooleanGetTypeID() &&
             CFBooleanGetValue((CFBooleanRef)isPersistenceProvider))
             CFDictionarySetValue(providerAttributes, kCUIAttrPersistenceFactoryID, factoryID);
-        
-        CFDictionarySetValue(providerAttributes, kCUIAttrProviderFactoryID, factoryID);
+        else     
+            CFDictionarySetValue(providerAttributes, kCUIAttrProviderFactoryID, factoryID);
 
         CFTypeRef supportedClasses = CFDictionaryGetValue(infoDict, CFSTR("CUISupportedClasses"));
         if (supportedClasses && CFGetTypeID(supportedClasses) == CFArrayGetTypeID())
@@ -258,19 +258,10 @@ _CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef des
     for (index = 0; index < CFArrayGetCount(controller->_providersAttributes); index++) {
         CFDictionaryRef attributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
         CFUUIDRef factoryID;
-        Boolean found = false;
         
-        if (!persistence) {
-            factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrProviderFactoryID);
-            found = factoryID && CFEqual(factoryID, desiredFactoryID);
-        }
-        
-        if (!found) {
-            factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
-            found = factoryID && CFEqual(factoryID, desiredFactoryID);
-        }
-        
-        if (found)
+         factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes,
+                                                     persistence ? kCUIAttrPersistenceFactoryID : kCUIAttrProviderFactoryID);
+         if (factoryID && CFEqual(factoryID, desiredFactoryID))
             return (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
     }
 

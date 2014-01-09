@@ -120,27 +120,9 @@ CUIControllerCreate(CFAllocatorRef allocator,
     return controller;
 }
 
-static Boolean
-_CUIContainsValueP(CFTypeRef cf, CFTypeRef value)
-{
-    Boolean ret = false;
-
-    if (cf) {
-        if (CFGetTypeID(cf) == CFArrayGetTypeID())
-            ret = CFArrayContainsValue((CFArrayRef)cf,
-                                       CFRangeMake(0, CFArrayGetCount((CFArrayRef)cf)),
-                                       (void *)value);
-        else
-            ret = CFEqual(cf, value);
-    }
-
-    return ret;
-}
-
 struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CFDictionaryRef attributes;
-    CFTypeRef notFactories;
     CFDictionaryRef providerAttributes;
     CUIProvider *provider;
     void (^callback)(CUICredentialRef, Boolean, CFErrorRef);
@@ -167,7 +149,6 @@ static Boolean
 _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controller,
                                                       CUIUsageFlags usageFlags,
                                                       CFDictionaryRef attributes,
-                                                      CFTypeRef notFactories,
                                                       CFDictionaryRef providerAttributes,
                                                       CUIProvider *provider,
                                                       void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
@@ -179,7 +160,6 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
     CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
         .attributes = attributes,
-        .notFactories = notFactories,
         .providerAttributes = providerAttributes,
         .provider = provider,
         .callback = cb,
@@ -221,10 +201,9 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
 }
 
 CUI_EXPORT Boolean
-_CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
+_CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
                                             CUIUsageFlags extraUsageFlags,
                                             CFDictionaryRef attributes,
-                                            CFTypeRef notFactories,
                                             void (^cb)(CUICredentialRef, Boolean, CFErrorRef))
 {
     CFArrayRef items = NULL;
@@ -242,17 +221,15 @@ _CUIControllerEnumerateCredentialsExcepting(CUIControllerRef controller,
 
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
         CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
-        CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(providerAttributes, kCUIAttrProviderFactoryID);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
-        Boolean skipThisProvider = _CUIContainsValueP(notFactories, factoryID);
-        
-        if (skipThisProvider)
+       
+        if (CFDictionaryGetValue(providerAttributes, kCUIAttrPersistenceFactoryID) &&
+            (usageFlags & kCUIUsageFlagsExcludePersistedCreds))
             continue;
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
                                                                               usageFlags,
                                                                               attributes,
-                                                                              notFactories,
                                                                               providerAttributes,
                                                                               provider,
                                                                               cb);
@@ -327,7 +304,7 @@ CUIControllerEnumerateCredentials(CUIControllerRef controller, void (^cb)(CUICre
     if (!_CUIControllerCopyAttributesAdjustedForAuthError(controller, &extraUsageFlags, &attributes))
         return false;
     
-    ret = _CUIControllerEnumerateCredentialsExcepting(controller, extraUsageFlags, attributes, NULL, cb);
+    ret = _CUIControllerEnumerateCredentialsWithFlags(controller, extraUsageFlags, attributes, cb);
     
     if (attributes)
         CFRelease(attributes);
