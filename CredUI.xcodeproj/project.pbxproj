@@ -107,13 +107,11 @@
 		D39EB0E1187244D300C43A24 /* CUIPersonaCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0DF187244D300C43A24 /* CUIPersonaCredential.cpp */; };
 		D39EB0E4187244DF00C43A24 /* CUIPersonaCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0E2187244DF00C43A24 /* CUIPersonaCredentialProvider.cpp */; };
 		D39EB0E518724FC400C43A24 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
-		D39EB0E718724FD000C43A24 /* libbrowserid.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */; };
 		D39EB0E81872532E00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB0F1187283AF00C43A24 /* CUIPromptForCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */; };
 		D39EB0F6187285FC00C43A24 /* GSSPromptForCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */; };
 		D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D39EB0F91872900200C43A24 /* libbrowserid.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */; };
 		D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
@@ -154,6 +152,7 @@
 		D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */; };
 		D3F68724187D7FEE00E8A080 /* GSSIsPromptingNeeded.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3F68726187D87D000E8A080 /* GSSIsPromptingNeeded.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */; };
+		D3FD1124187EEDE700AD32FB /* BrowserID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FD1123187EEDE700AD32FB /* BrowserID.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -567,6 +566,7 @@
 		D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIGSSItemCredentialProvider.h; sourceTree = "<group>"; };
 		D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSIsPromptingNeeded.h; sourceTree = "<group>"; };
 		D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSIsPromptingNeeded.cpp; sourceTree = "<group>"; };
+		D3FD1123187EEDE700AD32FB /* BrowserID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrowserID.framework; path = "../../../Library/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug/BrowserID.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -652,7 +652,6 @@
 				D32517C3187A8F77000AFF9E /* GSS.framework in Frameworks */,
 				D3A7735F1877F09E009F51B7 /* GSSKitUI.framework in Frameworks */,
 				D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */,
-				D39EB0F91872900200C43A24 /* libbrowserid.0.dylib in Frameworks */,
 				D39EB0A0187016EE00C43A24 /* CredUI.framework in Frameworks */,
 				D39EB0A1187016EE00C43A24 /* CredUICore.framework in Frameworks */,
 				D39EB062186FB1DA00C43A24 /* Cocoa.framework in Frameworks */,
@@ -685,10 +684,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3FD1124187EEDE700AD32FB /* BrowserID.framework in Frameworks */,
 				D384697818754610003EE56B /* Security.framework in Frameworks */,
 				D32662CC187530C3004C1F57 /* libCUIProviderUtilities.a in Frameworks */,
 				D39EB0E81872532E00C43A24 /* GSS.framework in Frameworks */,
-				D39EB0E718724FD000C43A24 /* libbrowserid.0.dylib in Frameworks */,
 				D39EB0E518724FC400C43A24 /* CredUICore.framework in Frameworks */,
 				D39EB0D41872441300C43A24 /* CoreFoundation.framework in Frameworks */,
 			);
@@ -848,6 +847,7 @@
 		D336E27C182B51A6009271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3FD1123187EEDE700AD32FB /* BrowserID.framework */,
 				D38469731875452A003EE56B /* Security.framework */,
 				D3BED9011873EAA700623B92 /* libobjc.dylib */,
 				D39EB0FA1872B3F800C43A24 /* GSSKit.framework */,
@@ -2541,6 +2541,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Persona/Persona-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2565,6 +2569,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Persona/Persona-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
