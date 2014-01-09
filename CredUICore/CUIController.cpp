@@ -132,13 +132,34 @@ struct CUIEnumerateCredentialContext {
 };
 
 static void
+_CUIAssertionCheck(const CUIEnumerateCredentialContext *enumContext, CUICredentialRef cred)
+{
+    CFDictionaryRef attributes = CUICredentialGetAttributes(cred);
+
+    assert(attributes);
+    
+    CFUUIDRef cred_persistenceID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+    CFUUIDRef prov_persistenceID = (CFUUIDRef)CFDictionaryGetValue(enumContext->providerAttributes, kCUIAttrPersistenceFactoryID);
+    
+    assert(cred_persistenceID == NULL || CFGetTypeID(cred_persistenceID) == CFUUIDGetTypeID());
+    assert(!prov_persistenceID || (cred_persistenceID && CFEqual(cred_persistenceID, prov_persistenceID)));
+    
+    CFUUIDRef cred_factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrProviderFactoryID);
+    CFUUIDRef prov_factoryID = (CFUUIDRef)CFDictionaryGetValue(enumContext->providerAttributes, kCUIAttrProviderFactoryID);
+    
+    assert(cred_factoryID == NULL || CFGetTypeID(cred_factoryID) == CFUUIDGetTypeID());
+    assert(!prov_factoryID || (cred_factoryID && CFEqual(cred_factoryID, prov_factoryID)));
+}
+
+static void
 _CUIEnumerateMatchingCredentialsForProviderCallback(const void *value, void *_context)
 {
     CUIEnumerateCredentialContext *enumContext = (CUIEnumerateCredentialContext *)_context;
     CUICredentialRef cred = (CUICredentialRef)value;
 
     assert(cred);
-
+    _CUIAssertionCheck(enumContext, cred);
+    
     enumContext->callback(cred, (enumContext->index == enumContext->defaultCredentialIndex), NULL);
     enumContext->didEnumerate = true;
 
