@@ -170,17 +170,6 @@ CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
 }
 
 static Boolean
-_CUICredentialHasMandatoryKeys(CUICredentialRef cred)
-{
-    CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
-    
-    // probably should actually validate some values too
-    return CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus) &&
-           CFDictionaryGetValue(attrs, kCUIAttrName) &&
-           CFDictionaryGetValue(attrs, kCUIAttrNameType);
-}
-
-static Boolean
 _CUICredentialIsReturnable(CUICredentialRef cred)
 {
     CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
@@ -200,8 +189,7 @@ CUICredentialCanSubmit(CUICredentialRef cred)
 {
     CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "canSubmit");
 
-    return _CUICredentialHasMandatoryKeys(cred) &&
-           _CUICredentialIsReturnable(cred);
+    return _CUICredentialIsReturnable(cred);
 }
 
 CUI_EXPORT void
