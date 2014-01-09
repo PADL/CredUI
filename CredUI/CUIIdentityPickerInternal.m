@@ -82,11 +82,13 @@
                         change:(NSDictionary *)change
                        context:(void *)context
 {
+    NSModalResponse *modalResponse = (NSModalResponse *)context;
+    
     if ([keyPath isEqualTo:@"selectionIndexes"]) {
         NSUInteger index;
         NSArray *creds = [object content];
         NSIndexSet *indexes = [object selectionIndexes];
-        
+       
         for (index = 0; index < creds.count; index++) {
             CUICredential *cred = creds[index];
             BOOL autoLogin = NO;
@@ -95,6 +97,14 @@
                 [cred didBecomeSelected:&autoLogin];
             else
                 [cred didBecomeDeselected];
+            
+            /*
+             * This test is to ensure that autoLogin is only invoked if the user explicitly
+             * selected a credential (observing a changed, not initial, value), unless there
+             * was only one credential.
+             */
+            if (autoLogin && creds.count > 1 && *modalResponse == NSModalResponseStop)
+                autoLogin = NO;
             
             if (autoLogin) {
                 NSAssert(self.autoLogin == NO, @"Only one credential can be selected and auto-login");
@@ -106,7 +116,7 @@
     }
 }
 
-- (void)_populateCredentials
+- (void)_populateCredentials:(NSModalResponse *)modalResponse
 {
     self.credsController = [[NSArrayController alloc] init];
     self.credsController.selectsInsertedObjects = NO;
@@ -131,7 +141,7 @@
     [self.collectionView addObserver:self
                           forKeyPath:@"selectionIndexes"
                              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                             context:nil];
+                             context:modalResponse];
 }
 
 #pragma mark - Run Loop
@@ -146,7 +156,7 @@
     if (self.message)
         self.messageTextField.stringValue = self.message;
     
-    [self _populateCredentials];
+    [self _populateCredentials:&modalResponse];
    
     /*
      * Generic credentials can be automatically submitted if there is an available
