@@ -95,7 +95,8 @@ typedef struct CUICredentialContext {
 
 typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
-    Boolean (STDMETHODCALLTYPE *initWithController)(CUIControllerRef controller,
+    Boolean (STDMETHODCALLTYPE *initWithController)(void *thisPointer,
+                                                    CUIControllerRef controller,
                                                     CUIUsageScenario usageScenario,
                                                     CUIUsageFlags usageFlags,
                                                     CFErrorRef *error);
@@ -107,8 +108,8 @@ typedef struct CUIProvider {
 
 typedef struct CUICredentialPersistence {
     IUNKNOWN_C_GUTS;
-    Boolean (STDMETHODCALLTYPE *addCredentialWithAttributes)(void *thisPointer, CFDictionaryRef credential, CFErrorRef *error);
-    CFTypeRef (STDMETHODCALLTYPE *extractPassword)(void *thisPointer, CFDictionaryRef credential, CFErrorRef *error);
+    Boolean (STDMETHODCALLTYPE *addCredentialWithAttributes)(void *thisPointer, CFDictionaryRef attributes, CFErrorRef *error);
+    CFTypeRef (STDMETHODCALLTYPE *extractPassword)(void *thisPointer, CFDictionaryRef attributes, CFErrorRef *error);
 } CUICredentialPersistence;
 #endif /* defined(__cplusplus) */
 
