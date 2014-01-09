@@ -32,7 +32,7 @@ __attribute__((visibility("default")))
 /* Credentials dictionary */
 @property(nonatomic, copy) NSDictionary *attributes;
 
-/* Authentication error to show user, if any */
+/* Authentication error to show user, if any (also used with GSS error recovery) */
 @property(nonatomic, copy) NSError *authError;
 
 /* Allow user to persist credentials */
@@ -49,6 +49,7 @@ __attribute__((visibility("default")))
 
 /* The credential that was picked */
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
+/* The last error from credential selection */
 @property(nonatomic, retain, readonly) NSError *lastError;
 
 - (instancetype)initWithFlags:(CUIFlags)flags;

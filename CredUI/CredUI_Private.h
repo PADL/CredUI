@@ -28,7 +28,7 @@
 #import "CUIIdentityPickerInternal.h"
 #import "CUIIdentityPickerInternal+UIFactory.h"
 
-extern Boolean
+Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
                          CFTypeRef gssContextHandle,
                          CUICredUIContext *uiContext,
