@@ -171,7 +171,8 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
 {
     CFArrayRef matchingCreds;
     CFErrorRef error = NULL;
-
+    Boolean providerExplicitlySupportsClass = false;
+ 
     CUIEnumerateCredentialContext enumContext = {
         .controller = controller,
         .attributes = attributes,
@@ -183,23 +184,25 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
         .index = 0,
         .defaultCredentialIndex = kCFNotFound
     };
-    
-    /*
-     * If kCUIUsageFlagsInClassOnly was set, then don't call this provider if it
-     * wouldn't support the desired mechanism.
-     */
-    if (attributes && (usageFlags & kCUIUsageFlagsInClassOnly)) {
+
+    if (attributes) {
         CFArrayRef supportedClasses = (CFArrayRef)CFDictionaryGetValue(providerAttributes, kCUIAttrClass);
-        CFTypeRef desiredMech = CFDictionaryGetValue(attributes, kCUIAttrClass);
-        
-        if (supportedClasses &&
-            desiredMech &&
-            !CFArrayContainsValue(supportedClasses, CFRangeMake(0, CFArrayGetCount(supportedClasses)), desiredMech))
+        CFTypeRef desiredClass = CFDictionaryGetValue(attributes, kCUIAttrClass);
+
+        providerExplicitlySupportsClass =
+            supportedClasses &&         /* provider advertised classes */
+            desiredClass &&             /* caller desired class */
+            CFArrayContainsValue(supportedClasses, CFRangeMake(0, CFArrayGetCount(supportedClasses)), desiredClass);
+ 
+        if ((usageFlags & kCUIUsageFlagsInClassOnly) && !providerExplicitlySupportsClass)
             return false;
     }
     
     matchingCreds = provider->copyMatchingCredentials(attributes, &enumContext.defaultCredentialIndex, &error);
     if (matchingCreds) {
+        if (enumContext.defaultCredentialIndex == kCFNotFound && providerExplicitlySupportsClass)
+            enumContext.defaultCredentialIndex = 0;
+
         CFArrayApplyFunction(matchingCreds,
                              CFRangeMake(0, CFArrayGetCount(matchingCreds)),
                              _CUIEnumerateMatchingCredentialsForProviderCallback,
