@@ -20,6 +20,9 @@ extern CFArrayRef CFCopySearchPathForDirectoriesInDomains(CFIndex directory, CFI
 static CFMutableArrayRef plugins;
 
 static void
+_CUILibraryFinalize(void) __attribute__((__destructor__));
+
+static void
 _CUICopyInfoDictionaryForFactoryCallback(const void *key, const void *value, void *context)
 {
     if (CFGetTypeID(key) == CFStringGetTypeID()) {
@@ -118,6 +121,12 @@ CUIUnloadProviders(void)
         CFRelease(plugins);
         plugins = NULL;
     }
+}
+
+static void
+_CUILibraryFinalize(void)
+{
+    CUIUnloadProviders();
 }
 
 static const void *
