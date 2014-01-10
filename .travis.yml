@@ -1,6 +1,7 @@
 language: objective-c
 
 xcode_project: CredUI.xcodeproj
+xcode_scheme: CredUIBase
 
 notifications:
   email:

@@ -6,6 +6,52 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		D3443887187F7D7900562318 /* CredUIBase */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D344388A187F7D7A00562318 /* Build configuration list for PBXAggregateTarget "CredUIBase" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D344388C187F7D9000562318 /* PBXTargetDependency */,
+				D344388E187F7D9000562318 /* PBXTargetDependency */,
+				D3443890187F7D9000562318 /* PBXTargetDependency */,
+				D3443892187F7D9000562318 /* PBXTargetDependency */,
+				D3443894187F7D9000562318 /* PBXTargetDependency */,
+				D3443898187F7D9000562318 /* PBXTargetDependency */,
+			);
+			name = CredUIBase;
+			productName = CredUIBase;
+		};
+		D3443899187F7DA800562318 /* CredUISamples */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D344389A187F7DA900562318 /* Build configuration list for PBXAggregateTarget "CredUISamples" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D34438AE187F7E2C00562318 /* PBXTargetDependency */,
+				D344389E187F7DB800562318 /* PBXTargetDependency */,
+				D34438A0187F7DB800562318 /* PBXTargetDependency */,
+				D34438A2187F7DB800562318 /* PBXTargetDependency */,
+			);
+			name = CredUISamples;
+			productName = CredUISamples;
+		};
+		D34438A3187F7E1500562318 /* CredUIEverything */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D34438A4187F7E1500562318 /* Build configuration list for PBXAggregateTarget "CredUIEverything" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D34438A8187F7E2600562318 /* PBXTargetDependency */,
+				D34438AA187F7E2600562318 /* PBXTargetDependency */,
+				D34438AC187F7E2600562318 /* PBXTargetDependency */,
+			);
+			name = CredUIEverything;
+			productName = CredUIEverything;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		D3207E32187C240C00DC2694 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3207E38187C240C00DC2694 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3207E36187C240C00DC2694 /* InfoPlist.strings */; };
@@ -170,41 +216,6 @@
 			remoteGlobalIDString = D3AA965418752BCB003852C5;
 			remoteInfo = CUIProviderUtilities;
 		};
-		D3207E4A187C307400DC2694 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39EB02C186ED50800C43A24;
-			remoteInfo = Password;
-		};
-		D3207E4C187C307400DC2694 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
-			remoteInfo = GSSItem;
-		};
-		D3207E4E187C307400DC2694 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D32662D21875403F004C1F57;
-			remoteInfo = Keychain;
-		};
-		D3207E50187C307400DC2694 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3207E30187C240C00DC2694;
-			remoteInfo = Certificate;
-		};
-		D3207E52187C307E00DC2694 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3207E30187C240C00DC2694;
-			remoteInfo = Certificate;
-		};
 		D32662C318752D86004C1F57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
@@ -213,13 +224,6 @@
 			remoteInfo = CUIProviderUtilities;
 		};
 		D32662C618752D95004C1F57 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3AA965418752BCB003852C5;
-			remoteInfo = CUIProviderUtilities;
-		};
-		D32662C918753082004C1F57 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
@@ -254,12 +258,96 @@
 			remoteGlobalIDString = D336E279182B51A6009271CD;
 			remoteInfo = CredUI;
 		};
-		D38469751875454B003EE56B /* PBXContainerItemProxy */ = {
+		D344388B187F7D9000562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D336E279182B51A6009271CD;
+			remoteInfo = CredUI;
+		};
+		D344388D187F7D9000562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
+		D344388F187F7D9000562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB02C186ED50800C43A24;
+			remoteInfo = Password;
+		};
+		D3443891187F7D9000562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
+			remoteInfo = GSSItem;
+		};
+		D3443893187F7D9000562318 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D32662D21875403F004C1F57;
 			remoteInfo = Keychain;
+		};
+		D3443897187F7D9000562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3207E30187C240C00DC2694;
+			remoteInfo = Certificate;
+		};
+		D344389D187F7DB800562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB060186FB1DA00C43A24;
+			remoteInfo = CredUIPicker;
+		};
+		D344389F187F7DB800562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB091186FB90400C43A24;
+			remoteInfo = CredUIEnumerate;
+		};
+		D34438A1187F7DB800562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3CECCF0187ADFF30006EB36;
+			remoteInfo = Sample;
+		};
+		D34438A7187F7E2600562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB0D21872441300C43A24;
+			remoteInfo = Persona;
+		};
+		D34438A9187F7E2600562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3443887187F7D7900562318;
+			remoteInfo = CredUIBase;
+		};
+		D34438AB187F7E2600562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3443899187F7DA800562318;
+			remoteInfo = CredUISamples;
+		};
+		D34438AD187F7E2C00562318 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3443887187F7D7900562318;
+			remoteInfo = CredUIBase;
 		};
 		D39EB018186ED2B200C43A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -310,33 +398,12 @@
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
 		};
-		D39EB0B01870408800C43A24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39EB02C186ED50800C43A24;
-			remoteInfo = Password;
-		};
-		D39EB0B21870408E00C43A24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39EB02C186ED50800C43A24;
-			remoteInfo = Password;
-		};
 		D39EB0E91872537F00C43A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
-		};
-		D39EB0EB1872538400C43A24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39EB0D21872441300C43A24;
-			remoteInfo = Persona;
 		};
 		D39EB0FE1872C07F00C43A24 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -366,26 +433,12 @@
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
 		};
-		D3A80ABD187AE1C600968AFF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3CECCF0187ADFF30006EB36;
-			remoteInfo = Sample;
-		};
 		D3AA9640187514AB003852C5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
-		};
-		D3AA964918751F66003852C5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
-			remoteInfo = GSSItem;
 		};
 		D3B094491877EFBA006DB1DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1227,11 +1280,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				D3207E4B187C307400DC2694 /* PBXTargetDependency */,
-				D3207E4D187C307400DC2694 /* PBXTargetDependency */,
-				D3207E4F187C307400DC2694 /* PBXTargetDependency */,
-				D3207E51187C307400DC2694 /* PBXTargetDependency */,
-				D32662CA18753082004C1F57 /* PBXTargetDependency */,
 				D39EB0AD1870407600C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUI;
@@ -1323,13 +1371,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D3207E53187C307E00DC2694 /* PBXTargetDependency */,
-				D3A80ABE187AE1C600968AFF /* PBXTargetDependency */,
 				D3A7735E1877F09A009F51B7 /* PBXTargetDependency */,
-				D38469761875454B003EE56B /* PBXTargetDependency */,
-				D3AA964A18751F66003852C5 /* PBXTargetDependency */,
-				D39EB0EC1872538400C43A24 /* PBXTargetDependency */,
-				D39EB0B11870408800C43A24 /* PBXTargetDependency */,
 				D39EB0AF1870408100C43A24 /* PBXTargetDependency */,
 				D39EB0A71870406500C43A24 /* PBXTargetDependency */,
 			);
@@ -1368,7 +1410,6 @@
 			);
 			dependencies = (
 				D39EB0FF1872C07F00C43A24 /* PBXTargetDependency */,
-				D39EB0B31870408E00C43A24 /* PBXTargetDependency */,
 				D39EB0A91870406900C43A24 /* PBXTargetDependency */,
 			);
 			name = CredUIEnumerate;
@@ -1539,6 +1580,9 @@
 				D3B094451877EFBA006DB1DE /* GSSKitUITests */,
 				D3CECCF0187ADFF30006EB36 /* Sample */,
 				D3207E30187C240C00DC2694 /* Certificate */,
+				D3443887187F7D7900562318 /* CredUIBase */,
+				D3443899187F7DA800562318 /* CredUISamples */,
+				D34438A3187F7E1500562318 /* CredUIEverything */,
 			);
 		};
 /* End PBXProject section */
@@ -1823,31 +1867,6 @@
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
 			targetProxy = D3207E3F187C246900DC2694 /* PBXContainerItemProxy */;
 		};
-		D3207E4B187C307400DC2694 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D39EB02C186ED50800C43A24 /* Password */;
-			targetProxy = D3207E4A187C307400DC2694 /* PBXContainerItemProxy */;
-		};
-		D3207E4D187C307400DC2694 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
-			targetProxy = D3207E4C187C307400DC2694 /* PBXContainerItemProxy */;
-		};
-		D3207E4F187C307400DC2694 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D32662D21875403F004C1F57 /* Keychain */;
-			targetProxy = D3207E4E187C307400DC2694 /* PBXContainerItemProxy */;
-		};
-		D3207E51187C307400DC2694 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3207E30187C240C00DC2694 /* Certificate */;
-			targetProxy = D3207E50187C307400DC2694 /* PBXContainerItemProxy */;
-		};
-		D3207E53187C307E00DC2694 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3207E30187C240C00DC2694 /* Certificate */;
-			targetProxy = D3207E52187C307E00DC2694 /* PBXContainerItemProxy */;
-		};
 		D32662C418752D86004C1F57 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
@@ -1857,11 +1876,6 @@
 			isa = PBXTargetDependency;
 			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
 			targetProxy = D32662C618752D95004C1F57 /* PBXContainerItemProxy */;
-		};
-		D32662CA18753082004C1F57 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3AA965418752BCB003852C5 /* CUIProviderUtilities */;
-			targetProxy = D32662C918753082004C1F57 /* PBXContainerItemProxy */;
 		};
 		D32662CE187530C7004C1F57 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1883,10 +1897,70 @@
 			target = D336E279182B51A6009271CD /* CredUI */;
 			targetProxy = D336E295182B51A6009271CD /* PBXContainerItemProxy */;
 		};
-		D38469761875454B003EE56B /* PBXTargetDependency */ = {
+		D344388C187F7D9000562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D336E279182B51A6009271CD /* CredUI */;
+			targetProxy = D344388B187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D344388E187F7D9000562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D344388D187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D3443890187F7D9000562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB02C186ED50800C43A24 /* Password */;
+			targetProxy = D344388F187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D3443892187F7D9000562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
+			targetProxy = D3443891187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D3443894187F7D9000562318 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D32662D21875403F004C1F57 /* Keychain */;
-			targetProxy = D38469751875454B003EE56B /* PBXContainerItemProxy */;
+			targetProxy = D3443893187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D3443898187F7D9000562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3207E30187C240C00DC2694 /* Certificate */;
+			targetProxy = D3443897187F7D9000562318 /* PBXContainerItemProxy */;
+		};
+		D344389E187F7DB800562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB060186FB1DA00C43A24 /* CredUIPicker */;
+			targetProxy = D344389D187F7DB800562318 /* PBXContainerItemProxy */;
+		};
+		D34438A0187F7DB800562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB091186FB90400C43A24 /* CredUIEnumerate */;
+			targetProxy = D344389F187F7DB800562318 /* PBXContainerItemProxy */;
+		};
+		D34438A2187F7DB800562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3CECCF0187ADFF30006EB36 /* Sample */;
+			targetProxy = D34438A1187F7DB800562318 /* PBXContainerItemProxy */;
+		};
+		D34438A8187F7E2600562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB0D21872441300C43A24 /* Persona */;
+			targetProxy = D34438A7187F7E2600562318 /* PBXContainerItemProxy */;
+		};
+		D34438AA187F7E2600562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3443887187F7D7900562318 /* CredUIBase */;
+			targetProxy = D34438A9187F7E2600562318 /* PBXContainerItemProxy */;
+		};
+		D34438AC187F7E2600562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3443899187F7DA800562318 /* CredUISamples */;
+			targetProxy = D34438AB187F7E2600562318 /* PBXContainerItemProxy */;
+		};
+		D34438AE187F7E2C00562318 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3443887187F7D7900562318 /* CredUIBase */;
+			targetProxy = D34438AD187F7E2C00562318 /* PBXContainerItemProxy */;
 		};
 		D39EB019186ED2B200C43A24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1923,25 +1997,10 @@
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D39EB0AE1870408100C43A24 /* PBXContainerItemProxy */;
 		};
-		D39EB0B11870408800C43A24 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D39EB02C186ED50800C43A24 /* Password */;
-			targetProxy = D39EB0B01870408800C43A24 /* PBXContainerItemProxy */;
-		};
-		D39EB0B31870408E00C43A24 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D39EB02C186ED50800C43A24 /* Password */;
-			targetProxy = D39EB0B21870408E00C43A24 /* PBXContainerItemProxy */;
-		};
 		D39EB0EA1872537F00C43A24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D39EB0E91872537F00C43A24 /* PBXContainerItemProxy */;
-		};
-		D39EB0EC1872538400C43A24 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D39EB0D21872441300C43A24 /* Persona */;
-			targetProxy = D39EB0EB1872538400C43A24 /* PBXContainerItemProxy */;
 		};
 		D39EB0FF1872C07F00C43A24 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1963,20 +2022,10 @@
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D3A80ABB187AE1BD00968AFF /* PBXContainerItemProxy */;
 		};
-		D3A80ABE187AE1C600968AFF /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3CECCF0187ADFF30006EB36 /* Sample */;
-			targetProxy = D3A80ABD187AE1C600968AFF /* PBXContainerItemProxy */;
-		};
 		D3AA9641187514AB003852C5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D3AA9640187514AB003852C5 /* PBXContainerItemProxy */;
-		};
-		D3AA964A18751F66003852C5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
-			targetProxy = D3AA964918751F66003852C5 /* PBXContainerItemProxy */;
 		};
 		D3B0944A1877EFBA006DB1DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2299,6 +2348,48 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+		D3443888187F7D7A00562318 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D3443889187F7D7A00562318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D344389B187F7DA900562318 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D344389C187F7DA900562318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		D34438A5187F7E1500562318 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D34438A6187F7E1500562318 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -2802,6 +2893,30 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D344388A187F7D7A00562318 /* Build configuration list for PBXAggregateTarget "CredUIBase" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3443888187F7D7A00562318 /* Debug */,
+				D3443889187F7D7A00562318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D344389A187F7DA900562318 /* Build configuration list for PBXAggregateTarget "CredUISamples" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D344389B187F7DA900562318 /* Debug */,
+				D344389C187F7DA900562318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D34438A4187F7E1500562318 /* Build configuration list for PBXAggregateTarget "CredUIEverything" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D34438A5187F7E1500562318 /* Debug */,
+				D34438A6187F7E1500562318 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D39EB023186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICore" */ = {
 			isa = XCConfigurationList;
