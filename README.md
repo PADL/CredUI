@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/PADL/CredUI.png?branch=master)](https://travis-ci.org/PADL/CredUI)
+
 CredUI
 ======
 
