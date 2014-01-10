@@ -11,6 +11,12 @@
 
 @interface CUICredential (GSS)
 /*
+ * Returns a mapped set of attributes for a particular usage, such as
+ * adding/updating a GSSItem or acquiring initial GSS-API credentials.
+ */
+- (NSDictionary *)attributesWithClass:(CUIAttributeClass)flags;
+
+/*
  * A GSS name object for the credential initiator.
  */
 - (gss_name_t)copyGSSName CF_RETURNS_RETAINED;

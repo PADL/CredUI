@@ -18,12 +18,6 @@ __attribute__((visibility("default")))
 - (NSDictionary *)attributes;
 
 /*
- * Returns a mapped set of attributes for a particular usage, such as
- * adding/updating a GSSItem or acquiring initial GSS-API credentials.
- */
-- (NSDictionary *)attributesWithClass:(CUIAttributeClass)flags;
-
-/*
  * Acknowledges the application successfully used the credential and
  * it should be persisted. The application should only call this if
  * CUIFlagsExpectConfirmation was set, otherwise CredUI will do it.

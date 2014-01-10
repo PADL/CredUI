@@ -10,6 +10,39 @@
 
 @implementation CUICredential (GSS)
 
+- (NSDictionary *)attributesWithClass:(CUIAttributeClass)attrClass
+{
+    NSMutableDictionary *transformedDict = [NSMutableDictionary dictionary];
+    
+    [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSString *transformedKey = nil;
+        
+        if (attrClass == CUIAttributeClassGSSItem) {
+            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialPassword] && [obj boolValue])
+                transformedKey = nil; /* remove placeholder passwords */
+            else
+                transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
+        } else if (attrClass == CUIAttributeClassGSSInitialCred) {
+            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity])
+                transformedKey = (__bridge id)kGSSICCertificate; // special case
+            else
+                transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];
+        } else {
+            transformedKey = key;
+        }
+        
+        if (transformedKey)
+            transformedDict[transformedKey] = obj;
+    }];
+    
+    if (attrClass == CUIAttributeClassGSSInitialCred) {
+        // we only emit initiator creds
+        transformedDict[(NSString *)kGSSCredentialUsage] = (NSString *)kGSS_C_INITIATE;
+    }
+    
+    return transformedDict;
+}
+
 /*
  * GSS item for the credential.
  */
