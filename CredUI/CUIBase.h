@@ -9,6 +9,8 @@
 #ifndef CredUI_CUIBase_h
 #define CredUI_CUIBase_h
 
+#include <CoreFoundation/CoreFoundation.h>
+
 #ifndef CUI_EXPORT
 #define CUI_EXPORT CF_EXPORT
 #endif
