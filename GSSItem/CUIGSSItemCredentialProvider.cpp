@@ -192,7 +192,7 @@ CUIGSSItemCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attrib
 {
     CFDictionaryRef gssItemAttributes;
     Boolean ret = false;
-    struct GSSItem *item = NULL;
+    GSSItemRef item = NULL;
  
     if (error)
         *error = NULL;
