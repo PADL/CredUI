@@ -6,20 +6,14 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include "GSSItem.h"
+
 @implementation CUICredential (GSS)
-
-extern CFArrayRef
-GSSItemCopyMatching(CFDictionaryRef, CFErrorRef *);
-
-extern struct GSSItem *
-GSSItemAdd(CFDictionaryRef attributes, CFErrorRef *error);
 
 /*
  * GSS item for the credential.
  */
-struct GSSItem;
-
-- (struct GSSItem *)copyMatchingGSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error CF_RETURNS_RETAINED
+- (GSSItemRef)copyMatchingGSSItem:(BOOL)addIfAbsent error:(NSError * __autoreleasing *)error CF_RETURNS_RETAINED
 {
     id item;
     CFErrorRef cfError = NULL;
@@ -40,7 +34,7 @@ struct GSSItem;
     if (error)
         *error = CFBridgingRelease(cfError);
     
-    return (struct GSSItem *)CFBridgingRetain(item);
+    return (GSSItemRef)CFBridgingRetain(item);
 }
 
 - (gss_name_t)copyGSSName CF_RETURNS_RETAINED
