@@ -31,7 +31,7 @@ The Password credential provider acquires a username and password from the user.
 
 The Certificate credential provider enumerates the keychain for private keys.
 
-The GSSItem and Keychain providers are ordinary providers, but they call back into CredUICore to wrap other providers with any enumerated persisted credentials. This decouples the persistence mechanism from credential acquisition interface. One could write, say, an SQLite persistence provider and it would simply act as an attribute store.****
+The GSSItem and Keychain providers are ordinary providers, but they call back into CredUICore to wrap other providers with any enumerated persisted credentials. This decouples the persistence mechanism from credential acquisition interface. One could write, say, an SQLite persistence provider and it would simply act as an attribute store.
 
 GSS-API
 -------
