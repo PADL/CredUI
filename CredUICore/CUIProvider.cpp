@@ -167,8 +167,8 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
     if (controller->_providers == NULL)
         goto cleanup;
 
-    controller->_providersAttributes = CFArrayCreateMutable(allocator, 0, &kCFTypeArrayCallBacks);
-    if (controller->_providersAttributes == NULL)
+    controller->_providerAttributes = CFArrayCreateMutable(allocator, 0, &kCFTypeArrayCallBacks);
+    if (controller->_providerAttributes == NULL)
         goto cleanup;
 
     factories = CFPlugInFindFactoriesForPlugInType(kCUIProviderTypeID);
@@ -227,7 +227,7 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         if (supportedClasses && CFGetTypeID(supportedClasses) == CFArrayGetTypeID())
             CFDictionarySetValue(providerAttributes, kCUIAttrClass, supportedClasses);
         
-        CFArrayAppendValue((CFMutableArrayRef)controller->_providersAttributes, providerAttributes);
+        CFArrayAppendValue((CFMutableArrayRef)controller->_providerAttributes, providerAttributes);
         CFArrayAppendValue((CFMutableArrayRef)controller->_providers, provider);
         
         CFRelease(providerAttributes);
@@ -238,10 +238,10 @@ cleanup:
     if (factories)
         CFRelease(factories);
     
-    if (controller->_providersAttributes &&
-        CFArrayGetCount(controller->_providersAttributes) == 0) {
-        CFRelease(controller->_providersAttributes);
-        controller->_providersAttributes = NULL;
+    if (controller->_providerAttributes &&
+        CFArrayGetCount(controller->_providerAttributes) == 0) {
+        CFRelease(controller->_providerAttributes);
+        controller->_providerAttributes = NULL;
     }
 
     if (controller->_providers &&
@@ -258,8 +258,8 @@ _CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef des
 {
     CFIndex index;
     
-    for (index = 0; index < CFArrayGetCount(controller->_providersAttributes); index++) {
-        CFDictionaryRef attributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
+    for (index = 0; index < CFArrayGetCount(controller->_providerAttributes); index++) {
+        CFDictionaryRef attributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providerAttributes, index);
         CFUUIDRef factoryID;
         
          factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes,

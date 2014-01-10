@@ -31,8 +31,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
     
-    if (controller->_providersAttributes)
-        CFRelease(controller->_providersAttributes);
+    if (controller->_providerAttributes)
+        CFRelease(controller->_providerAttributes);
     if (controller->_providers)
         CFRelease(controller->_providers);
     if (controller->_uiContext.parentWindow)
@@ -241,7 +241,7 @@ _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
         return false;
 
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
-        CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providersAttributes, index);
+        CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providerAttributes, index);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
        
         if (CFDictionaryGetValue(providerAttributes, kCUIAttrPersistenceFactoryID) &&
@@ -458,11 +458,11 @@ _CUIControllerShowProviders(CUIControllerRef controller)
 {
     CFIndex index;
     
-    assert(CFArrayGetCount(controller->_providersAttributes) == CFArrayGetCount(controller->_providers));
+    assert(CFArrayGetCount(controller->_providerAttributes) == CFArrayGetCount(controller->_providers));
     
-    if (controller->_providersAttributes) {
-        for (index = 0; index < CFArrayGetCount(controller->_providersAttributes); index++) {
-            CFShow(CFArrayGetValueAtIndex(controller->_providersAttributes, index));
+    if (controller->_providerAttributes) {
+        for (index = 0; index < CFArrayGetCount(controller->_providerAttributes); index++) {
+            CFShow(CFArrayGetValueAtIndex(controller->_providerAttributes, index));
         }
     }
 }
