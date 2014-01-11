@@ -46,50 +46,24 @@
 
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
-    NSPanel *panel = [self _newPanel];
-    NSScrollView *scrollView;
-
-    self = [super initWithWindow:panel];
+    self = [super initWithWindow:[self _newPanel]];
     if (self == nil)
         return nil;
     
     _flags = flags;
-    _controller = [self _newCUIController:flags];
-    if (attributes)
-        self.attributes = attributes;
     
-    self.messageTextField = [self _newMessageTextField];
-    [self.window.contentView addSubview:self.messageTextField];
-    
-    NSRect frame = [[panel contentView] frame];
-    frame.size.height -= 50;
-    frame.origin.y = 50;
-    
-    scrollView = [[NSScrollView alloc] initWithFrame:frame];
-    [scrollView setBorderType:NSNoBorder];
-    [scrollView setHasVerticalScroller:YES];
-    self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
-    [scrollView setDocumentView:self.collectionView];
-    [self.window.contentView addSubview:scrollView];
-  
     if (self.flags & CUIFlagsPersist)
         self.persist = YES;
     else if (self.flags & CUIFlagsDoNotPersist)
         self.persist = NO;
     else
         _flags |= CUIFlagsShowSaveCheckBox;
-
-    if (self.flags & CUIFlagsShowSaveCheckBox) {
-        self.persistCheckBox = [self _newPersistCheckBox];
-        [self.window.contentView addSubview:self.persistCheckBox];
-    }
-    self.submitButton = [self _newSubmitButton];
-    [self.window.contentView addSubview:self.submitButton];
     
-    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
-    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
-
-    return self;
+    _controller = [self _newCUIController:_flags];
+    if (attributes)
+        self.attributes = attributes;
+    
+    return [self _initUI];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath

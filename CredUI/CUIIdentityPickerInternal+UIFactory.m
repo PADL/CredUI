@@ -82,4 +82,36 @@
     return button;
 }
 
+- _initUI
+{
+    NSScrollView *scrollView;
+    NSPanel *panel = (NSPanel *)[self window];
+    
+    self.messageTextField = [self _newMessageTextField];
+    [self.window.contentView addSubview:self.messageTextField];
+    
+    NSRect frame = [[panel contentView] frame];
+    frame.size.height -= 50;
+    frame.origin.y = 50;
+    
+    scrollView = [[NSScrollView alloc] initWithFrame:frame];
+    [scrollView setBorderType:NSNoBorder];
+    [scrollView setHasVerticalScroller:YES];
+    self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
+    [scrollView setDocumentView:self.collectionView];
+    [self.window.contentView addSubview:scrollView];
+    
+    if (self.flags & CUIFlagsShowSaveCheckBox) {
+        self.persistCheckBox = [self _newPersistCheckBox];
+        [self.window.contentView addSubview:self.persistCheckBox];
+    }
+    self.submitButton = [self _newSubmitButton];
+    [self.window.contentView addSubview:self.submitButton];
+    
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
+    
+    return self;
+}
+    
 @end
