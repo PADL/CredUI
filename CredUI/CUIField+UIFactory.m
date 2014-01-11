@@ -97,6 +97,11 @@
             break;
     }
     
+    if (self.title &&
+        [view isKindOfClass:[NSTextField class]] &&
+        [(NSTextField *)view isEditable])
+        [view setToolTip:self.title];
+    
     return view;
 }
 
