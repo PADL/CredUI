@@ -30,8 +30,9 @@
 
 @implementation GSSContext (CredUI)
 
-BOOL _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
-                                      GSSCredential *gssCredential)
+static BOOL
+_GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
+                                 GSSCredential *gssCredential)
 {
     GSSName *cuiCredentialName = CFBridgingRelease([cuiCredential copyGSSName]);
     GSSName *gssCredentialName = gssCredential.name;
