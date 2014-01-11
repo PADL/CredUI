@@ -15,7 +15,7 @@
 @implementation CUIIdentityPickerInternal
 {
     CUIControllerRef _controller;
-    NSModalResponse _modalResponse;
+    BOOL _runningModal;
 }
 
 - (void)dealloc
@@ -107,12 +107,13 @@
              * selected a credential (observing a changed, not initial, value), unless there
              * was only one credential.
              */
-            if (autoLogin && creds.count > 1 && _modalResponse == NSModalResponseStop)
+            if (autoLogin && creds.count > 1 && !_runningModal)
                 autoLogin = NO;
             
             if (autoLogin) {
                 NSAssert(self.autoLogin == NO, @"Only one credential can be selected and auto-login");
                 self.autoLogin = autoLogin;
+                [NSApp stopModal];
             }
             
             [self _updateSubmitButtonForSelectedCred];
@@ -152,11 +153,7 @@
 
 - (NSModalResponse)_runModal:(NSWindow *)window
 {
-    NSModalSession modalSession = NULL;
-
-    NSAssert(_modalResponse != NSModalResponseContinue, @"Modal loop re-entered");
-
-    _modalResponse = NSModalResponseStop;
+    __block NSModalResponse modalResponse = NSModalResponseStop;
     
     if (self.title)
         self.window.title = self.title;
@@ -174,24 +171,22 @@
         [self.selectedCredential canSubmit])
         goto autoSubmit;
 
+    _runningModal = YES;
+    
     if (window) {
         [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
-            _modalResponse = sheetReturnCode;
+            modalResponse = sheetReturnCode;
         }];
     } else {
-        modalSession = [NSApp beginModalSessionForWindow:self.window];
-        do {
-            _modalResponse = [NSApp runModalSession:modalSession];
-            [[NSRunLoop currentRunLoop] limitDateForMode:NSDefaultRunLoopMode];
-            if (self.autoLogin) {
-autoSubmit:
-                [self willSubmitCredential:self.submitButton];
-                self.autoLogin = NO;
-            }
-        } while (_modalResponse == NSModalResponseContinue);
-        
-        if (modalSession)
-            [NSApp endModalSession:modalSession];
+        modalResponse = [NSApp runModalForWindow:self.window];
+    }
+    
+    _runningModal = NO;
+    
+    if (self.autoLogin) {
+    autoSubmit:
+        [self willSubmitCredential:self.submitButton];
+        self.autoLogin = NO;
     }
     
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
@@ -200,7 +195,7 @@ autoSubmit:
     
     [self didSubmitCredential];
     
-    return _modalResponse;
+    return modalResponse;
 }
 
 #pragma mark - Credential submission
