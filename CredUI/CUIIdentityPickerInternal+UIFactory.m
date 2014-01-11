@@ -10,7 +10,7 @@
 
 - (NSPanel *)_newPanel
 {
-    NSRect frame = NSMakeRect(0, 0, 400, 450);
+    NSRect frame = NSMakeRect(0, 0, 360, 480);
     NSUInteger styleMask = NSTitledWindowMask | NSClosableWindowMask;
     NSRect rect = [NSPanel contentRectForFrameRect:frame styleMask:styleMask];
     NSPanel *panel = [[NSPanel alloc] initWithContentRect:rect styleMask:styleMask backing:NSBackingStoreBuffered defer:YES];
@@ -21,11 +21,11 @@
     return panel;
 }
 
-- (NSCollectionView *)_newCollectionViewWithWindow:(NSWindow *)panel
+- (NSCollectionView *)_newCollectionViewEnclosedInView:(NSView *)view
 {
     NSCollectionView *collectionView;
     
-    collectionView = [[NSCollectionView alloc] initWithFrame:[[panel contentView] frame]];
+    collectionView = [[NSCollectionView alloc] initWithFrame:[view frame]];
     collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
 
     collectionView.selectable = YES;
@@ -37,13 +37,13 @@
                                        | NSViewHeightSizable
                                        | NSViewMaxYMargin);
     collectionView.autoresizesSubviews = YES;
-    
+   
     return collectionView;
 }
 
 - (NSTextField *)_newMessageTextField
 {
-    NSRect frame = NSMakeRect(0, 0, 400, 50);
+    NSRect frame = NSMakeRect(0, 0, 360, 50);
     NSTextField *textField = [[NSTextField alloc] initWithFrame:frame];
     
     textField.editable = NO;
@@ -56,7 +56,7 @@
 
 - (NSButton *)_newSubmitButton
 {
-    NSRect frame = NSMakeRect(0, 0, 400, 30);
+    NSRect frame = NSMakeRect(0, 0, 360, 30);
     NSButton *button = [[NSButton alloc] initWithFrame:frame];
     
     button.title = @"OK";
@@ -69,7 +69,7 @@
 
 - (NSButton *)_newPersistCheckBox
 {
-    NSRect frame = NSMakeRect(0, 30, 400, 30);
+    NSRect frame = NSMakeRect(0, 25, 360, 30);
     NSButton *button = [[NSButton alloc] initWithFrame:frame];
     
     button.title = @"Save credential";

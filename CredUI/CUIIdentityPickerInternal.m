@@ -47,7 +47,8 @@
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     NSPanel *panel = [self _newPanel];
-    
+    NSScrollView *scrollView;
+
     self = [super initWithWindow:panel];
     if (self == nil)
         return nil;
@@ -60,8 +61,16 @@
     self.messageTextField = [self _newMessageTextField];
     [self.window.contentView addSubview:self.messageTextField];
     
-    self.collectionView = [self _newCollectionViewWithWindow:self.window];
-    [self.window.contentView addSubview:self.collectionView];
+    NSRect frame = [[panel contentView] frame];
+    frame.size.height -= 50;
+    frame.origin.y = 50;
+    
+    scrollView = [[NSScrollView alloc] initWithFrame:frame];
+    [scrollView setBorderType:NSNoBorder];
+    [scrollView setHasVerticalScroller:YES];
+    self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
+    [scrollView setDocumentView:self.collectionView];
+    [self.window.contentView addSubview:scrollView];
   
     if (self.flags & CUIFlagsPersist)
         self.persist = YES;
