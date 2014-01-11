@@ -95,10 +95,12 @@
     frame.origin.y = 50;
     
     scrollView = [[NSScrollView alloc] initWithFrame:frame];
-    [scrollView setBorderType:NSNoBorder];
-    [scrollView setHasVerticalScroller:YES];
+    scrollView.borderType = NSNoBorder;
+    scrollView.hasVerticalScroller = YES;
+    scrollView.autohidesScrollers = YES;
     self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
-    [scrollView setDocumentView:self.collectionView];
+    scrollView.documentView = self.collectionView;
+    
     [self.window.contentView addSubview:scrollView];
     
     if (self.flags & CUIFlagsShowSaveCheckBox) {
