@@ -8,6 +8,17 @@
 
 @implementation CUIField (UIFactory)
 
+- (void)_styleTextField:(NSTextField *)textField
+{
+    if (self.fieldClass != kCUIFieldClassLargeText)
+        [textField setBackgroundColor:[NSColor lightGrayColor]];
+    
+    if (self.title && textField.isEditable)
+        textField.toolTip = self.title;
+
+    textField.bezeled = YES;
+}
+
 - (NSView *)_textFieldWithFrame:(NSRect)frame
 {
     NSTextField *textField;
@@ -19,9 +30,9 @@
     textField.stringValue = self.defaultValue;
     textField.editable = NO;
     textField.selectable = NO;
+    [self _styleTextField:textField];
+    
     if (self.fieldClass == kCUIFieldClassLargeText) {
-        textField.bordered = YES;
-        textField.bezeled = YES;
         textField.backgroundColor = [NSColor darkGrayColor];
     }
     textField.delegate = self;
@@ -38,7 +49,8 @@
     textField.selectable = YES;
     textField.editable = YES;
     textField.delegate = self;
-    
+    [self _styleTextField:textField];
+
     return textField;
 }
 
@@ -49,7 +61,8 @@
     textField.selectable = NO;
     textField.editable = YES;
     textField.delegate = self;
-    
+    [self _styleTextField:textField];
+
     return textField;
 }
 
@@ -66,7 +79,7 @@
 
 - (NSView *)viewWithFrame:(NSRect)frame
 {
-    NSView *view = nil;
+    id view = nil;
     
     NSAssert(self.fieldClass != kCUIFieldClassInvalid, @"Field must be a valid type");
     NSAssert(self.fieldClass != kCUIFieldClassCustom,  @"Custom field classes must override viewWithFrame:");
@@ -96,11 +109,6 @@
         default:
             break;
     }
-    
-    if (self.title &&
-        [view isKindOfClass:[NSTextField class]] &&
-        [(NSTextField *)view isEditable])
-        [view setToolTip:self.title];
     
     return view;
 }

@@ -42,9 +42,8 @@
         textField.stringValue = defaultValue;
     textField.editable = YES;
     textField.selectable = YES;
-    textField.bordered = YES;
-    textField.bezeled = YES;
-    textField.backgroundColor = [NSColor darkGrayColor];
+    textField.bezeled = NO;
+    textField.backgroundColor = [NSColor greenColor];
     textField.delegate = self;
     
     return textField;
