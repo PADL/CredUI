@@ -13,6 +13,6 @@
 - (NSTextField *)_newMessageTextField;
 - (NSButton *)_newSubmitButton;
 - (NSButton *)_newPersistCheckBox;
-- _initUI;
+- (void)_loadViews;
 
 @end

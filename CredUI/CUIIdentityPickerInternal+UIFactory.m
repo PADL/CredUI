@@ -82,7 +82,7 @@
     return button;
 }
 
-- _initUI
+- (void)_loadViews
 {
     NSScrollView *scrollView;
     NSPanel *panel = (NSPanel *)[self window];
@@ -112,8 +112,6 @@
     
     CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
     [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
-    
-    return self;
 }
     
 @end

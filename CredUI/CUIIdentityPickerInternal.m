@@ -71,7 +71,9 @@
     if (attributes)
         self.attributes = attributes;
     
-    return [self _initUI];
+    [self _loadViews];
+    
+    return self;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
