@@ -171,6 +171,7 @@
         [self.selectedCredential canSubmit])
         goto autoSubmit;
 
+    self.autoLogin = NO;
     _runningModal = YES;
     
     if (window) {
@@ -186,7 +187,6 @@
     if (self.autoLogin) {
     autoSubmit:
         [self willSubmitCredential:self.submitButton];
-        self.autoLogin = NO;
     }
     
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
