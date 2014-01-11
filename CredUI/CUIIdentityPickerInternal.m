@@ -7,24 +7,32 @@
 //
 
 @interface CUIIdentityPickerInternal ()
-- (CUIControllerRef)_newCUIController:(CUIFlags)flags;
+
+@property(nonatomic, assign) CUIControllerRef controllerRef;
+@property(nonatomic, assign) CUICredUIContext *credUIContext;
+@property(nonatomic, assign) CUIFlags flags;
+
+@property(nonatomic, retain) NSArrayController *credsController;
+@property(nonatomic, assign) BOOL runningModal;
+@property(nonatomic, assign) BOOL autoLogin;
+
+@property(nonatomic, retain, readonly) NSString *targetHostName;
+
+- (CUIControllerRef)_newCUIController;
 - (void)_populateCredentials;
 - (void)_updateSubmitButtonForSelectedCred;
+
 @end
 
 @implementation CUIIdentityPickerInternal
-{
-    CUIControllerRef _controller;
-    BOOL _runningModal;
-}
 
 - (void)dealloc
 {
-    if (_controller)
-        CFRelease(_controller);
+    if (_controllerRef)
+        CFRelease(_controllerRef);
 }
 
-- (CUIControllerRef)_newCUIController:(CUIFlags)flags
+- (CUIControllerRef)_newCUIController
 {
     CUIUsageFlags usageFlags = 0;
     
@@ -50,16 +58,16 @@
     if (self == nil)
         return nil;
     
-    _flags = flags;
+    self.flags = flags;
     
     if (self.flags & CUIFlagsPersist)
         self.persist = YES;
     else if (self.flags & CUIFlagsDoNotPersist)
         self.persist = NO;
     else
-        _flags |= CUIFlagsShowSaveCheckBox;
+        self.flags |= CUIFlagsShowSaveCheckBox;
     
-    _controller = [self _newCUIController:_flags];
+    self.controllerRef = [self _newCUIController];
     if (attributes)
         self.attributes = attributes;
     
@@ -90,7 +98,7 @@
              * selected a credential (observing a changed, not initial, value), unless there
              * was only one credential.
              */
-            if (autoLogin && creds.count > 1 && !_runningModal)
+            if (autoLogin && creds.count > 1 && !self.runningModal)
                 autoLogin = NO;
             
             if (autoLogin) {
@@ -112,7 +120,7 @@
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
     [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
     
-    CUIControllerEnumerateCredentials(_controller, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef error) {
+    CUIControllerEnumerateCredentials(self.controllerRef, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef error) {
         if (cred) {
             [self.credsController addObject:(__bridge CUICredential *)cred];
             if (isDefault)
@@ -155,7 +163,7 @@
         goto autoSubmit;
 
     self.autoLogin = NO;
-    _runningModal = YES;
+    self.runningModal = YES;
     
     if (window) {
         [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
@@ -165,7 +173,7 @@
         modalResponse = [NSApp runModalForWindow:self.window];
     }
     
-    _runningModal = NO;
+    self.runningModal = NO;
     
     if (self.autoLogin) {
     autoSubmit:
@@ -231,7 +239,7 @@
 - (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props
 {
     if (uic)
-        CUIControllerSetCredUIContext(_controller, props, uic);
+        CUIControllerSetCredUIContext(self.controllerRef, props, uic);
 }
 
 - (void)setCredUIContext:(CUICredUIContext *)uic
@@ -241,7 +249,7 @@
 
 - (CUICredUIContext *)credUIContext
 {
-    return (CUICredUIContext *)CUIControllerGetCredUIContext(_controller);
+    return (CUICredUIContext *)CUIControllerGetCredUIContext(self.controllerRef);
 }
 
 - (NSString *)title
@@ -275,47 +283,47 @@
 
 - (NSDictionary *)attributes
 {
-    return (__bridge NSDictionary *)CUIControllerGetAttributes(_controller);
+    return (__bridge NSDictionary *)CUIControllerGetAttributes(self.controllerRef);
 }
 
 - (void)setAttributes:(NSDictionary *)someAttributes
 {
-    CUIControllerSetAttributes(_controller, (__bridge CFDictionaryRef)someAttributes);
+    CUIControllerSetAttributes(self.controllerRef, (__bridge CFDictionaryRef)someAttributes);
 }
 
 - (NSError *)authError
 {
-    return (__bridge NSError *)CUIControllerGetAuthError(_controller);
+    return (__bridge NSError *)CUIControllerGetAuthError(self.controllerRef);
 }
 
 - (void)setAuthError:(NSError *)someError
 {
-    CUIControllerSetAuthError(_controller, (__bridge CFErrorRef)someError);
+    CUIControllerSetAuthError(self.controllerRef, (__bridge CFErrorRef)someError);
 }
 
 - (GSSContext *)GSSContextHandle
 {
-    return (__bridge GSSContext *)CUIControllerGetGSSContextHandle(_controller);
+    return (__bridge GSSContext *)CUIControllerGetGSSContextHandle(self.controllerRef);
 }
 
 - (void)setGSSContextHandle:(GSSContext *)aContext
 {
-    CUIControllerSetGSSContextHandle(_controller, (__bridge CFTypeRef)aContext);
+    CUIControllerSetGSSContextHandle(self.controllerRef, (__bridge CFTypeRef)aContext);
 }
 
 - (id)targetName
 {
-    return (__bridge id)CUIControllerGetTargetName(_controller);
+    return (__bridge id)CUIControllerGetTargetName(self.controllerRef);
 }
 
 - (void)setTargetName:(id)aTarget
 {
-    CUIControllerSetTargetName(_controller, (__bridge CFTypeRef)aTarget);
+    CUIControllerSetTargetName(self.controllerRef, (__bridge CFTypeRef)aTarget);
 }
 
 - (NSString *)targetDisplayName
 {
-    CFTypeRef targetName = CUIControllerGetTargetName(_controller);
+    CFTypeRef targetName = CUIControllerGetTargetName(self.controllerRef);
     
     if (targetName)
         return CFBridgingRelease(CUICopyTargetDisplayName(targetName));
@@ -325,7 +333,7 @@
 
 - (NSString *)targetHostName
 {
-    CFTypeRef targetName = CUIControllerGetTargetName(_controller);
+    CFTypeRef targetName = CUIControllerGetTargetName(self.controllerRef);
     
     if (targetName)
         return CFBridgingRelease(CUICopyTargetHostName(targetName));

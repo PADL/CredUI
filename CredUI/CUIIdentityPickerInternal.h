@@ -13,23 +13,19 @@
 @property(nonatomic, copy) NSDictionary *attributes;
 @property(nonatomic, copy) NSError *authError;
 @property(nonatomic, assign) BOOL persist;
-@property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, retain) GSSContext *GSSContextHandle;
 @property(nonatomic, copy) id targetName;
+
+@property(nonatomic, readonly) CUIFlags flags;
+@property(nonatomic, retain, readonly) CUICredential *selectedCredential;
 @property(nonatomic, copy) NSError *lastError;
 
-@property(nonatomic, assign) CUICredUIContext *credUIContext;
-
-@property(nonatomic, retain, readonly) CUICredential *selectedCredential;
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
-@property(nonatomic, retain, readonly) NSString *targetHostName;
 
-@property(nonatomic, retain) NSArrayController *credsController;
 @property(nonatomic, retain) NSCollectionView *collectionView;
 @property(nonatomic, retain) NSTextField *messageTextField;
 @property(nonatomic, retain) NSButton *persistCheckBox;
 @property(nonatomic, retain) NSButton *submitButton;
-@property(assign) BOOL autoLogin;
 
 - (NSModalResponse)_runModal:(NSWindow *)window;
 
