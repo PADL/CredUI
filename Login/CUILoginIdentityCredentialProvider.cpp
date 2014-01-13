@@ -33,15 +33,18 @@ CUILoginIdentityCredentialProvider::createQuery(CFDictionaryRef attributes)
 }
 
 CFDictionaryRef
-CUILoginIdentityCredentialProvider::copyAttributesForIdentity(CSIdentityRef identity)
+CUILoginIdentityCredentialProvider::copyAttributesForIdentity(CSIdentityRef identity, CFDictionaryRef assertedAttributes)
 {
     CFMutableDictionaryRef attrs;
 
-    attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    if (attrs == NULL)
+    if (!CSIdentityIsEnabled(identity))
         return NULL;
 
-    if (!CSIdentityIsEnabled(identity))
+    if (assertedAttributes)
+        attrs = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, assertedAttributes);
+    else
+        attrs = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    if (attrs == NULL)
         return NULL;
 
     CFDictionarySetValue(attrs, kCUIAttrCSIdentity,           identity);
@@ -59,7 +62,7 @@ CUILoginIdentityCredentialProvider::copyAttributesForIdentity(CSIdentityRef iden
         CFDictionarySetValue(attrs, kCUIAttrImageData, imageData);
         CFDictionarySetValue(attrs, kCUIAttrImageDataType, CSIdentityGetImageDataType(identity));
     }
-        
+    
     return attrs;
 }
 
@@ -88,7 +91,7 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
             CSIdentityRef identity = (CSIdentityRef)CFArrayGetValueAtIndex(items, index);
-            CFDictionaryRef attrs = copyAttributesForIdentity(identity);
+            CFDictionaryRef attrs = copyAttributesForIdentity(identity, attributes);
 
             if (attrs == NULL)
                 continue;

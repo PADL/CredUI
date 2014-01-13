@@ -68,7 +68,7 @@ public:
 
     // helpers    
     CSIdentityQueryRef createQuery(CFDictionaryRef attributes);
-    CFDictionaryRef copyAttributesForIdentity(CSIdentityRef identity);
+    CFDictionaryRef copyAttributesForIdentity(CSIdentityRef identity, CFDictionaryRef assertedAttributes);
 
     CUILoginIdentityCredentialProvider() {
         CFPlugInAddInstanceForFactory(kLoginIdentityCredentialProviderFactoryID);
