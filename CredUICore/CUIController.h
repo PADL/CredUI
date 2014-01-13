@@ -52,10 +52,10 @@ CUI_EXPORT const CUICredUIContext *
 CUIControllerGetCredUIContext(CUIControllerRef controller);
 
 CUI_EXPORT void
-CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef ctx);
+CUIControllerSetContext(CUIControllerRef controller, const void *ctx);
 
-CUI_EXPORT CFTypeRef
-CUIControllerGetGSSContextHandle(CUIControllerRef controller);
+CUI_EXPORT const void *
+CUIControllerGetContext(CUIControllerRef controller);
 
 CUI_EXPORT void
 CUIControllerSetTargetName(CUIControllerRef controller, CFTypeRef target);

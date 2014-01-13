@@ -32,7 +32,7 @@ struct __CUIController {
     CFMutableDictionaryRef _attributes;
     CFErrorRef _authError;
     CFIndex _flags;
-    CFTypeRef _gssContextHandle; // for use with GSSKit/NegoEx
+    const void *_context; // for use with GSSKit/NegoEx/PAM/etc
     CFTypeRef _targetName;
 };
 

@@ -10,7 +10,7 @@
 
 Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
-                         CFTypeRef gssContextHandle,
+                         const void *context,
                          CUICredUIContext *uiContext,
                          CFErrorRef authError,
                          CFDictionaryRef inCredAttributes,
@@ -28,7 +28,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
         return false;
     
     identityPicker.targetName = (__bridge id)targetName;
-    identityPicker.GSSContextHandle = (__bridge GSSContext *)gssContextHandle;
+    identityPicker.context = context;
     identityPicker.authError = (__bridge NSError *)authError;
     identityPicker.persist = *pfSave;
  
@@ -50,7 +50,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
 CUI_EXPORT Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
-                        CFTypeRef reserved,
+                        const void *reserved,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,

@@ -89,7 +89,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     
     identityPicker.title = @"Identity Picker";
     identityPicker.targetName = self.targetName;
-    identityPicker.GSSContextHandle = self;
+    identityPicker.context = self._gssContext;
     identityPicker.authError = self.lastError;
     
     [identityPicker runModalForWindow:self.window

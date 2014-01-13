@@ -326,14 +326,14 @@
     CUIControllerSetAuthError(self.controllerRef, (__bridge CFErrorRef)someError);
 }
 
-- (GSSContext *)GSSContextHandle
+- (const void *)context
 {
-    return (__bridge GSSContext *)CUIControllerGetGSSContextHandle(self.controllerRef);
+    return CUIControllerGetContext(self.controllerRef);
 }
 
-- (void)setGSSContextHandle:(GSSContext *)aContext
+- (void)setContext:(const void *)aContext
 {
-    CUIControllerSetGSSContextHandle(self.controllerRef, (__bridge CFTypeRef)aContext);
+    CUIControllerSetContext(self.controllerRef, aContext);
 }
 
 - (id)targetName

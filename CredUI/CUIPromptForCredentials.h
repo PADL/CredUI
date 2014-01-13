@@ -23,7 +23,7 @@ extern "C" {
 CUI_EXPORT Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
-                        CFTypeRef reserved,
+                        const void *reserved,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,

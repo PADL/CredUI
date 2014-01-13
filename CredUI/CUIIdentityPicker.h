@@ -13,7 +13,6 @@
 @class NSDictionary;
 @class NSWindow;
 
-@class GSSContext;
 @class CUICredential;
 
 @class CUIIdentityPickerInternal;
@@ -44,8 +43,8 @@ __attribute__((visibility("default")))
 /* Target name to display to user, one of NSString, NSURL or gss_name_T */
 @property(nonatomic, copy) id targetName;
 
-/* GSS-API context handle for NegoEx exchange */
-@property(nonatomic, retain) GSSContext *GSSContextHandle;
+/* GSS or PAM context handle */
+@property(nonatomic, assign) const void *context;
 
 /* The credential that was picked */
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;

@@ -45,8 +45,8 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
         CFRelease(controller->_attributes);
     if (controller->_authError)
         CFRelease(controller->_authError);
-    if (controller->_gssContextHandle)
-        CFRelease(controller->_gssContextHandle);
+    if (controller->_context)
+        CFRelease(controller->_context);
     if (controller->_targetName)
         CFRelease(controller->_targetName);
 }
@@ -301,7 +301,7 @@ _CUIControllerCopyAttributesAdjustedForAuthError(CUIControllerRef controller,
      * needs more information from the user. In this case it will return
      * GSS_S_CONTINUE_NEEDED | GSS_S_PROMPTING_NEEDED.
      */
-    if (controller->_gssContextHandle != GSS_C_NO_CONTEXT &&        /* context in play */
+    if (controller->_context != GSS_C_NO_CONTEXT &&                 /* context in play */
         GSSIsPromptingNeeded(controller->_authError) &&             /* GSS_S_PROMPTING_NEEDED */
         !GSS_ERROR(CFErrorGetCode(controller->_authError))) {       /* GSS_S_CONTINUE_NEEDED or non-fatal */
         CFStringRef attrClass;
@@ -415,15 +415,15 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 }
 
 CUI_EXPORT void
-CUIControllerSetGSSContextHandle(CUIControllerRef controller, CFTypeRef gssContextHandle)
+CUIControllerSetContext(CUIControllerRef controller, const void *context)
 {
-    _CUISetter(controller->_gssContextHandle, gssContextHandle);
+    _CUISetter(controller->_context, context);
 }
 
-CUI_EXPORT CFTypeRef
-CUIControllerGetGSSContextHandle(CUIControllerRef controller)
+CUI_EXPORT const void *
+CUIControllerGetContext(CUIControllerRef controller)
 {
-    return controller->_gssContextHandle;
+    return controller->_context;
 }
 
 CUI_EXPORT void

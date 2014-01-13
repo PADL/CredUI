@@ -13,7 +13,7 @@
 @property(nonatomic, copy) NSDictionary *attributes;
 @property(nonatomic, copy) NSError *authError;
 @property(nonatomic, assign) BOOL persist;
-@property(nonatomic, retain) GSSContext *GSSContextHandle;
+@property(nonatomic, assign) const void *context;
 @property(nonatomic, copy) id targetName;
 
 @property(nonatomic, readonly) CUIFlags flags;
