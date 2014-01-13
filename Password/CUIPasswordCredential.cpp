@@ -40,8 +40,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
          * For the login scenario, specific users must always be enumerated by the provider.
          * This is so that a user's image and other metadata is available to CredUI.
          */
-        else if (CUIControllerGetUsageScenario(controller) == kCUIUsageScenarioLogin &&
-                 !CUIIsIdentityCredential(attributes))
+        else if (isLoginUsageScenario() && !CUIIsIdentityCredential(attributes))
             return false;
         
         /*
@@ -167,10 +166,14 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
         *error = NULL;
 
     /*
-     * If the credential was already persisted, the persistence provider is calling
-     * us and it will handle the update.
+     * Login credentials cannot be saved (XXX this should be enforced at a higher layer).
+     *
+     * Persisted credentials are updated by the persistence credential provider, we do not
+     * need to do anything here.
      */
-    if (CUIIsPersistedCredential(_attributes))
+    if (isLoginUsageScenario())
+        return false;
+    else if (CUIIsPersistedCredential(_attributes))
         return true;
 
     attrClass = CFDictionaryGetValue(_attributes, kCUIAttrClass); 

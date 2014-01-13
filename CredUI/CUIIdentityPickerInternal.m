@@ -60,8 +60,14 @@
     if (self == nil)
         return nil;
     
+    if (usageScenario == kCUIUsageScenarioLogin) {
+        /* Make sure login credentails can never be persisted */
+        flags &= ~(CUIFlagsPersist);
+        flags |= CUIFlagsDoNotPersist;
+    }
+
     self.flags = flags;
-    
+
     if (self.flags & CUIFlagsPersist)
         self.persist = YES;
     else if (self.flags & CUIFlagsDoNotPersist)

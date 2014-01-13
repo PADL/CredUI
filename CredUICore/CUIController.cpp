@@ -94,7 +94,12 @@ CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageFlags usageFlags)
 {
     CUIControllerRef controller;
-    
+
+    assert (usageScenario == kCUIUsageScenarioLogin || usageScenario == kCUIUsageScenarioNetwork);
+   
+    if (usageScenario != kCUIUsageScenarioLogin && usageScenario != kCUIUsageScenarioNetwork)
+        return NULL;
+ 
     controller = (CUIControllerRef)_CFRuntimeCreateInstance(allocator,
                                                             CUIControllerGetTypeID(),
                                                             sizeof(struct __CUIController) - sizeof(CFRuntimeBase),

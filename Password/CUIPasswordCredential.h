@@ -121,7 +121,11 @@ public:
     Boolean deletePersisted(CFErrorRef *error) {
         return true;
     }
-    
+   
+    Boolean isLoginUsageScenario(void) {
+        return CUIControllerGetUsageScenario(_controller) == kCUIUsageScenarioLogin;
+    }
+ 
     CUIPasswordCredential() {
         _retainCount = 1;
         _fields = NULL;
