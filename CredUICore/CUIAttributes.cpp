@@ -48,9 +48,12 @@ CUI_CONST_TYPE(kCUICredentialReturnNoCredentialFinished,kCUICredentialReturnNoCr
 CUI_CONST_TYPE(kCUIAttrCredentialProvider,             kCUIAttrCredentialProvider);
 CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaProvider);
 
-CUI_CONST_TYPE(kCUIAttrSecKeychainItemRef,             kCUIAttrSecKeychainItemRef);
-CUI_CONST_TYPE(kCUIAttrGSSItemRef,                     kCUIAttrGSSItemRef);
+CUI_CONST_TYPE(kCUIAttrSecKeychainItem,                kCUIAttrSecKeychainItem);
+CUI_CONST_TYPE(kCUIAttrGSSItem,                        kCUIAttrGSSItem);
+CUI_CONST_TYPE(kCUIAttrCSIdentity,                     kCUIAttrCSIdentity);
+
 CUI_CONST_TYPE(kCUIAttrPersistenceFactoryID,           kCUIAttrPersistenceFactoryID);
+CUI_CONST_TYPE(kCUIAttrIdentityFactoryID,              kCUIAttrIdentityFactoryID);
 CUI_CONST_TYPE(kCUIAttrProviderFactoryID,              kCUIAttrProviderFactoryID);
 
 /* XXX These unwieldy names are to support the kCUIAttrCredential -> kGSSIC transform */
@@ -59,3 +62,5 @@ CUI_CONST_TYPE(kCUIAttrCredentialLKDCHostname,         kCUIAttrCredentialLKDCHos
 CUI_CONST_TYPE(kCUIAttrCredentialKerberosCacheName,    kCUIAttrCredentialKerberosCacheName)
 CUI_CONST_TYPE(kCUIAttrCredentialAppIdentifierACL,     kCUIAttrCredentialAppIdentifierACL)
 
+CUI_CONST_TYPE(kCUIAttrImageData,                      kCUIAttrImageData)
+CUI_CONST_TYPE(kCUIAttrImageDataType,                  kCUIAttrImageDataType)

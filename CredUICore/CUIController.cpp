@@ -56,8 +56,10 @@ static CFStringRef _CUIControllerCopyDescription(CFTypeRef cf)
     CUIControllerRef controller = (CUIControllerRef)cf;
     
     return CFStringCreateWithFormat(CFGetAllocator(cf), NULL,
-                                    CFSTR("<CUIController %p>{usage = %u, usageFlags = %08x}"),
-                                    controller, (unsigned)controller->_usage, (unsigned)controller->_usageFlags);
+                                    CFSTR("<CUIController %p>{usage = %@, usageFlags = %08x}"),
+                                    controller,
+                                    controller->_usageScenario == kCUIUsageScenarioLogin ? CFSTR("Login") : CFSTR("Network"),
+                                    (unsigned)controller->_usageFlags);
 }
 
 static const CFRuntimeClass _CUIControllerClass = {
@@ -88,7 +90,7 @@ CUIControllerGetTypeID(void)
 
 CUI_EXPORT CUIControllerRef
 CUIControllerCreate(CFAllocatorRef allocator,
-                    CUIUsageScenario usage,
+                    CUIUsageScenario usageScenario,
                     CUIUsageFlags usageFlags)
 {
     CUIControllerRef controller;
@@ -100,7 +102,7 @@ CUIControllerCreate(CFAllocatorRef allocator,
     if (controller == NULL)
         return NULL;
     
-    controller->_usage = usage;
+    controller->_usageScenario = usageScenario;
     controller->_usageFlags = usageFlags;
 
     if (!_CUIProvidersCreate(allocator, controller)) {
@@ -118,6 +120,12 @@ CUIControllerCreate(CFAllocatorRef allocator,
     }
     
     return controller;
+}
+
+CUI_EXPORT CUIUsageScenario
+CUIControllerGetUsageScenario(CUIControllerRef controller)
+{
+    return controller->_usageScenario;
 }
 
 struct CUIEnumerateCredentialContext {
@@ -244,8 +252,10 @@ _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
         CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providerAttributes, index);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
        
-        if (CFDictionaryGetValue(providerAttributes, kCUIAttrPersistenceFactoryID) &&
-            (usageFlags & kCUIUsageFlagsExcludePersistedCreds))
+        if ((CFDictionaryGetValue(providerAttributes, kCUIAttrPersistenceFactoryID) &&
+             (usageFlags & kCUIUsageFlagsExcludePersistedCreds)) ||
+            (CFDictionaryGetValue(providerAttributes, kCUIAttrIdentityFactoryID) &&
+             (usageFlags & kCUIUsageFlagsExcludeIdentityCreds)))
             continue;
         
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,

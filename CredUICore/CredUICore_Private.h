@@ -26,7 +26,7 @@ struct __CUIController {
     CFRuntimeBase _base;
     CFArrayRef _providers;
     CFArrayRef _providerAttributes;
-    CUIUsageScenario _usage;
+    CUIUsageScenario _usageScenario;
     CUIUsageFlags _usageFlags;
     CUICredUIContext _uiContext;
     CFMutableDictionaryRef _attributes;

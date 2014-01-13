@@ -152,6 +152,14 @@ CFArrayCallBacks kCUIProviderArrayCallBacks = {
     .equal = _CUIProviderEqual
 };
 
+static Boolean
+_CUITestDictionaryValueP(CFDictionaryRef dict, CFStringRef key)
+{
+    CFTypeRef cf = CFDictionaryGetValue(dict, key);
+
+    return (cf && CFGetTypeID(cf) == CFBooleanGetTypeID() && CFBooleanGetValue((CFBooleanRef)cf));
+}
+
 Boolean
 _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
 {
@@ -198,7 +206,7 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
         }
         
         if (!provider->initWithController(controller,
-                                          controller->_usage,
+                                          controller->_usageScenario,
                                           controller->_usageFlags,
                                           &error)) {
             if (error)
@@ -215,11 +223,10 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
             continue;
         }
         
-        CFTypeRef isPersistenceProvider = CFDictionaryGetValue(infoDict, CFSTR("CUIIsPersistenceProvider"));
-        if (isPersistenceProvider &&
-            CFGetTypeID(isPersistenceProvider) == CFBooleanGetTypeID() &&
-            CFBooleanGetValue((CFBooleanRef)isPersistenceProvider))
+        if (_CUITestDictionaryValueP(infoDict, CFSTR("CUIIsPersistenceProvider")))
             CFDictionarySetValue(providerAttributes, kCUIAttrPersistenceFactoryID, factoryID);
+        else if (_CUITestDictionaryValueP(infoDict, CFSTR("CUIIsIdentityProvider")))
+            CFDictionarySetValue(providerAttributes, kCUIAttrIdentityFactoryID, factoryID);
         else     
             CFDictionarySetValue(providerAttributes, kCUIAttrProviderFactoryID, factoryID);
 

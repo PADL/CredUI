@@ -17,7 +17,7 @@
      * If a GSSItem tile was selected, we do not have access to the password, so
      * we must acquire it via the GSSItem API.
      */
-    gssItem = cuiCredential.attributes[(__bridge NSString *)kCUIAttrGSSItemRef];
+    gssItem = cuiCredential.attributes[(__bridge NSString *)kCUIAttrGSSItem];
     if (gssItem) {
         cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
     } else {

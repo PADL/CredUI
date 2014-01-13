@@ -54,7 +54,7 @@
     if (error)
         *error = nil;
     
-    item = self.attributes[(__bridge NSString *)kCUIAttrGSSItemRef];
+    item = self.attributes[(__bridge NSString *)kCUIAttrGSSItem];
     if (item == nil) {
         NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
         NSArray *matchingItems = CFBridgingRelease(GSSItemCopyMatching((__bridge CFDictionaryRef)itemAttrs, NULL));

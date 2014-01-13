@@ -24,7 +24,10 @@ CUI_EXPORT CUIControllerRef
 CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageScenario usage,
                     CUIUsageFlags usageFlags);
-    
+
+CUI_EXPORT CUIUsageScenario
+CUIControllerGetUsageScenario(CUIControllerRef controller);
+
 CUI_EXPORT void
 CUIControllerSetAttributes(CUIControllerRef controller, CFDictionaryRef authIdentity);
 

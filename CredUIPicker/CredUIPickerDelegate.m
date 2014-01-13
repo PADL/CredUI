@@ -9,6 +9,7 @@
 #import <CredUI/CredUI.h>
 #import <CredUI/GSSPromptForCredentials.h>
 #import <CredUI/CUICredential+GSS.h>
+#import <CredUI/CUICredential+CBIdentity.h>
 #import <CredUICore/CUIAttributes.h>
 
 #import <GSSKit/GSSKit.h>
@@ -199,9 +200,8 @@ static void testEncodeDecode(CUICredential * cred)
 - (void)identityPickerDidEndLocal:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if (returnCode == NSModalResponseStop) {
-        testEncodeDecode(identityPicker.selectedCredential);
         NSLog(@"Local picker did end: %@", identityPicker.selectedCredential.attributes);
-        (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
+        NSLog(@"Authenticated CB identity: %@", identityPicker.selectedCredential.authenticatedUserIdentity);
     } else {
         NSLog(@"Local picker aborted");
     }
@@ -209,7 +209,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerLocal:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:0
                                              usageScenario:kCUIUsageScenarioLogin
                                                 attributes:nil];
                    

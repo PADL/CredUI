@@ -14,6 +14,7 @@
 
 #import <CredUI/CredUI.h>
 #import <CredUI/CUICredential+GSS.h>
+#import <CredUI/CUICredential+CBIdentity.h>
 #import <CredUI/GSSPromptForCredentials.h>
 
 #import <CredUICore/CredUICore.h>

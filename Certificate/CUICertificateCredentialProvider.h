@@ -71,7 +71,8 @@ public:
     
     CFMutableDictionaryRef createCertificateAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName);
     CFArrayRef copyMatchingIdentities(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
-
+    CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity);
+    
     Boolean initWithController(CUIControllerRef controller,
                                CUIUsageScenario usageScenario,
                                CUIUsageFlags usageFlags,

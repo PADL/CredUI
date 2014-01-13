@@ -280,6 +280,11 @@
 
 #pragma mark - Other accessors
 
+- (CUIUsageScenario)usageScenario
+{
+    return CUIControllerGetUsageScenario(self.controllerRef);
+}
+
 - (CUICredential *)selectedCredential
 {
     return [[self.credsController selectedObjects] firstObject];

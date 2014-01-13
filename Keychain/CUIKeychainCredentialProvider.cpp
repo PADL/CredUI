@@ -63,7 +63,7 @@ CUIKeychainCredentialProvider::createCUIAttributesFromKeychainAttributes(CFDicti
 
     CFTypeRef keychainItemRef = CFDictionaryGetValue(keychainAttrs, kSecValueRef);
     if (keychainItemRef)
-        CFDictionarySetValue(attributes, kCUIAttrSecKeychainItemRef, keychainItemRef);
+        CFDictionarySetValue(attributes, kCUIAttrSecKeychainItem, keychainItemRef);
     
     CFTypeRef accessGroup = CFDictionaryGetValue(keychainAttrs, kSecAttrAccessGroup);
     if (accessGroup)
@@ -169,7 +169,7 @@ CUIKeychainCredentialProvider::createQuery(CFDictionaryRef attributes)
     CFMutableDictionaryRef query;
     SecKeychainItemRef item;
 
-    item = (SecKeychainItemRef)CFDictionaryGetValue(attributes, kCUIAttrSecKeychainItemRef);
+    item = (SecKeychainItemRef)CFDictionaryGetValue(attributes, kCUIAttrSecKeychainItem);
     if (item == NULL)
         return NULL;
 
@@ -357,6 +357,9 @@ Boolean CUIKeychainCredentialProvider::initWithController(CUIControllerRef contr
                                                           CUIUsageFlags usageFlags,
                                                           CFErrorRef *error)
 {
+    if (usageScenario != kCUIUsageScenarioNetwork)
+        return false;
+
     if ((usageFlags & kCUIUsageFlagsGeneric) == 0 ||
         (usageFlags & (kCUIUsageFlagsRequireCertificates | kCUIUsageFlagsExcludePersistedCreds)))
         return false;

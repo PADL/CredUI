@@ -106,6 +106,9 @@ CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
                                                  CUIUsageFlags usageFlags,
                                                  CFErrorRef *error)
 {
+    if (usageScenario != kCUIUsageScenarioNetwork)
+        return false;
+
     if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsExcludePersistedCreds))
         return false;
     
@@ -140,7 +143,7 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             if (cuiAttributes == NULL)
                 continue;
             
-            CFDictionarySetValue(cuiAttributes, kCUIAttrGSSItemRef, item);
+            CFDictionarySetValue(cuiAttributes, kCUIAttrGSSItem, item);
             CFDictionarySetValue(cuiAttributes, kCUIAttrPersistenceFactoryID, kGSSItemCredentialProviderFactoryID);
  
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
@@ -218,7 +221,7 @@ CUIGSSItemCredentialProvider::updateCredential(CUICredentialRef credential, CFEr
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     CFDictionaryRef gssItemAttributes = NULL;
     Boolean ret;
-    GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItemRef);
+    GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItem);
     
     if (item == NULL)
         return false;
@@ -243,7 +246,7 @@ Boolean
 CUIGSSItemCredentialProvider::deleteCredential(CUICredentialRef credential, CFErrorRef *error)
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
-    GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItemRef);
+    GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItem);
     
     return GSSItemDeleteItem(item, error);
 }

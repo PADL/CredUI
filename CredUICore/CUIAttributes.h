@@ -102,6 +102,10 @@ CUI_EXPORT const CFStringRef kCUIAttrCredentialSecIdentity; /* SecIdentityRef */
 CUI_EXPORT const CFStringRef kCUIAttrCredentialSecCertificate; /* SecCertificateRef */
 CUI_EXPORT const CFStringRef kCUIAttrCredentialExists;
 
+CUI_EXPORT const CFStringRef kCUIAttrGSSItem;
+CUI_EXPORT const CFStringRef kCUIAttrSecKeychainItem;
+CUI_EXPORT const CFStringRef kCUIAttrCSIdentity;
+
 /*
  * Status of a credentials
  */
@@ -114,9 +118,8 @@ CUI_EXPORT const CFStringRef kCUIAttrStatusTransient;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialProvider;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialMetaProvider;
 
-CUI_EXPORT const CFStringRef kCUIAttrGSSItemRef;
-CUI_EXPORT const CFStringRef kCUIAttrSecKeychainItemRef;
 CUI_EXPORT const CFStringRef kCUIAttrPersistenceFactoryID; /* CFUUIDRef */
+CUI_EXPORT const CFStringRef kCUIAttrIdentityFactoryID; /* CFUUIDRef */
 CUI_EXPORT const CFStringRef kCUIAttrProviderFactoryID; /* CFUUIDRef */
 
 /*
@@ -126,6 +129,12 @@ CUI_EXPORT const CFStringRef kCUIAttrCredentialVerifyCredential;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialLKDCHostname;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialKerberosCacheName;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialAppIdentifierACL;
+
+/*
+ * Image
+ */
+CUI_EXPORT const CFStringRef kCUIAttrImageData; /* CFData */
+CUI_EXPORT const CFStringRef kCUIAttrImageDataType; /* CFStringRef */
 
 #ifdef __cplusplus
 }
