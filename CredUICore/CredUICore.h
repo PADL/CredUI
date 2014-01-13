@@ -12,6 +12,7 @@
 #include <CredUICore/CUIBase.h>
 #include <CredUICore/CUIField.h>
 #include <CredUICore/CUICredential.h>
+#include <CredUICore/CUICredentialLogin.h>
 #include <CredUICore/CUIProxyCredential.h>
 #include <CredUICore/CUIController.h>
 #include <CredUICore/CUIProvider.h>

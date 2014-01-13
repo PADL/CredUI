@@ -54,6 +54,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		D30D29681884012700E081AC /* CUICredentialLogin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D30D29661884012700E081AC /* CUICredentialLogin.cpp */; };
+		D30D29691884012700E081AC /* CUICredentialLogin.h in Headers */ = {isa = PBXBuildFile; fileRef = D30D29671884012700E081AC /* CUICredentialLogin.h */; };
 		D3207E32187C240C00DC2694 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3207E38187C240C00DC2694 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3207E36187C240C00DC2694 /* InfoPlist.strings */; };
 		D3207E41187C246E00DC2694 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
@@ -183,6 +185,7 @@
 		D3B094481877EFBA006DB1DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
 		D3B0944B1877EFBA006DB1DE /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
 		D3B37CDE187CD67800117E61 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B37CDD187CD67800117E61 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3BC5F7E188401FF00034F92 /* libpam.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BC5F7D188401FF00034F92 /* libpam.dylib */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */; };
@@ -456,6 +459,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D30D29661884012700E081AC /* CUICredentialLogin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUICredentialLogin.cpp; sourceTree = "<group>"; };
+		D30D29671884012700E081AC /* CUICredentialLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialLogin.h; sourceTree = "<group>"; };
 		D3207E31187C240C00DC2694 /* Certificate.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Certificate.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3207E35187C240C00DC2694 /* Certificate-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Certificate-Info.plist"; sourceTree = "<group>"; };
 		D3207E37187C240C00DC2694 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -591,6 +596,7 @@
 		D3B0943E1877EFBA006DB1DE /* GSSKitUI-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSKitUI-Prefix.pch"; sourceTree = "<group>"; };
 		D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B37CDD187CD67800117E61 /* CUIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
+		D3BC5F7D188401FF00034F92 /* libpam.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpam.dylib; path = usr/lib/libpam.dylib; sourceTree = SDKROOT; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIProxyCredential.cpp; sourceTree = "<group>"; };
@@ -666,6 +672,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3BC5F7E188401FF00034F92 /* libpam.dylib in Frameworks */,
 				D3BED9031873FA8600623B92 /* GSS.framework in Frameworks */,
 				D39EB050186F111F00C43A24 /* CoreFoundation.framework in Frameworks */,
 			);
@@ -875,6 +882,7 @@
 		D336E27C182B51A6009271CD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D3BC5F7D188401FF00034F92 /* libpam.dylib */,
 				D358910B1883D66A0093F5B6 /* Collaboration.framework */,
 				D3FD1123187EEDE700AD32FB /* BrowserID.framework */,
 				D38469731875452A003EE56B /* Security.framework */,
@@ -990,6 +998,8 @@
 				D39EB043186EF07500C43A24 /* CUIField.h */,
 				D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */,
 				D3BED8F81873B46200623B92 /* CUIProxyCredential.h */,
+				D30D29661884012700E081AC /* CUICredentialLogin.cpp */,
+				D30D29671884012700E081AC /* CUICredentialLogin.h */,
 			);
 			path = CredUICore;
 			sourceTree = "<group>";
@@ -1008,10 +1018,10 @@
 			isa = PBXGroup;
 			children = (
 				D39EB031186ED50800C43A24 /* Supporting Files */,
-				D39EB04D186F0CC400C43A24 /* CUIPasswordCredential.h */,
 				D39EB04C186F0CC400C43A24 /* CUIPasswordCredential.cpp */,
-				D39EB049186F087A00C43A24 /* CUIPasswordCredentialProvider.h */,
+				D39EB04D186F0CC400C43A24 /* CUIPasswordCredential.h */,
 				D39EB048186F087A00C43A24 /* CUIPasswordCredentialProvider.cpp */,
+				D39EB049186F087A00C43A24 /* CUIPasswordCredentialProvider.h */,
 			);
 			path = Password;
 			sourceTree = "<group>";
@@ -1147,8 +1157,8 @@
 			isa = PBXGroup;
 			children = (
 				D3F67B0F187513A1006B36C3 /* Supporting Files */,
-				D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */,
 				D32517C4187A9A1F000AFF9E /* CUIGSSItemCredential.cpp */,
+				D3AA96461875166B003852C5 /* CUIGSSItemCredential.h */,
 				D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */,
 				D3F67B19187513CB006B36C3 /* CUIGSSItemCredentialProvider.h */,
 			);
@@ -1204,6 +1214,7 @@
 				D3F68724187D7FEE00E8A080 /* GSSIsPromptingNeeded.h in Headers */,
 				D39EB041186EF06D00C43A24 /* CUICredential.h in Headers */,
 				D39EB0BC1870F2CF00C43A24 /* CredUICore_Private.h in Headers */,
+				D30D29691884012700E081AC /* CUICredentialLogin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1692,6 +1703,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D30D29681884012700E081AC /* CUICredentialLogin.cpp in Sources */,
 				D384697F18759458003EE56B /* CUIAttributes.cpp in Sources */,
 				D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */,
 				D3F68726187D87D000E8A080 /* GSSIsPromptingNeeded.cpp in Sources */,
@@ -2758,6 +2770,7 @@
 				D35890FB1883C1C30093F5B6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D39EB023186ED2B200C43A24 /* Build configuration list for PBXNativeTarget "CredUICore" */ = {
 			isa = XCConfigurationList;

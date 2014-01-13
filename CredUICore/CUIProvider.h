@@ -166,4 +166,9 @@ CUI_EXPORT CUICredentialRef
 CUICredentialCreate(CFAllocatorRef allocator, IUnknownVTbl *context);
 #endif
 
+/*
+ * For PAM modules. This contains a CFDictionaryRef.
+ */
+#define CREDUI_ATTR_DATA    "CREDUI-ATTR-DATA"
+
 #endif /* CredUICore_CUIProvider_h */

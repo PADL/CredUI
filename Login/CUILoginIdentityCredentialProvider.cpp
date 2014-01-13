@@ -97,7 +97,7 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
                 continue;
 
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        kCUIUsageFlagsExcludeIdentityCreds,
+                                                        kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludeIdentityCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                  CUILoginIdentityCredential *itemCred;

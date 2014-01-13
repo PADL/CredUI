@@ -23,7 +23,8 @@
             else
                 transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUI" withString:@"kGSS"];
         } else if (attrClass == CUIAttributeClassGSSInitialCred) {
-            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity])
+            if ([key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecIdentity] ||
+                [key isEqualToString:(__bridge NSString *)kCUIAttrCredentialSecCertificate])
                 transformedKey = (__bridge id)kGSSICCertificate; // special case
             else
                 transformedKey = [key stringByReplacingOccurrencesOfString:@"kCUIAttrCredential" withString:@"kGSSIC"];

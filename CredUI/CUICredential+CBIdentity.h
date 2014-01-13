@@ -11,5 +11,5 @@
 
 @interface CUICredential (CBIdentity)
 - (CBUserIdentity *)userIdentity;
-- (CBUserIdentity *)authenticatedUserIdentity;
+- (BOOL)authenticateForLoginScenario:(NSString *)service;
 @end

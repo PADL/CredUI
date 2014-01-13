@@ -76,6 +76,11 @@
         self.flags |= CUIFlagsShowSaveCheckBox;
     
     self.controllerRef = [self _newCUIController:usageScenario];
+    if (self.controllerRef == nil) {
+        NSLog(@"Failed to initialize CUIController");
+        return nil;
+    }
+    
     if (attributes)
         self.attributes = attributes;
     

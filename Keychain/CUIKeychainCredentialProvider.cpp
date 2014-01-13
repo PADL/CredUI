@@ -312,7 +312,7 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                 continue;
             
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        kCUIUsageFlagsExcludePersistedCreds,
+                                                        kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                  CUIKeychainCredential *itemCred;

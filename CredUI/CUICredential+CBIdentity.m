@@ -9,6 +9,11 @@
 #import <Collaboration/Collaboration.h>
 
 @implementation CUICredential (CBIdentity)
+- (BOOL)authenticateForLoginScenario:(NSString *)service
+{
+    return CUICredentialAuthenticateForLoginScenario([self _credentialRef], (__bridge CFStringRef)service);
+}
+
 - (CBUserIdentity *)userIdentity
 {
     CBIdentity *identity;
@@ -27,13 +32,5 @@
         return (CBUserIdentity *)identity;
     
     return nil;
-}
-
-- (CBUserIdentity *)authenticatedUserIdentity
-{
-    CBUserIdentity *userIdentity = [self userIdentity];
-    NSString *password = self.attributes[(__bridge id)kCUIAttrCredentialPassword];
-
-    return (userIdentity && password && [userIdentity authenticateWithPassword:password]) ? userIdentity : nil;
 }
 @end
