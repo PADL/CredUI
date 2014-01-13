@@ -301,7 +301,8 @@ _CUIControllerCopyAttributesAdjustedForAuthError(CUIControllerRef controller,
      * needs more information from the user. In this case it will return
      * GSS_S_CONTINUE_NEEDED | GSS_S_PROMPTING_NEEDED.
      */
-    if (controller->_context != GSS_C_NO_CONTEXT &&                 /* context in play */
+    if (controller->_usageScenario == kCUIUsageScenarioNetwork &&    /* context is a GSS context handle */
+        controller->_context != GSS_C_NO_CONTEXT &&                 /* context in play */
         GSSIsPromptingNeeded(controller->_authError) &&             /* GSS_S_PROMPTING_NEEDED */
         !GSS_ERROR(CFErrorGetCode(controller->_authError))) {       /* GSS_S_CONTINUE_NEEDED or non-fatal */
         CFStringRef attrClass;
@@ -332,6 +333,7 @@ _CUIControllerCopyAttributesAdjustedForAuthError(CUIControllerRef controller,
             return true;
         }
     }
+    
     
     if (*adjustedAttributes == NULL && controller->_attributes)
         *adjustedAttributes = (CFDictionaryRef)CFRetain(controller->_attributes);
