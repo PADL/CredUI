@@ -24,7 +24,6 @@ class CUILoginIdentityCredentialProvider : public CUIProvider {
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
-    CUIUsageFlags _usageFlags;
     CSIdentityAuthorityRef _authority;
     
 public:
@@ -64,7 +63,10 @@ public:
                                CUIUsageFlags usageFlags,
                                CFErrorRef *error);
     
-    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes, CFIndex *defaultCredentialIndex, CFErrorRef *error);
+    CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CUIUsageFlags usageFlags,
+                                       CFIndex *defaultCredentialIndex,
+                                       CFErrorRef *error);
 
     // helpers    
     CSIdentityQueryRef createQuery(CFDictionaryRef attributes);
@@ -74,7 +76,6 @@ public:
         CFPlugInAddInstanceForFactory(kLoginIdentityCredentialProviderFactoryID);
         _retainCount = 1;
         _controller = NULL;
-        _usageFlags = 0;
         _authority = NULL;
     }
     

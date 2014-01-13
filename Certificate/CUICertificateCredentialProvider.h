@@ -34,7 +34,6 @@ private:
     int32_t _retainCount;
     CUIControllerRef _controller;
     CUIUsageScenario _usageScenario;
-    CUIUsageFlags _usageFlags;
     
 public:
     ULONG AddRef(void) {
@@ -66,12 +65,13 @@ public:
     }
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CUIUsageFlags usageFlags,
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
     
     CFMutableDictionaryRef createCertificateAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName);
     CFArrayRef copyMatchingIdentities(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
-    CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity);
+    CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags);
     
     Boolean initWithController(CUIControllerRef controller,
                                CUIUsageScenario usageScenario,
@@ -82,7 +82,6 @@ public:
 
         _controller = (CUIControllerRef)CFRetain(controller);
         _usageScenario = usageScenario;
-        _usageFlags = usageFlags;
 
         return true;
     }
@@ -92,7 +91,6 @@ public:
         _retainCount = 1;
         _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
-        _usageFlags = 0;
     }
     
 protected:

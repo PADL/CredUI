@@ -292,6 +292,7 @@ CUIKeychainCredentialProvider::extractPassword(CFDictionaryRef attributes, CFErr
 
 CFArrayRef
 CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                       CUIUsageFlags usageFlags,
                                                        CFIndex *defaultCredentialIndex,
                                                        CFErrorRef *error)
 {
@@ -312,7 +313,7 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                 continue;
             
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
+                                                        usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                  CUIKeychainCredential *itemCred;
@@ -366,7 +367,6 @@ Boolean CUIKeychainCredentialProvider::initWithController(CUIControllerRef contr
     
     _controller = (CUIControllerRef)CFRetain(controller);
     _usageScenario = usageScenario;
-    _usageFlags = usageFlags;
     
     return true;
 }

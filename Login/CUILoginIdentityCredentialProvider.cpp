@@ -68,6 +68,7 @@ CUILoginIdentityCredentialProvider::copyAttributesForIdentity(CSIdentityRef iden
 
 CFArrayRef
 CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                            CUIUsageFlags usageFlags,
                                                             CFIndex *defaultCredentialIndex,
                                                             CFErrorRef *error)
 {
@@ -97,7 +98,7 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
                 continue;
 
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludeIdentityCreds,
+                                                        usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludeIdentityCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                  CUILoginIdentityCredential *itemCred;
@@ -150,7 +151,6 @@ Boolean CUILoginIdentityCredentialProvider::initWithController(CUIControllerRef 
         return false;
 
     _controller = (CUIControllerRef)CFRetain(controller);
-    _usageFlags = usageFlags;
     
     return true;
 }

@@ -56,6 +56,7 @@ public:
      * may be NULL).
      */
     virtual CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                               CUIUsageFlags usageFlags,
                                                CFIndex *defaultCredentialIndex,
                                                CFErrorRef *error) CF_RETURNS_RETAINED = 0;
 };
@@ -101,6 +102,7 @@ typedef struct CUIProvider {
                                                     CUIUsageFlags usageFlags,
                                                     CFErrorRef *error);
     CFArrayRef (STDMETHODCALLTYPE *copyMatchingCredentials)(void *thisPointer,
+                                                            CUIUsageFlags usageFlags,
                                                             CFDictionaryRef attributes,
                                                             CFIndex *defaultCredentialIndex,
                                                             CFErrorRef *error);

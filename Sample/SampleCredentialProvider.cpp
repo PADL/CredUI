@@ -21,7 +21,6 @@ private:
     int32_t _retainCount;
     CUIControllerRef _controller;
     CUIUsageScenario _usageScenario;
-    CUIUsageFlags _usageFlags;
     
 public:
     ULONG AddRef(void) {
@@ -57,6 +56,7 @@ public:
      * return one here.
      */ 
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
+                                       CUIUsageFlags usageFlags,
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error) {
         SampleCredential *passwordCred = new SampleCredential();
@@ -64,7 +64,7 @@ public:
         CFArrayRef creds;
      
         /* Initialize a new credential */   
-        if (!passwordCred->initWithControllerAndAttributes(_controller, _usageFlags, attributes, error)) {
+        if (!passwordCred->initWithControllerAndAttributes(_controller, usageFlags, attributes, error)) {
             passwordCred->Release();
             return NULL;
         }
@@ -92,7 +92,6 @@ public:
             return false;
         _controller = (CUIControllerRef)CFRetain(controller);
         _usageScenario = usageScenario;
-        _usageFlags = usageFlags;
         return true;
     }
     
@@ -101,7 +100,6 @@ public:
         _retainCount = 1;
         _controller = NULL;
         _usageScenario = kCUIUsageScenarioInvalid;
-        _usageFlags = 0;
     }
     
 protected:

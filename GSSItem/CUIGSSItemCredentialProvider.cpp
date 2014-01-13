@@ -114,13 +114,13 @@ CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
     
     _controller = (CUIControllerRef)CFRetain(controller);
     _usageScenario = usageScenario;
-    _usageFlags = usageFlags;
     
     return true;
 }
 
 CFArrayRef
 CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                      CUIUsageFlags usageFlags,
                                                       CFIndex *defaultCredentialIndex,
                                                       CFErrorRef *error)
 {
@@ -147,7 +147,7 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             CFDictionarySetValue(cuiAttributes, kCUIAttrPersistenceFactoryID, kGSSItemCredentialProviderFactoryID);
  
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
+                                                        usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
                                                         cuiAttributes,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                      CUIGSSItemCredential *itemCred;

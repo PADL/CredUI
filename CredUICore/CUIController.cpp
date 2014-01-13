@@ -215,7 +215,10 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
             return false;
     }
     
-    matchingCreds = provider->copyMatchingCredentials(attributes, &enumContext.defaultCredentialIndex, &error);
+    matchingCreds = provider->copyMatchingCredentials(attributes,
+                                                      usageFlags,
+                                                      &enumContext.defaultCredentialIndex,
+                                                      &error);
     if (matchingCreds) {
         if (enumContext.defaultCredentialIndex == kCFNotFound && providerExplicitlySupportsClass)
             enumContext.defaultCredentialIndex = 0;

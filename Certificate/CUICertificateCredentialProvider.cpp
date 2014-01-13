@@ -42,13 +42,13 @@ CUICertificateCredentialProvider::copyMatchingIdentities(CFDictionaryRef attribu
 }
 
 CUICredentialRef
-CUICertificateCredentialProvider::createCredentialWithIdentity(SecIdentityRef identity)
+CUICertificateCredentialProvider::createCredentialWithIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags)
 {
     CUICertificateCredential *identityCred;
     CUICredentialRef credRef;
     
     identityCred = new CUICertificateCredential();
-    if (!identityCred->initWithSecIdentity(identity, _usageFlags, NULL)) {
+    if (!identityCred->initWithSecIdentity(identity, usageFlags, NULL)) {
         identityCred->Release();
         return NULL;
     }
@@ -66,6 +66,7 @@ CUICertificateCredentialProvider::createCredentialWithIdentity(SecIdentityRef id
 
 CFArrayRef
 CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes,
+                                                          CUIUsageFlags usageFlags,
                                                           CFIndex *defaultCredentialIndex,
                                                           CFErrorRef *error)
 {
@@ -92,7 +93,7 @@ CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attrib
     }
 
     if (identity) {
-        CUICredentialRef credRef = createCredentialWithIdentity(identity);
+        CUICredentialRef credRef = createCredentialWithIdentity(identity, usageFlags);
         
         if (credRef) {
             CFArrayAppendValue(creds, credRef);
@@ -106,7 +107,7 @@ CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attrib
             for (CFIndex index = 0; index < CFArrayGetCount(identities); index++) {
                 CUICredentialRef credRef;
                 
-                credRef = createCredentialWithIdentity((SecIdentityRef)CFArrayGetValueAtIndex(identities, index));
+                credRef = createCredentialWithIdentity((SecIdentityRef)CFArrayGetValueAtIndex(identities, index), usageFlags);
                 if (credRef == NULL)
                     continue;
 
