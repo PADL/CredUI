@@ -9,6 +9,8 @@
 #ifndef CredUICore_CredUICore_Private_h
 #define CredUICore_CredUICore_Private_h
 
+#include <security/pam_appl.h>
+
 #include <CoreFoundation/CoreFoundation.h>
 #include <CoreFoundation/CFPlugInCOM.h>
 #include <CoreFoundation/CFRuntime.h>

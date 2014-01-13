@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#include <security/pam_appl.h>
-
 #ifdef DEBUG
 #include <dlfcn.h>
 #endif
