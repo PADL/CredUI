@@ -73,9 +73,8 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
     CFMutableArrayRef creds = CFArrayCreateMutable(CFGetAllocator(_controller),
                                                    0,
                                                    &kCFTypeArrayCallBacks);
-
     __block CFIndex cCreds = 0;
- 
+
     query = createQuery(attributes);
     if (query == NULL)
         return NULL;
@@ -86,7 +85,6 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
     }
 
     items = CSIdentityQueryCopyResults(query);
-
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
             CSIdentityRef identity = (CSIdentityRef)CFArrayGetValueAtIndex(items, index);

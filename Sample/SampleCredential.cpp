@@ -28,7 +28,8 @@ CFStringRef SampleCredential::getDefaultUsername(void)
     if (defaultUsername == NULL) {
         CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrNameType);
         
-        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
+        /* A real provider should also handle other kCUIAttrNameTypes */
+        if (nameType == NULL || CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
             defaultUsername = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
     }
     

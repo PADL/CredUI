@@ -22,10 +22,23 @@
 // 2F62D1C1-F586-41CC-8096-C90683068DA5
 #define kGSSItemCredentialProviderFactoryID CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0x2F, 0x62, 0xD1, 0xC1, 0xF5, 0x86, 0x41, 0xCC, 0x80, 0x96, 0xC9, 0x06, 0x83, 0x06, 0x8D, 0xA5)
 
+/*
+ * Get a reasonable default for filling in the username field.
+ */
 CFStringRef
-CUIGetDefaultUsername(CFDictionaryRef attributes);
+CUICopyDefaultUsername(CFDictionaryRef attributes);
 
+/*
+ * Returns TRUE if credential was enumerated by a persistence provider.
+ */
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes);
+
+/*
+ * Returns TRUE if credential was enumerated by an identity provider
+ * (login usage only).
+ */
+Boolean
+CUIIsIdentityCredential(CFDictionaryRef attributes);
 
 #endif /* defined(__CredUI__CUIProviderUtilities__) */

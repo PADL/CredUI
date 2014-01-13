@@ -6,30 +6,57 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include <GSS/GSS.h>
 #include <CredUICore/CredUICore.h>
 
 #include "CUIProviderUtilities.h"
 
 CFStringRef
-CUIGetDefaultUsername(CFDictionaryRef attributes)
+CUICopyDefaultUsername(CFDictionaryRef attributes)
 {
-    CFStringRef defaultUsername;
+    CFTypeRef defaultUsername;
 
-    defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
-    if (defaultUsername == NULL) {
+    defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
+    if (defaultUsername) {
+        CFRetain(defaultUsername);
+    } else {
         CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
-        
-        if (nameType && CFEqual(nameType, kCUIAttrNameTypeGSSUsername))
-            defaultUsername = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
+        CFTypeRef name = CFDictionaryGetValue(attributes, kCUIAttrName);
+
+        if (nameType == NULL ||
+            CFEqual(nameType, kCUIAttrNameTypeGSSUsername) ||
+            CFEqual(nameType, kCUIAttrNameTypeGSSHostBasedService)) {
+            defaultUsername = CFRetain(name);
+        } else if (CFEqual(nameType, kCUIAttrNameTypeGSSExportedName)) {
+            gss_name_t gssName = GSSCreateName(name, GSS_C_NT_EXPORT_NAME, NULL);
+
+            if (gssName) {
+                defaultUsername = GSSNameCreateDisplayString(gssName);
+                CFRelease(gssName);
+            }
+        }
     }
-    
-    return defaultUsername;
+   
+    if (defaultUsername && CFGetTypeID(defaultUsername) != CFStringGetTypeID()) {
+        CFRelease(defaultUsername);
+        return NULL;
+    }
+ 
+    return (CFStringRef)defaultUsername;
 }
 
 Boolean
 CUIIsPersistedCredential(CFDictionaryRef attributes)
 {
     CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrPersistenceFactoryID);
+
+    return factoryID && CFGetTypeID(factoryID) == CFUUIDGetTypeID();
+}
+
+Boolean
+CUIIsIdentityCredential(CFDictionaryRef attributes)
+{
+    CFUUIDRef factoryID = (CFUUIDRef)CFDictionaryGetValue(attributes, kCUIAttrIdentityFactoryID);
 
     return factoryID && CFGetTypeID(factoryID) == CFUUIDGetTypeID();
 }

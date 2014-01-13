@@ -214,6 +214,9 @@ static void testEncodeDecode(CUICredential * cred)
                                                 attributes:nil];
                    
     
+    self.picker.attributes = @{ (__bridge id)kCUIAttrName: @"lukeh",
+                                (__bridge id)kCUIAttrCredentialPassword: @"asdfasdf" };
+    
     self.picker.title = @"Local Picker";
     self.picker.message = @"Choose an identity";
     

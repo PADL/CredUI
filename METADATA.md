@@ -22,3 +22,8 @@ CUIIsPersistenceProvider
 ------------------------
 
 True if the provider is a persistence provider.
+
+CUIIsIdentityProvider
+---------------------
+
+True if the provider is an identity provider.

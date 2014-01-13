@@ -31,14 +31,23 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
     _controller = (CUIControllerRef)CFRetain(controller);
     
     if (attributes) {
-        /* Ignore persisted credentials without a password, they're no use to us. */
+        /*
+         * Ignore persisted credentials without a password, they're no use to us.
+         */
         if (CUIIsPersistedCredential(attributes) && !hasPassword(attributes))
+            return false;
+        /*
+         * For the login scenario, specific users must always be enumerated by the provider.
+         * This is so that a user's image and other metadata is available to CredUI.
+         */
+        else if (CUIControllerGetUsageScenario(controller) == kCUIUsageScenarioLogin &&
+                 !CUIIsIdentityCredential(attributes))
             return false;
         
         /*
          * Get the default user name for display.
          */
-        defaultUsername = CUIGetDefaultUsername(attributes);
+        defaultUsername = CUICopyDefaultUsername(attributes);
         _attributes = CFDictionaryCreateMutableCopy(kCFAllocatorDefault, 0, attributes);
     } else {
         _attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
@@ -114,6 +123,9 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
         }
     });
 
+    if (defaultUsername)
+        CFRelease(defaultUsername);
+    
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, cFields, &kCFTypeArrayCallBacks);
     if (_fields == NULL)
         return false;

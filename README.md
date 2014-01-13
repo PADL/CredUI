@@ -33,10 +33,11 @@ The Certificate credential provider enumerates the keychain for private keys.
 
 The GSSItem and Keychain providers are ordinary providers, but they call back into CredUICore to wrap other providers with any enumerated persisted credentials. This decouples the persistence mechanism from credential acquisition interface. One could write, say, an SQLite persistence provider and it would simply act as an attribute store.
 
+The Login provider is another special type of provider, an identity provider. This behaves similarly to a persistence provider except it only stores usernames and associated metadata (such as an image), not the actual that can be used for authenticating. Identity providers are used for the kCUIUsageScenarioLogin case only and allow a user to select from an existing username.
+
 GSS-API
 -------
 
 CredUI works best with GSSKit, owing to various limitations in the current Heimdal implementation on OS X. GSSKitUI glues the two frameworks together and provides a simple interface for acquiring GSS-API contexts, prompting the user using CredUI as necessary.
-
 
 
