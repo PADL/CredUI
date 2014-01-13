@@ -60,6 +60,16 @@ _CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status)
     CFRelease((CFTypeRef)data);
 }
 
+static int _CUIPAMConversation(int num_msg,
+                               const struct pam_message **msgv,
+                               struct pam_response **respv,
+                               void *appdata_ptr)
+{
+    if (respv)
+        *respv = NULL;
+    return PAM_CONV_ERR;
+}
+
 CUI_EXPORT Boolean
 CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringRef pamService)
 {
@@ -71,7 +81,7 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringR
     char *user = NULL;
     char *pass = NULL;
     pam_handle_t *pamh = NULL;
-    struct pam_conv conv;
+    struct pam_conv conv = { .conv = _CUIPAMConversation, .appdata_ptr = credential };
 
     attrs = CUICredentialGetAttributes(credential);
     if (attrs == NULL)
