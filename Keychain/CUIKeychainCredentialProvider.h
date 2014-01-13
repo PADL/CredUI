@@ -16,7 +16,6 @@ class CUIKeychainCredentialProvider : public CUIProvider, public CUICredentialPe
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
-    CUIUsageScenario _usageScenario;
     
 public:
     ULONG AddRef(void) {
@@ -52,10 +51,7 @@ public:
         return *ppv ? S_OK : E_NOINTERFACE;
     }
     
-    Boolean initWithController(CUIControllerRef controller,
-                               CUIUsageScenario usageScenario,
-                               CUIUsageFlags usageFlags,
-                               CFErrorRef *error);
+    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error);
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CUIUsageFlags usageFlags,
@@ -78,7 +74,6 @@ public:
         CFPlugInAddInstanceForFactory(kKeychainCredentialProviderFactoryID);
         _retainCount = 1;
         _controller = NULL;
-        _usageScenario = kCUIUsageScenarioInvalid;
     }
     
 protected:

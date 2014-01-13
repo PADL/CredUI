@@ -102,18 +102,15 @@ CUIGSSItemCredentialProvider::createGSSItemAttributesFromCUIAttributes(CFDiction
 
 Boolean
 CUIGSSItemCredentialProvider::initWithController(CUIControllerRef controller,
-                                                 CUIUsageScenario usageScenario,
-                                                 CUIUsageFlags usageFlags,
                                                  CFErrorRef *error)
 {
-    if (usageScenario != kCUIUsageScenarioNetwork)
+    if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioNetwork)
         return false;
 
-    if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsExcludePersistedCreds))
+    if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsGeneric | kCUIUsageFlagsExcludePersistedCreds))
         return false;
     
     _controller = (CUIControllerRef)CFRetain(controller);
-    _usageScenario = usageScenario;
     
     return true;
 }

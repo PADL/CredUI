@@ -27,7 +27,6 @@ class CUIPersonaCredentialProvider : public CUIProvider {
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
-    CUIUsageScenario _usageScenario;
     
 public:
     ULONG AddRef(void) {
@@ -85,18 +84,14 @@ public:
         return creds;
     }
     
-    Boolean initWithController(CUIControllerRef controller,
-                               CUIUsageScenario usageScenario,
-                               CUIUsageFlags usageFlags,
-                               CFErrorRef *error) {
-        if (usageScenario != kCUIUsageScenarioNetwork)
+    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
+        if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioNetwork)
             return false;
 
-        if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI | kCUIUsageFlagsRequireCertificates))
+        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI | kCUIUsageFlagsRequireCertificates))
             return false;
         
         _controller = (CUIControllerRef)CFRetain(controller);
-        _usageScenario = usageScenario;
         
         return true;
     }
@@ -105,7 +100,6 @@ public:
         CFPlugInAddInstanceForFactory(kPersonaCredentialProviderFactoryID);
         _retainCount = 1;
         _controller = NULL;
-        _usageScenario = kCUIUsageScenarioInvalid;
     }
     
 protected:

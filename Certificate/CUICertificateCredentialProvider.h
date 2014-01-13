@@ -33,7 +33,6 @@ class CUICertificateCredentialProvider : public CUIProvider {
 private:
     int32_t _retainCount;
     CUIControllerRef _controller;
-    CUIUsageScenario _usageScenario;
     
 public:
     ULONG AddRef(void) {
@@ -73,15 +72,11 @@ public:
     CFArrayRef copyMatchingIdentities(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
     CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags);
     
-    Boolean initWithController(CUIControllerRef controller,
-                               CUIUsageScenario usageScenario,
-                               CUIUsageFlags usageFlags,
-                               CFErrorRef *error) {
-        if (usageFlags & (kCUIUsageFlagsExcludeCertificates | kCUIUsageFlagsDoNotShowUI)) 
+    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
+        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsExcludeCertificates | kCUIUsageFlagsDoNotShowUI)) 
             return false;
 
         _controller = (CUIControllerRef)CFRetain(controller);
-        _usageScenario = usageScenario;
 
         return true;
     }
@@ -90,7 +85,6 @@ public:
         CFPlugInAddInstanceForFactory(kCertificateCredentialProviderFactoryID);
         _retainCount = 1;
         _controller = NULL;
-        _usageScenario = kCUIUsageScenarioInvalid;
     }
     
 protected:

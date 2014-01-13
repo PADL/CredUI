@@ -133,6 +133,12 @@ CUIControllerGetUsageScenario(CUIControllerRef controller)
     return controller->_usageScenario;
 }
 
+CUI_EXPORT CUIUsageFlags
+CUIControllerGetUsageFlags(CUIControllerRef controller)
+{
+    return controller->_usageFlags;
+}
+
 struct CUIEnumerateCredentialContext {
     CUIControllerRef controller;
     CFDictionaryRef attributes;

@@ -18,6 +18,7 @@
 
 @property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, readonly) CUIUsageScenario usageScenario;
+@property(nonatomic, readonly) CUIUsageFlags usageFlags;
 
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
 @property(nonatomic, copy) NSError *lastError;

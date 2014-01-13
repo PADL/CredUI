@@ -296,6 +296,11 @@
     return CUIControllerGetUsageScenario(self.controllerRef);
 }
 
+- (CUIUsageFlags)usageFlags
+{
+    return CUIControllerGetUsageFlags(self.controllerRef);
+}
+
 - (CUICredential *)selectedCredential
 {
     return [[self.credsController selectedObjects] firstObject];

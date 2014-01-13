@@ -354,19 +354,18 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
 }
 
 Boolean CUIKeychainCredentialProvider::initWithController(CUIControllerRef controller,
-                                                          CUIUsageScenario usageScenario,
-                                                          CUIUsageFlags usageFlags,
                                                           CFErrorRef *error)
 {
-    if (usageScenario != kCUIUsageScenarioNetwork)
+    if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioNetwork)
         return false;
 
+    CUIUsageFlags usageFlags = CUIControllerGetUsageFlags(controller);
+    
     if ((usageFlags & kCUIUsageFlagsGeneric) == 0 ||
         (usageFlags & (kCUIUsageFlagsRequireCertificates | kCUIUsageFlagsExcludePersistedCreds)))
         return false;
     
     _controller = (CUIControllerRef)CFRetain(controller);
-    _usageScenario = usageScenario;
     
     return true;
 }

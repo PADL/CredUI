@@ -46,10 +46,7 @@ public:
     /*
      * Initialize a new credential provider
      */
-    virtual Boolean initWithController(CUIControllerRef controller,
-                                       CUIUsageScenario usageScenario,
-                                       CUIUsageFlags usageFlags,
-                                       CFErrorRef *error) = 0;
+    virtual Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) = 0;
     
     /*
      * Get all matching credentials for the selected attributes (attributes
@@ -98,8 +95,6 @@ typedef struct CUIProvider {
     IUNKNOWN_C_GUTS;
     Boolean (STDMETHODCALLTYPE *initWithController)(void *thisPointer,
                                                     CUIControllerRef controller,
-                                                    CUIUsageScenario usageScenario,
-                                                    CUIUsageFlags usageFlags,
                                                     CFErrorRef *error);
     CFArrayRef (STDMETHODCALLTYPE *copyMatchingCredentials)(void *thisPointer,
                                                             CUIUsageFlags usageFlags,

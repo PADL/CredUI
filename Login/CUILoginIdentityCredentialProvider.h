@@ -58,10 +58,7 @@ public:
         return *ppv ? S_OK : E_NOINTERFACE;
     }
 
-    Boolean initWithController(CUIControllerRef controller,
-                               CUIUsageScenario usageScenario,
-                               CUIUsageFlags usageFlags,
-                               CFErrorRef *error);
+    Boolean initWithController(CUIControllerRef controller, CFErrorRef *error);
     
     CFArrayRef copyMatchingCredentials(CFDictionaryRef attributes,
                                        CUIUsageFlags usageFlags,

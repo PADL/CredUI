@@ -101,7 +101,7 @@ CUICertificateCredentialProvider::copyMatchingCredentials(CFDictionaryRef attrib
         }
         
         CFRelease(identity);
-    } else if (_usageScenario == kCUIUsageScenarioNetwork) {
+    } else if (CUIControllerGetUsageScenario(_controller) == kCUIUsageScenarioNetwork) {
         identities = copyMatchingIdentities(attributes, targetName, error);
         if (identities) {
             for (CFIndex index = 0; index < CFArrayGetCount(identities); index++) {

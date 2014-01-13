@@ -205,10 +205,7 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller)
             goto cleanup;
         }
         
-        if (!provider->initWithController(controller,
-                                          controller->_usageScenario,
-                                          controller->_usageFlags,
-                                          &error)) {
+        if (!provider->initWithController(controller, &error)) {
             if (error)
                 CFRelease(error);
             CFRelease(providerAttributes);
