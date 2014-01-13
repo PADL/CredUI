@@ -68,9 +68,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         if (CUIIsPersistedCredential(attributes))
             return false;
         
-        _defaultIdentity = CUIGetDefaultUsername(attributes);
-        if (_defaultIdentity)
-            CFRetain(_defaultIdentity);        
+        _defaultIdentity = CUICopyDefaultUsername(attributes);
     }
 
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sign in with Persona"), NULL);
