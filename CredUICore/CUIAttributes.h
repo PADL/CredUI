@@ -69,6 +69,7 @@ CUI_EXPORT const CFStringRef kCUIAttrNameType;
 CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSExportedName; /* CFDataRef */
 CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSUsername; /* CFStringRef */
 CUI_EXPORT const CFStringRef kCUIAttrNameTypeGSSHostBasedService; /* CFStringRef */
+CUI_EXPORT const CFStringRef kCUIAttrNameTypePosixName; /* CFStringRef */
 
 CUI_EXPORT const CFStringRef kCUIAttrName;
 

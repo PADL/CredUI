@@ -25,7 +25,8 @@ CUICopyDefaultUsername(CFDictionaryRef attributes)
 
         if (nameType == NULL ||
             CFEqual(nameType, kCUIAttrNameTypeGSSUsername) ||
-            CFEqual(nameType, kCUIAttrNameTypeGSSHostBasedService)) {
+            CFEqual(nameType, kCUIAttrNameTypeGSSHostBasedService) ||
+            CFEqual(nameType, kCUIAttrNameTypePosixName)) {
             defaultUsername = CFRetain(name);
         } else if (CFEqual(nameType, kCUIAttrNameTypeGSSExportedName)) {
             gss_name_t gssName = GSSCreateName(name, GSS_C_NT_EXPORT_NAME, NULL);

@@ -50,6 +50,7 @@ CUILoginIdentityCredentialProvider::copyAttributesForIdentity(CSIdentityRef iden
     CFDictionarySetValue(attrs, kCUIAttrCSIdentity,           identity);
     CFDictionarySetValue(attrs, kCUIAttrUUID,                 CSIdentityGetUUID(identity));
     CFDictionarySetValue(attrs, kCUIAttrName,                 CSIdentityGetPosixName(identity));
+    CFDictionarySetValue(attrs, kCUIAttrNameType,             kCUIAttrNameTypePosixName);
     CFDictionarySetValue(attrs, kCUIAttrNameDisplay,          CSIdentityGetFullName(identity));
     CFDictionarySetValue(attrs, kCUIAttrIdentityFactoryID,    kLoginIdentityCredentialProviderFactoryID);
 

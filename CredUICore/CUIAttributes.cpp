@@ -22,6 +22,7 @@ CUI_CONST_TYPE(kCUIAttrNameType,                       kCUIAttrNameType);
 CUI_CONST_TYPE(kCUIAttrNameTypeGSSExportedName,        kGSSAttrNameTypeGSSExportedName);
 CUI_CONST_TYPE(kCUIAttrNameTypeGSSUsername,            kGSSAttrNameTypeGSSUsername);
 CUI_CONST_TYPE(kCUIAttrNameTypeGSSHostBasedService,    kGSSAttrNameTypeGSSHostBasedService);
+CUI_CONST_TYPE(kCUIAttrNameTypePosixName,              kCUIAttrNameTypePosixName);
 
 CUI_CONST_TYPE(kCUIAttrName,                           kCUIAttrName);
 CUI_CONST_TYPE(kCUIAttrNameDisplay,                    kCUIAttrNameDisplay);
