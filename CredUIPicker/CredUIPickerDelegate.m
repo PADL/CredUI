@@ -21,6 +21,12 @@
 #import "CredUIPickerDelegate.h"
 #import "CredUIPickerDelegate+InitAcceptLoop.h"
 
+@interface CUIIdentityPicker ()
+- (instancetype)initWithFlags:(CUIFlags)flags
+                usageScenario:(CUIUsageScenario)usageScenario
+                   attributes:(NSDictionary *)attributes;
+@end
+
 @implementation CredUIPickerDelegate
 
 #pragma mark - GSS IC picker
@@ -174,7 +180,7 @@ static void testEncodeDecode(CUICredential * cred)
     }
 }
 
-- (IBAction)showIdentityPickertCert:(id)sender
+- (IBAction)showIdentityPickerCert:(id)sender
 {
     self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate];
     
@@ -186,7 +192,34 @@ static void testEncodeDecode(CUICredential * cred)
     
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndGSSIC:returnCode:contextInfo:)
+                    didEndSelector:@selector(identityPickerDidEndCert:returnCode:contextInfo:)
+                       contextInfo:NULL];
+}
+
+- (void)identityPickerDidEndLocal:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    if (returnCode == NSModalResponseStop) {
+        testEncodeDecode(identityPicker.selectedCredential);
+        NSLog(@"Local picker did end: %@", identityPicker.selectedCredential.attributes);
+        (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
+    } else {
+        NSLog(@"Local picker aborted");
+    }
+}
+
+- (IBAction)showIdentityPickerLocal:(id)sender
+{
+    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates
+                                             usageScenario:kCUIUsageScenarioLogin
+                                                attributes:nil];
+                   
+    
+    self.picker.title = @"Local Picker";
+    self.picker.message = @"Choose an identity";
+    
+    [self.picker runModalForWindow:self.window
+                     modalDelegate:self
+                    didEndSelector:@selector(identityPickerDidEndLocal:returnCode:contextInfo:)
                        contextInfo:NULL];
 }
 

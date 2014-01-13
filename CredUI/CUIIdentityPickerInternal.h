@@ -29,7 +29,9 @@
 
 - (NSModalResponse)_runModal:(NSWindow *)window;
 
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes;
+- (instancetype)initWithFlags:(CUIFlags)flags
+                usageScenario:(CUIUsageScenario)usageScenario
+                   attributes:(NSDictionary *)attributes;
 
 - (void)credentialFieldDidChange:(CUICredential *)cred;
 

@@ -18,7 +18,7 @@
 
 @property(nonatomic, retain, readonly) NSString *targetHostName;
 
-- (CUIControllerRef)_newCUIController;
+- (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario;
 - (void)_populateCredentials;
 - (void)_updateSubmitButtonForSelectedCred;
 
@@ -32,7 +32,7 @@
         CFRelease(_controllerRef);
 }
 
-- (CUIControllerRef)_newCUIController
+- (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario
 {
     CUIUsageFlags usageFlags = 0;
     
@@ -49,10 +49,12 @@
     if (self.flags & CUIFlagsExcludePersistedCredentials)
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     
-    return CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioNetwork, usageFlags);
+    return CUIControllerCreate(kCFAllocatorDefault, usageScenario, usageFlags);
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
+- (instancetype)initWithFlags:(CUIFlags)flags
+                usageScenario:(CUIUsageScenario)usageScenario
+                   attributes:(NSDictionary *)attributes
 {
     self = [super initWithWindow:[self _newPanel]];
     if (self == nil)
@@ -67,7 +69,7 @@
     else
         self.flags |= CUIFlagsShowSaveCheckBox;
     
-    self.controllerRef = [self _newCUIController];
+    self.controllerRef = [self _newCUIController:usageScenario];
     if (attributes)
         self.attributes = attributes;
     

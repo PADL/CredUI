@@ -20,6 +20,7 @@
 - (IBAction)showIdentityPickerGSSItem:(id)sender;
 - (IBAction)showIdentityPickerGeneric:(id)sender;
 - (IBAction)gssAuthWithIdentityPickerFallback:(id)sender;
-- (IBAction)showIdentityPickertCert:(id)sender;
+- (IBAction)showIdentityPickerCert:(id)sender;
+- (IBAction)showIdentityPickerLocal:(id)sender;
 
 @end

@@ -47,7 +47,12 @@
                             </menuItem>
                             <menuItem title="Pick Certificates" keyEquivalent="5" id="mwt-Hg-DyM">
                                 <connections>
-                                    <action selector="showIdentityPickertCert:" target="494" id="AKb-Jw-hHx"/>
+                                    <action selector="showIdentityPickerCert:" target="494" id="b8h-qJ-8cH"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Local Picker" keyEquivalent="6" id="1j3-yD-VKv">
+                                <connections>
+                                    <action selector="showIdentityPickerLocal:" target="494" id="sz0-xm-pqv"/>
                                 </connections>
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="143">

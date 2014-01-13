@@ -28,12 +28,29 @@
     return [self initWithFlags:flags attributes:nil];
 }
 
+- (instancetype)initWithFlags:(CUIFlags)flags
+                usageScenario:(CUIUsageScenario)usageScenario
+                   attributes:(NSDictionary *)attributes
+{
+    if ((self = [super init]) == nil)
+        return nil;
+   
+    _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
+                                                   usageScenario:usageScenario
+                                                      attributes:attributes];
+
+    
+    return self;
+}
+
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
 {
     if ((self = [super init]) == nil)
         return nil;
    
-    _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags attributes:attributes];
+    _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
+                                                   usageScenario:kCUIUsageScenarioNetwork
+                                                      attributes:attributes];
     
     return self;
 }
