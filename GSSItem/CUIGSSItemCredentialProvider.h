@@ -9,8 +9,9 @@
 #ifndef __CredUI__GSSItemCredentialProvider__
 #define __CredUI__GSSItemCredentialProvider__
 
+#include "CUIPersistedCredential.h"
 
-class CUIGSSItemCredentialProvider : public CUIProvider, public CUICredentialPersistence {
+class CUIGSSItemCredentialProvider : public CUIProvider, public CUICredentialPersistenceEx {
     
 private:
     int32_t _retainCount;

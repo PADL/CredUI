@@ -13,8 +13,8 @@
 #include <CredUICore/CredUICore.h>
 
 #include "CUIProviderUtilities.h"
+#include "CUIPersistedCredential.h"
 #include "CUIKeychainCredentialProvider.h"
-#include "CUIKeychainCredential.h"
 
 extern "C" {
     void *CUIKeychainCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
@@ -316,32 +316,21 @@ CUIKeychainCredentialProvider::copyMatchingCredentials(CFDictionaryRef attribute
                                                         usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
-                 CUIKeychainCredential *itemCred;
-                 CUICredentialRef credRef;
-                 
-                 if (cred == NULL)
-                     return;
-
-                 if (isDefault)
-                     *defaultCredentialIndex = cCreds;
-                 
-                 itemCred = new CUIKeychainCredential();
-                 if (!itemCred->initWithCredential(cred, this)) {
-                     itemCred->Release();
-                     return;
-                 }
-                 
-                 credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
-                 if (credRef == NULL) {
-                     itemCred->Release();
-                     return;
-                 }
-                 
-                 CFArrayAppendValue(creds, credRef);
-                 cCreds++;
-                 
-                 CFRelease(credRef);
-                 itemCred->Release();
+                    CUICredentialRef wrappedCred;
+                    
+                    if (cred == NULL)
+                        return;
+                    
+                    if (isDefault)
+                        *defaultCredentialIndex = cCreds;
+                    
+                    wrappedCred = CUIPersistedCredentialCreate(this, cred);
+                    if (wrappedCred) {
+                        CFArrayAppendValue(creds, wrappedCred);
+                        cCreds++;
+                        
+                        CFRelease(wrappedCred);
+                    }
              });
             
             CFRelease(attrs);

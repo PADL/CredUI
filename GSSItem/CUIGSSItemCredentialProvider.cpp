@@ -14,8 +14,8 @@
 
 #include "GSSItem.h"
 #include "CUIProviderUtilities.h"
+#include "CUIPersistedCredential.h"
 #include "CUIGSSItemCredentialProvider.h"
-#include "CUIGSSItemCredential.h"
 
 extern "C" {
     void *CUIGSSItemCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
@@ -147,32 +147,21 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
                                                         usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
                                                         cuiAttributes,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
-                     CUIGSSItemCredential *itemCred;
-                     CUICredentialRef credRef;
-                     
-                     if (cred == NULL)
-                         return;
-
-                     if (isDefault)
-                         *defaultCredentialIndex = cCreds;
-
-                     itemCred = new CUIGSSItemCredential();
-                     if (!itemCred->initWithCredential(cred, this)) {
-                         itemCred->Release();
-                         return;
-                     }
-                     
-                     credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
-                     if (credRef == NULL) {
-                         itemCred->Release();
-                         return;
-                     }
-                     
-                     CFArrayAppendValue(creds, credRef);
-                     cCreds++;
-
-                     CFRelease(credRef);
-                     itemCred->Release();
+                        CUICredentialRef wrappedCred;
+                        
+                        if (cred == NULL)
+                            return;
+                        
+                        if (isDefault)
+                            *defaultCredentialIndex = cCreds;
+                        
+                        wrappedCred = CUIPersistedCredentialCreate(this, cred);
+                        if (wrappedCred) {
+                            CFArrayAppendValue(creds, wrappedCred);
+                            cCreds++;
+                            
+                            CFRelease(wrappedCred);
+                        }
                  });
             
             CFRelease(cuiAttributes);

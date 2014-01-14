@@ -10,8 +10,9 @@
 #define __CredUI__CUIKeychainCredentialProvider__
 
 #include "CUIProviderUtilities.h"
+#include "CUIPersistedCredential.h"
 
-class CUIKeychainCredentialProvider : public CUIProvider, public CUICredentialPersistence {
+class CUIKeychainCredentialProvider : public CUIProvider, public CUICredentialPersistenceEx {
     
 private:
     int32_t _retainCount;

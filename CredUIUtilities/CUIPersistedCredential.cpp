@@ -1,24 +1,15 @@
 //
-//  GSSItemCredential.h
+//  CUIPersistedCredential.cpp
 //  CredUI
 //
-//  Created by Luke Howard on 2/01/2014.
+//  Created by Luke Howard on 15/01/2014.
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__GSSItemCredential__
-#define __CredUI__GSSItemCredential__
+#include "CUIPersistedCredential.h"
 
-#include <libkern/OSAtomic.h>
-#include <CoreFoundation/CoreFoundation.h>
-
-#include <CredUICore/CredUICore.h>
-
-#include "GSSItem.h"
-#include "CUIProviderUtilities.h"
-#include "CUIGSSItemCredentialProvider.h"
-
-class CUIGSSItemCredential : public CUICredentialContext {
+class CUIPersistedCredential : public CUICredentialContext {
+    
 public:
     
     ULONG AddRef(void) {
@@ -52,9 +43,9 @@ public:
         CFStringRef desc;
         
         desc = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
-                                        CFSTR("<CUIGSSItemCredential %p{credential = \"%@\"}>"),
+                                        CFSTR("<CUIPersistedCredential %p{credential = \"%@\"}>"),
                                         this, _credential);
-
+        
         return desc;
     }
     
@@ -66,13 +57,14 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUIGSSItemCredentialProvider *provider) {
+    Boolean initWithCredential(CUICredentialRef credential, CUICredentialPersistenceEx *persistence) {
         if (credential == NULL)
             return false;
         
         _credential = (CUICredentialRef)CFRetain(credential);
-        _provider = provider;
-        _provider->AddRef();
+        
+        _persistence = persistence;
+        _persistence->AddRef();
         
         return true;
     }
@@ -88,22 +80,22 @@ public:
     void didSubmit(void) {
         CUICredentialDidSubmit(_credential);
     }
- 
+    
     Boolean savePersisted(CFErrorRef *error) {
         if (!CUICredentialSavePersisted(_credential, error))
             return false;
         
-        return _provider->updateCredential(_credential, error);
+        return _persistence->updateCredential(_credential, error);
     }
     
     Boolean deletePersisted(CFErrorRef *error) {
         if (!CUICredentialDeletePersisted(_credential, error))
             return false;
         
-        return _provider->deleteCredential(_credential, error);
+        return _persistence->deleteCredential(_credential, error);
     }
-
-    CUIGSSItemCredential() {
+    
+    CUIPersistedCredential() {
         _retainCount = 1;
         _credential = NULL;
     }
@@ -111,12 +103,36 @@ public:
 private:
     int32_t _retainCount;
     CUICredentialRef _credential;
-    CUIGSSItemCredentialProvider *_provider;
+    CUICredentialPersistenceEx *_persistence;
     
 protected:
-    ~CUIGSSItemCredential() {
+    ~CUIPersistedCredential() {
         if (_credential)
             CFRelease(_credential);
+        if (_persistence)
+            _persistence->Release();
     }
 };
-#endif /* defined(__CredUI__GSSItemCredential__) */
+
+CUICredentialRef
+CUIPersistedCredentialCreate(CUICredentialPersistenceEx *persistence, CUICredentialRef cred)
+{
+    CUIPersistedCredential *itemCred;
+    CUICredentialRef credRef;
+    
+    itemCred = new CUIPersistedCredential();
+    if (!itemCred->initWithCredential(cred, persistence)) {
+        itemCred->Release();
+        return NULL;
+    }
+    
+    credRef = CUICredentialCreate(CFGetAllocator(cred), itemCred);
+    if (credRef == NULL) {
+        itemCred->Release();
+        return NULL;
+    }
+    
+    itemCred->Release();
+
+    return credRef;
+}
