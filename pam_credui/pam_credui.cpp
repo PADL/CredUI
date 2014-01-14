@@ -103,7 +103,6 @@ _PAMConvSelect(CFArrayRef creds,
     int rc;
     CFIndex cMessages;
     struct pam_message **messages = NULL;
-    struct pam_message *message;
     struct pam_response *resp = NULL;
     
     *pSelectedCred = NULL;
@@ -124,7 +123,8 @@ _PAMConvSelect(CFArrayRef creds,
     for (CFIndex index = 0; index < CFArrayGetCount(creds); index++) {
         CUICredentialRef cred = (CUICredentialRef)CFArrayGetValueAtIndex(creds, index);
         CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
-        
+        struct pam_message *message;
+
         message = (struct pam_message *)calloc(1, sizeof(*message));
         if (message == NULL) {
             rc = PAM_BUF_ERR;
@@ -142,6 +142,7 @@ _PAMConvSelect(CFArrayRef creds,
             displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld] %@"), index + 1, provider);
         if (displayString == NULL) {
             rc = PAM_BUF_ERR;
+            free(message);
             goto cleanup;
         }
         
@@ -153,6 +154,8 @@ _PAMConvSelect(CFArrayRef creds,
         messages[index] = message;
     }
     
+    struct pam_message *message;
+
     message = (struct pam_message *)calloc(1, sizeof(*message));
     if (message == NULL) {
         rc = PAM_BUF_ERR;
@@ -162,8 +165,12 @@ _PAMConvSelect(CFArrayRef creds,
     message->msg = (char *)"Select a credential";
     
     rc = (conv->conv)((int)cMessages, (const struct pam_message **)messages, &resp, conv->appdata_ptr);
-    if (rc != PAM_SUCCESS)
+    if (rc != PAM_SUCCESS) {
+        free(message);
         goto cleanup;
+    }
+    
+    messages[cMessages] = message;
     
     rc = PAM_CRED_UNAVAIL;
     
