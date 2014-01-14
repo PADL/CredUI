@@ -272,7 +272,7 @@ _PAMConvCredential(CUICredentialRef cred,
 }
 
 CUI_EXPORT int
-PAMSelectCredential(pam_handle_t *pamh)
+pam_select_credential(pam_handle_t *pamh)
 {
     const struct pam_conv *conv;
     int rc;
