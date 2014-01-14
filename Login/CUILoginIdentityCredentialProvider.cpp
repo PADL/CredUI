@@ -7,7 +7,6 @@
 //
 
 #include "CUILoginIdentityCredentialProvider.h"
-#include "CUILoginIdentityCredential.h"
 
 extern "C" {
     void *CUILoginIdentityCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
@@ -102,32 +101,14 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
                                                         usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludeIdentityCreds,
                                                         attrs,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
-                 CUILoginIdentityCredential *itemCred;
-                 CUICredentialRef credRef;
-                 
                  if (cred == NULL)
                      return;
 
                  if (isDefault)
                      *defaultCredentialIndex = cCreds;
                  
-                 itemCred = new CUILoginIdentityCredential;
-                 if (!itemCred->initWithCredential(cred)) {
-                     itemCred->Release();
-                     return;
-                 }
-                 
-                 credRef = CUICredentialCreate(CFGetAllocator(_controller), itemCred);
-                 if (credRef == NULL) {
-                     itemCred->Release();
-                     return;
-                 }
-                 
-                 CFArrayAppendValue(creds, credRef);
+                 CFArrayAppendValue(creds, cred);
                  cCreds++;
-                 
-                 CFRelease(credRef);
-                 itemCred->Release();
              });
             
             CFRelease(attrs);

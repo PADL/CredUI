@@ -93,7 +93,6 @@
 		D35890F21883C1C20093F5B6 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D35890F81883C1C30093F5B6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D35890F61883C1C30093F5B6 /* InfoPlist.strings */; };
 		D35890FF1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D35890FD1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp */; };
-		D35891021883C2000093F5B6 /* CUILoginIdentityCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D35891001883C2000093F5B6 /* CUILoginIdentityCredential.cpp */; };
 		D35891031883C5AC0093F5B6 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D35891041883C5B00093F5B6 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB051186F113A00C43A24 /* CoreServices.framework */; };
 		D358910C1883D66A0093F5B6 /* Collaboration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D358910B1883D66A0093F5B6 /* Collaboration.framework */; };
@@ -534,8 +533,6 @@
 		D35890F91883C1C30093F5B6 /* Login-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Login-Prefix.pch"; sourceTree = "<group>"; };
 		D35890FD1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUILoginIdentityCredentialProvider.cpp; sourceTree = "<group>"; };
 		D35890FE1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUILoginIdentityCredentialProvider.h; sourceTree = "<group>"; };
-		D35891001883C2000093F5B6 /* CUILoginIdentityCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUILoginIdentityCredential.cpp; sourceTree = "<group>"; };
-		D35891011883C2000093F5B6 /* CUILoginIdentityCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUILoginIdentityCredential.h; sourceTree = "<group>"; };
 		D358910B1883D66A0093F5B6 /* Collaboration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Collaboration.framework; path = System/Library/Frameworks/Collaboration.framework; sourceTree = SDKROOT; };
 		D358910D1883D6AC0093F5B6 /* CUICredential+CBIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+CBIdentity.h"; sourceTree = "<group>"; };
 		D358910E1883D6AC0093F5B6 /* CUICredential+CBIdentity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUICredential+CBIdentity.m"; sourceTree = "<group>"; };
@@ -996,8 +993,6 @@
 				D35890F41883C1C30093F5B6 /* Supporting Files */,
 				D35890FD1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp */,
 				D35890FE1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.h */,
-				D35891001883C2000093F5B6 /* CUILoginIdentityCredential.cpp */,
-				D35891011883C2000093F5B6 /* CUILoginIdentityCredential.h */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1739,7 +1734,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D35891021883C2000093F5B6 /* CUILoginIdentityCredential.cpp in Sources */,
 				D35890FF1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
