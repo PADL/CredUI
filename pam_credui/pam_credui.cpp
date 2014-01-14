@@ -299,15 +299,19 @@ pam_select_credential(pam_handle_t *pamh)
         rc = PAM_SERVICE_ERR;
         goto cleanup;
     }
-    
+   
+    CUIControllerSetContext(controller, pamh);
+ 
     creds = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     if (creds == NULL) {
         rc = PAM_BUF_ERR;
         goto cleanup;
     }
     
-    _CUICreateAttributesFromPAMHandle(pamh, &attributes);
-    if (attributes)
+    rc = _CUICreateAttributesFromPAMHandle(pamh, &attributes);
+    if (rc == PAM_BUF_ERR)
+        goto cleanup;
+    else if (attributes)
         CUIControllerSetAttributes(controller, attributes);
     
     CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
