@@ -32,13 +32,13 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsInCredOnly            = 0x00000020,   /* only enumerate credentials in controller attributes */
     kCUIUsageFlagsEnumerateAdmins       = 0x00000100,   /* unimplemented, login scenario only */
     kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,   /* unimplemented, login scenario only */
-    kCUIUsageFlagsDoNotShowUI           = 0x02000000,   /* caller is a console app */
-    kCUIUsageFlagsExcludeCertificates   = 0x04000000,   /* do not enumerate certificate credentials */
-    kCUIUsageFlagsRequireCertificates   = 0x08000000,   /* only enumerate certificate credentials */
-    kCUIUsageFlagsPasswordOnlyOK        = 0x10000000,   /* do not display username field */
-    kCUIUsageFlagsKeepUsername          = 0x20000000,   /* username field is readonly */
-    kCUIUsageFlagsExcludePersistedCreds = 0x40000000,   /* do not enumerate persisted credentials */
-    kCUIUsageFlagsExcludeIdentityCreds  = 0x80000000    /* exclude identity authority credentials */
+    kCUIUsageFlagsDoNotShowUI           = 0x01000000,   /* caller is a console app */
+    kCUIUsageFlagsExcludeCertificates   = 0x02000000,   /* do not enumerate certificate credentials */
+    kCUIUsageFlagsRequireCertificates   = 0x04000000,   /* only enumerate certificate credentials */
+    kCUIUsageFlagsPasswordOnlyOK        = 0x08000000,   /* do not display username field */
+    kCUIUsageFlagsKeepUsername          = 0x10000000,   /* username field is readonly */
+    kCUIUsageFlagsExcludePersistedCreds = 0x20000000,   /* do not enumerate persisted credentials */
+    kCUIUsageFlagsExcludeIdentityCreds  = 0x40000000    /* exclude identity authority credentials */
 };
 
 typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
