@@ -14,10 +14,9 @@
 CFStringRef
 CUICopyDefaultUsername(CFDictionaryRef attributes)
 {
-    CFTypeRef defaultUsername;
     CFTypeRef name = CFDictionaryGetValue(attributes, kCUIAttrName);
-
-    defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
+    CFTypeRef defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
+    
     if (defaultUsername) {
         CFRetain(defaultUsername);
     } else if (name) {
