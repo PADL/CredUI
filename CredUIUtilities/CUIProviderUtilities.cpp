@@ -15,13 +15,13 @@ CFStringRef
 CUICopyDefaultUsername(CFDictionaryRef attributes)
 {
     CFTypeRef defaultUsername;
+    CFTypeRef name = CFDictionaryGetValue(attributes, kCUIAttrName);
 
     defaultUsername = CFDictionaryGetValue(attributes, kCUIAttrNameDisplay);
     if (defaultUsername) {
         CFRetain(defaultUsername);
-    } else {
+    } else if (name) {
         CFStringRef nameType = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrNameType);
-        CFTypeRef name = CFDictionaryGetValue(attributes, kCUIAttrName);
 
         if (nameType == NULL ||
             CFEqual(nameType, kCUIAttrNameTypeGSSUsername) ||
