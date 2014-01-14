@@ -30,28 +30,6 @@
         } while (0)
 #endif /* DEBUG */
 
-static char *
-_CUICFStringToCString(CFStringRef string)
-{
-    char *s = NULL;
-    
-    if (string == NULL)
-        return NULL;
-    
-    CFIndex len = CFStringGetLength(string);
-    len = 1 + CFStringGetMaximumSizeForEncoding(len, kCFStringEncodingUTF8);
-    s = (char *)malloc(len);
-    if (s == NULL)
-        return NULL;
-    
-    if (!CFStringGetCString(string, s, len, kCFStringEncodingUTF8)) {
-        free(s);
-        s = NULL;
-    }
-    
-    return s;
-}
-
 CUI_EXPORT void
 _CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status)
 {
@@ -85,16 +63,16 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringR
     if (attrs == NULL)
         goto cleanup;
 
-    service = _CUICFStringToCString(pamService);
+    service = CUICFStringToCString(pamService);
     
-    user = _CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName));
+    user = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName));
     if (user == NULL)
         goto cleanup;
     
     rc = pam_start(service ? service : "login", user, &conv, &pamh);
     CHECK_STATUS(pamh, "pam_start", rc);
     
-    pass = _CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrCredentialPassword));
+    pass = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrCredentialPassword));
     if (pass) {
         rc = pam_set_item(pamh, PAM_AUTHTOK, (void *)pass);
         CHECK_STATUS(pamh, "pam_set_item(PAM_AUTHTOK)", rc);

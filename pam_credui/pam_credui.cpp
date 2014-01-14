@@ -11,6 +11,7 @@
 #endif
 
 #include <CredUICore/CredUICore_Private.h>
+#include "CUICFUtilities.h"
 
 #include "pam_credui.h"
 
@@ -32,30 +33,8 @@
         } while (0)
 #endif /* DEBUG */
 
-static char *
-_CUICFStringToCString(CFStringRef string)
-{
-    char *s = NULL;
-    
-    if (string == NULL)
-        return NULL;
-    
-    CFIndex len = CFStringGetLength(string);
-    len = 1 + CFStringGetMaximumSizeForEncoding(len, kCFStringEncodingUTF8);
-    s = (char *)malloc(len);
-    if (s == NULL)
-        return NULL;
-    
-    if (!CFStringGetCString(string, s, len, kCFStringEncodingUTF8)) {
-        free(s);
-        s = NULL;
-    }
-    
-    return s;
-}
-
 static int
-_CUICreateAttributesFromPAMHandle(pam_handle_t *pamh, CFDictionaryRef *pAttributes)
+_PAMCreateAttributesFromHandle(pam_handle_t *pamh, CFDictionaryRef *pAttributes)
 {
     CFMutableDictionaryRef attributes;
     const char *user;
@@ -124,7 +103,12 @@ _PAMConvSelect(const struct pam_conv *conv,
     for (CFIndex index = 0; index < CFArrayGetCount(creds); index++) {
         CUICredentialRef cred = (CUICredentialRef)CFArrayGetValueAtIndex(creds, index);
         CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
+        CUIFieldRef field = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassLargeText);
+        CFStringRef name = (CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName);
+        CFTypeRef provider = field ? CUIFieldGetDefaultValue(field) : CFDictionaryGetValue(attrs, kCUIAttrCredentialProvider);
+        const char *defaultTag = (index == selectedCredentialIndex) ? "*" : "";
         struct pam_message *message;
+        CFStringRef displayString;
 
         message = (struct pam_message *)calloc(1, sizeof(*message));
         if (message == NULL) {
@@ -132,16 +116,12 @@ _PAMConvSelect(const struct pam_conv *conv,
             goto cleanup;
         }
         
-        CUIFieldRef field = CUICredentialFindFirstFieldWithClass(cred, kCUIFieldClassLargeText);
-        CFStringRef name = (CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName);
-        CFTypeRef provider = field ? CUIFieldGetDefaultValue(field) : CFDictionaryGetValue(attrs, kCUIAttrCredentialProvider);
-        CFStringRef displayString;
-        const char *defaultTag = (index == selectedCredentialIndex) ? "*" : "";
-
         if (name)
-            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@ (%@)"), index + 1, defaultTag, provider, name);
+            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@ (%@)"),
+                                                     index + 1, defaultTag, provider, name);
         else
-            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@"), index + 1, defaultTag, provider);
+            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@"),
+                                                     index + 1, defaultTag, provider);
         if (displayString == NULL) {
             rc = PAM_BUF_ERR;
             free(message);
@@ -149,7 +129,7 @@ _PAMConvSelect(const struct pam_conv *conv,
         }
         
         message->msg_style = PAM_TEXT_INFO;
-        message->msg = _CUICFStringToCString(displayString);
+        message->msg = CUICFStringToCString(displayString);
         
         CFRelease(displayString);
         
@@ -248,35 +228,41 @@ _PAMConvCredential(const struct pam_conv *conv,
         }
         
         message->msg_style = msg_style;
-        message->msg = _CUICFStringToCString(msg);
+        message->msg = CUICFStringToCString(msg);
         messages[0] = message;
         
         rc = (conv->conv)(1, messages, &resp, conv->appdata_ptr);
+
+        free(message->msg);
+        free(message);
+
         if (rc != PAM_SUCCESS) {
             *stop = true;
-            free(message->msg);
-            free(message);
             return;
         }
         
         if (resp) {
             if (resp->resp) {
-                CFStringRef value = CFStringCreateWithCString(kCFAllocatorDefault, resp->resp, kCFStringEncodingUTF8);
-                
+                CFStringRef value;
+
+                value = CFStringCreateWithCString(kCFAllocatorDefault, resp->resp, kCFStringEncodingUTF8);
                 if (value) {
                     CUIFieldSetValue(field, value);
                     CFRelease(value);
                 }
                 
-                if (message->msg_style == PAM_PROMPT_ECHO_OFF)
+                if (CUIFieldGetClass(field) == kCUIFieldClassPasswordText)
                     memset(resp->resp, 0, strlen(resp->resp));
                 free(resp->resp);
+
+                if (value == NULL) {
+                    *stop = true;
+                    free(resp);
+                    return;
+                }
             }
             free(resp);
         }
-        
-        free(message->msg);
-        free(message);
     });
     
     return rc;
@@ -313,7 +299,7 @@ pam_select_credential(pam_handle_t *pamh)
         goto cleanup;
     }
     
-    rc = _CUICreateAttributesFromPAMHandle(pamh, &attributes);
+    rc = _PAMCreateAttributesFromHandle(pamh, &attributes);
     if (rc == PAM_BUF_ERR)
         goto cleanup;
     else if (attributes)
@@ -351,13 +337,13 @@ pam_select_credential(pam_handle_t *pamh)
     
     credAttributes = CUICredentialGetAttributes(selectedCred);
     
-    user = _CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrName));
+    user = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrName));
     if (user) {
         rc = pam_set_item(pamh, PAM_USER, (const void **)user);
         CHECK_STATUS(pamh, "pam_set_item(PAM_USER)", rc);
     }
     
-    pass = _CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrCredentialPassword));
+    pass = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrCredentialPassword));
     if (pass) {
         rc = pam_set_item(pamh, PAM_AUTHTOK, (const void **)pass);
         CHECK_STATUS(pamh, "pam_set_item(PAM_AUTHTOK)", rc);

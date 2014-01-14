@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifndef __CredUI__CUIProviderUtilities__
-#define __CredUI__CUIProviderUtilities__
+#ifndef CredUI_CUIProviderUtilities_h
+#define CredUI_CUIProviderUtilities_h
 
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -41,4 +41,4 @@ CUIIsPersistedCredential(CFDictionaryRef attributes);
 Boolean
 CUIIsIdentityCredential(CFDictionaryRef attributes);
 
-#endif /* defined(__CredUI__CUIProviderUtilities__) */
+#endif /* CredUI_CUIProviderUtilities_h */
