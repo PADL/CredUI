@@ -44,4 +44,7 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 CFStringRef
 _CUICopyAttrClassForAuthError(CFErrorRef authError);
 
+void
+_CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status);
+
 #endif

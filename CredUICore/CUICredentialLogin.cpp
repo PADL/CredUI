@@ -12,6 +12,24 @@
 
 #include "CredUICore_Private.h"
 
+#ifdef DEBUG
+#define CHECK_STATUS(pamh, fn, rc)      do { \
+        char *_err; \
+        _err = (rc == PAM_OPEN_ERR || rc == PAM_SYMBOL_ERR) ? dlerror() : NULL; \
+        fprintf(stderr, "%s:%d %s: %s[%d]%s%s\n", \
+                __FILE__, __LINE__, (fn), pam_strerror((pamh), (rc)), rc, \
+                (rc == PAM_OPEN_ERR || rc == PAM_SYMBOL_ERR) ? " - dlerror: " : "", \
+                _err ? _err : "(null)"); \
+        if (rc != PAM_SUCCESS) \
+            goto cleanup; \
+        } while (0)
+#else
+#define CHECK_STATUS(pamh, fn, rc)      do { \
+        if (rc != PAM_SUCCESS) \
+            goto cleanup; \
+        } while (0)
+#endif /* DEBUG */
+
 static char *
 _CUICFStringToCString(CFStringRef string)
 {
@@ -34,25 +52,7 @@ _CUICFStringToCString(CFStringRef string)
     return s;
 }
 
-#ifdef DEBUG
-#define CHECK_STATUS(pamh, fn, rc)      do { \
-        char *_err; \
-        _err = (rc == PAM_OPEN_ERR || rc == PAM_SYMBOL_ERR) ? dlerror() : NULL; \
-        fprintf(stderr, "%s:%d %s: %s[%d]%s%s\n", \
-                __FILE__, __LINE__, (fn), pam_strerror((pamh), (rc)), rc, \
-                (rc == PAM_OPEN_ERR || rc == PAM_SYMBOL_ERR) ? " - dlerror: " : "", \
-                _err ? _err : "(null)"); \
-        if (rc != PAM_SUCCESS) \
-            goto cleanup; \
-        } while (0)
-#else
-#define CHECK_STATUS(pamh, fn, rc)      do { \
-        if (rc != PAM_SUCCESS) \
-            goto cleanup; \
-        } while (0)
-#endif /* DEBUG */
-
-static void
+CUI_EXPORT void
 _CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status)
 {
     CFRelease((CFTypeRef)data);

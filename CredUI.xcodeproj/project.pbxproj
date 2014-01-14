@@ -13,6 +13,7 @@
 			buildPhases = (
 			);
 			dependencies = (
+				D3BC5F891884D3C800034F92 /* PBXTargetDependency */,
 				D35891061883CDD30093F5B6 /* PBXTargetDependency */,
 				D344388C187F7D9000562318 /* PBXTargetDependency */,
 				D344388E187F7D9000562318 /* PBXTargetDependency */,
@@ -186,6 +187,11 @@
 		D3B0944B1877EFBA006DB1DE /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
 		D3B37CDE187CD67800117E61 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B37CDD187CD67800117E61 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BC5F7E188401FF00034F92 /* libpam.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BC5F7D188401FF00034F92 /* libpam.dylib */; };
+		D3BC5F8C1884D3D500034F92 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
+		D3BC5F8D1884D3DF00034F92 /* libpam.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BC5F7D188401FF00034F92 /* libpam.dylib */; };
+		D3BC5F901884D40400034F92 /* pam_credui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BC5F8E1884D40400034F92 /* pam_credui.cpp */; };
+		D3BC5F911884D40400034F92 /* pam_credui.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BC5F8F1884D40400034F92 /* pam_credui.h */; };
+		D3BC5F921884D4F000034F92 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BED8F21872F5FA00623B92 /* CUIBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BED8F91873B46200623B92 /* CUIProxyCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */; };
@@ -437,6 +443,20 @@
 			remoteGlobalIDString = D3B094351877EFBA006DB1DE;
 			remoteInfo = GSSKitUI;
 		};
+		D3BC5F881884D3C800034F92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3BC5F831884D3B200034F92;
+			remoteInfo = pam_credui;
+		};
+		D3BC5F8A1884D3CF00034F92 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
 		D3ECB3D1187D8E18004B0B80 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
@@ -597,6 +617,9 @@
 		D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B37CDD187CD67800117E61 /* CUIBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BC5F7D188401FF00034F92 /* libpam.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpam.dylib; path = usr/lib/libpam.dylib; sourceTree = SDKROOT; };
+		D3BC5F841884D3B200034F92 /* libpam_credui.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libpam_credui.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3BC5F8E1884D40400034F92 /* pam_credui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pam_credui.cpp; path = pam_credui/pam_credui.cpp; sourceTree = "<group>"; };
+		D3BC5F8F1884D40400034F92 /* pam_credui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pam_credui.h; path = pam_credui/pam_credui.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BED8F71873B46200623B92 /* CUIProxyCredential.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIProxyCredential.cpp; sourceTree = "<group>"; };
@@ -757,6 +780,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3BC5F811884D3B200034F92 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3BC5F8D1884D3DF00034F92 /* libpam.dylib in Frameworks */,
+				D3BC5F921884D4F000034F92 /* CoreFoundation.framework in Frameworks */,
+				D3BC5F8C1884D3D500034F92 /* CredUICore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3CECCEE187ADFF30006EB36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -853,6 +886,7 @@
 				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
 				D3207E33187C240C00DC2694 /* Certificate */,
 				D35890F31883C1C30093F5B6 /* Login */,
+				D3BC5F7F1884D38000034F92 /* pam_credui */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -875,6 +909,7 @@
 				D3CECCF1187ADFF30006EB36 /* Sample.credprovider */,
 				D3207E31187C240C00DC2694 /* Certificate.credprovider */,
 				D35890F11883C1C20093F5B6 /* Login.credprovider */,
+				D3BC5F841884D3B200034F92 /* libpam_credui.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1129,6 +1164,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D3BC5F7F1884D38000034F92 /* pam_credui */ = {
+			isa = PBXGroup;
+			children = (
+				D3BC5F8E1884D40400034F92 /* pam_credui.cpp */,
+				D3BC5F8F1884D40400034F92 /* pam_credui.h */,
+			);
+			name = pam_credui;
+			sourceTree = "<group>";
+		};
 		D3CECCF3187ADFF30006EB36 /* Sample */ = {
 			isa = PBXGroup;
 			children = (
@@ -1236,6 +1280,14 @@
 				D3A7735B1877F077009F51B7 /* GSSMechanism+CredUI.h in Headers */,
 				D35AAFC71877F1F3007C0498 /* GSSContext+CredUI.h in Headers */,
 				D3A773571877F077009F51B7 /* GSSCredential+CredUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3BC5F821884D3B200034F92 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3BC5F911884D40400034F92 /* pam_credui.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1465,6 +1517,24 @@
 			productReference = D3B094461877EFBA006DB1DE /* GSSKitUITests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		D3BC5F831884D3B200034F92 /* pam_credui */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3BC5F851884D3B200034F92 /* Build configuration list for PBXNativeTarget "pam_credui" */;
+			buildPhases = (
+				D3BC5F801884D3B200034F92 /* Sources */,
+				D3BC5F811884D3B200034F92 /* Frameworks */,
+				D3BC5F821884D3B200034F92 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D3BC5F8B1884D3CF00034F92 /* PBXTargetDependency */,
+			);
+			name = pam_credui;
+			productName = pam_credui;
+			productReference = D3BC5F841884D3B200034F92 /* libpam_credui.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		D3CECCF0187ADFF30006EB36 /* Sample */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D3CECCFC187ADFF40006EB36 /* Build configuration list for PBXNativeTarget "Sample" */;
@@ -1547,6 +1617,7 @@
 				D3443887187F7D7900562318 /* CredUIBase */,
 				D3443899187F7DA800562318 /* CredUISamples */,
 				D34438A3187F7E1500562318 /* CredUIEverything */,
+				D3BC5F831884D3B200034F92 /* pam_credui */,
 			);
 		};
 /* End PBXProject section */
@@ -1776,6 +1847,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3BC5F801884D3B200034F92 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3BC5F901884D40400034F92 /* pam_credui.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D3CECCED187ADFF30006EB36 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1962,6 +2041,16 @@
 			isa = PBXTargetDependency;
 			target = D3B094351877EFBA006DB1DE /* GSSKitUI */;
 			targetProxy = D3B094491877EFBA006DB1DE /* PBXContainerItemProxy */;
+		};
+		D3BC5F891884D3C800034F92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3BC5F831884D3B200034F92 /* pam_credui */;
+			targetProxy = D3BC5F881884D3C800034F92 /* PBXContainerItemProxy */;
+		};
+		D3BC5F8B1884D3CF00034F92 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D3BC5F8A1884D3CF00034F92 /* PBXContainerItemProxy */;
 		};
 		D3ECB3D2187D8E18004B0B80 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2633,6 +2722,26 @@
 			};
 			name = Release;
 		};
+		D3BC5F861884D3B200034F92 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D3BC5F871884D3B200034F92 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		D3CECCFA187ADFF40006EB36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2843,6 +2952,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D3BC5F851884D3B200034F92 /* Build configuration list for PBXNativeTarget "pam_credui" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3BC5F861884D3B200034F92 /* Debug */,
+				D3BC5F871884D3B200034F92 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D3CECCFC187ADFF40006EB36 /* Build configuration list for PBXNativeTarget "Sample" */ = {
 			isa = XCConfigurationList;
