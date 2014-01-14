@@ -39,29 +39,37 @@ _PAMCreateAttributesFromHandle(pam_handle_t *pamh, CFDictionaryRef *pAttributes)
     CFMutableDictionaryRef attributes = NULL;
     const char *user;
     int rc;
-    
-    rc = pam_get_data(pamh, CREDUI_ATTR_DATA, (const void **)&attributes);
-    if (rc == PAM_SUCCESS && attributes) {
-        *pAttributes = (CFDictionaryRef)CFRetain(attributes);
-        return PAM_SUCCESS;
-    }
-    
+
     rc = pam_get_item(pamh, PAM_USER, (const void **)&user);
     if (rc != PAM_SUCCESS)
         return rc;
-    
-    attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-    if (attributes == NULL)
-        return PAM_BUF_ERR;
-    
+
     CFStringRef name = CFStringCreateWithCString(kCFAllocatorDefault, user, kCFStringEncodingUTF8);
     if (name == NULL) {
         CFRelease(attributes);
         return PAM_BUF_ERR;
     }
+
+    /* In case module returned PAM_TRY_AGAIN */
+    rc = pam_get_data(pamh, CREDUI_ATTR_DATA, (const void **)&attributes);
+    if (rc == PAM_SUCCESS && attributes) {
+        CFStringRef assertedName = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
+        
+        if (assertedName && CFEqual(assertedName, name)) {
+            *pAttributes = (CFDictionaryRef)CFRetain(attributes);
+            CFRelease(name);
+            return PAM_SUCCESS;
+        }
+    }
+    
+    attributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+    if (attributes == NULL)
+        return PAM_BUF_ERR;
     
     CFDictionarySetValue(attributes, kCUIAttrNameType, kCUIAttrNameTypePosixName);
     CFDictionarySetValue(attributes, kCUIAttrName, name);
+    
+    /* we don't get AUTHTOK because it might prompt */
     
     CFRelease(name);
     
