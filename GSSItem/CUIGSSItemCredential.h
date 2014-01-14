@@ -18,20 +18,6 @@
 #include "CUIProviderUtilities.h"
 #include "CUIGSSItemCredentialProvider.h"
 
-/*
- * Return an attribute dictionary suitable for passing to a GSS item API
- * from a CredUI attribute dictionary.
- */
-extern CFMutableDictionaryRef
-CUICreateCUIAttributesFromGSSItemAttributes(CFDictionaryRef attributes);
-
-/*
- * Return an attribute dictionary suitable for passing to a CredUI API
- * from a GSS item attribute dictionary.
- */
-extern CFMutableDictionaryRef
-CUICreateGSSItemAttributesFromCUIAttributes(CFDictionaryRef attributes);
-
 class CUIGSSItemCredential : public CUICredentialContext {
 public:
     
