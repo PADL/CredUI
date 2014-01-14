@@ -36,9 +36,15 @@
 static int
 _PAMCreateAttributesFromHandle(pam_handle_t *pamh, CFDictionaryRef *pAttributes)
 {
-    CFMutableDictionaryRef attributes;
+    CFMutableDictionaryRef attributes = NULL;
     const char *user;
     int rc;
+    
+    rc = pam_get_data(pamh, CREDUI_ATTR_DATA, (const void **)&attributes);
+    if (rc == PAM_SUCCESS && attributes) {
+        *pAttributes = (CFDictionaryRef)CFRetain(attributes);
+        return PAM_SUCCESS;
+    }
     
     rc = pam_get_item(pamh, PAM_USER, (const void **)&user);
     if (rc != PAM_SUCCESS)
