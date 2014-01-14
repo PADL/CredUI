@@ -96,8 +96,9 @@ _PAMConvFreeMessages(struct pam_message **messages, CFIndex count)
 }
 
 static int
-_PAMConvSelect(CFArrayRef creds,
-               const struct pam_conv *conv,
+_PAMConvSelect(const struct pam_conv *conv,
+               CFArrayRef creds,
+               CFIndex selectedCredentialIndex,
                CUICredentialRef *pSelectedCred)
 {
     int rc;
@@ -135,11 +136,12 @@ _PAMConvSelect(CFArrayRef creds,
         CFStringRef name = (CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName);
         CFTypeRef provider = field ? CUIFieldGetDefaultValue(field) : CFDictionaryGetValue(attrs, kCUIAttrCredentialProvider);
         CFStringRef displayString;
-        
+        const char *defaultTag = (index == selectedCredentialIndex) ? "*" : "";
+
         if (name)
-            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld] %@ (%@)"), index + 1, provider, name);
+            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@ (%@)"), index + 1, defaultTag, provider, name);
         else
-            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld] %@"), index + 1, provider);
+            displayString = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("[%ld]%s %@"), index + 1, defaultTag, provider);
         if (displayString == NULL) {
             rc = PAM_BUF_ERR;
             free(message);
@@ -164,26 +166,28 @@ _PAMConvSelect(CFArrayRef creds,
     message->msg_style = PAM_PROMPT_ECHO_ON;
     message->msg = (char *)"Select a credential";
     
+    messages[cMessages] = message;
+    
     rc = (conv->conv)((int)cMessages, (const struct pam_message **)messages, &resp, conv->appdata_ptr);
     if (rc != PAM_SUCCESS) {
         free(message);
         goto cleanup;
     }
     
-    messages[cMessages] = message;
-    
-    rc = PAM_CRED_UNAVAIL;
-    
     if (resp && resp->resp) {
         CFIndex index = strtoul(resp->resp, NULL, 10);
         
-        if (index && index <= CFArrayGetCount(creds)) {
-            index--; /* count from zero */
-            *pSelectedCred = (CUICredentialRef)CFRetain(CFArrayGetValueAtIndex(creds, index));
-            rc = PAM_SUCCESS;
-        }
+        if (index && index <= CFArrayGetCount(creds))
+            selectedCredentialIndex = index - 1;
     }
-    
+
+    if (selectedCredentialIndex != kCFNotFound) {
+        *pSelectedCred = (CUICredentialRef)CFRetain(CFArrayGetValueAtIndex(creds, selectedCredentialIndex));
+        rc = PAM_SUCCESS;
+    } else {
+        rc = PAM_CRED_UNAVAIL;
+    }
+ 
 cleanup:
     _PAMConvFreeMessages(messages, cMessages);
     if (resp) {
@@ -196,8 +200,8 @@ cleanup:
 }
 
 static int
-_PAMConvCredential(CUICredentialRef cred,
-                   const struct pam_conv *conv)
+_PAMConvCredential(const struct pam_conv *conv,
+                   CUICredentialRef cred)
 {
     CFArrayRef fields = CUICredentialGetFields(cred);
     __block int rc;
@@ -290,7 +294,8 @@ pam_select_credential(pam_handle_t *pamh)
     CUICredentialRef selectedCred = NULL;
     char *user = NULL, *pass = NULL;
     Boolean autoLogin = false;
-    
+    __block CFIndex defaultCredentialIndex = kCFNotFound;
+
     rc = pam_get_item(pamh, PAM_CONV, (const void **)&conv);
     CHECK_STATUS(pamh, "pam_get_item(PAM_CONV)", rc);
     
@@ -317,9 +322,8 @@ pam_select_credential(pam_handle_t *pamh)
     CUIControllerEnumerateCredentials(controller, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
         if (cred) {
             if (isDefault)
-                CFArrayInsertValueAtIndex(creds, 0, cred);
-            else
-                CFArrayAppendValue(creds, cred);
+                defaultCredentialIndex = CFArrayGetCount(creds);
+            CFArrayAppendValue(creds, cred);
         }
     });
     
@@ -330,13 +334,13 @@ pam_select_credential(pam_handle_t *pamh)
             selectedCred = NULL;
         }
         
-        rc = _PAMConvSelect(creds, conv, &selectedCred);
+        rc = _PAMConvSelect(conv, creds, defaultCredentialIndex, &selectedCred);
         CHECK_STATUS(pamh, "_PAMConvSelect", rc);
         
         CUICredentialDidBecomeSelected(selectedCred, &autoLogin);
         
         if (!autoLogin) {
-            rc = _PAMConvCredential(selectedCred, conv);
+            rc = _PAMConvCredential(conv, selectedCred);
             CHECK_STATUS(pamh, "_PAMConvCredential", rc);
         }
         
