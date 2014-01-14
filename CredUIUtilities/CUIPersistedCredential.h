@@ -18,6 +18,11 @@
 
 #include "CUIProviderUtilities.h"
 
+/*
+ * This adds a couple of extra methods to CUICredentialPersistence for internal use
+ * that allows wrapped credentials to update/delete themselves. This isn't yet ready
+ * to be exposed to CredUICore.
+ */
 class CUICredentialPersistenceEx : public CUICredentialPersistence {
 public:
     virtual Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error) = 0;

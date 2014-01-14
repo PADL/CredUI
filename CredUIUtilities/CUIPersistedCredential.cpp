@@ -57,7 +57,7 @@ public:
         return CUICredentialGetAttributes(_credential);
     }
     
-    Boolean initWithCredential(CUICredentialRef credential, CUICredentialPersistenceEx *persistence) {
+    Boolean initWithPersistenceProviderAndCredential(CUICredentialPersistenceEx *persistence, CUICredentialRef credential) {
         if (credential == NULL)
             return false;
         
@@ -121,7 +121,7 @@ CUIPersistedCredentialCreate(CUICredentialPersistenceEx *persistence, CUICredent
     CUICredentialRef credRef;
     
     itemCred = new CUIPersistedCredential();
-    if (!itemCred->initWithCredential(cred, persistence)) {
+    if (!itemCred->initWithPersistenceProviderAndCredential(persistence, cred)) {
         itemCred->Release();
         return NULL;
     }
