@@ -12,11 +12,6 @@
 
 #include "CredUICore_Private.h"
 
-#define CHECK_STATUS(pamh, fn, rc)      do {            \
-        if (rc != PAM_SUCCESS)                          \
-            goto cleanup;                               \
-        } while (0)
-
 CUI_EXPORT void
 _CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status)
 {
@@ -57,22 +52,27 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringR
         goto cleanup;
     
     rc = pam_start(service ? service : "login", user, &conv, &pamh);
-    CHECK_STATUS(pamh, "pam_start", rc);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
     
     pass = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrCredentialPassword));
     if (pass) {
         rc = pam_set_item(pamh, PAM_AUTHTOK, (void *)pass);
-        CHECK_STATUS(pamh, "pam_set_item(PAM_AUTHTOK)", rc);
+        if (rc != PAM_SUCCESS)
+            goto cleanup;
     }
  
     rc = pam_set_data(pamh, CREDUI_ATTR_DATA, (void *)CFRetain(attrs), _CUICleanupPAMAttrData);
-    CHECK_STATUS(pamh, "pam_set_data(CREDUI_ATTR_DATA)", rc);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
     
     rc = pam_authenticate(pamh, 0);
-    CHECK_STATUS(pamh, "pam_authenticate", rc);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
 
     rc = pam_acct_mgmt(pamh, 0);
-    CHECK_STATUS(pamh, "pam_acct_mgmt", rc);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
     
 cleanup:
     if (service)

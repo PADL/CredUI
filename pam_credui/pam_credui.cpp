@@ -15,11 +15,6 @@
 
 #include "pam_credui.h"
 
-#define CHECK_STATUS(pamh, fn, rc)      do {    \
-        if (rc != PAM_SUCCESS)                  \
-            goto cleanup;                       \
-        } while (0)
-
 static int
 _PAMCreateAttributesFromHandle(pam_handle_t *pamh, CFDictionaryRef *pAttributes)
 {
@@ -376,13 +371,15 @@ pam_select_credential(pam_handle_t *pamh, int flags)
         }
         
         rc = _PAMConvSelect(pamh, flags, creds, defaultCredentialIndex, &selectedCred);
-        CHECK_STATUS(pamh, "_PAMConvSelect", rc);
+        if (rc != PAM_SUCCESS)
+            goto cleanup;
         
         CUICredentialDidBecomeSelected(selectedCred, &autoLogin);
         
         if (!autoLogin) {
             rc = _PAMConvCredential(pamh, flags, selectedCred);
-            CHECK_STATUS(pamh, "_PAMConvCredential", rc);
+            if (rc != PAM_SUCCESS)
+                goto cleanup;
         }
         
         CUICredentialWillSubmit(selectedCred);
@@ -395,17 +392,20 @@ pam_select_credential(pam_handle_t *pamh, int flags)
     user = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrName));
     if (user) {
         rc = pam_set_item(pamh, PAM_USER, (const void *)user);
-        CHECK_STATUS(pamh, "pam_set_item(PAM_USER)", rc);
+        if (rc != PAM_SUCCESS)
+            goto cleanup;
     }
     
     pass = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrCredentialPassword));
     if (pass) {
         rc = pam_set_item(pamh, PAM_AUTHTOK, (const void *)pass);
-        CHECK_STATUS(pamh, "pam_set_item(PAM_AUTHTOK)", rc);
+        if (rc != PAM_SUCCESS)
+            goto cleanup;
     }
     
     rc = pam_set_data(pamh, CREDUI_ATTR_DATA, (void *)CFRetain(credAttributes), _CUICleanupPAMAttrData);
-    CHECK_STATUS(pamh, "pam_set_data(CREDUI_ATTR_DATA)", rc);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
     
 cleanup:
     if (controller)
