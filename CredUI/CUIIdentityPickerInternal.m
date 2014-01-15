@@ -20,7 +20,6 @@
 - (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario;
 
 - (void)startCredentialEnumeration;
-- (void)cancelCredentialEnumeration;
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
 
 - (void)updateSubmitButtonForSelectedCred;
@@ -168,11 +167,6 @@
         [self willSubmitCredential:self.submitButton];
 
     self.runningModal = YES;
-}
-
-- (void)cancelCredentialEnumeration
-{
-    self.credsController = nil;
 }
 
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse
