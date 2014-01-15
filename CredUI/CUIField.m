@@ -133,33 +133,29 @@ CF_CLASSIMPLEMENTATION(CUICFField)
     NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
 }
 
-- (CUIFieldClass)fieldClass
+- (void)setOptions:(CUIFieldOptions)options
 {
     NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+}
+
+- (CUIFieldClass)fieldClass
+{
     return kCUIFieldClassInvalid;
 }
 
 - (NSString *)title
 {
-    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
     return nil;
 }
 
 - (id)defaultValue
 {
-    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
     return nil;
 }
 
 - (CUIFieldOptions)options
 {
-    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
     return kCUIFieldOptionsNone;
-}
-
-- (void)setOptions:(CUIFieldOptions)options
-{
-    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
 }
 
 @end
