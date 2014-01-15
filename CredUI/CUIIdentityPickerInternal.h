@@ -7,6 +7,34 @@
 //
 
 @interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
+{
+    NSString *_title;
+    NSString *_message;
+    NSDictionary *_attributes;
+    NSError *_authError;
+    BOOL _persist;
+    const void *_context;
+    id _targetName;
+
+    CUIFlags _flags;
+    CUIUsageScenario _usageScenario;
+    CUIUsageFlags _usageFlags;
+
+    NSError *_lastError;
+
+    NSPanel *_identityPickerPanel;
+    NSCollectionView *_collectionView;
+    NSTextField *_messageTextField;
+    NSButton *_persistCheckBox;
+    NSButton *_submitButton;
+
+    CUIControllerRef _controllerRef;
+    CUICredUIContext *_credUIContext;
+
+    NSArrayController *_credsController;
+    BOOL _runningModal;
+    BOOL _autoLogin;
+}
 
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;

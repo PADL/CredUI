@@ -36,12 +36,12 @@
         }
         
         if (transformedKey)
-            transformedDict[transformedKey] = obj;
+            [transformedDict setObject:obj forKey:transformedKey];
     }];
     
     if (attrClass == CUIAttributeClassGSSInitialCred) {
         // we only emit initiator creds
-        transformedDict[(NSString *)kGSSCredentialUsage] = (NSString *)kGSS_C_INITIATE;
+        [transformedDict setObject:(NSString *)kGSS_C_INITIATE forKey:(NSString *)kGSSCredentialUsage];
     }
     
     return transformedDict;
@@ -58,7 +58,7 @@
     if (error)
         *error = nil;
     
-    item = self.attributes[(__bridge NSString *)kCUIAttrGSSItem];
+    item = [self.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSItem];
     if (item == nil) {
         NSDictionary *itemAttrs = [self attributesWithClass:CUIAttributeClassGSSItem];
         NSArray *matchingItems = CFBridgingRelease(GSSItemCopyMatching((__bridge CFDictionaryRef)itemAttrs, NULL));
@@ -68,7 +68,7 @@
             item = CFBridgingRelease(GSSItemAdd((__bridge CFDictionaryRef)itemAttrs, error ? &cfError : NULL));
     }
     
-    if (error)
+    if (error && cfError)
         *error = CFBridgingRelease(cfError);
     
     return (GSSItemRef)CFBridgingRetain(item);
@@ -79,8 +79,8 @@
     gss_name_t name = GSS_C_NO_NAME;
     gss_const_OID oid = GSS_C_NO_OID;
     
-    id type = self.attributes[(__bridge NSString *)kCUIAttrNameType];
-    id value = self.attributes[(__bridge NSString *)kCUIAttrName];
+    id type = [self.attributes objectForKey:(__bridge NSString *)kCUIAttrNameType];
+    id value = [self.attributes objectForKey:(__bridge NSString *)kCUIAttrName];
     
     if (type == nil ||
         [type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSUsername])

@@ -10,7 +10,13 @@
 
 - (void)loadView
 {
-    [self setView:[[CUICredentialTile alloc] initWithFrame:NSMakeRect(0, 0, 400, 100)]];
+    CUICredentialTile *tile = [[CUICredentialTile alloc] initWithFrame:NSMakeRect(0, 0, 400, 100)];
+    
+    [self setView:tile];
+    
+#if !__has_feature(objc_arc)
+    [tile release];
+#endif
 }
 
 - (void)setRepresentedObject:(id)representedObject
@@ -47,7 +53,7 @@
 #endif
 
     if ([keyPath isEqualTo:@"options"]) {
-        CUIFieldOptions options = [change[NSKeyValueChangeNewKey] unsignedIntegerValue];
+        CUIFieldOptions options = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
 
         [self updateView:view withFieldOptions:options];
     } else if ([keyPath isEqualTo:@"value"]) {

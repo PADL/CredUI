@@ -6,18 +6,39 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+@interface CUIIdentityPickerInfo : NSObject
+{
+    id _delegate;
+    SEL _didEndSelector;
+}
+@property(nonatomic, retain) id delegate;
+@property(nonatomic, assign) SEL didEndSelector;
+@end
+
+@implementation CUIIdentityPickerInfo
+@synthesize delegate = _delegate;
+@synthesize didEndSelector = _didEndSelector;
+@end
+
 /*
  * This is a thin wrapper over CUIIdentityPickerInternal, because we might want to move
- * the guts into another process sometime.
+ * the guts into another process sometime. And it lets us hide instance variables on
+ * the old Objective-C runtime.
  */
-@interface CUIIdentityPicker ()
-@property (nonatomic, retain) id delegate;
-@property (nonatomic) SEL didEndSelector;
-@end
 
 @implementation CUIIdentityPicker
 
 #pragma mark - Initialization
+
+- (void)dealloc
+{
+#if !__has_feature(objc_arc)
+    [_reserved[0] release];
+    [_reserved[1] release];
+#endif
+
+    [super dealloc];
+}
 
 - (instancetype)init
 {
@@ -41,24 +62,26 @@
     if ((self = [super init]) == nil)
         return nil;
 
-    _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
-                                                   usageScenario:usageScenario
-                                                      attributes:attributes];
-
+    _reserved[0] = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
+                                                      usageScenario:usageScenario
+                                                         attributes:attributes];
     
     return self;
 }
 
 #pragma mark - Run Loop
 
-- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker
+                  returnCode:(NSInteger)returnCode
+                 contextInfo:(void *)contextInfo
 {
-    NSMethodSignature *signature = [self.delegate methodSignatureForSelector:self.didEndSelector];
+    CUIIdentityPickerInfo *info = _reserved[1];
+    NSMethodSignature *signature = [info.delegate methodSignatureForSelector:info.didEndSelector];
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     void *object = (__bridge void *)self;
 
-    [invocation setTarget:self.delegate];
-    [invocation setSelector:self.didEndSelector];
+    [invocation setTarget:info.delegate];
+    [invocation setSelector:info.didEndSelector];
     [invocation setArgument:&object atIndex:2];
     [invocation setArgument:&returnCode atIndex:3];
     [invocation setArgument:&contextInfo atIndex:4];
@@ -70,18 +93,25 @@
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    self.delegate = delegate;
-    self.didEndSelector = didEndSelector;
+    CUIIdentityPickerInfo *info = [[CUIIdentityPickerInfo alloc] init];
 
-    return [_internal runModalForWindow:window
-                          modalDelegate:self
-                         didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
-                            contextInfo:contextInfo];
+    info.delegate = delegate;
+    info.didEndSelector = didEndSelector;
+
+#if !__has_feature(objc_arc)
+    [_reserved[1] release];
+#endif
+    _reserved[1] = info;
+
+    [_reserved[0] runModalForWindow:window
+                      modalDelegate:self
+                     didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
+                        contextInfo:contextInfo];
 }
 
 - (NSInteger)runModal
 {
-    return [_internal runModal];
+    return [_reserved[0] runModal];
 }
 
 #pragma mark - Accessors
@@ -91,21 +121,24 @@
     return [NSString stringWithFormat:@"<%@ %p{targetName = \"%@\", selectedCredential = %@, flags = 0x%08x}>",
             [self.class description],
             self,
-            _internal.targetDisplayName,
-            _internal.selectedCredential,
+            [_reserved[0] targetDisplayName],
+            [_reserved[0] selectedCredential],
             (unsigned int)self.flags];
 }
 
-#define FORWARD_PROPERTY(type, setter, getter)                          \
-                                                                        \
+#define FORWARD_PROPERTY_RO(type, getter)                               \
 - (type)getter                                                          \
 {                                                                       \
-    return _internal.getter;                                            \
+    return ((CUIIdentityPickerInternal *)_reserved[0]).getter;          \
 }                                                                       \
+
+#define FORWARD_PROPERTY(type, setter, getter)                          \
+                                                                        \
+FORWARD_PROPERTY_RO(type, getter)                                       \
                                                                         \
 - (void)setter:(type)arg                                                \
 {                                                                       \
-    _internal.getter = arg;                                             \
+    ((CUIIdentityPickerInternal *)_reserved[0]).getter = arg;           \
 }                                                                        
 
 FORWARD_PROPERTY(NSString *,            setTitle,               title)
@@ -116,21 +149,8 @@ FORWARD_PROPERTY(BOOL,                  setPersist,             persist)
 FORWARD_PROPERTY(const void *,          setContext,             context)
 FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
-/* readonly properties */
-
-- (CUIFlags)flags
-{
-    return _internal.flags;
-}
-
-- (CUICredential *)selectedCredential
-{
-    return _internal.selectedCredential;
-}
-
-- (NSError *)lastError
-{
-    return _internal.lastError;
-}
+FORWARD_PROPERTY_RO(CUICredential *,    selectedCredential)
+FORWARD_PROPERTY_RO(NSError *,          lastError)
+FORWARD_PROPERTY_RO(CUIFlags,           flags)
 
 @end

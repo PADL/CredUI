@@ -35,7 +35,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     identityPicker.persist = *pfSave;
  
     /* Don't clobber the internal parent window, which is the window the CredUI window itself */
-    [identityPicker->_internal setCredUIContext:uiContext properties:kCUICredUIContextPropertyAll & ~(kCUICredUIContextPropertyParentWindow)];
+    [identityPicker->_reserved[0] setCredUIContext:uiContext properties:kCUICredUIContextPropertyAll & ~(kCUICredUIContextPropertyParentWindow)];
 
     if (uiContext && uiContext->parentWindow) {
         [identityPicker runModalForWindow:(__bridge NSWindow *)uiContext->parentWindow
@@ -44,7 +44,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
                               contextInfo:NULL];
     }
     
-    modalSession = [NSApp beginModalSessionForWindow:identityPicker->_internal.identityPickerPanel];
+    modalSession = [NSApp beginModalSessionForWindow:[identityPicker->_reserved[0] identityPickerPanel]];
     do {
         modalResponse = [NSApp runModalSession:modalSession];
     } while (modalResponse == NSModalResponseContinue &&
@@ -59,6 +59,10 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     *pfSave = identityPicker.persist;
     if (error)
         *error = (CFErrorRef)CFBridgingRetain(identityPicker.lastError);
+    
+#if !__has_feature(objc_arc)
+    [identityPicker release];
+#endif
     
     return [selectedCredential canSubmit];
 }

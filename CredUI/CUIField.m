@@ -108,7 +108,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (void)controlTextDidChange:(NSNotification *)notification
 {
-    NSTextView *textView = notification.userInfo[@"NSFieldEditor"];
+    NSTextView *textView = [notification.userInfo objectForKey:@"NSFieldEditor"];
     
     [self setValue:textView.string];
 }
@@ -129,6 +129,35 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 #pragma mark Primitive methods
 
 - (void)setValue:(id)aValue
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+}
+
+- (CUIFieldClass)fieldClass
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+    return kCUIFieldClassInvalid;
+}
+
+- (NSString *)title
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+    return nil;
+}
+
+- (id)defaultValue
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+    return nil;
+}
+
+- (CUIFieldOptions)options
+{
+    NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
+    return kCUIFieldOptionsNone;
+}
+
+- (void)setOptions:(CUIFieldOptions)options
 {
     NSRequestConcreteImplementation(self, _cmd, [CUIField class]);
 }

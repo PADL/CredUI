@@ -10,6 +10,11 @@
 @class CUICredentialTileController;
 
 @interface CUICredentialTile : NSView
+{
+    CUICredential *_credential;
+    CUICredentialTileController *_delegate;
+    BOOL _selected;
+}
 
 @property (readonly) CUICredential *credential;
 @property (weak, nonatomic) CUICredentialTileController *delegate;

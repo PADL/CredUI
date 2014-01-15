@@ -15,13 +15,11 @@
 
 @class CUICredential;
 
-@class CUIIdentityPickerInternal;
-
 __attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
 {
     @package
-    CUIIdentityPickerInternal *_internal;
+    id _reserved[2];
 }
 
 /* Title and message of CredUI window */

@@ -28,10 +28,55 @@
 
 @implementation CUIIdentityPickerInternal
 
+@synthesize title = _title;
+@synthesize message = _message;
+@synthesize attributes = _attributes;
+@synthesize authError = _authError;
+@synthesize persist = _persist;
+@synthesize context = _context;
+@synthesize targetName = _targetName;
+
+@synthesize flags = _flags;
+@synthesize usageScenario = _usageScenario;
+@synthesize usageFlags = _usageFlags;
+
+@synthesize lastError = _lastError;
+
+@synthesize identityPickerPanel = _identityPickerPanel;
+@synthesize collectionView = _collectionView;
+@synthesize messageTextField = _messageTextField;
+@synthesize persistCheckBox = _persistCheckBox;
+@synthesize submitButton = _submitButton;
+
+@synthesize controllerRef = _controllerRef;
+@synthesize credUIContext = _credUIContext;
+
+@synthesize credsController = _credsController;
+@synthesize runningModal = _runningModal;
+
 - (void)dealloc
 {
     if (_controllerRef)
         CFRelease(_controllerRef);
+    
+#if !__has_feature(objc_arc)
+    [_title release];
+    [_message release];
+    [_attributes release];
+    [_authError release];
+    [_targetName release];
+    
+    [_lastError release];
+    
+    [_collectionView release];
+    [_messageTextField release];
+    [_persistCheckBox release];
+    [_submitButton release];
+
+    [_credsController release];
+
+    [super dealloc];
+#endif
 }
 
 - (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario
@@ -61,9 +106,13 @@
     self = [super init];
     if (self == nil)
         return nil;
-   
-    self.identityPickerPanel = [self _newPanel];
  
+    NSPanel *panel = [self _newPanel];
+    self.identityPickerPanel = panel;
+#if !__has_feature(objc_arc)
+    [panel release];
+#endif
+    
     if (usageScenario == kCUIUsageScenarioLogin) {
         /* Make sure login credentails can never be persisted */
         flags &= ~(CUIFlagsPersist);
@@ -104,7 +153,7 @@
         NSIndexSet *indexes = [object selectionIndexes];
        
         for (index = 0; index < creds.count; index++) {
-            CUICredential *cred = creds[index];
+            CUICredential *cred = [creds objectAtIndex:index];
             BOOL autoLogin = NO;
             
             if ([indexes containsIndex:index])
@@ -135,7 +184,12 @@
     if (self.message)
         self.messageTextField.stringValue = self.message;
 
-    self.credsController = [[NSArrayController alloc] init];
+    NSArrayController *credsController = [[NSArrayController alloc] init];
+#if !__has_feature(objc_arc)
+    [credsController autorelease];
+#endif
+    self.credsController = credsController;
+    
     self.credsController.selectsInsertedObjects = NO;
     
     [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];

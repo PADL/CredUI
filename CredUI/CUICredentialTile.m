@@ -8,6 +8,10 @@
 
 @implementation CUICredentialTile
 
+@synthesize credential = _credential;
+@synthesize delegate = _delegate;
+@synthesize selected = _selected;
+
 - (void)dealloc
 {
     NSArray *credFields = [self.credential fields];
@@ -16,6 +20,10 @@
         [field removeObserver:self.delegate forKeyPath:@"options"];
         [field removeObserver:self.delegate forKeyPath:@"value"];
     }
+    
+#if !__has_feature(objc_arc)
+    [super dealloc];
+#endif
 }
 
 - (void)_updateSubviews

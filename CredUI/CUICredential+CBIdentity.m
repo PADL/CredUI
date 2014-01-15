@@ -16,13 +16,13 @@
 
 - (CBUserIdentity *)userIdentity
 {
-    CBIdentity *identity;
-    CSIdentityRef csIdentity = (__bridge CSIdentityRef)self.attributes[(__bridge id)kCUIAttrCSIdentity];
+    CBIdentity *identity = nil;
+    CSIdentityRef csIdentity = (__bridge CSIdentityRef)[self.attributes objectForKey:(__bridge id)kCUIAttrCSIdentity];
     
     if (csIdentity != nil) {
         identity = [CBIdentity identityWithCSIdentity:csIdentity];
     } else {
-        NSString *name = self.attributes[(__bridge id)kCUIAttrName];
+        NSString *name = [self.attributes objectForKey:(__bridge id)kCUIAttrName];
 
         if (name)
             identity = [CBIdentity identityWithName:name authority:[CBIdentityAuthority defaultIdentityAuthority]];

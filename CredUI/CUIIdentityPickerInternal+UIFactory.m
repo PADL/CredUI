@@ -17,17 +17,16 @@
     panel.hidesOnDeactivate = YES;
     panel.worksWhenModal = YES;
     panel.delegate = self;
-    
+
     return panel;
 }
 
 - (NSCollectionView *)_newCollectionViewEnclosedInView:(NSView *)view
 {
-    NSCollectionView *collectionView;
-    
-    collectionView = [[NSCollectionView alloc] initWithFrame:[view frame]];
-    collectionView.itemPrototype = [[CUICredentialTileController alloc] init];
+    CUICredentialTileController *itemPrototype = [[CUICredentialTileController alloc] init];
+    NSCollectionView *collectionView = [[NSCollectionView alloc] initWithFrame:[view frame]];
 
+    collectionView.itemPrototype = itemPrototype;
     collectionView.selectable = YES;
     collectionView.allowsMultipleSelection = NO;
     collectionView.autoresizingMask = (NSViewMinXMargin
@@ -37,7 +36,11 @@
                                        | NSViewHeightSizable
                                        | NSViewMaxYMargin);
     collectionView.autoresizesSubviews = YES;
-   
+    
+#if !__has_feature(objc_arc)
+    [itemPrototype release];
+#endif
+
     return collectionView;
 }
 
@@ -50,7 +53,7 @@
     textField.selectable = NO;
     textField.bordered = YES;
     textField.backgroundColor = [NSColor lightGrayColor];
-    
+
     return textField;
 }
 
@@ -63,7 +66,7 @@
     button.target = self;
     button.action = @selector(willSubmitCredential:);
     button.enabled = NO;
-    
+
     return button;
 }
 
@@ -84,33 +87,47 @@
 
 - (void)_loadViews
 {
-    NSScrollView *scrollView;
-    
-    self.messageTextField = [self _newMessageTextField];
-    [self.identityPickerPanel.contentView addSubview:self.messageTextField];
+    NSTextField *messageTextField = [self _newMessageTextField];
+    self.messageTextField = messageTextField;
+    [self.identityPickerPanel.contentView addSubview:messageTextField];
     
     NSRect frame = [[self.identityPickerPanel contentView] frame];
     frame.size.height -= 50;
     frame.origin.y = 50;
     
-    scrollView = [[NSScrollView alloc] initWithFrame:frame];
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:frame];
     scrollView.borderType = NSNoBorder;
     scrollView.hasVerticalScroller = YES;
     scrollView.autohidesScrollers = YES;
-    self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
-    scrollView.documentView = self.collectionView;
+
+    NSCollectionView *collectionView = [self _newCollectionViewEnclosedInView:scrollView];
+    self.collectionView = collectionView;
+    scrollView.documentView = collectionView;
     
     [self.identityPickerPanel.contentView addSubview:scrollView];
     
     if (self.flags & CUIFlagsShowSaveCheckBox) {
-        self.persistCheckBox = [self _newPersistCheckBox];
-        [self.identityPickerPanel.contentView addSubview:self.persistCheckBox];
+        NSButton *persistCheckBox = [self _newPersistCheckBox];
+        self.persistCheckBox = persistCheckBox;
+        [self.identityPickerPanel.contentView addSubview:persistCheckBox];
+#if !__has_feature(objc_arc)
+        [persistCheckBox release];
+#endif
     }
-    self.submitButton = [self _newSubmitButton];
-    [self.identityPickerPanel.contentView addSubview:self.submitButton];
+
+    NSButton *submitButton = [self _newSubmitButton];
+    self.submitButton = submitButton;
+    [self.identityPickerPanel.contentView addSubview:submitButton];
     
     CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.identityPickerPanel };
     [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
-}
     
+#if !__has_feature(objc_arc)
+    [messageTextField release];
+    [collectionView release];
+    [submitButton release];
+    [scrollView release];
+#endif
+}
+
 @end
