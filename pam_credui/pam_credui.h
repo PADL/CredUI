@@ -15,8 +15,8 @@
 extern "C" {
 #endif
     
-CUI_EXPORT int
-pam_select_credential(pam_handle_t *pamh);
+int
+pam_select_credential(pam_handle_t *pamh, int flags);
 
 #ifdef __cplusplus
 }
