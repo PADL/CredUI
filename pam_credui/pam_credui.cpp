@@ -322,6 +322,27 @@ cleanup:
     return rc;
 }
 
+static int
+_PAMSetTargetNameWithService(pam_handle_t *pamh, CUIControllerRef controller)
+{
+    const char *service = NULL;
+    CFStringRef cfService;
+    int rc;
+
+    rc = pam_get_item(pamh, PAM_SERVICE, (const void **)&service);
+    if (rc != PAM_SUCCESS)
+        return rc;
+
+    cfService = CFStringCreateWithCString(kCFAllocatorDefault, service, kCFStringEncodingUTF8);
+    if (cfService == NULL)
+        return PAM_BUF_ERR;
+
+    CUIControllerSetTargetName(controller, cfService);
+    CFRelease(cfService);
+
+    return PAM_SUCCESS;
+}
+
 CUI_EXPORT int
 pam_select_credential(pam_handle_t *pamh, int flags)
 {
@@ -348,6 +369,10 @@ pam_select_credential(pam_handle_t *pamh, int flags)
         rc = PAM_BUF_ERR;
         goto cleanup;
     }
+
+    rc = _PAMSetTargetNameWithService(pamh, controller);
+    if (rc != PAM_SUCCESS)
+        goto cleanup;
     
     rc = _PAMCreateAttributesFromHandle(pamh, &attributes);
     if (rc == PAM_BUF_ERR)
