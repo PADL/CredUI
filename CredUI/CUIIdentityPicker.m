@@ -35,9 +35,9 @@
 #if !__has_feature(objc_arc)
     [_reserved[0] release];
     [_reserved[1] release];
-#endif
 
     [super dealloc];
+#endif
 }
 
 - (instancetype)init

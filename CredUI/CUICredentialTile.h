@@ -12,7 +12,7 @@
 @interface CUICredentialTile : NSView
 {
     CUICredential *_credential;
-    CUICredentialTileController *_delegate;
+    __weak CUICredentialTileController *_delegate;
     BOOL _selected;
 }
 
