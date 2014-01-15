@@ -20,6 +20,9 @@
     gssItem = cuiCredential.attributes[(__bridge NSString *)kCUIAttrGSSItem];
     if (gssItem) {
         cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
+#if !__has_feature(objc_arc)
+        [cred retain];
+#endif
     } else {
         name = CFBridgingRelease([cuiCredential copyGSSName]);
         

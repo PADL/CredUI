@@ -66,6 +66,10 @@
 {
     if (_credential)
         _credential->Release();
+    
+#if !__has_feature(objc_arc)
+    [super dealloc];
+#endif
 }
 
 @end

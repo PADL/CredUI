@@ -46,6 +46,17 @@ static void testEncodeDecode(CUICredential * cred)
     NSLog(@"reconstitutedCred: %@", reconstitutedCred);
 }
 
+- (void)pickerWithFlags:(CUIFlags)flags usageScenario:(CUIUsageScenario)usageScenario attributes:(NSDictionary *)attributes
+{
+    CUIIdentityPicker *picker;
+
+    picker = [[CUIIdentityPicker alloc] initWithFlags:flags usageScenario:usageScenario attributes:attributes];
+    self.picker = picker;
+#if !__has_feature(objc_arc)
+    [picker release];
+#endif
+}
+
 - (void)identityPickerDidEndGSSIC:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if (returnCode == NSModalResponseOK) {
@@ -59,7 +70,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates];
+    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
     
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : (__bridge id)kCUIAttrClassKerberos };
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : @"1.3.6.1.4.1.5322.24.1.17" };
@@ -106,12 +117,16 @@ static void testEncodeDecode(CUICredential * cred)
         } else {
             NSLog(@"Acquire credential based on item %@ failed: %@", item, error);
         }
+#if !__has_feature(objc_arc)
+        [cred release];
+        [attrs release];
+#endif
     }
 }
 
 - (IBAction)showIdentityPickerGSSItem:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludeCertificates];
+    [self pickerWithFlags:CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -134,7 +149,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGeneric:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI | CUIFlagsExcludeCertificates];
+    [self pickerWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI | CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
     
     self.picker.title = @"Generic Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -166,8 +181,13 @@ static void testEncodeDecode(CUICredential * cred)
     initiatorCtx.credential = cred;
     initiatorCtx.promptForCredentials = YES;
     initiatorCtx.window = self.window;
-    
-    return [self doInitAcceptGSSContext:initiatorCtx];
+   
+   [self doInitAcceptGSSContext:initiatorCtx];
+
+#if !__has_feature(objc_arc)
+    [initiatorCtx release];
+    dispatch_release(queue);
+#endif
 }
 
 - (void)identityPickerDidEndCert:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -183,7 +203,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerCert:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate];
+    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate usageScenario:kCUIUsageScenarioNetwork attributes:nil];
     
     self.picker.title = @"Certificate Picker";
     self.picker.message = @"Choose an identity";
@@ -210,9 +230,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerLocal:(id)sender
 {
-    self.picker = [[CUIIdentityPicker alloc] initWithFlags:0
-                                             usageScenario:kCUIUsageScenarioLogin
-                                                attributes:nil];
+    [self pickerWithFlags:0 usageScenario:kCUIUsageScenarioLogin attributes:nil];
                    
     self.picker.title = @"Local Picker";
     self.picker.message = @"Choose an identity";

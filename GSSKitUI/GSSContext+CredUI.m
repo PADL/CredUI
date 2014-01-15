@@ -71,6 +71,10 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     if ([self.lastError _gssError] ||
         _GSSNeedUpdateContextCredentialP(credential, self.credential))
         self.credential = gssCred;
+    
+#if !__has_feature(objc_arc)
+    [gssCred release];
+#endif
 }
 
 - (void)_runIdentityPicker:(id)errorContainer
@@ -96,6 +100,11 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
                         modalDelegate:self
                        didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
                           contextInfo:(__bridge void *)errorContainer];
+    
+#if !__has_feature(objc_arc)
+    [identityPicker autorelease];
+    [attributes release];
+#endif
 }
 
 
@@ -121,12 +130,18 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     
     if (credential == nil)
         return nil;
-    
+
+    GSSCredential *gssCred = [[GSSCredential alloc] initWithCUICredential:credential error:NULL];
+
     self = [self initWithRequestFlags:flags queue:queue isInitiator:YES];
     
     self.mechanism = [GSSMechanism mechanismForCUICredential:credential];
     self.targetName = identityPicker.targetName;
-    self.credential = [[GSSCredential alloc] initWithCUICredential:credential error:NULL];
+    self.credential = gssCred;
+    
+#if !__has_feature(objc_arc)
+    [gssCred release];
+#endif
     
     return self;
 }

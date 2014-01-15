@@ -37,6 +37,10 @@
     initiatorCtx.window = self.window;
 
     [self doInitAcceptGSSContext:initiatorCtx];
+    
+#if !__has_feature(objc_arc)
+    dispatch_release(queue);
+#endif
 }
 
 - (void)doInitAcceptGSSContext:(GSSContext *)initiatorCtx
