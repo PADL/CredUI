@@ -8,6 +8,9 @@
 
 @interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
 
+@property(nonatomic, retain) id delegate;
+@property(nonatomic) SEL didEndSelector;
+
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSDictionary *attributes;
@@ -25,12 +28,11 @@
 
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
 
+@property(nonatomic, retain) NSPanel *identityPickerPanel;
 @property(nonatomic, retain) NSCollectionView *collectionView;
 @property(nonatomic, retain) NSTextField *messageTextField;
 @property(nonatomic, retain) NSButton *persistCheckBox;
 @property(nonatomic, retain) NSButton *submitButton;
-
-- (NSModalResponse)_runModal:(NSWindow *)window;
 
 - (instancetype)initWithFlags:(CUIFlags)flags
                 usageScenario:(CUIUsageScenario)usageScenario
@@ -43,5 +45,8 @@
 - (void)didSubmitCredential;
 
 - (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props;
+
+- (NSInteger)runModal;
+- (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
 
 @end

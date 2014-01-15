@@ -14,13 +14,16 @@
 
 @property(nonatomic, retain) NSArrayController *credsController;
 @property(nonatomic, assign) BOOL runningModal;
-@property(nonatomic, assign) BOOL autoLogin;
 
 @property(nonatomic, retain, readonly) NSString *targetHostName;
 
 - (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario;
-- (void)_populateCredentials;
-- (void)_updateSubmitButtonForSelectedCred;
+
+- (void)startCredentialEnumeration;
+- (void)cancelCredentialEnumeration;
+- (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
+
+- (void)updateSubmitButtonForSelectedCred;
 
 @end
 
@@ -56,10 +59,12 @@
                 usageScenario:(CUIUsageScenario)usageScenario
                    attributes:(NSDictionary *)attributes
 {
-    self = [super initWithWindow:[self _newPanel]];
+    self = [super init];
     if (self == nil)
         return nil;
-    
+   
+    self.identityPickerPanel = [self _newPanel];
+ 
     if (usageScenario == kCUIUsageScenarioLogin) {
         /* Make sure login credentails can never be persisted */
         flags &= ~(CUIFlagsPersist);
@@ -116,19 +121,21 @@
             if (autoLogin && creds.count > 1 && !self.runningModal)
                 autoLogin = NO;
             
-            if (autoLogin) {
-                NSAssert(self.autoLogin == NO, @"Only one credential can be selected and auto-login");
-                self.autoLogin = autoLogin;
-                [NSApp stopModal];
-            }
+            if (autoLogin)
+                [self willSubmitCredential:self.submitButton];
             
-            [self _updateSubmitButtonForSelectedCred];
+            [self updateSubmitButtonForSelectedCred];
         }
     }
 }
 
-- (void)_populateCredentials
+- (void)startCredentialEnumeration
 {
+    if (self.title)
+        self.identityPickerPanel.title = self.title;
+    if (self.message)
+        self.messageTextField.stringValue = self.message;
+
     self.credsController = [[NSArrayController alloc] init];
     self.credsController.selectsInsertedObjects = NO;
     
@@ -153,65 +160,96 @@
                           forKeyPath:@"selectionIndexes"
                              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
                              context:NULL];
-}
 
-#pragma mark - Run Loop
-
-- (NSModalResponse)_runModal:(NSWindow *)window
-{
-    __block NSModalResponse modalResponse = NSModalResponseStop;
-    
-    if (self.title)
-        self.window.title = self.title;
-    if (self.message)
-        self.messageTextField.stringValue = self.message;
-    
-    [self _populateCredentials];
-   
-    /*
-     * Generic credentials can be automatically submitted if there is an available
-     * credential. Or at least, that's what Windows does.
-     */
+    /* Generic credentials can be automatically submitted if there is an available credential. */
     if ((self.flags & CUIFlagsGenericCredentials) &&
         (self.flags & CUIFlagsAlwaysShowUI) == 0 &&
         [self.selectedCredential canSubmit])
-        goto autoSubmit;
-
-    self.autoLogin = NO;
-    self.runningModal = YES;
-    
-    if (window) {
-        [window beginSheet:self.window completionHandler:^(NSModalResponse sheetReturnCode) {
-            modalResponse = sheetReturnCode;
-        }];
-    } else {
-        modalResponse = [NSApp runModalForWindow:self.window];
-    }
-   
-    self.runningModal = NO;
-    
-    if (self.autoLogin) {
-    autoSubmit:
         [self willSubmitCredential:self.submitButton];
-    }
-    
+
+    self.runningModal = YES;
+}
+
+- (void)cancelCredentialEnumeration
+{
+    self.credsController = nil;
+}
+
+- (void)endCredentialEnumeration:(NSModalResponse)modalResponse
+{
+    self.runningModal = NO;
+
+    if (modalResponse == NSModalResponseOK)
+        [self didSubmitCredential];
+
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
     [self.credsController unbind:NSContentBinding];
     [self.credsController unbind:NSSelectionIndexesBinding];
-    
-    [self didSubmitCredential];
-    
+
+    if (modalResponse != NSModalResponseOK)
+        self.credsController = nil; /* so selectedCredential will return nil */
+}    
+
+#pragma mark - Run Loop
+
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    [self endCredentialEnumeration:returnCode];
+
+    if (self.delegate) {
+        NSMethodSignature *signature = [self.delegate methodSignatureForSelector:self.didEndSelector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        void *object = (__bridge void *)self;
+
+        [invocation setTarget:self.delegate];
+        [invocation setSelector:self.didEndSelector];
+        [invocation setArgument:&object atIndex:2];
+        [invocation setArgument:&returnCode atIndex:3];
+        [invocation setArgument:&contextInfo atIndex:4];
+        [invocation invoke];
+    }
+}
+
+- (NSInteger)runModal
+{
+    NSModalResponse modalResponse;
+
+    [self startCredentialEnumeration];
+
+    modalResponse = [NSApp runModalForWindow:self.identityPickerPanel];
+
+    [self endCredentialEnumeration:modalResponse];
+
     return modalResponse;
+}
+
+- (void)runModalForWindow:(NSWindow *)window
+            modalDelegate:(id)delegate
+           didEndSelector:(SEL)didEndSelector
+              contextInfo:(void *)contextInfo
+{
+    self.window = window;
+    self.delegate = delegate;
+    self.didEndSelector = didEndSelector;
+
+    [self startCredentialEnumeration];
+
+    [NSApp beginSheet:self.identityPickerPanel
+       modalForWindow:self.window
+        modalDelegate:self
+       didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
+          contextInfo:contextInfo];
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    if (self.window == nil)
+        [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseOK : NSModalResponseCancel];
 }
 
 #pragma mark - Credential submission
 
-- (void)windowWillClose:(NSNotification *)notification
-{
-    [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseOK : NSModalResponseCancel];
-}
-
-- (void)_updateSubmitButtonForSelectedCred
+- (void)updateSubmitButtonForSelectedCred
 {
     self.submitButton.enabled = [self.selectedCredential canSubmit];
 }
@@ -219,8 +257,16 @@
 - (void)willSubmitCredential:(id)sender
 {
     self.submitButton.state = NSOnState; // in case cred was submitted without clicking
+
     [self.selectedCredential willSubmit];
-    [self.window performClose:sender];
+
+    [self.identityPickerPanel orderOut:sender];
+
+    if (self.window) {
+        [self.window endSheet:self.identityPickerPanel returnCode:NSModalResponseOK];
+    } else {
+        [self.identityPickerPanel close];
+    }
 }
 
 - (void)didSubmitCredential
@@ -235,7 +281,7 @@
 - (void)credentialFieldDidChange:(CUICredential *)credential
 {
     if ([credential isEqual:self.selectedCredential])
-        [self _updateSubmitButtonForSelectedCred];
+        [self updateSubmitButtonForSelectedCred];
 }
 
 - (void)didClickPersist:(id)sender

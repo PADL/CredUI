@@ -48,7 +48,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (void)identityPickerDidEndGSSIC:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    if (returnCode == NSModalResponseStop) {
+    if (returnCode == NSModalResponseOK) {
         testEncodeDecode(identityPicker.selectedCredential);
         NSLog(@"IC picker did end: %@", identityPicker.selectedCredential.attributes);
         (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
@@ -63,13 +63,13 @@ static void testEncodeDecode(CUICredential * cred)
     
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : (__bridge id)kCUIAttrClassKerberos };
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : @"1.3.6.1.4.1.5322.24.1.17" };
-
+    
     self.picker.title = @"Identity Picker";
     self.picker.message = @"Choose an identity";
 
     /* The target name can be a NSString, NSURL or gss_name_t */
     self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
-    
+
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(identityPickerDidEndGSSIC:returnCode:contextInfo:)
@@ -80,7 +80,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (void)identityPickerDidEndGSSItem:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    if (returnCode == NSModalResponseStop) {
+    if (returnCode == NSModalResponseOK) {
         NSLog(@"Item picker did end: %@", identityPicker.selectedCredential.attributes);
         __block NSError *error = nil;
         
@@ -172,7 +172,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (void)identityPickerDidEndCert:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    if (returnCode == NSModalResponseStop) {
+    if (returnCode == NSModalResponseOK) {
         testEncodeDecode(identityPicker.selectedCredential);
         NSLog(@"Cert picker did end: %@", identityPicker.selectedCredential.attributes);
         (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
@@ -199,7 +199,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (void)identityPickerDidEndLocal:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    if (returnCode == NSModalResponseStop) {
+    if (returnCode == NSModalResponseOK) {
         NSLog(@"Local picker did end: %@", identityPicker.selectedCredential.attributes);
         NSLog(@"CB identity: %@", identityPicker.selectedCredential.userIdentity);
         NSLog(@"Authentication status: %d", [identityPicker.selectedCredential authenticateForLoginScenario:@"pamtest"]);
@@ -217,10 +217,15 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.title = @"Local Picker";
     self.picker.message = @"Choose an identity";
     
+#if 0
     [self.picker runModalForWindow:self.window
                      modalDelegate:self
                     didEndSelector:@selector(identityPickerDidEndLocal:returnCode:contextInfo:)
                        contextInfo:NULL];
+#else
+    NSModalResponse modalResponse = [self.picker runModal];
+    [self identityPickerDidEndLocal:self.picker returnCode:modalResponse contextInfo:NULL];
+#endif
 }
 
 @end

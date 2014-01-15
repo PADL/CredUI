@@ -11,7 +11,8 @@
  * the guts into another process sometime.
  */
 @interface CUIIdentityPicker ()
-@property (nonatomic, assign) NSModalResponse modalResponse;
+@property (nonatomic, retain) id delegate;
+@property (nonatomic) SEL didEndSelector;
 @end
 
 @implementation CUIIdentityPicker
@@ -40,8 +41,6 @@
     if ((self = [super init]) == nil)
         return nil;
 
-    self.modalResponse = NSModalResponseStop;
-   
     _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
                                                    usageScenario:usageScenario
                                                       attributes:attributes];
@@ -52,28 +51,37 @@
 
 #pragma mark - Run Loop
 
+- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
+{
+    NSMethodSignature *signature = [self.delegate methodSignatureForSelector:self.didEndSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    void *object = (__bridge void *)self;
+
+    [invocation setTarget:self.delegate];
+    [invocation setSelector:self.didEndSelector];
+    [invocation setArgument:&object atIndex:2];
+    [invocation setArgument:&returnCode atIndex:3];
+    [invocation setArgument:&contextInfo atIndex:4];
+    [invocation invoke];
+}
+
 - (void)runModalForWindow:(NSWindow *)window
             modalDelegate:(id)delegate
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    _modalResponse = [_internal _runModal:window];
+    self.delegate = delegate;
+    self.didEndSelector = didEndSelector;
 
-    NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    void *object = (__bridge void *)self;
-    
-    [invocation setTarget:delegate];
-    [invocation setSelector:didEndSelector];
-    [invocation setArgument:&object atIndex:2];
-    [invocation setArgument:&_modalResponse atIndex:3];
-    [invocation setArgument:&contextInfo atIndex:4];
-    [invocation invoke];
+    return [_internal runModalForWindow:window
+                          modalDelegate:self
+                         didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
+                            contextInfo:contextInfo];
 }
 
 - (NSInteger)runModal
 {
-    return [_internal _runModal:nil];
+    return [_internal runModal];
 }
 
 #pragma mark - Accessors
@@ -117,9 +125,6 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
 - (CUICredential *)selectedCredential
 {
-    if (_modalResponse != NSModalResponseOK)
-        return nil;
-        
     return _internal.selectedCredential;
 }
 

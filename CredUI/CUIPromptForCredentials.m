@@ -21,6 +21,8 @@ _CUIPromptForCredentials(CFTypeRef targetName,
 {
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
     CUICredential *selectedCredential;
+    NSModalSession modalSession;
+    NSModalResponse modalResponse;
     
     if (error != NULL)
         *error = NULL;
@@ -34,7 +36,21 @@ _CUIPromptForCredentials(CFTypeRef targetName,
  
     /* Don't clobber the internal parent window, which is the window the CredUI window itself */
     [identityPicker->_internal setCredUIContext:uiContext properties:kCUICredUIContextPropertyAll & ~(kCUICredUIContextPropertyParentWindow)];
-    [identityPicker->_internal _runModal:uiContext ? (__bridge NSWindow *)uiContext->parentWindow : nil];
+
+    if (uiContext && uiContext->parentWindow) {
+        [identityPicker runModalForWindow:(__bridge NSWindow *)uiContext->parentWindow
+                            modalDelegate:nil
+                           didEndSelector:NULL
+                              contextInfo:NULL];
+    }
+    
+    modalSession = [NSApp beginModalSessionForWindow:identityPicker->_internal.identityPickerPanel];
+    do {
+        modalResponse = [NSApp runModalSession:modalSession];
+    } while (modalResponse == NSModalResponseContinue &&
+             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+    
+    [NSApp endModalSession:modalSession];
     
     selectedCredential = identityPicker.selectedCredential;
     

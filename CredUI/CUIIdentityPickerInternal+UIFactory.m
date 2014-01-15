@@ -85,12 +85,11 @@
 - (void)_loadViews
 {
     NSScrollView *scrollView;
-    NSPanel *panel = (NSPanel *)[self window];
     
     self.messageTextField = [self _newMessageTextField];
-    [self.window.contentView addSubview:self.messageTextField];
+    [self.identityPickerPanel.contentView addSubview:self.messageTextField];
     
-    NSRect frame = [[panel contentView] frame];
+    NSRect frame = [[self.identityPickerPanel contentView] frame];
     frame.size.height -= 50;
     frame.origin.y = 50;
     
@@ -101,16 +100,16 @@
     self.collectionView = [self _newCollectionViewEnclosedInView:scrollView];
     scrollView.documentView = self.collectionView;
     
-    [self.window.contentView addSubview:scrollView];
+    [self.identityPickerPanel.contentView addSubview:scrollView];
     
     if (self.flags & CUIFlagsShowSaveCheckBox) {
         self.persistCheckBox = [self _newPersistCheckBox];
-        [self.window.contentView addSubview:self.persistCheckBox];
+        [self.identityPickerPanel.contentView addSubview:self.persistCheckBox];
     }
     self.submitButton = [self _newSubmitButton];
-    [self.window.contentView addSubview:self.submitButton];
+    [self.identityPickerPanel.contentView addSubview:self.submitButton];
     
-    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.identityPickerPanel };
     [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
 }
     

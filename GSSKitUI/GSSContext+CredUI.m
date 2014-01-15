@@ -47,7 +47,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     GSSCredential *gssCred;
     NSError *error;
     
-    if (returnCode != NSModalResponseStop) {
+    if (returnCode != NSModalResponseOK) {
         errorContainer.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
         return;
     }
