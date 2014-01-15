@@ -8,9 +8,6 @@
 
 @interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
 
-@property(nonatomic, retain) id delegate;
-@property(nonatomic) SEL didEndSelector;
-
 @property(nonatomic, copy) NSString *title;
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSDictionary *attributes;

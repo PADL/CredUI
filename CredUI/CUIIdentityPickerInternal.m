@@ -186,24 +186,6 @@
 
 #pragma mark - Run Loop
 
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
-{
-    [self endCredentialEnumeration:returnCode];
-
-    if (self.delegate) {
-        NSMethodSignature *signature = [self.delegate methodSignatureForSelector:self.didEndSelector];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        void *object = (__bridge void *)self;
-
-        [invocation setTarget:self.delegate];
-        [invocation setSelector:self.didEndSelector];
-        [invocation setArgument:&object atIndex:2];
-        [invocation setArgument:&returnCode atIndex:3];
-        [invocation setArgument:&contextInfo atIndex:4];
-        [invocation invoke];
-    }
-}
-
 - (NSInteger)runModal
 {
     NSModalResponse modalResponse;
@@ -223,16 +205,26 @@
               contextInfo:(void *)contextInfo
 {
     self.window = window;
-    self.delegate = delegate;
-    self.didEndSelector = didEndSelector;
 
     [self startCredentialEnumeration];
 
-    [NSApp beginSheet:self.identityPickerPanel
-       modalForWindow:self.window
-        modalDelegate:self
-       didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:)
-          contextInfo:contextInfo];
+    [window beginSheet:self.identityPickerPanel
+     completionHandler:^(NSModalResponse returnCode) {
+        [self endCredentialEnumeration:returnCode];
+
+        if (delegate) {
+            NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            void *object = (__bridge void *)self;
+
+            [invocation setTarget:delegate];
+            [invocation setSelector:didEndSelector];
+            [invocation setArgument:&object atIndex:2];
+            [invocation setArgument:&returnCode atIndex:3];
+            [invocation setArgument:(void **)&contextInfo atIndex:4];
+            [invocation invoke];
+        }
+    }];
 }
 
 - (void)windowWillClose:(NSNotification *)notification
