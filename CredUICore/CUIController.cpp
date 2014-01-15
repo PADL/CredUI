@@ -437,7 +437,7 @@ CUIControllerGetCredUIContext(CUIControllerRef controller)
 CUI_EXPORT void
 CUIControllerSetContext(CUIControllerRef controller, const void *context)
 {
-    _CUISetter(controller->_context, context);
+    controller->_context = context;
 }
 
 CUI_EXPORT const void *
