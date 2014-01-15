@@ -137,15 +137,25 @@ CUI_EXPORT const CFStringRef kCUICredentialReturnCredentialFinished;
 // no credential made but force caller to return
 CUI_EXPORT const CFStringRef kCUICredentialReturnNoCredentialFinished;
 
+/*
+ * Enumerate credential providers with a specific set of usage flags. This is used by persistence
+ * and identity credential providers to enumerate other credential providers.
+ */
 CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
                                             CUIUsageFlags extraUsageFlags,
                                             CFDictionaryRef attributes,
                                             void (^cb)(CUICredentialRef, Boolean, CFErrorRef));
 
+/*
+ * Find a credential provider by a factory ID. Only concerete providers are enumerated by this call.
+ */
 CUI_EXPORT CUIProvider *
 CUIControllerFindProviderByFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
 
+/*
+ * Find a persistence provider by a factory ID.
+ */
 CUI_EXPORT CUICredentialPersistence *
 CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRef factoryID);
 
@@ -153,6 +163,9 @@ CUIControllerCreatePersistenceForFactoryID(CUIControllerRef controller, CFUUIDRe
 }
 #endif
 
+/*
+ * Create a new CUICredentialRef object. The context must implement CUICredentialContext.
+ */
 #ifdef __cplusplus
 extern "C" {
 CUI_EXPORT CUICredentialRef

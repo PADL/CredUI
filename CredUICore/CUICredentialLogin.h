@@ -12,7 +12,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+/*
+ * Performs a local PAM login for the selected credential user.
+ */    
 CUI_EXPORT Boolean
 CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringRef pamService);
 

@@ -15,6 +15,9 @@
 extern "C" {
 #endif
 
+/*
+ * Returns true if authError indicates that further user interaction is required.
+ */
 CUI_EXPORT Boolean
 GSSIsPromptingNeeded(CFErrorRef authError);
 

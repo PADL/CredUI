@@ -14,7 +14,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+/*
+ * Create a proxy credential from a set of serialized attributes. The only valid call on
+ * this credential is CUICredentialGetAttributes.
+ */    
 CUI_EXPORT CUICredentialRef
 CUICredentialCreateProxy(CFAllocatorRef allocator,
                          CFDictionaryRef credAttributes);
