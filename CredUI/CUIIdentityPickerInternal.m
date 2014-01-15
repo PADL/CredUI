@@ -187,7 +187,7 @@
     } else {
         modalResponse = [NSApp runModalForWindow:self.window];
     }
-    
+   
     self.runningModal = NO;
     
     if (self.autoLogin) {
@@ -208,7 +208,7 @@
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-    [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseStop : NSModalResponseAbort];
+    [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseOK : NSModalResponseCancel];
 }
 
 - (void)_updateSubmitButtonForSelectedCred

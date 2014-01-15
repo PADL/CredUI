@@ -51,17 +51,24 @@ __attribute__((visibility("default")))
 /* The last error from credential selection */
 @property(nonatomic, retain, readonly) NSError *lastError;
 
+/* Create a new IdentityPicker with the specified flags */
 - (instancetype)initWithFlags:(CUIFlags)flags;
 
+/*
+ * Create a new IdentityPicker with the specified flags and attributes. The attributes will be used to restrict the
+ * list of enumerated credentials. For example, specifying kCUIAttrName will only enumerate credentials for a specific
+ * user. Attributes can be found in <CredUICore/CUIAttributes.h>.
+ */
 - (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attrs;
 
-/* Run the IdentityPicker as an application-modal panel and return a attribute dictionary. Return NSOKButton or NSCancelButton. */
+/* Run the IdentityPicker as an application-modal panel and return a attribute dictionary. Return NSModalResponseOK or NSModalResponseCancel. */
 - (NSInteger)runModal;
 
-/* Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.
-   The didEndSelector should have the following signature:
-    - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
-*/
+/*
+ * Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.
+ * The didEndSelector should have the following signature:
+ *  - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+ */
 - (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
 
 @end

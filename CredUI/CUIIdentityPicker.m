@@ -28,29 +28,24 @@
     return [self initWithFlags:flags attributes:nil];
 }
 
+- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
+{
+    return [self initWithFlags:flags usageScenario:kCUIUsageScenarioNetwork attributes:attributes];
+}
+
 - (instancetype)initWithFlags:(CUIFlags)flags
                 usageScenario:(CUIUsageScenario)usageScenario
                    attributes:(NSDictionary *)attributes
 {
     if ((self = [super init]) == nil)
         return nil;
+
+    self.modalResponse = NSModalResponseStop;
    
     _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
                                                    usageScenario:usageScenario
                                                       attributes:attributes];
 
-    
-    return self;
-}
-
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
-{
-    if ((self = [super init]) == nil)
-        return nil;
-   
-    _internal = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
-                                                   usageScenario:kCUIUsageScenarioNetwork
-                                                      attributes:attributes];
     
     return self;
 }
@@ -102,7 +97,7 @@
                                                                         \
 - (void)setter:(type)arg                                                \
 {                                                                       \
-    _internal.getter = arg;                                                \
+    _internal.getter = arg;                                             \
 }                                                                        
 
 FORWARD_PROPERTY(NSString *,            setTitle,               title)
@@ -122,7 +117,7 @@ FORWARD_PROPERTY(id,                    setTargetName,          targetName)
 
 - (CUICredential *)selectedCredential
 {
-    if (_modalResponse != NSModalResponseStop)
+    if (_modalResponse != NSModalResponseOK)
         return nil;
         
     return _internal.selectedCredential;
