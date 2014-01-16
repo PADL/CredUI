@@ -88,7 +88,7 @@ public:
         if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioNetwork)
             return false;
 
-        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsGeneric | kCUIUsageFlagsDoNotShowUI | kCUIUsageFlagsRequireCertificates))
+        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsGeneric | kCUIUsageFlagsConsole | kCUIUsageFlagsRequireCertificates))
             return false;
         
         _controller = (CUIControllerRef)CFRetain(controller);

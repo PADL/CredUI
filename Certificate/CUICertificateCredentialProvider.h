@@ -73,7 +73,7 @@ public:
     CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags);
     
     Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
-        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsExcludeCertificates | kCUIUsageFlagsDoNotShowUI)) 
+        if (CUIControllerGetUsageFlags(controller) & (kCUIUsageFlagsExcludeCertificates | kCUIUsageFlagsConsole)) 
             return false;
 
         _controller = (CUIControllerRef)CFRetain(controller);

@@ -352,7 +352,7 @@ pam_select_credential(pam_handle_t *pamh, int flags)
     Boolean autoLogin = false;
     __block CFIndex defaultCredentialIndex = kCFNotFound;
 
-    controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioLogin, kCUIUsageFlagsDoNotShowUI);
+    controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioLogin, kCUIUsageFlagsConsole);
     if (controller == NULL) {
         rc = PAM_SERVICE_ERR;
         goto cleanup;
