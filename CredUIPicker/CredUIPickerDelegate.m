@@ -30,6 +30,9 @@
 
 @implementation CredUIPickerDelegate
 
+@synthesize window = _window;
+@synthesize picker = _picker;
+
 #pragma mark - GSS IC picker
 
 /*

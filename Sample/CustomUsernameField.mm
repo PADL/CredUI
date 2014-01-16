@@ -20,10 +20,14 @@
  */
 
 @interface CustomUsernameField : CUIField
+{
+    SampleCredential *_credential;
+}
 @property (nonatomic) SampleCredential *credential;
 @end
 
 @implementation CustomUsernameField
+@synthesize credential = _credential;
 
 - (void)setValue:(id)aValue
 {

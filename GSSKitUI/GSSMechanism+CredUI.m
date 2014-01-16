@@ -9,9 +9,9 @@
 @implementation GSSMechanism (CredUI)
 + (GSSMechanism *)mechanismForCUICredential:(CUICredential *)cuiCredential
 {
-    GSSMechanism *mech = [self mechanismWithClass:cuiCredential.attributes[(__bridge id)kCUIAttrClass]];
+    GSSMechanism *mech = [self mechanismWithClass:[cuiCredential.attributes objectForKey:(__bridge id)kCUIAttrClass]];
     
-    if ([mech isKerberosMechanism] && cuiCredential.attributes[(__bridge id)kCUIAttrCredentialSecIdentity])
+    if ([mech isKerberosMechanism] && [cuiCredential.attributes objectForKey:(__bridge id)kCUIAttrCredentialSecIdentity])
         mech = [GSSMechanism IAKerbMechanism];
     
     return mech;

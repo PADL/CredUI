@@ -12,6 +12,10 @@
 @class GSSCredential;
 
 @interface CredUIPickerDelegate : NSObject <NSApplicationDelegate>
+{
+    NSWindow *_window;
+    CUIIdentityPicker *_picker;
+}
 
 @property (assign) IBOutlet NSWindow *window;
 @property (nonatomic, strong) CUIIdentityPicker *picker;

@@ -10,6 +10,9 @@
 #import "GSSContext+CredUI.h"
 
 @interface GSSKitUI_ErrorContainer : NSObject
+{
+    NSError *_error;
+}
 @property(nonatomic, retain) NSError *error;
 @end
 
@@ -26,6 +29,7 @@
 @end
 
 @implementation GSSKitUI_ErrorContainer
+@synthesize error = _error;
 @end
 
 @implementation GSSContext (CredUI)
@@ -87,7 +91,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
                                          } mutableCopy];
    
     if (self.mechanism)
-        attributes[(__bridge id)kCUIAttrClass] = self.mechanism.mechanismClass;
+        [attributes setObject:self.mechanism.mechanismClass forKey:(__bridge id)kCUIAttrClass];
     
     identityPicker = [[CUIIdentityPicker alloc] initWithFlags:0 attributes:attributes];
     
