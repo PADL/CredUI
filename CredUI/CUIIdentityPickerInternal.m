@@ -185,10 +185,10 @@
         self.messageTextField.stringValue = self.message;
 
     NSArrayController *credsController = [[NSArrayController alloc] init];
-#if !__has_feature(objc_arc)
-    [credsController autorelease];
-#endif
     self.credsController = credsController;
+#if !__has_feature(objc_arc)
+    [credsController release];
+#endif
     
     self.credsController.selectsInsertedObjects = NO;
     
