@@ -64,7 +64,13 @@
             
             [initiatorCtx stepWithData:acceptorToken
                      completionHandler:^(NSData *outputToken, NSError *error) {
+#if !__has_feature(objc_arc)
+                         [initiatorToken release];
+                         initiatorToken = [outputToken retain];
+#else
                          initiatorToken = outputToken;
+#endif
+                         
                          dispatch_semaphore_signal(sema);
                      }];
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
@@ -76,7 +82,12 @@
             
             [acceptorCtx stepWithData:initiatorToken
                     completionHandler:^(NSData *outputToken, NSError *error) {
+#if !__has_feature(objc_arc)
+                        [acceptorToken release];
+                        acceptorToken = [outputToken retain];
+#else
                         acceptorToken = outputToken;
+#endif
                         dispatch_semaphore_signal(sema);
                     }];
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
