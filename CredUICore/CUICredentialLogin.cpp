@@ -6,10 +6,6 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#ifdef DEBUG
-#include <dlfcn.h>
-#endif
-
 #include "CredUICore_Private.h"
 
 CUI_EXPORT void
