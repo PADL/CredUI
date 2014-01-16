@@ -236,6 +236,8 @@
 
     if (modalResponse != NSModalResponseOK)
         self.credsController = nil; /* so selectedCredential will return nil */
+
+    self.window = nil;
 }    
 
 #pragma mark - Run Loop
