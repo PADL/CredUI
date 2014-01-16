@@ -13,10 +13,13 @@ extern "C" {
 }
 
 CSIdentityQueryRef
-CUILoginIdentityCredentialProvider::createQuery(CFDictionaryRef attributes)
+CUILoginIdentityCredentialProvider::createQuery(CFDictionaryRef attributes, CUIUsageFlags usageFlags)
 {
     CSIdentityQueryRef query;
     CFStringRef name = NULL;
+
+    if (usageFlags & kCUIUsageFlagsEnumerateCurrentUser)
+        return CSIdentityQueryCreateForCurrentUser(kCFAllocatorDefault);
 
     if (attributes)
         name = (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrName);
@@ -79,7 +82,7 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
                                                    &kCFTypeArrayCallBacks);
     __block CFIndex cCreds = 0;
 
-    query = createQuery(attributes);
+    query = createQuery(attributes, usageFlags);
     if (query == NULL)
         return NULL;
 

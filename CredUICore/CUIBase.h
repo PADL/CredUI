@@ -31,7 +31,7 @@ typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {
     kCUIUsageFlagsInClassOnly           = 0x00000010,   /* only enumerate providers that support this class */
     kCUIUsageFlagsInCredOnly            = 0x00000020,   /* only enumerate credentials in controller attributes */
     kCUIUsageFlagsEnumerateAdmins       = 0x00000100,   /* unimplemented, login scenario only */
-    kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,   /* unimplemented, login scenario only */
+    kCUIUsageFlagsEnumerateCurrentUser  = 0x00000200,   /* login scenario, enumerate current user only */
     kCUIUsageFlagsDoNotShowUI           = 0x01000000,   /* caller is a console app */
     kCUIUsageFlagsExcludeCertificates   = 0x02000000,   /* do not enumerate certificate credentials */
     kCUIUsageFlagsRequireCertificates   = 0x04000000,   /* only enumerate certificate credentials */

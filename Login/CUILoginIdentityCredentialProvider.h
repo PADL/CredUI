@@ -66,7 +66,7 @@ public:
                                        CFErrorRef *error);
 
     // helpers    
-    CSIdentityQueryRef createQuery(CFDictionaryRef attributes);
+    CSIdentityQueryRef createQuery(CFDictionaryRef attributes, CUIUsageFlags usageFlags);
     CFDictionaryRef copyAttributesForIdentity(CSIdentityRef identity, CFDictionaryRef assertedAttributes);
 
     CUILoginIdentityCredentialProvider() {
