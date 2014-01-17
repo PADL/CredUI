@@ -63,6 +63,8 @@
 @property(nonatomic, retain) IBOutlet NSButton *submitButton;
 @property(nonatomic, retain) IBOutlet NSButton *cancelButton;
 
+@property(nonatomic, retain) IBOutlet NSArrayController *credsController;
+
 - (instancetype)initWithFlags:(CUIFlags)flags
                 usageScenario:(CUIUsageScenario)usageScenario
                    attributes:(NSDictionary *)attributes;

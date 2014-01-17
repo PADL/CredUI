@@ -12,7 +12,6 @@
 @property(nonatomic, assign) CUICredUIContext *credUIContext;
 @property(nonatomic, assign) CUIFlags flags;
 
-@property(nonatomic, retain) NSArrayController *credsController;
 @property(nonatomic, assign) BOOL runningModal;
 
 @property(nonatomic, retain, readonly) NSString *targetHostName;
@@ -187,17 +186,8 @@
     if (self.message)
         self.messageTextField.stringValue = self.message;
 
-    NSArrayController *credsController = [[NSArrayController alloc] init];
-    self.credsController = credsController;
-#if !__has_feature(objc_arc)
-    [credsController release];
-#endif
-    
     self.credsController.selectsInsertedObjects = NO;
-    
-    [self.collectionView bind:NSContentBinding toObject:self.credsController withKeyPath:@"arrangedObjects" options:nil];
-    [self.collectionView bind:NSSelectionIndexesBinding toObject:self.credsController withKeyPath:@"selectionIndexes" options:nil];
-    
+
     CUIControllerEnumerateCredentials(self.controllerRef, ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef error) {
         if (cred) {
             [self.credsController addObject:(__bridge CUICredential *)cred];
@@ -234,8 +224,6 @@
         [self didSubmitCredential];
 
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
-    [self.credsController unbind:NSContentBinding];
-    [self.credsController unbind:NSSelectionIndexesBinding];
 
     if (modalResponse != NSModalResponseOK)
         self.credsController = nil; /* so selectedCredential will return nil */
@@ -292,6 +280,8 @@
 
 - (void)willCancelCredential:(id)sender
 {
+    [self.identityPickerPanel orderOut:sender];
+
     if (self.window) {
         [self.window endSheet:self.identityPickerPanel returnCode:NSModalResponseCancel];
     } else {
