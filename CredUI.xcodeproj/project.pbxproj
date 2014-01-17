@@ -206,6 +206,7 @@
 		D3CECCF8187ADFF30006EB36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3CECCF6187ADFF30006EB36 /* InfoPlist.strings */; };
 		D3CECCFF187AE0350006EB36 /* SampleCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CECCFD187AE0350006EB36 /* SampleCredential.cpp */; };
 		D3CECD02187AE03D0006EB36 /* SampleCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */; };
+		D3D36E911888AB0300C7E892 /* CUIIdentityPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */; };
 		D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3F67B11187513A1006B36C3 /* InfoPlist.strings */; };
 		D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */; };
@@ -660,6 +661,7 @@
 		D3CECCFE187AE0350006EB36 /* SampleCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleCredential.h; sourceTree = "<group>"; };
 		D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SampleCredentialProvider.cpp; sourceTree = "<group>"; };
 		D3CECD01187AE03D0006EB36 /* SampleCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleCredentialProvider.h; sourceTree = "<group>"; };
+		D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CUIIdentityPicker.xib; sourceTree = "<group>"; };
 		D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSItem.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F67B10187513A1006B36C3 /* GSSItem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSItem-Info.plist"; sourceTree = "<group>"; };
 		D3F67B12187513A1006B36C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1001,6 +1003,7 @@
 				D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */,
 				D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */,
 				D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */,
+				D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */,
 			);
 			path = CredUI;
 			sourceTree = "<group>";
@@ -1676,6 +1679,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E288182B51A6009271CD /* InfoPlist.strings in Resources */,
+				D3D36E911888AB0300C7E892 /* CUIIdentityPicker.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,11 +22,11 @@
 
     NSError *_lastError;
 
-    NSPanel *_identityPickerPanel;
-    NSCollectionView *_collectionView;
-    NSTextField *_messageTextField;
-    NSButton *_persistCheckBox;
-    NSButton *_submitButton;
+    IBOutlet NSPanel *_identityPickerPanel;
+    IBOutlet NSCollectionView *_collectionView;
+    IBOutlet NSTextField *_messageTextField;
+    IBOutlet NSButton *_persistCheckBox;
+    IBOutlet NSButton *_submitButton;
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
@@ -53,11 +53,11 @@
 
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
 
-@property(nonatomic, retain) NSPanel *identityPickerPanel;
-@property(nonatomic, retain) NSCollectionView *collectionView;
-@property(nonatomic, retain) NSTextField *messageTextField;
-@property(nonatomic, retain) NSButton *persistCheckBox;
-@property(nonatomic, retain) NSButton *submitButton;
+@property(nonatomic, retain) IBOutlet NSPanel *identityPickerPanel;
+@property(nonatomic, retain) IBOutlet NSCollectionView *collectionView;
+@property(nonatomic, retain) IBOutlet NSTextField *messageTextField;
+@property(nonatomic, retain) IBOutlet NSButton *persistCheckBox;
+@property(nonatomic, retain) IBOutlet NSButton *submitButton;
 
 - (instancetype)initWithFlags:(CUIFlags)flags
                 usageScenario:(CUIUsageScenario)usageScenario
