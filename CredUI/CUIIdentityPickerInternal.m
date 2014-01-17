@@ -203,10 +203,16 @@
 
 - (void)startCredentialEnumeration
 {
+    NSString *targetHostName;
+    
     if (self.title)
         self.titleTextField.stringValue = self.title;
+    else if ((targetHostName = self.targetHostName))
+        self.titleTextField.stringValue = [NSString stringWithFormat:@"Connecting to %@", targetHostName];
     if (self.message)
         self.messageTextField.stringValue = self.message;
+    else
+        self.messageTextField.stringValue = @"Enter your credentials";
 
     self.credsController.selectsInsertedObjects = NO;
 

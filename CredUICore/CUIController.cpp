@@ -480,6 +480,41 @@ CUICopyTargetDisplayName(CFTypeRef targetName)
     return displayName;
 }
 
+static CFStringRef
+_GSSServiceNameCreateDisplayString(gss_name_t targetName)
+{
+    OM_uint32 major, minor;
+    gss_buffer_desc buffer = GSS_C_EMPTY_BUFFER;
+    gss_OID oid = GSS_C_NO_OID;
+    CFStringRef displayString, hostName = NULL;
+    
+    major = gss_display_name(&minor, targetName, &buffer, &oid);
+    if (GSS_ERROR(major) || !gss_oid_equal(oid, GSS_C_NT_HOSTBASED_SERVICE))
+        return NULL;
+    
+    displayString = CFStringCreateWithBytes(kCFAllocatorDefault,
+                                            (const UInt8 *)buffer.value,
+                                            buffer.length,
+                                            kCFStringEncodingUTF8,
+                                            false);
+
+    (void) gss_release_buffer(&minor, &buffer);
+    
+    if (displayString) {
+        CFRange range = CFStringFind(displayString, CFSTR("@"), 0);
+        if (range.location != kCFNotFound && range.length > 0) {
+            range.location++;
+            range.length = CFStringGetLength(displayString) - range.location;
+            
+            hostName = CFStringCreateWithSubstring(kCFAllocatorDefault, displayString, range);
+        }
+        
+        CFRelease(displayString);
+    }
+    
+    return hostName;
+}
+
 CUI_EXPORT CFStringRef
 CUICopyTargetHostName(CFTypeRef targetName)
 {
@@ -490,8 +525,9 @@ CUICopyTargetHostName(CFTypeRef targetName)
     
     if (CFGetTypeID(targetName) == CFURLGetTypeID()) {
         hostName = CFURLCopyHostName((CFURLRef)targetName);
-    } else {
-        // We need to do something useful for GSS service names
+    } else if (CFGetTypeID(targetName) != CFStringGetTypeID()) {
+        /* here's hoping it's a GSS name, because otherwise we will crash XXX */
+        hostName = _GSSServiceNameCreateDisplayString((gss_name_t)targetName);
     }
     
     return hostName;
