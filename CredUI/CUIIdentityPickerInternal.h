@@ -22,11 +22,13 @@
 
     NSError *_lastError;
 
-    IBOutlet NSPanel *_identityPickerPanel;
-    IBOutlet NSCollectionView *_collectionView;
-    IBOutlet NSTextField *_messageTextField;
-    IBOutlet NSButton *_persistCheckBox;
-    IBOutlet NSButton *_submitButton;
+    NSPanel *_identityPickerPanel;
+    NSCollectionView *_collectionView;
+    NSTextField *_titleTextField;
+    NSTextField *_messageTextField;
+    NSButton *_persistCheckBox;
+    NSButton *_submitButton;
+    NSButton *_cancelButton;
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
@@ -55,9 +57,11 @@
 
 @property(nonatomic, retain) IBOutlet NSPanel *identityPickerPanel;
 @property(nonatomic, retain) IBOutlet NSCollectionView *collectionView;
+@property(nonatomic, retain) IBOutlet NSTextField *titleTextField;
 @property(nonatomic, retain) IBOutlet NSTextField *messageTextField;
 @property(nonatomic, retain) IBOutlet NSButton *persistCheckBox;
 @property(nonatomic, retain) IBOutlet NSButton *submitButton;
+@property(nonatomic, retain) IBOutlet NSButton *cancelButton;
 
 - (instancetype)initWithFlags:(CUIFlags)flags
                 usageScenario:(CUIUsageScenario)usageScenario
@@ -65,7 +69,11 @@
 
 - (void)credentialFieldDidChange:(CUICredential *)cred;
 
-- (void)didClickPersist:(id)sender;
+- (IBAction)didClickPersist:(id)sender;
+- (IBAction)didClickOK:(id)sender;
+- (IBAction)didClickCancel:(id)sender;
+ 
+- (void)willCancelCredential:(id)sender;
 - (void)willSubmitCredential:(id)sender;
 - (void)didSubmitCredential;
 

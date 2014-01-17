@@ -8,11 +8,6 @@
 
 @interface CUIIdentityPickerInternal (UIFactory)
 
-- (NSPanel *)_newPanel;
-- (NSCollectionView *)_newCollectionViewEnclosedInView:(NSView *)panel;
-- (NSTextField *)_newMessageTextField;
-- (NSButton *)_newSubmitButton;
-- (NSButton *)_newPersistCheckBox;
-- (void)_loadViews;
+- (BOOL)_loadViews;
 
 @end

@@ -44,9 +44,11 @@
 
 @synthesize identityPickerPanel = _identityPickerPanel;
 @synthesize collectionView = _collectionView;
+@synthesize titleTextField = _titleTextField;
 @synthesize messageTextField = _messageTextField;
 @synthesize persistCheckBox = _persistCheckBox;
 @synthesize submitButton = _submitButton;
+@synthesize cancelButton = _cancelButton;
 
 @synthesize controllerRef = _controllerRef;
 @synthesize credUIContext = _credUIContext;
@@ -69,9 +71,11 @@
     [_lastError release];
     
     [_collectionView release];
+    [_titleTextField release];
     [_messageTextField release];
     [_persistCheckBox release];
     [_submitButton release];
+    [_cancelButton release];
 
     [_credsController release];
 
@@ -107,12 +111,6 @@
     if (self == nil)
         return nil;
  
-    NSPanel *panel = [self _newPanel];
-    self.identityPickerPanel = panel;
-#if !__has_feature(objc_arc)
-    [panel release];
-#endif
-    
     if (usageScenario == kCUIUsageScenarioLogin) {
         /* Make sure login credentails can never be persisted */
         flags &= ~(CUIFlagsPersist);
@@ -137,7 +135,12 @@
     if (attributes)
         self.attributes = attributes;
     
-    [self _loadViews];
+    if (![self _loadViews]) {
+#if !__has_feature(objc_arc)
+        [self release];
+#endif
+        return nil;
+    }
     
     return self;
 }
@@ -180,7 +183,7 @@
 - (void)startCredentialEnumeration
 {
     if (self.title)
-        self.identityPickerPanel.title = self.title;
+        self.titleTextField.stringValue = self.title;
     if (self.message)
         self.messageTextField.stringValue = self.message;
 
@@ -283,18 +286,30 @@
     }];
 }
 
-- (void)windowWillClose:(NSNotification *)notification
-{
-    if (self.window == nil)
-        [NSApp stopModalWithCode:self.submitButton.state ? NSModalResponseOK : NSModalResponseCancel];
-}
-
 #pragma mark - Credential submission
 
-- (void)updateSubmitButtonForSelectedCred
+#pragma mark Cancel submission
+
+- (void)willCancelCredential:(id)sender
 {
-    self.submitButton.enabled = [self.selectedCredential canSubmit];
+    if (self.window) {
+        [self.window endSheet:self.identityPickerPanel returnCode:NSModalResponseCancel];
+    } else {
+        [NSApp stopModalWithCode:NSModalResponseCancel];
+    }
 }
+ 
+- (IBAction)didClickCancel:(id)sender
+{
+    [self willCancelCredential:sender];
+}
+
+- (void)windowWillClose:(NSNotification *)notification
+{
+    [self willCancelCredential:nil];
+}
+
+#pragma mark OK submission
 
 - (void)willSubmitCredential:(id)sender
 {
@@ -311,6 +326,11 @@
     }
 }
 
+- (IBAction)didClickOK:(id)sender
+{
+    [self willSubmitCredential:sender];
+}
+
 - (void)didSubmitCredential
 {
     [self.selectedCredential didSubmit];
@@ -320,13 +340,20 @@
         [self.selectedCredential savePersisted:NULL];
 }
 
+- (void)updateSubmitButtonForSelectedCred
+{
+    self.submitButton.enabled = [self.selectedCredential canSubmit];
+}
+
 - (void)credentialFieldDidChange:(CUICredential *)credential
 {
     if ([credential isEqual:self.selectedCredential])
         [self updateSubmitButtonForSelectedCred];
 }
 
-- (void)didClickPersist:(id)sender
+#pragma mark Persist
+
+- (IBAction)didClickPersist:(id)sender
 {
     _persist = ((NSButton *)sender).state;
 }
