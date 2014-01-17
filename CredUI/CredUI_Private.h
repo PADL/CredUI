@@ -28,7 +28,6 @@
 #import "CUICredentialTileController.h"
 
 #import "CUIIdentityPickerInternal.h"
-#import "CUIIdentityPickerInternal+UIFactory.h"
 
 Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,

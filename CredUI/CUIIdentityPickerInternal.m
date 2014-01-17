@@ -17,6 +17,7 @@
 @property(nonatomic, retain, readonly) NSString *targetHostName;
 
 - (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario;
+- (BOOL)_loadViews;
 
 - (void)startCredentialEnumeration;
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
@@ -142,6 +143,27 @@
     }
     
     return self;
+}
+
+- (BOOL)_loadViews
+{
+    NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
+    BOOL bLoaded;
+    NSArray *objects = nil;
+    
+    bLoaded = [frameworkBundle loadNibNamed:@"CUIIdentityPicker" owner:self topLevelObjects:&objects];
+    NSAssert(bLoaded, @"Could not load identity picker nib");
+    
+    if (!bLoaded)
+        return NO;
+    
+    if ((self.flags & CUIFlagsShowSaveCheckBox) == 0)
+        [self.persistCheckBox setHidden:YES];
+    
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.identityPickerPanel };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
+    
+    return YES;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
