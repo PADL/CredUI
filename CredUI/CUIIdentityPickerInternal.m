@@ -133,7 +133,8 @@
  
     if (attributes)
         self.attributes = attributes;
-     if (![self _loadViews]) {
+
+    if (![self _loadViews]) {
 #if !__has_feature(objc_arc)
         [self release];
 #endif
