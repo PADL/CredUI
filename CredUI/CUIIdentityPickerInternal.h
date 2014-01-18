@@ -65,9 +65,9 @@
 
 @property(nonatomic, retain) IBOutlet NSArrayController *credsController;
 
-- (instancetype)initWithFlags:(CUIFlags)flags
-                usageScenario:(CUIUsageScenario)usageScenario
-                   attributes:(NSDictionary *)attributes;
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                                flags:(CUIFlags)flags
+                           attributes:(NSDictionary *)attributes;
 
 - (void)credentialFieldDidChange:(CUICredential *)cred;
 
