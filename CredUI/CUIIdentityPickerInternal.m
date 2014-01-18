@@ -127,14 +127,10 @@
 #endif
         return nil;
     }
-    
-    if (self.flags & CUIFlagsPersist)
-        self.persist = YES;
-    else if (self.flags & CUIFlagsDoNotPersist)
-        self.persist = NO;
-    else
+   
+    if ((self.flags & (CUIFlagsPersist | CUIFlagsDoNotPersist)) == 0)
         self.flags |= CUIFlagsShowSaveCheckBox;
-    
+ 
     if (attributes)
         self.attributes = attributes;
      if (![self _loadViews]) {
@@ -143,7 +139,9 @@
 #endif
         return nil;
     }
-   
+  
+    self.persist = !!(self.flags & CUIFlagsPersist); 
+
     return self;
 }
 
