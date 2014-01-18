@@ -1,8 +1,8 @@
 CredUI todo
 ===========
 
-* replace UI with something that looks good
-* support all field types in UI
+* UI needs variable height items (impossible with NSCollectionView)
+* support all field types in UI, put icon in sensible spot
 * run identity picker in a separate process
-* secure erase strings
+* securely erase strings
 
