@@ -17,6 +17,8 @@
             [textField.cell setPlaceholderString:self.title];
 
         textField.bezeled = YES;
+    } else {
+        textField.bezeled = NO;
     }
 }
 
