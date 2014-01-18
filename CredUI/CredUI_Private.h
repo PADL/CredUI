@@ -29,6 +29,8 @@
 
 #import "CUIIdentityPickerInternal.h"
 
+#import "NSBundle+CredUI.h"
+
 Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
                          CFTypeRef gssContextHandle,

@@ -147,11 +147,10 @@
 
 - (BOOL)_loadViews
 {
-    NSBundle *frameworkBundle = [NSBundle bundleForClass:self.class];
     BOOL bLoaded;
     NSArray *objects = nil;
     
-    bLoaded = [frameworkBundle loadNibNamed:@"CUIIdentityPicker" owner:self topLevelObjects:&objects];
+    bLoaded = [[NSBundle credUIBundle] loadNibNamed:@"CUIIdentityPicker" owner:self topLevelObjects:&objects];
     NSAssert(bLoaded, @"Could not load identity picker nib");
     
     if (!bLoaded)

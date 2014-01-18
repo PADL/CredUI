@@ -10,13 +10,18 @@
 
 - (void)loadView
 {
-    CUICredentialTile *tile = [[CUICredentialTile alloc] initWithFrame:NSMakeRect(0, 0, 400, 100)];
-    
-    [self setView:tile];
-    
-#if !__has_feature(objc_arc)
-    [tile release];
-#endif
+    NSArray *objects;
+
+    [[NSBundle credUIBundle] loadNibNamed:@"CUICredentialTile" owner:self topLevelObjects:&objects];
+
+    [objects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isKindOfClass:[CUICredentialTile class]]) {
+            self.view = obj;
+            *stop = YES;
+        }
+    }];
+
+    NSAssert(self.view != nil, @"could not load credential tile from nib");
 }
 
 - (void)setRepresentedObject:(id)representedObject

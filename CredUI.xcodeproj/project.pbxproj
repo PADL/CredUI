@@ -205,6 +205,9 @@
 		D3CECCFF187AE0350006EB36 /* SampleCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CECCFD187AE0350006EB36 /* SampleCredential.cpp */; };
 		D3CECD02187AE03D0006EB36 /* SampleCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */; };
 		D3D36E911888AB0300C7E892 /* CUIIdentityPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */; };
+		D3D36E93188A43B100C7E892 /* CUICredentialTile.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D36E92188A43B100C7E892 /* CUICredentialTile.xib */; };
+		D3D36E96188A4AF400C7E892 /* NSBundle+CredUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D36E94188A4AF400C7E892 /* NSBundle+CredUI.h */; };
+		D3D36E97188A4AF400C7E892 /* NSBundle+CredUI.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D36E95188A4AF400C7E892 /* NSBundle+CredUI.m */; };
 		D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3F67B13187513A1006B36C3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3F67B11187513A1006B36C3 /* InfoPlist.strings */; };
 		D3F67B1A187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F67B18187513CB006B36C3 /* CUIGSSItemCredentialProvider.cpp */; };
@@ -658,6 +661,9 @@
 		D3CECD00187AE03D0006EB36 /* SampleCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SampleCredentialProvider.cpp; sourceTree = "<group>"; };
 		D3CECD01187AE03D0006EB36 /* SampleCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SampleCredentialProvider.h; sourceTree = "<group>"; };
 		D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CUIIdentityPicker.xib; sourceTree = "<group>"; };
+		D3D36E92188A43B100C7E892 /* CUICredentialTile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CUICredentialTile.xib; sourceTree = "<group>"; };
+		D3D36E94188A4AF400C7E892 /* NSBundle+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+CredUI.h"; sourceTree = "<group>"; };
+		D3D36E95188A4AF400C7E892 /* NSBundle+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+CredUI.m"; sourceTree = "<group>"; };
 		D3F67B0C187513A1006B36C3 /* GSSItem.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GSSItem.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3F67B10187513A1006B36C3 /* GSSItem-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSItem-Info.plist"; sourceTree = "<group>"; };
 		D3F67B12187513A1006B36C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -998,6 +1004,9 @@
 				D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */,
 				D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */,
 				D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */,
+				D3D36E92188A43B100C7E892 /* CUICredentialTile.xib */,
+				D3D36E94188A4AF400C7E892 /* NSBundle+CredUI.h */,
+				D3D36E95188A4AF400C7E892 /* NSBundle+CredUI.m */,
 			);
 			path = CredUI;
 			sourceTree = "<group>";
@@ -1265,6 +1274,7 @@
 				D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */,
 				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
+				D3D36E96188A4AF400C7E892 /* NSBundle+CredUI.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
 				D3BED92B1874373F00623B92 /* CUIIdentityPickerInternal.h in Headers */,
 				D358910F1883D6AC0093F5B6 /* CUICredential+CBIdentity.h in Headers */,
@@ -1672,6 +1682,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D336E288182B51A6009271CD /* InfoPlist.strings in Resources */,
+				D3D36E93188A43B100C7E892 /* CUICredentialTile.xib in Resources */,
 				D3D36E911888AB0300C7E892 /* CUIIdentityPicker.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1773,6 +1784,7 @@
 				D3A80AC5187AE5F500968AFF /* CUIField+UIFactory.m in Sources */,
 				D39EB0F1187283AF00C43A24 /* CUIPromptForCredentials.m in Sources */,
 				D32E7A1A187A5ECC00A34DDA /* CUICredential+GSS.m in Sources */,
+				D3D36E97188A4AF400C7E892 /* NSBundle+CredUI.m in Sources */,
 				D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */,
 				D35891101883D6AC0093F5B6 /* CUICredential+CBIdentity.m in Sources */,
 				D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */,
