@@ -73,7 +73,8 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender
 {
-    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
+    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates | CUIFlagsDoNotPersist
+            usageScenario:kCUIUsageScenarioNetwork attributes:nil];
     
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : (__bridge id)kCUIAttrClassKerberos };
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : @"1.3.6.1.4.1.5322.24.1.17" };
