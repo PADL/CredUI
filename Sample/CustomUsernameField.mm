@@ -29,24 +29,19 @@
 @implementation CustomUsernameField
 @synthesize credential = _credential;
 
-- (void)setValue:(id)aValue
-{
-    NSLog(@"CustomUsernameField: setting username to %@", aValue);
-
-    self.credential->setUsername((__bridge CFStringRef)[aValue copy]);
-}
-
 - (NSView *)viewWithFrame:(NSRect)frame
 {
     NSTextField *textField;
-    NSString *defaultValue = (__bridge NSString *)self.credential->getDefaultUsername();
     
     textField = [[NSTextField alloc] initWithFrame:frame];
-    if (defaultValue)
-        textField.stringValue = defaultValue;
+    if (self.defaultValue)
+        textField.stringValue = self.defaultValue;
+    else if (self.title)
+        [textField.cell setPlaceholderString:self.title];
+
     textField.editable = YES;
     textField.selectable = YES;
-    textField.bezeled = NO;
+    textField.bezeled = YES;
     textField.backgroundColor = [NSColor greenColor];
     textField.delegate = self;
     
@@ -56,6 +51,23 @@
 - (CUIFieldClass)fieldClass
 {
     return kCUIFieldClassEditText;
+}
+
+- (NSString *)title
+{
+    return @"Username";
+}
+
+- (NSString *)defaultValue
+{
+    return (__bridge NSString *)self.credential->getDefaultUsername();
+}
+
+- (void)setValue:(id)aValue
+{
+    NSLog(@"CustomUsernameField: setting username to %@", aValue);
+
+    self.credential->setUsername((__bridge CFStringRef)[aValue copy]);
 }
 
 - (void)setCredential:(SampleCredential *)credential

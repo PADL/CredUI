@@ -64,10 +64,12 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
         CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
     }
 
+#if 0
     /*
      * This is the title field that identifies the provider.
      */ 
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Password Credential"), NULL);
+#endif
  
     /*
      * The username field.

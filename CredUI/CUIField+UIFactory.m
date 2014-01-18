@@ -10,13 +10,14 @@
 
 - (void)_styleTextField:(NSTextField *)textField
 {
-    if (self.fieldClass != kCUIFieldClassLargeText)
-        [textField setBackgroundColor:[NSColor lightGrayColor]];
-    
-    if (self.title && textField.isEditable)
-        textField.toolTip = self.title;
+    [textField setBackgroundColor:[NSColor clearColor]];
+   
+    if (textField.isEditable) { 
+        if (self.title)
+            [textField.cell setPlaceholderString:self.title];
 
-    textField.bezeled = YES;
+        textField.bezeled = YES;
+    }
 }
 
 - (NSView *)_textFieldWithFrame:(NSRect)frame
@@ -32,9 +33,6 @@
     textField.selectable = NO;
     [self _styleTextField:textField];
     
-    if (self.fieldClass == kCUIFieldClassLargeText) {
-        textField.backgroundColor = [NSColor darkGrayColor];
-    }
     textField.delegate = self;
     
     return textField;

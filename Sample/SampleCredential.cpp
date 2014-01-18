@@ -74,12 +74,14 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
    
     if (usageFlags & kCUIUsageFlagsGeneric)
         CFDictionarySetValue(_attributes, kCUIAttrClass, kCUIAttrClassGeneric);
-    
+   
+#if 0 
     /*
      * This is the title field that identifies the provider.
      */
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sample Credential"), NULL);
-    
+#endif
+ 
     /*
      * The username field. Normally you would just use CUIFieldCreate(kCUIFieldClassEditText) with a
      * block that would set the username in the credential dictionary (e.g. call this->setUsername()).

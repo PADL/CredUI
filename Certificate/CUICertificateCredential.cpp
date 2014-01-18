@@ -74,7 +74,9 @@ CUICertificateCredential::initWithSecIdentity(SecIdentityRef identity,
         goto cleanup;
     }
 
+#if 0
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Certificate"), NULL);
+#endif
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSmallText, CFSTR("Username"),
                                        displayName ? displayName : kerberosName, NULL);
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, NULL, NULL, NULL);

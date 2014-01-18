@@ -8,6 +8,7 @@
 
 @implementation CUICredentialTile
 
+@synthesize viewPrototype = _viewPrototype;
 @synthesize credential = _credential;
 @synthesize delegate = _delegate;
 @synthesize selected = _selected;
@@ -22,6 +23,8 @@
     }
     
 #if !__has_feature(objc_arc)
+    [_viewPrototype release];
+
     [super dealloc];
 #endif
 }
@@ -29,20 +32,15 @@
 - (void)_updateSubviews
 {
     NSArray *credFields = [self.credential fields];
-    NSRect frame = self.frame;
+    NSRect frame = self.viewPrototype.frame;
     NSView *lastview = nil;
-
-    frame.origin.y = frame.size.height;
-    frame.size.height = 25;
 
     for (CUIField *field in credFields) {
         NSView *subview;
-       
-        if (lastview) 
-            frame.origin.y -= lastview.frame.size.height;
-        else
-            frame.origin.y -= frame.size.height;
-        
+      
+        if (lastview)
+            frame.origin.y -= lastview.frame.size.height + 8;
+ 
         subview = [field viewWithFrame:frame];
         if (subview == nil)
             continue;
