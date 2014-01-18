@@ -16,7 +16,7 @@
 
 @property(nonatomic, retain, readonly) NSString *targetHostName;
 
-- (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario;
++ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario flags:(CUIUsageFlags)flags;
 - (BOOL)_loadViews;
 
 - (void)startCredentialEnumeration;
@@ -83,29 +83,29 @@
 #endif
 }
 
-- (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario
++ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario flags:(CUIUsageFlags)flags
 {
     CUIUsageFlags usageFlags = 0;
     
-    if (self.flags & CUIFlagsGenericCredentials)
+    if (flags & CUIFlagsGenericCredentials)
         usageFlags |= kCUIUsageFlagsGeneric;
-    if (self.flags & CUIFlagsExcludeCertificates)
+    if (flags & CUIFlagsExcludeCertificates)
         usageFlags |= kCUIUsageFlagsExcludeCertificates;
-    if (self.flags & (CUIFlagsRequireCertificate | CUIFlagsRequireSmartcard))
+    if (flags & (CUIFlagsRequireCertificate | CUIFlagsRequireSmartcard))
         usageFlags |= kCUIUsageFlagsRequireCertificates;
-    if (self.flags & CUIFlagsPasswordOnlyOK)
+    if (flags & CUIFlagsPasswordOnlyOK)
         usageFlags |= kCUIUsageFlagsPasswordOnlyOK;
-    if (self.flags & CUIFlagsKeepUsername)
+    if (flags & CUIFlagsKeepUsername)
         usageFlags |= kCUIUsageFlagsKeepUsername;
-    if (self.flags & CUIFlagsExcludePersistedCredentials)
+    if (flags & CUIFlagsExcludePersistedCredentials)
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
     
     return CUIControllerCreate(kCFAllocatorDefault, usageScenario, usageFlags);
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags
-                usageScenario:(CUIUsageScenario)usageScenario
-                   attributes:(NSDictionary *)attributes
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                                flags:(CUIFlags)usageFlags
+                           attributes:(NSDictionary *)attributes
 {
     self = [super init];
     if (self == nil)
@@ -113,12 +113,21 @@
  
     if (usageScenario == kCUIUsageScenarioLogin) {
         /* Make sure login credentails can never be persisted */
-        flags &= ~(CUIFlagsPersist);
-        flags |= CUIFlagsDoNotPersist;
+        usageFlags &= ~(CUIFlagsPersist);
+        usageFlags |= CUIFlagsDoNotPersist;
     }
 
-    self.flags = flags;
+    self.flags = usageFlags;
 
+    self.controllerRef = [CUIIdentityPickerInternal _newCUIController:usageScenario flags:usageFlags];
+    if (self.controllerRef == nil) {
+        NSLog(@"Failed to initialize CUIController");
+#if !__has_feature(objc_arc)
+        [self release];
+#endif
+        return nil;
+    }
+    
     if (self.flags & CUIFlagsPersist)
         self.persist = YES;
     else if (self.flags & CUIFlagsDoNotPersist)
@@ -126,22 +135,15 @@
     else
         self.flags |= CUIFlagsShowSaveCheckBox;
     
-    self.controllerRef = [self _newCUIController:usageScenario];
-    if (self.controllerRef == nil) {
-        NSLog(@"Failed to initialize CUIController");
-        return nil;
-    }
-    
     if (attributes)
         self.attributes = attributes;
-    
-    if (![self _loadViews]) {
+     if (![self _loadViews]) {
 #if !__has_feature(objc_arc)
         [self release];
 #endif
         return nil;
     }
-    
+   
     return self;
 }
 

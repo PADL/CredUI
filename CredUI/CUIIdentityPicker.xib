@@ -57,7 +57,7 @@ Gw
                     <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cbI-54-GXg">
                         <rect key="frame" x="18" y="22" width="186" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Remember my credentials" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ac1-sm-1YG">
+                        <buttonCell key="cell" type="check" title="Remember my credentials" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Ac1-sm-1YG">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>

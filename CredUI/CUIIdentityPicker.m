@@ -62,9 +62,9 @@
     if ((self = [super init]) == nil)
         return nil;
 
-    _reserved[0] = [[CUIIdentityPickerInternal alloc] initWithFlags:flags
-                                                      usageScenario:usageScenario
-                                                         attributes:attributes];
+    _reserved[0] = [[CUIIdentityPickerInternal alloc] initWithUsageScenario:usageScenario
+                                                                      flags:flags
+                                                                 attributes:attributes];
     
     return self;
 }
