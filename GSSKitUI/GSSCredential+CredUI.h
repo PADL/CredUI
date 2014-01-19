@@ -11,7 +11,7 @@
 @class CUICredential;
 
 /*
- * This can go in CredUI.framework eventually, but I want to keep the dependencies
+ * This could go in CredUI.framework eventually, but I want to keep the dependencies
  * to a minimum for now.
  */
 
