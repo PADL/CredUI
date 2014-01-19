@@ -1175,6 +1175,7 @@
 		D3B094381877EFBA006DB1DE /* GSSKitUI */ = {
 			isa = PBXGroup;
 			children = (
+				D3A773601877F0BA009F51B7 /* GSSKitUI.h */,
 				D317A67C188C6B4500590CA0 /* GSSPromptForCredentials.h */,
 				D317A67D188C6B4500590CA0 /* GSSPromptForCredentials.m */,
 				D356EC89187AD2E000FB1B1E /* CUICredential+GSSKitUI.h */,
@@ -1186,7 +1187,6 @@
 				D35AAFC51877F1F3007C0498 /* GSSContext+CredUI.h */,
 				D35AAFC61877F1F3007C0498 /* GSSContext+CredUI.m */,
 				D3B094391877EFBA006DB1DE /* Supporting Files */,
-				D3A773601877F0BA009F51B7 /* GSSKitUI.h */,
 			);
 			path = GSSKitUI;
 			sourceTree = "<group>";
