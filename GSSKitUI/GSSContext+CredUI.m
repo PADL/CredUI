@@ -94,7 +94,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     if (self.mechanism)
         [attributes setObject:self.mechanism.mechanismClass forKey:(__bridge id)kCUIAttrClass];
     
-    identityPicker = [[CUIIdentityPicker alloc] initWithFlags:0 attributes:attributes];
+    identityPicker = [[CUIIdentityPicker alloc] initWithUsageScenario:kCUIUsageScenarioNetwork attributes:attributes];
     
     identityPicker.title = @"Identity Picker";
     identityPicker.targetName = self.targetName;

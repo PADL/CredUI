@@ -46,8 +46,8 @@
 @property(nonatomic, assign) const void *context;
 @property(nonatomic, copy) id targetName;
 
-@property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, readonly) CUIUsageScenario usageScenario;
+@property(nonatomic, readonly) CUIFlags flags;
 @property(nonatomic, readonly) CUIUsageFlags usageFlags;
 
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
@@ -66,8 +66,8 @@
 @property(nonatomic, retain) IBOutlet NSArrayController *credsController;
 
 - (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
-                                flags:(CUIFlags)flags
-                           attributes:(NSDictionary *)attributes;
+                           attributes:(NSDictionary *)attributes
+                                flags:(CUIFlags)flags;
 
 - (void)credentialFieldDidChange:(CUICredential *)cred;
 

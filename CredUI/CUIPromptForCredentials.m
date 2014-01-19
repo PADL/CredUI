@@ -17,7 +17,9 @@ _CUIPromptForCredentials(CFTypeRef targetName,
                          CUIFlags flags,
                          CFErrorRef *error)
 {
-    CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithFlags:flags attributes:(__bridge NSDictionary *)inCredAttributes];
+    CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithUsageScenario:kCUIUsageScenarioNetwork
+                                                                              attributes:(__bridge NSDictionary *)inCredAttributes
+                                                                                   flags:flags];
     CUICredential *selectedCredential;
     NSModalSession modalSession;
     NSModalResponse modalResponse;

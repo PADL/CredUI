@@ -12,7 +12,7 @@ __attribute__((visibility("default")))
 @property(nonatomic, readonly, assign) CUIFieldClass fieldClass;
 @property(nonatomic, readonly, copy) NSString *title;
 @property(nonatomic, readonly, copy) NSString *defaultValue;
-@property(nonatomic, assign) CUIFieldOptions options;
+@property(nonatomic, assign) CUIFieldOptions options; //primitive
 
 - (CUIFieldRef)_fieldRef;
 - (void)setValue:(id)aValue; //primitive

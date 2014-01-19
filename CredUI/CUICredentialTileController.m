@@ -53,10 +53,6 @@
 {
     NSView *view = (__bridge NSView *)context;
 
-#if 0
-    NSLog(@"observeValueForKeyPath:%@ ofObject:%@ change:%@ context:%@", keyPath, object, change[NSKeyValueChangeNewKey], (__bridge id)context);
-#endif
-
     if ([keyPath isEqualTo:@"options"]) {
         CUIFieldOptions options = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
 

@@ -21,12 +21,6 @@
 #import "CredUIPickerDelegate.h"
 #import "CredUIPickerDelegate+InitAcceptLoop.h"
 
-@interface CUIIdentityPicker ()
-- (instancetype)initWithFlags:(CUIFlags)flags
-                usageScenario:(CUIUsageScenario)usageScenario
-                   attributes:(NSDictionary *)attributes;
-@end
-
 @implementation CredUIPickerDelegate
 
 @synthesize window = _window;
@@ -48,11 +42,24 @@ static void testEncodeDecode(CUICredential * cred)
     NSLog(@"reconstitutedCred: %@", reconstitutedCred);
 }
 
-- (void)pickerWithFlags:(CUIFlags)flags usageScenario:(CUIUsageScenario)usageScenario attributes:(NSDictionary *)attributes
+- (void)pickerWithFlags:(CUIFlags)flags
+{
+    [self pickerWithUsageScenario:kCUIUsageScenarioNetwork attributes:nil flags:flags];
+}
+
+- (void)pickerWithAttributes:(NSDictionary *)attributes
+                       flags:(CUIFlags)flags
+{
+    [self pickerWithUsageScenario:kCUIUsageScenarioNetwork attributes:attributes flags:flags];
+}
+
+- (void)pickerWithUsageScenario:(CUIUsageScenario)usageScenario
+                     attributes:(NSDictionary *)attributes
+                          flags:(CUIFlags)flags
 {
     CUIIdentityPicker *picker;
 
-    picker = [[CUIIdentityPicker alloc] initWithFlags:flags usageScenario:usageScenario attributes:attributes];
+    picker = [[CUIIdentityPicker alloc] initWithUsageScenario:usageScenario attributes:attributes flags:flags];
     self.picker = picker;
 #if !__has_feature(objc_arc)
     [picker release];
@@ -72,8 +79,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender
 {
-    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates | CUIFlagsDoNotPersist
-            usageScenario:kCUIUsageScenarioNetwork attributes:nil];
+    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsExcludeCertificates | CUIFlagsDoNotPersist];
     
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : (__bridge id)kCUIAttrClassKerberos };
 //  self.picker.attributes = @{ (__bridge id)kCUIAttrClass : @"1.3.6.1.4.1.5322.24.1.17" };
@@ -129,7 +135,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGSSItem:(id)sender
 {
-    [self pickerWithFlags:CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
+    [self pickerWithFlags:CUIFlagsExcludeCertificates];
     
     self.picker.title = @"Item Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -152,7 +158,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerGeneric:(id)sender
 {
-    [self pickerWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI | CUIFlagsExcludeCertificates usageScenario:kCUIUsageScenarioNetwork attributes:nil];
+    [self pickerWithFlags:CUIFlagsGenericCredentials | CUIFlagsAlwaysShowUI | CUIFlagsExcludeCertificates];
     
     self.picker.title = @"Generic Identity Picker";
     self.picker.message = @"Choose an identity";
@@ -206,7 +212,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerCert:(id)sender
 {
-    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate usageScenario:kCUIUsageScenarioNetwork attributes:nil];
+    [self pickerWithFlags:CUIFlagsExcludePersistedCredentials | CUIFlagsRequireCertificate];
     
     self.picker.title = @"Certificate Picker";
     self.picker.message = @"Choose an identity";
@@ -233,7 +239,7 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)showIdentityPickerLocal:(id)sender
 {
-    [self pickerWithFlags:0 usageScenario:kCUIUsageScenarioLogin attributes:nil];
+    [self pickerWithUsageScenario:kCUIUsageScenarioLogin attributes:nil flags:0];
                    
     self.picker.title = @"Local Picker";
     self.picker.message = @"Choose an identity";

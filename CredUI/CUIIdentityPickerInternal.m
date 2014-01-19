@@ -104,8 +104,8 @@
 }
 
 - (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
-                                flags:(CUIFlags)usageFlags
                            attributes:(NSDictionary *)attributes
+                                flags:(CUIFlags)usageFlags
 {
     self = [super init];
     if (self == nil)

@@ -42,29 +42,30 @@
 
 - (instancetype)init
 {
-    return [self initWithFlags:0];
+    return [self initWithUsageScenario:kCUIUsageScenarioNetwork];
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
 {
-    return [self initWithFlags:flags attributes:nil];
+    return [self initWithUsageScenario:usageScenario attributes:nil];
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attributes
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                           attributes:(NSDictionary *)attributes
 {
-    return [self initWithFlags:flags usageScenario:kCUIUsageScenarioNetwork attributes:attributes];
+    return [self initWithUsageScenario:usageScenario attributes:attributes flags:0];
 }
 
-- (instancetype)initWithFlags:(CUIFlags)flags
-                usageScenario:(CUIUsageScenario)usageScenario
-                   attributes:(NSDictionary *)attributes
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                           attributes:(NSDictionary *)attributes
+                                flags:(CUIFlags)flags
 {
     if ((self = [super init]) == nil)
         return nil;
 
     _reserved[0] = [[CUIIdentityPickerInternal alloc] initWithUsageScenario:usageScenario
-                                                                      flags:flags
-                                                                 attributes:attributes];
+                                                                 attributes:attributes
+                                                                      flags:flags];
     
     return self;
 }

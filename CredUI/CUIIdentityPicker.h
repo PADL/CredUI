@@ -49,15 +49,25 @@ __attribute__((visibility("default")))
 /* The last error from credential selection */
 @property(nonatomic, retain, readonly) NSError *lastError;
 
-/* Create a new IdentityPicker with the specified flags */
-- (instancetype)initWithFlags:(CUIFlags)flags;
+/* Create a new IdentityPicker with the specified usage scenario */
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario;
 
 /*
- * Create a new IdentityPicker with the specified flags and attributes. The attributes will be used to restrict the
- * list of enumerated credentials. For example, specifying kCUIAttrName will only enumerate credentials for a specific
- * user. Attributes can be found in <CredUICore/CUIAttributes.h>.
+ * Create a new IdentityPicker with the specified usage scenario and attributes.
+ *
+ * The attributes will restrict the list of enumerated credentials. For example,
+ * specifying kCUIAttrName will only enumerate credentials for a specific user.
+ * Attribute constants are in <CredUICore/CUIAttributes.h>.
  */
-- (instancetype)initWithFlags:(CUIFlags)flags attributes:(NSDictionary *)attrs;
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                           attributes:(NSDictionary *)attrs;
+
+/*
+ * Create a new IdentityPicker with the specified usage scenario, attributes and flags.
+ */
+- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
+                           attributes:(NSDictionary *)attrs
+                                flags:(CUIFlags)flags;
 
 /* Run the IdentityPicker as an application-modal panel and return a attribute dictionary. Return NSModalResponseOK or NSModalResponseCancel. */
 - (NSInteger)runModal;

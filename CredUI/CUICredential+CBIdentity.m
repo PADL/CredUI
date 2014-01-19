@@ -10,11 +10,6 @@
 
 @implementation CUICredential (CBIdentity)
 
-- (BOOL)authenticateForLoginScenario:(NSString *)service
-{
-    return CUICredentialAuthenticateForLoginScenario([self _credentialRef], (__bridge CFStringRef)service);
-}
-
 - (CBUserIdentity *)userIdentity
 {
     CBIdentity *identity = nil;
@@ -33,6 +28,11 @@
         return (CBUserIdentity *)identity;
     
     return nil;
+}
+
+- (BOOL)authenticateForLoginScenario:(NSString *)service
+{
+    return CUICredentialAuthenticateForLoginScenario([self _credentialRef], (__bridge CFStringRef)service);
 }
 
 @end
