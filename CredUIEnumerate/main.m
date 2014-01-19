@@ -18,10 +18,10 @@
 #include <CredUICore/CUIAttributes.h>
 
 #include <CredUI/CUICredential.h>
-#include <CredUI/CUICredential+GSS.h>
 #include <CredUI/CUIField.h>
 
 #include <GSSKit/GSSKit.h>
+#include <GSSKitUI/GSSKitUI.h>
 
 #include "GSSItem.h"
 

@@ -10,12 +10,8 @@
 #import <CoreFoundation/CFPlugInCOM.h>
 #import <CoreFoundation/CFBridgingPriv.h>
 
-#import <GSS/GSS.h>
-
 #import <CredUI/CredUI.h>
-#import <CredUI/CUICredential+GSS.h>
 #import <CredUI/CUICredential+CBIdentity.h>
-#import <CredUI/GSSPromptForCredentials.h>
 
 #import <CredUICore/CredUICore.h>
 
@@ -31,9 +27,19 @@
 
 #import "NSBundle+CredUI.h"
 
-Boolean
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#undef CUI_EXPORT
+#define CUI_EXPORT  __attribute__((visibility("default")))
+
+extern void
+NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
+
+CUI_EXPORT Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
-                         CFTypeRef gssContextHandle,
+                         CFTypeRef contextHandle,
                          CUICredUIContext *uiContext,
                          CFErrorRef authError,
                          CFDictionaryRef inCredAttributes,
@@ -42,4 +48,6 @@ _CUIPromptForCredentials(CFTypeRef targetName,
                          CUIFlags flags,
                          CFErrorRef *error);
 
-extern void NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
+#ifdef __cplusplus
+}
+#endif

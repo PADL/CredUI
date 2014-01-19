@@ -6,9 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import <CredUI/GSSPromptForCredentials.h>
-
-Boolean
+CUI_EXPORT Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
                          const void *context,
                          CUICredUIContext *uiContext,

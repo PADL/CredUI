@@ -7,6 +7,7 @@
 //
 
 @implementation GSSMechanism (CredUI)
+
 + (GSSMechanism *)mechanismForCUICredential:(CUICredential *)cuiCredential
 {
     GSSMechanism *mech = [self mechanismWithClass:[cuiCredential.attributes objectForKey:(__bridge id)kCUIAttrClass]];
@@ -16,4 +17,5 @@
     
     return mech;
 }
+
 @end

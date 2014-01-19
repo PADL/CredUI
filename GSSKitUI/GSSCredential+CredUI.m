@@ -7,6 +7,7 @@
 //
 
 @implementation GSSCredential (CredUI)
+
 - (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error
 {
     GSSCredential *cred = nil;
@@ -36,4 +37,5 @@
     
     return cred;
 }
+
 @end

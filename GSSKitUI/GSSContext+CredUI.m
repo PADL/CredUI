@@ -6,10 +6,7 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import <CredUICore/CredUICore.h>
-#import "GSSContext+CredUI.h"
-
-@interface GSSKitUI_ErrorContainer : NSObject
+@interface GSSKitUIErrorInfo : NSObject
 {
     NSError *_error;
 }
@@ -28,8 +25,12 @@
 - (BOOL)_gssPromptingNeeded;
 @end
 
-@implementation GSSKitUI_ErrorContainer
+@implementation GSSKitUIErrorInfo
 @synthesize error = _error;
+@end
+
+@interface GSSContext ()
+@property(nonatomic, readonly) gss_ctx_id_t _gssContext;
 @end
 
 @implementation GSSContext (CredUI)
@@ -46,7 +47,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    GSSKitUI_ErrorContainer *errorContainer = (__bridge GSSKitUI_ErrorContainer *)contextInfo;
+    GSSKitUIErrorInfo *errorContainer = (__bridge GSSKitUIErrorInfo *)contextInfo;
     CUICredential *credential = identityPicker.selectedCredential;
     GSSCredential *gssCred;
     NSError *error;
@@ -114,7 +115,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
 - (BOOL)_promptForCredentials:(NSError **)error
 {
-    GSSKitUI_ErrorContainer *errorContainer = [[GSSKitUI_ErrorContainer alloc] init];
+    GSSKitUIErrorInfo *errorContainer = [[GSSKitUIErrorInfo alloc] init];
 
     if (error)
         *error = [errorContainer error];

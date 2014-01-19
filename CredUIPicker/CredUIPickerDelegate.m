@@ -8,7 +8,6 @@
 
 #import <CredUI/CredUI.h>
 #import <CredUI/GSSPromptForCredentials.h>
-#import <CredUI/CUICredential+GSS.h>
 #import <CredUI/CUICredential+CBIdentity.h>
 #import <CredUICore/CUIAttributes.h>
 

@@ -9,6 +9,7 @@
 #import <Collaboration/Collaboration.h>
 
 @implementation CUICredential (CBIdentity)
+
 - (BOOL)authenticateForLoginScenario:(NSString *)service
 {
     return CUICredentialAuthenticateForLoginScenario([self _credentialRef], (__bridge CFStringRef)service);
@@ -33,4 +34,5 @@
     
     return nil;
 }
+
 @end

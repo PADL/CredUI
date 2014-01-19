@@ -9,7 +9,7 @@
 #endif
 
 #import <CredUI/CredUI.h>
-#import <CredUI/CUICredential+GSS.h>
+#import <CredUI/CredUI_Private.h>
 
 #import <CredUICore/CredUICore.h>
 
@@ -17,3 +17,5 @@
 
 #import <GSSKit/GSSKit.h>
 #import <GSSKitUI/GSSKitUI.h>
+
+#import "GSSItem.h"

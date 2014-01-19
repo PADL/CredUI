@@ -57,6 +57,11 @@
 /* Begin PBXBuildFile section */
 		D30D29681884012700E081AC /* CUICredentialLogin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D30D29661884012700E081AC /* CUICredentialLogin.cpp */; };
 		D30D29691884012700E081AC /* CUICredentialLogin.h in Headers */ = {isa = PBXBuildFile; fileRef = D30D29671884012700E081AC /* CUICredentialLogin.h */; };
+		D317A67A188C6A8A00590CA0 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D317A67B188C6AC500590CA0 /* Collaboration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D358910B1883D66A0093F5B6 /* Collaboration.framework */; };
+		D317A67E188C6B4500590CA0 /* GSSPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D317A67C188C6B4500590CA0 /* GSSPromptForCredentials.h */; };
+		D317A67F188C6B4500590CA0 /* GSSPromptForCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D317A67D188C6B4500590CA0 /* GSSPromptForCredentials.m */; };
+		D317A680188C6CC100590CA0 /* GSSKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3B094361877EFBA006DB1DE /* GSSKitUI.framework */; };
 		D3207E32187C240C00DC2694 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3207E38187C240C00DC2694 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3207E36187C240C00DC2694 /* InfoPlist.strings */; };
 		D3207E41187C246E00DC2694 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
@@ -73,10 +78,7 @@
 		D32662E318754060004C1F57 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D32662E418754060004C1F57 /* libCredUIUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCredUIUtilities.a */; };
 		D32662E7187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D32662E5187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp */; };
-		D32E7A19187A5ECC00A34DDA /* CUICredential+GSS.h in Headers */ = {isa = PBXBuildFile; fileRef = D32E7A17187A5ECC00A34DDA /* CUICredential+GSS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D32E7A1A187A5ECC00A34DDA /* CUICredential+GSS.m in Sources */ = {isa = PBXBuildFile; fileRef = D32E7A18187A5ECC00A34DDA /* CUICredential+GSS.m */; };
 		D336E288182B51A6009271CD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D336E286182B51A6009271CD /* InfoPlist.strings */; };
-		D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = D336E2AC182B6B0D009271CD /* CUIIdentityPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */; };
 		D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27D182B51A6009271CD /* Cocoa.framework */; };
@@ -99,7 +101,6 @@
 		D35890FF1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D35890FD1883C1F00093F5B6 /* CUILoginIdentityCredentialProvider.cpp */; };
 		D35891031883C5AC0093F5B6 /* CredUICore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB005186ED2B200C43A24 /* CredUICore.framework */; };
 		D35891041883C5B00093F5B6 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB051186F113A00C43A24 /* CoreServices.framework */; };
-		D358910C1883D66A0093F5B6 /* Collaboration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D358910B1883D66A0093F5B6 /* Collaboration.framework */; };
 		D358910F1883D6AC0093F5B6 /* CUICredential+CBIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = D358910D1883D6AC0093F5B6 /* CUICredential+CBIdentity.h */; };
 		D35891101883D6AC0093F5B6 /* CUICredential+CBIdentity.m in Sources */ = {isa = PBXBuildFile; fileRef = D358910E1883D6AC0093F5B6 /* CUICredential+CBIdentity.m */; };
 		D35AAFC41877F103007C0498 /* GSSKitUI.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A773601877F0BA009F51B7 /* GSSKitUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -164,8 +165,6 @@
 		D39EB0E81872532E00C43A24 /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
 		D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB0F1187283AF00C43A24 /* CUIPromptForCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */; };
-		D39EB0F6187285FC00C43A24 /* GSSPromptForCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */; };
-		D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D39EB0FB1872B3F800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
 		D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E27A182B51A6009271CD /* CredUI.framework */; };
 		D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB0FA1872B3F800C43A24 /* GSSKit.framework */; };
@@ -509,6 +508,8 @@
 /* Begin PBXFileReference section */
 		D30D29661884012700E081AC /* CUICredentialLogin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUICredentialLogin.cpp; sourceTree = "<group>"; };
 		D30D29671884012700E081AC /* CUICredentialLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialLogin.h; sourceTree = "<group>"; };
+		D317A67C188C6B4500590CA0 /* GSSPromptForCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GSSPromptForCredentials.h; sourceTree = "<group>"; };
+		D317A67D188C6B4500590CA0 /* GSSPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSPromptForCredentials.m; sourceTree = "<group>"; };
 		D3207E31187C240C00DC2694 /* Certificate.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Certificate.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3207E35187C240C00DC2694 /* Certificate-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Certificate-Info.plist"; sourceTree = "<group>"; };
 		D3207E37187C240C00DC2694 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -523,8 +524,6 @@
 		D32662DB1875403F004C1F57 /* Keychain-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Keychain-Prefix.pch"; sourceTree = "<group>"; };
 		D32662E5187540CC004C1F57 /* CUIKeychainCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUIKeychainCredentialProvider.cpp; sourceTree = "<group>"; };
 		D32662E6187540CC004C1F57 /* CUIKeychainCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIKeychainCredentialProvider.h; sourceTree = "<group>"; };
-		D32E7A17187A5ECC00A34DDA /* CUICredential+GSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+GSS.h"; sourceTree = "<group>"; };
-		D32E7A18187A5ECC00A34DDA /* CUICredential+GSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUICredential+GSS.m"; sourceTree = "<group>"; };
 		D32E7BE9187ED06500F5BDF0 /* CFBridgingPriv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CFBridgingPriv.h; path = CoreFoundation/CFBridgingPriv.h; sourceTree = "<group>"; };
 		D32E7BEA187ED06500F5BDF0 /* CFRuntime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CFRuntime.h; path = CoreFoundation/CFRuntime.h; sourceTree = "<group>"; };
 		D336E27A182B51A6009271CD /* CredUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CredUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -623,8 +622,6 @@
 		D39EB0E618724FD000C43A24 /* libbrowserid.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbrowserid.0.dylib; path = ../../../../../usr/local/lib/libbrowserid.0.dylib; sourceTree = "<group>"; };
 		D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIPromptForCredentials.h; sourceTree = "<group>"; };
 		D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIPromptForCredentials.m; sourceTree = "<group>"; };
-		D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSPromptForCredentials.h; sourceTree = "<group>"; };
-		D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GSSPromptForCredentials.m; sourceTree = "<group>"; };
 		D39EB0FA1872B3F800C43A24 /* GSSKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GSSKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug/GSSKit.framework"; sourceTree = "<group>"; };
 		D3A773511877F077009F51B7 /* GSSCredential+CredUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GSSCredential+CredUI.h"; sourceTree = "<group>"; };
 		D3A773521877F077009F51B7 /* GSSCredential+CredUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GSSCredential+CredUI.m"; sourceTree = "<group>"; };
@@ -703,10 +700,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D358910C1883D66A0093F5B6 /* Collaboration.framework in Frameworks */,
 				D39EB05B186FAA0200C43A24 /* CredUICore.framework in Frameworks */,
+				D317A67B188C6AC500590CA0 /* Collaboration.framework in Frameworks */,
 				D336E2B0182B6B3F009271CD /* Cocoa.framework in Frameworks */,
-				D336E2AA182B51DD009271CD /* GSS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,6 +765,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D317A680188C6CC100590CA0 /* GSSKitUI.framework in Frameworks */,
 				D39EB1001872C1A800C43A24 /* GSSKit.framework in Frameworks */,
 				D39EB0FD1872C07A00C43A24 /* CredUI.framework in Frameworks */,
 				D39EB09E186FBB7F00C43A24 /* GSS.framework in Frameworks */,
@@ -802,10 +799,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D35AAFC91877F4E9007C0498 /* CredUICore.framework in Frameworks */,
-				D3A7734F1877EFEB009F51B7 /* GSSKit.framework in Frameworks */,
-				D3A7734E1877EFE3009F51B7 /* CredUI.framework in Frameworks */,
 				D3B094371877EFBA006DB1DE /* Cocoa.framework in Frameworks */,
+				D3A7734F1877EFEB009F51B7 /* GSSKit.framework in Frameworks */,
+				D317A67A188C6A8A00590CA0 /* GSS.framework in Frameworks */,
+				D3A7734E1877EFE3009F51B7 /* CredUI.framework in Frameworks */,
+				D35AAFC91877F4E9007C0498 /* CredUICore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -987,8 +985,6 @@
 				D39EB0CB18714ED200C43A24 /* CUICredential.h */,
 				D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */,
 				D39EB0CC18714ED200C43A24 /* CUICredential.m */,
-				D32E7A17187A5ECC00A34DDA /* CUICredential+GSS.h */,
-				D32E7A18187A5ECC00A34DDA /* CUICredential+GSS.m */,
 				D358910D1883D6AC0093F5B6 /* CUICredential+CBIdentity.h */,
 				D358910E1883D6AC0093F5B6 /* CUICredential+CBIdentity.m */,
 				D39EB0A21870235F00C43A24 /* CUICredentialTile.h */,
@@ -1001,8 +997,6 @@
 				D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
 				D39EB0EF187283AF00C43A24 /* CUIPromptForCredentials.m */,
-				D39EB0F2187285D700C43A24 /* GSSPromptForCredentials.h */,
-				D39EB0F4187285FC00C43A24 /* GSSPromptForCredentials.m */,
 				D3D36E901888AB0300C7E892 /* CUIIdentityPicker.xib */,
 				D3D36E92188A43B100C7E892 /* CUICredentialTile.xib */,
 				D3D36E94188A4AF400C7E892 /* NSBundle+CredUI.h */,
@@ -1181,6 +1175,10 @@
 		D3B094381877EFBA006DB1DE /* GSSKitUI */ = {
 			isa = PBXGroup;
 			children = (
+				D317A67C188C6B4500590CA0 /* GSSPromptForCredentials.h */,
+				D317A67D188C6B4500590CA0 /* GSSPromptForCredentials.m */,
+				D356EC89187AD2E000FB1B1E /* CUICredential+GSSKitUI.h */,
+				D356EC8A187AD2E000FB1B1E /* CUICredential+GSSKitUI.m */,
 				D3A773511877F077009F51B7 /* GSSCredential+CredUI.h */,
 				D3A773521877F077009F51B7 /* GSSCredential+CredUI.m */,
 				D3A773551877F077009F51B7 /* GSSMechanism+CredUI.h */,
@@ -1189,8 +1187,6 @@
 				D35AAFC61877F1F3007C0498 /* GSSContext+CredUI.m */,
 				D3B094391877EFBA006DB1DE /* Supporting Files */,
 				D3A773601877F0BA009F51B7 /* GSSKitUI.h */,
-				D356EC89187AD2E000FB1B1E /* CUICredential+GSSKitUI.h */,
-				D356EC8A187AD2E000FB1B1E /* CUICredential+GSSKitUI.m */,
 			);
 			path = GSSKitUI;
 			sourceTree = "<group>";
@@ -1267,8 +1263,6 @@
 			files = (
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
 				D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */,
-				D39EB0F71872889000C43A24 /* GSSPromptForCredentials.h in Headers */,
-				D32E7A19187A5ECC00A34DDA /* CUICredential+GSS.h in Headers */,
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
 				D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */,
 				D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */,
@@ -1317,6 +1311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D35AAFC41877F103007C0498 /* GSSKitUI.h in Headers */,
+				D317A67E188C6B4500590CA0 /* GSSPromptForCredentials.h in Headers */,
 				D356EC8B187AD2E000FB1B1E /* CUICredential+GSSKitUI.h in Headers */,
 				D3A7735B1877F077009F51B7 /* GSSMechanism+CredUI.h in Headers */,
 				D35AAFC71877F1F3007C0498 /* GSSContext+CredUI.h in Headers */,
@@ -1783,13 +1778,11 @@
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
 				D3A80AC5187AE5F500968AFF /* CUIField+UIFactory.m in Sources */,
 				D39EB0F1187283AF00C43A24 /* CUIPromptForCredentials.m in Sources */,
-				D32E7A1A187A5ECC00A34DDA /* CUICredential+GSS.m in Sources */,
 				D3D36E97188A4AF400C7E892 /* NSBundle+CredUI.m in Sources */,
 				D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */,
 				D35891101883D6AC0093F5B6 /* CUICredential+CBIdentity.m in Sources */,
 				D39EB0CE18714ED200C43A24 /* CUICredential.m in Sources */,
 				D39EB0A51870235F00C43A24 /* CUICredentialTile.m in Sources */,
-				D39EB0F6187285FC00C43A24 /* GSSPromptForCredentials.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1878,6 +1871,7 @@
 				D356EC8C187AD2E000FB1B1E /* CUICredential+GSSKitUI.m in Sources */,
 				D3A773581877F077009F51B7 /* GSSCredential+CredUI.m in Sources */,
 				D35AAFC81877F1F3007C0498 /* GSSContext+CredUI.m in Sources */,
+				D317A67F188C6B4500590CA0 /* GSSPromptForCredentials.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

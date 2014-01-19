@@ -38,7 +38,7 @@ __attribute__((visibility("default")))
 /* CredUI flags */
 @property(nonatomic, readonly) CUIFlags flags;
 
-/* Target name to display to user, one of NSString, NSURL or gss_name_T */
+/* Target name to display to user, one of NSString, NSURL or gss_name_t */
 @property(nonatomic, copy) id targetName;
 
 /* GSS or PAM context handle, depending on usage scenario */

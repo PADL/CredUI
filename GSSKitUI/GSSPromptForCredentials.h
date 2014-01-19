@@ -12,7 +12,6 @@
 #include <GSS/GSS.h>
 #include <CredUI/CUIBase.h>
 #include <CredUICore/CUICredential.h>
-#include <CredUICore/GSSIsPromptingNeeded.h>
 
 #ifdef __cplusplus
 extern "C" {
