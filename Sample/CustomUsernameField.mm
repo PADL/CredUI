@@ -29,11 +29,11 @@
 @implementation CustomUsernameField
 @synthesize credential = _credential;
 
-- (NSView *)viewWithFrame:(NSRect)frame
+- (NSView *)view
 {
     NSTextField *textField;
     
-    textField = [[NSTextField alloc] initWithFrame:frame];
+    textField = [[NSTextField alloc] init];
     if (self.defaultValue)
         textField.stringValue = self.defaultValue;
     else if (self.title)

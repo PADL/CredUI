@@ -32,19 +32,26 @@
 - (void)_updateSubviews
 {
     NSArray *credFields = [self.credential fields];
-    NSRect frame = self.viewPrototype.frame;
+    NSRect protoFrame = self.viewPrototype.frame;
     NSView *lastview = nil;
 
     for (CUIField *field in credFields) {
         NSView *subview;
-      
-        if (lastview)
-            frame.origin.y -= lastview.frame.size.height + 8;
+        NSRect frame = protoFrame;
  
-        subview = [field viewWithFrame:frame];
+        subview = [field view];
         if (subview == nil)
             continue;
-        
+
+        if (subview.frame.origin.x)
+            frame.origin.x = subview.frame.origin.x;
+        if (lastview)
+            frame.origin.y = lastview.frame.origin.y - lastview.frame.size.height - 8;
+        if (subview.frame.size.width || subview.frame.size.height)
+            frame.size = subview.frame.size;
+
+        subview.frame = frame;
+
         if (lastview)
             lastview.nextKeyView = subview;
         [self addSubview:subview];

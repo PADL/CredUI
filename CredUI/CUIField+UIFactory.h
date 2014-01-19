@@ -10,6 +10,9 @@
 
 @interface CUIField (UIFactory)
 
-- (NSView *)viewWithFrame:(NSRect)frame;
+/*
+ * Returns the NSView corresponding to the field.
+ */
+- (NSView *)view;
 
 @end
