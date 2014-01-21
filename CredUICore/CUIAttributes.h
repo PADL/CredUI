@@ -106,6 +106,7 @@ CUI_EXPORT const CFStringRef kCUIAttrCredentialExists;
 CUI_EXPORT const CFStringRef kCUIAttrGSSItem;
 CUI_EXPORT const CFStringRef kCUIAttrSecKeychainItem;
 CUI_EXPORT const CFStringRef kCUIAttrCSIdentity;
+CUI_EXPORT const CFStringRef kCUIAttrGSSCredential;
 
 /*
  * Status of a credentials

@@ -52,6 +52,7 @@ CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaPro
 CUI_CONST_TYPE(kCUIAttrSecKeychainItem,                kCUIAttrSecKeychainItem);
 CUI_CONST_TYPE(kCUIAttrGSSItem,                        kCUIAttrGSSItem);
 CUI_CONST_TYPE(kCUIAttrCSIdentity,                     kCUIAttrCSIdentity);
+CUI_CONST_TYPE(kCUIAttrGSSCredential,                  kCUIAttrGSSCredential);
 
 CUI_CONST_TYPE(kCUIAttrPersistenceFactoryID,           kCUIAttrPersistenceFactoryID);
 CUI_CONST_TYPE(kCUIAttrIdentityFactoryID,              kCUIAttrIdentityFactoryID);

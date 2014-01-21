@@ -11,27 +11,33 @@
 - (instancetype)initWithCUICredential:(CUICredential *)cuiCredential error:(NSError **)error
 {
     GSSCredential *cred = nil;
-    GSSItem *gssItem;
-    GSSName *name;
-    
-    /*
-     * If a GSSItem tile was selected, we do not have access to the password, so
-     * we must acquire it via the GSSItem API.
-     */
-    gssItem = [cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSItem];
-    if (gssItem) {
-        cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
-#if !__has_feature(objc_arc)
-        [cred retain];
-#endif
-    } else {
-        name = CFBridgingRelease([cuiCredential copyGSSName]);
+
+    cred = [cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSCredential];
+
+    if (cred == nil) {
+        GSSItem *gssItem = [cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSItem];
+        if (gssItem) {
+            cred = [gssItem acquire:[cuiCredential attributesWithClass:CUIAttributeClassGSSItem] error:error];
+    #if !__has_feature(objc_arc)
+            [cred retain];
+    #endif
+        }
+    }
+
+    if (cred == nil) {
+        CFUUIDRef uuid = (__bridge CFUUIDRef)[cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrUUID];
         
+        cred = (__bridge GSSCredential *)GSSCreateCredentialFromUUID(uuid);
+    }
+
+    if (cred == nil) {
+        gss_name_t name = [cuiCredential copyGSSName];
         if (name) {
-            cred = [self initWithName:name
+            cred = [self initWithName:(__bridge GSSName *)name
                             mechanism:[GSSMechanism mechanismForCUICredential:cuiCredential]
                            attributes:[cuiCredential attributesWithClass:CUIAttributeClassGSSInitialCred]
                                 error:error];
+            CFRelease(name);
         }
     }
     
