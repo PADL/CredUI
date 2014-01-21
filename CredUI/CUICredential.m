@@ -139,8 +139,10 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
         [[NSDictionary alloc] initWithObjects:[self.attributes objectsForKeys:codeableKeys.allObjects notFoundMarker:[NSNull null]]
                                       forKeys:codeableKeys.allObjects];
     [coder encodeObject:codeableAttrs forKey:@"attributes"];
-    
+   
+#if !__has_feature(objc_arc) 
     [codeableAttrs release];
+#endif
 }
 
 - (id)initWithCoder:(NSCoder *)coder
