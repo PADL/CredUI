@@ -123,7 +123,7 @@ public:
         gss_buffer_desc exportedName = GSS_C_EMPTY_BUFFER;
         major = gss_export_name(&minor, name, &exportedName);
         if (!GSS_ERROR(major)) {
-            CFDataRef data = CFDataCreate(kCFAllocatorDefault, (const UInt8 *)exportedName.value, exportedName.length);
+            CFDataRef data = CUICreateDataWithGSSBuffer(exportedName);
 
             if (data == NULL) {
                 gss_release_buffer(&minor, &exportedName);

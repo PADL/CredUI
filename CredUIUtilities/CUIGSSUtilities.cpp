@@ -55,9 +55,9 @@ CUICreateGSSBufferWithString(CFStringRef cfString, gss_buffer_desc &buffer)
 }
 
 CFStringRef
-CUICreateStringWithGSSBuffer(gss_const_buffer_t buffer)
+CUICreateStringWithGSSBuffer(const gss_buffer_desc &buffer)
 {
-    return CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)buffer->value, buffer->length, kCFStringEncodingUTF8, false);
+    return CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)buffer.value, buffer.length, kCFStringEncodingUTF8, false);
 }
 
 CFStringRef
@@ -68,7 +68,7 @@ CUICreateStringWithGSSOID(gss_OID oid)
     CFStringRef string = NULL;
     
     if (!GSS_ERROR(gss_oid_to_str(&minor, oid, &buffer))) {
-        string = CUICreateStringWithGSSBuffer(&buffer);
+        string = CUICreateStringWithGSSBuffer(buffer);
         gss_release_buffer(&minor, &buffer);
     }
     
@@ -158,3 +158,10 @@ CUICopyAttrClassForGSSOID(gss_OID oid)
 
     return attrClass;
 }
+
+CFDataRef
+CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer)
+{
+    return CFDataCreate(kCFAllocatorDefault, (const UInt8 *)buffer.value, buffer.length);
+}
+

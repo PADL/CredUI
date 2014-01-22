@@ -492,7 +492,7 @@ _GSSServiceNameCreateDisplayString(gss_name_t targetName)
     if (GSS_ERROR(major) || !gss_oid_equal(oid, GSS_C_NT_HOSTBASED_SERVICE))
         return NULL;
    
-    displayString = CUICreateStringWithGSSBuffer(&buffer);
+    displayString = CUICreateStringWithGSSBuffer(buffer);
     (void) gss_release_buffer(&minor, &buffer);
 
     if (displayString) {

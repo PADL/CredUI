@@ -13,7 +13,7 @@ Boolean
 CUICreateGSSBufferWithString(CFStringRef cfString, gss_buffer_desc &buffer);
 
 CFStringRef
-CUICreateStringWithGSSBuffer(gss_const_buffer_t buffer);
+CUICreateStringWithGSSBuffer(const gss_buffer_desc &buffer);
 
 Boolean
 CUICreateGSSOIDWithString(OM_uint32 *minor, CFStringRef cfString, gss_OID_desc &oidBuf);
@@ -26,5 +26,8 @@ CUICopyGSSOIDForAttrClass(CFStringRef attrClass, gss_OID_desc &oidBuf);
 
 CFStringRef
 CUICopyAttrClassForGSSOID(gss_OID oid);
+
+CFDataRef
+CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer);
 
 #endif /* CredUI_GSSUtilities_h */
