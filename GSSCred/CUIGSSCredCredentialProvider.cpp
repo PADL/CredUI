@@ -28,7 +28,7 @@ CUIGSSCredCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
     gss_OID_desc mechBuf = { 0 };
     CFStringRef attrClass = attributes ? (CFStringRef)CFDictionaryGetValue(attributes, kCUIAttrClass) : NULL;
 
-    if (usageFlags & kCUIUsageFlagsGeneric)
+    if (usageFlags & (kCUIUsageFlagsGeneric | kCUIUsageFlagsExcludeTransientCreds))
         return NULL;
 
     mech = CUICopyGSSOIDForAttrClass(attrClass, mechBuf);
