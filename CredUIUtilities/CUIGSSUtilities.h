@@ -30,4 +30,7 @@ CUICopyAttrClassForGSSOID(gss_OID oid);
 CFDataRef
 CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer);
 
+Boolean
+CUICreateGSSBufferWithData(CFDataRef cfData, gss_buffer_desc &buffer);
+
 #endif /* CredUI_GSSUtilities_h */
