@@ -35,6 +35,7 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
     CUIFlagsUsernameTargetCredentials   = 0x00080000,
     CUIFlagsKeepUsername                = 0x00100000,
     CUIFlagsExcludePersistedCredentials = 0x10000000,
+    CUIFlagsExcludeTransientCredentials = 0x02000000
 };
 
 /* CredUI context, used for C APIs */

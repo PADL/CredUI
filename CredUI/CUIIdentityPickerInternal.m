@@ -99,6 +99,8 @@
         usageFlags |= kCUIUsageFlagsKeepUsername;
     if (flags & CUIFlagsExcludePersistedCredentials)
         usageFlags |= kCUIUsageFlagsExcludePersistedCreds;
+    if (flags & CUIFlagsExcludeTransientCredentials)
+        usageFlags |= kCUIUsageFlagsExcludeTransientCreds;
     
     return CUIControllerCreate(kCFAllocatorDefault, usageScenario, usageFlags);
 }
