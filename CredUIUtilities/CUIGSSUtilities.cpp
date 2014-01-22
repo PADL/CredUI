@@ -60,6 +60,28 @@ CUICreateStringWithGSSBuffer(const gss_buffer_desc &buffer)
     return CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)buffer.value, buffer.length, kCFStringEncodingUTF8, false);
 }
 
+Boolean
+CUICreateGSSBufferWithData(CFDataRef cfData, gss_buffer_desc &buffer)
+{
+    if (cfData == NULL || CFGetTypeID(cfData) != CFDataGetTypeID())
+        return false;
+   
+    buffer.length = CFDataGetLength(cfData); 
+    buffer.value = malloc(buffer.length);
+    if (buffer.value == NULL)
+        return false;
+  
+    CFDataGetBytes(cfData, CFRangeMake(0, buffer.length), (UInt8 *)buffer.value); 
+
+    return true;
+}
+
+CFDataRef
+CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer)
+{
+    return CFDataCreate(kCFAllocatorDefault, (const UInt8 *)buffer.value, buffer.length);
+}
+
 CFStringRef
 CUICreateStringWithGSSOID(gss_OID oid)
 {
@@ -159,24 +181,3 @@ CUICopyAttrClassForGSSOID(gss_OID oid)
     return attrClass;
 }
 
-CFDataRef
-CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer)
-{
-    return CFDataCreate(kCFAllocatorDefault, (const UInt8 *)buffer.value, buffer.length);
-}
-
-Boolean
-CUICreateGSSBufferWithData(CFDataRef cfData, gss_buffer_desc &buffer)
-{
-    if (cfData == NULL || CFGetTypeID(cfData) != CFDataGetTypeID())
-        return false;
-   
-    buffer.length = CFDataGetLength(cfData); 
-    buffer.value = malloc(buffer.length);
-    if (buffer.value == NULL)
-        return false;
-  
-    CFDataGetBytes(cfData, CFRangeMake(0, buffer.length), (UInt8 *)buffer.value); 
-
-    return true;
-}
