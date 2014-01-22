@@ -22,6 +22,7 @@
 #include <CredUICore/GSSIsPromptingNeeded.h>
 
 #include "CUICFUtilities.h"
+#include "CUIGSSUtilities.h"
 
 #undef CUI_EXPORT
 #define CUI_EXPORT  __attribute__((visibility("default")))

@@ -491,15 +491,10 @@ _GSSServiceNameCreateDisplayString(gss_name_t targetName)
     major = gss_display_name(&minor, targetName, &buffer, &oid);
     if (GSS_ERROR(major) || !gss_oid_equal(oid, GSS_C_NT_HOSTBASED_SERVICE))
         return NULL;
-    
-    displayString = CFStringCreateWithBytes(kCFAllocatorDefault,
-                                            (const UInt8 *)buffer.value,
-                                            buffer.length,
-                                            kCFStringEncodingUTF8,
-                                            false);
-
+   
+    displayString = CUICreateStringWithGSSBuffer(&buffer);
     (void) gss_release_buffer(&minor, &buffer);
-    
+
     if (displayString) {
         CFRange range = CFStringFind(displayString, CFSTR("@"), 0);
         if (range.location != kCFNotFound && range.length > 0) {
