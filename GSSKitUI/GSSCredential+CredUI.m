@@ -27,7 +27,8 @@
     if (cred == nil) {
         CFUUIDRef uuid = (__bridge CFUUIDRef)[cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrUUID];
         
-        cred = (__bridge GSSCredential *)GSSCreateCredentialFromUUID(uuid);
+        if (uuid)
+            cred = (__bridge GSSCredential *)GSSCreateCredentialFromUUID(uuid);
     }
 
     if (cred == nil) {
