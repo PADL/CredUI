@@ -68,6 +68,10 @@ public:
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
     
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        return NULL;
+    }
+    
     CFMutableDictionaryRef createCertificateAttributesFromCUIAttributes(CFDictionaryRef attributes, CFTypeRef targetName);
     CFArrayRef copyMatchingIdentities(CFDictionaryRef attributes, CFTypeRef targetName, CFErrorRef *error);
     CUICredentialRef createCredentialWithIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags);

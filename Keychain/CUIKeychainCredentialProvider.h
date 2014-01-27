@@ -58,6 +58,10 @@ public:
                                        CUIUsageFlags usageFlags,
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        return NULL;
+    }
+
     Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
     CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error);
 

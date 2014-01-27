@@ -53,12 +53,9 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
             _contextFlags |= BID_CONTEXT_GSS | BID_CONTEXT_ECDH_KEYEX;
         else
             _targetName = CUICopyTargetDisplayName(targetName);
-        
-        if (_targetName == NULL)
-            return false;
     }
 
-    if (!createBrowserIDContext(controller, error))
+    if (_targetName == NULL || !createBrowserIDContext(controller, error))
         return false;
 
     if (attributes) {
@@ -118,6 +115,8 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     if (error != NULL)
         *error = NULL;
     
+    assert(_targetName != NULL);
+    
     ulReqFlags = BID_ACQUIRE_FLAG_NO_CACHED;
     if (_contextFlags & BID_CONTEXT_GSS)
         ulReqFlags |= BID_ACQUIRE_FLAG_MUTUAL_AUTH;
@@ -148,4 +147,3 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     
     return (err == BID_S_OK);
 }
-

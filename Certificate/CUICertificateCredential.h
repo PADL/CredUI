@@ -84,7 +84,7 @@ public:
     Boolean deletePersisted(CFErrorRef *error) {
         return true;
     }
-    
+
     CUICertificateCredential() {
         _retainCount = 1;
         _fields = NULL;

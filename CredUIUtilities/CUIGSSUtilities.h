@@ -9,6 +9,7 @@
 #ifndef CredUI_GSSUtilities_h
 #define CredUI_GSSUtilities_h
 
+#ifdef __cplusplus
 Boolean
 CUICreateGSSBufferWithString(CFStringRef cfString, gss_buffer_desc &buffer);
 
@@ -24,13 +25,14 @@ CUICreateDataWithGSSBuffer(const gss_buffer_desc &buffer);
 Boolean
 CUICreateGSSOIDWithString(OM_uint32 *minor, CFStringRef cfString, gss_OID_desc &oidBuf);
 
-CFStringRef
-CUICreateStringWithGSSOID(gss_OID oid);
-
 gss_OID
 CUICopyGSSOIDForAttrClass(CFStringRef attrClass, gss_OID_desc &oidBuf);
 
 CFStringRef
+CUICreateStringWithGSSOID(gss_OID oid);
+
+CFStringRef
 CUICopyAttrClassForGSSOID(gss_OID oid);
+#endif /* __cplusplus */
 
 #endif /* CredUI_GSSUtilities_h */

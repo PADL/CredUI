@@ -12,6 +12,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 @interface CUIIdentityPickerInternal ()
 
 @property(nonatomic, assign) CUIControllerRef controllerRef;
+@property(nonatomic, retain) NSSet *whitelistedAttributeKeys;
 @property(nonatomic, assign) CUICredUIContext *credUIContext;
 @property(nonatomic, assign) CUIFlags flags;
 
@@ -19,11 +20,8 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
 @property(nonatomic, retain, readonly) NSString *targetHostName;
 
-+ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario flags:(CUIUsageFlags)flags;
++ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario flags:(CUIFlags)flags;
 - (BOOL)_loadViews;
-
-- (void)startCredentialEnumeration;
-- (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
 
 @end
 
@@ -43,7 +41,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
 @synthesize lastError = _lastError;
 
-@synthesize identityPickerPanel = _identityPickerPanel;
 @synthesize collectionView = _collectionView;
 @synthesize titleTextField = _titleTextField;
 @synthesize messageTextField = _messageTextField;
@@ -51,10 +48,10 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 @synthesize submitButton = _submitButton;
 @synthesize cancelButton = _cancelButton;
 
-@synthesize controllerRef = _controllerRef;
 @synthesize credUIContext = _credUIContext;
 
 @synthesize credsController = _credsController;
+
 @synthesize runningModal = _runningModal;
 
 - (void)dealloc
@@ -70,7 +67,9 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     [_targetName release];
     
     [_lastError release];
-    
+    [_whitelistedAttributeKeys release];
+
+#if 0    
     [_collectionView release];
     [_titleTextField release];
     [_messageTextField release];
@@ -79,12 +78,28 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     [_cancelButton release];
 
     [_credsController release];
+#endif
 
     [super dealloc];
 #endif
 }
 
-+ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario flags:(CUIUsageFlags)flags
+- (CUIControllerRef)controllerRef
+{
+    return _controllerRef;
+}
+
+- (void)setControllerRef:(CUIControllerRef)controllerRef
+{
+    if (controllerRef != _controllerRef) {
+        if (_controllerRef)
+            CFRelease(_controllerRef);
+        _controllerRef = (CUIControllerRef)CFRetain(controllerRef);
+    }
+}
+
++ (CUIControllerRef)_newCUIController:(CUIUsageScenario)usageScenario
+                                flags:(CUIFlags)flags
 {
     CUIUsageFlags usageFlags = 0;
     
@@ -106,36 +121,61 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     return CUIControllerCreate(kCFAllocatorDefault, usageScenario, usageFlags);
 }
 
-- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
-                           attributes:(NSDictionary *)attributes
-                                flags:(CUIFlags)usageFlags
+- (BOOL)isConfigured
+{
+    return (self.controllerRef != NULL);
+}
+
+- (void)initAttributeKeyWhitelist
+{
+    CFSetRef whitelist = _CUIControllerCopyWhitelistedAttributeKeys(self.controllerRef);
+    if (whitelist) {
+        self.whitelistedAttributeKeys = (__bridge NSSet *)whitelist;
+        CFRelease(whitelist);
+    }
+}
+
+- (BOOL)configureForUsageScenario:(CUIUsageScenario)usageScenario
+                            flags:(CUIFlags)flags
+{
+    CUIControllerRef controllerRef;
+
+    NSAssert(self.runningModal == NO, @"cannot configure identity picker during run loop");
+
+    if (usageScenario == kCUIUsageScenarioLogin) {
+        /* Make sure login credentails can never be persisted */
+        flags &= ~(CUIFlagsPersist);
+        flags |= CUIFlagsDoNotPersist;
+    }
+
+    controllerRef = [CUIIdentityPickerInternal _newCUIController:usageScenario flags:flags];
+    if (controllerRef == nil) {
+        NSLog(@"Failed to initialize CUIController");
+        return NO;
+    }
+
+    self.controllerRef = controllerRef;
+    CFRelease(controllerRef);
+ 
+    self.flags = flags;
+    if ((self.flags & (CUIFlagsPersist | CUIFlagsDoNotPersist)) == 0)
+        self.flags |= CUIFlagsShowSaveCheckBox;
+
+    self.persist = !!(self.flags & CUIFlagsPersist); 
+
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
+    
+    [self initAttributeKeyWhitelist];
+
+    return YES;
+}
+
+- init
 {
     self = [super init];
     if (self == nil)
         return nil;
- 
-    if (usageScenario == kCUIUsageScenarioLogin) {
-        /* Make sure login credentails can never be persisted */
-        usageFlags &= ~(CUIFlagsPersist);
-        usageFlags |= CUIFlagsDoNotPersist;
-    }
-
-    self.flags = usageFlags;
-
-    self.controllerRef = [CUIIdentityPickerInternal _newCUIController:usageScenario flags:usageFlags];
-    if (self.controllerRef == nil) {
-        NSLog(@"Failed to initialize CUIController");
-#if !__has_feature(objc_arc)
-        [self release];
-#endif
-        return nil;
-    }
-   
-    if ((self.flags & (CUIFlagsPersist | CUIFlagsDoNotPersist)) == 0)
-        self.flags |= CUIFlagsShowSaveCheckBox;
- 
-    if (attributes)
-        self.attributes = attributes;
 
     if (![self _loadViews]) {
 #if !__has_feature(objc_arc)
@@ -144,8 +184,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
         return nil;
     }
   
-    self.persist = !!(self.flags & CUIFlagsPersist); 
-
     return self;
 }
 
@@ -162,10 +200,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     
     if ((self.flags & CUIFlagsShowSaveCheckBox) == 0)
         [self.persistCheckBox setHidden:YES];
-    
-    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.identityPickerPanel };
-    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
-    
+   
     return YES;
 }
 
@@ -207,7 +242,9 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 - (void)startCredentialEnumeration
 {
     NSString *targetHostName;
-    
+   
+    NSAssert(self.isConfigured, @"must configure identity picker before use");
+ 
     if (self.title)
         self.titleTextField.stringValue = self.title;
     else if ((targetHostName = self.targetHostName))
@@ -258,8 +295,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
     if (modalResponse != NSModalResponseOK)
         self.credsController = nil; /* so selectedCredential will return nil */
-
-    self.window = nil;
 }    
 
 #pragma mark - Run Loop
@@ -270,7 +305,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
     [self startCredentialEnumeration];
 
-    modalResponse = [NSApp runModalForWindow:self.identityPickerPanel];
+    modalResponse = [NSApp runModalForWindow:self.window];
 
     [self endCredentialEnumeration:modalResponse];
 
@@ -282,11 +317,9 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    self.window = window;
-
     [self startCredentialEnumeration];
 
-    [window beginSheet:self.identityPickerPanel
+    [window beginSheet:self.window
      completionHandler:^(NSModalResponse returnCode) {
         [self endCredentialEnumeration:returnCode];
 
@@ -325,15 +358,20 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
 #pragma mark Cancel submission
 
+- (void)endWithReturnCode:(NSModalResponse)returnCode
+                   sender:(id)sender
+{
+    if (self.window.isSheet) {
+        [self.window.sheetParent endSheet:self.window returnCode:returnCode];
+    } else {
+        [NSApp stopModalWithCode:returnCode];
+    }
+    [self.window orderOut:sender];
+}
+
 - (void)willCancelCredential:(id)sender
 {
-    [self.identityPickerPanel orderOut:sender];
-
-    if (self.window) {
-        [self.window endSheet:self.identityPickerPanel returnCode:NSModalResponseCancel];
-    } else {
-        [NSApp stopModalWithCode:NSModalResponseCancel];
-    }
+    [self endWithReturnCode:NSModalResponseCancel sender:sender];
 }
  
 - (IBAction)didClickCancel:(id)sender
@@ -353,14 +391,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     self.submitButton.state = NSOnState; // in case cred was submitted without clicking
 
     [self.selectedCredential willSubmit];
-
-    [self.identityPickerPanel orderOut:sender];
-
-    if (self.window) {
-        [self.window endSheet:self.identityPickerPanel returnCode:NSModalResponseOK];
-    } else {
-        [self.identityPickerPanel close];
-    }
+    [self endWithReturnCode:NSModalResponseOK sender:sender];
 }
 
 - (IBAction)didClickOK:(id)sender

@@ -14,16 +14,22 @@
 #import <CredUI/CUICredential+CBIdentity.h>
 
 #import <CredUICore/CredUICore.h>
+#import <CredUICore/CredUICore_Private.h>
 
 #import "CUIField.h"
 #import "CUIField+UIFactory.h"
 
 #import "CUICredential+Private.h"
+#import "CUICredential+Coding.h"
 
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
 
+#import "CUIIdentityPicker+Private.h"
+#import "CUIIdentityPickerInfo.h"
 #import "CUIIdentityPickerInternal.h"
+#import "CUIVBIdentityPicker.h"
+#import "CUIProxyCredential.h"
 
 #import "NSBundle+CredUI.h"
 

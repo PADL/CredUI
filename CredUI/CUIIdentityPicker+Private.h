@@ -6,9 +6,14 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@interface CUIIdentityPicker ()
+@class CUIIdentityPickerInfo;
 
-@property(nonatomic, readonly) NSString *targetDisplayName;
-@property(nonatomic, retain) CUIIdentityPickerInternal *internal;
+@interface CUIIdentityPicker (Private)
+
+- (void)setModalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector;
+
+- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker
+                  returnCode:(NSInteger)returnCode
+                 contextInfo:(void *)contextInfo;
 
 @end

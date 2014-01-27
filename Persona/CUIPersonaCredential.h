@@ -87,7 +87,7 @@ public:
     Boolean deletePersisted(CFErrorRef *error) {
         return true;
     }
-
+    
     CUIPersonaCredential() {
         _retainCount = 1;
         _contextFlags = BID_CONTEXT_USER_AGENT;

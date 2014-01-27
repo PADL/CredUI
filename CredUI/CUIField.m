@@ -103,7 +103,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - (void)didSubmit:(id)sender
 {
-    [self setValue:(id)kCFBooleanTrue];
+    [self setValue:@YES];
 }
 
 - (void)controlTextDidChange:(NSNotification *)notification

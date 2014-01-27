@@ -64,6 +64,10 @@ public:
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
 
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        return NULL;
+    }
+    
     CFDictionaryRef copyAttributesForCredential(gss_cred_id_t cred);
 
     CUIGSSCredCredentialProvider() {

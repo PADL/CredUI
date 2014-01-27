@@ -44,7 +44,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
                               contextInfo:NULL];
     }
     
-    modalSession = [NSApp beginModalSessionForWindow:[identityPicker->_reserved[0] identityPickerPanel]];
+    modalSession = [NSApp beginModalSessionForWindow:[identityPicker->_reserved[0] window]];
     do {
         modalResponse = [NSApp runModalSession:modalSession];
     } while (modalResponse == NSModalResponseContinue &&

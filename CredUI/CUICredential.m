@@ -118,43 +118,6 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return CUICredentialGetTypeID();
 }
 
-#pragma mark Secure Coding
-
-+ (BOOL)supportsSecureCoding
-{
-    return YES;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder
-{
-    NSSet *codeableKeys = [self.attributes keysOfEntriesPassingTest:^ BOOL (id key, id obj, BOOL *stop) {
-        return [obj respondsToSelector:@selector(encodeWithCoder:)];
-    }];
-    
-    NSDictionary *codeableAttrs =
-        [[NSDictionary alloc] initWithObjects:[self.attributes objectsForKeys:codeableKeys.allObjects notFoundMarker:[NSNull null]]
-                                      forKeys:codeableKeys.allObjects];
-    [coder encodeObject:codeableAttrs forKey:@"attributes"];
-   
-#if !__has_feature(objc_arc) 
-    [codeableAttrs release];
-#endif
-}
-
-- (id)initWithCoder:(NSCoder *)coder
-{
-    NSDictionary *credAttributes;
-    CUICredentialRef credentialRef;
-    
-    credAttributes = [coder decodeObjectOfClass:[NSDictionary class] forKey:@"attributes"];
-    if (credAttributes == nil)
-        return nil;
-        
-    credentialRef = CUICredentialCreateProxy(kCFAllocatorDefault, (CFDictionaryRef)credAttributes);
-    
-    return (id)credentialRef;
-}
-
 #pragma mark Primitive methods
 
 - (NSDictionary *)attributes

@@ -9,11 +9,11 @@
                 <outlet property="cancelButton" destination="NNk-n3-4Eo" id="x6D-bw-P38"/>
                 <outlet property="collectionView" destination="lae-2w-FrG" id="pRs-gD-YTE"/>
                 <outlet property="credsController" destination="4Un-ya-2nW" id="bcM-FA-0iP"/>
-                <outlet property="identityPickerPanel" destination="1" id="m5H-zL-5Ci"/>
                 <outlet property="messageTextField" destination="m97-if-koo" id="Bmz-zo-c5a"/>
                 <outlet property="persistCheckBox" destination="cbI-54-GXg" id="heY-gM-rtd"/>
                 <outlet property="submitButton" destination="1U0-4v-lXP" id="p7Q-hP-EjD"/>
                 <outlet property="titleTextField" destination="E2N-yT-1G6" id="Dep-BD-VDN"/>
+                <outlet property="window" destination="1" id="qpZ-Ld-cjS"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>

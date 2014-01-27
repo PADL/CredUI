@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include <CredUICore/CredUICore_Private.h>
+
 #include "CUIPersistedCredential.h"
 
 class CUIPersistedCredential : public CUICredentialContext {

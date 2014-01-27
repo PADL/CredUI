@@ -39,6 +39,7 @@ public:
 
     virtual Boolean savePersisted(CFErrorRef *error) = 0;
     virtual Boolean deletePersisted(CFErrorRef *error) = 0;
+
 };
 
 class CUIProvider : public IUnknown {
@@ -56,6 +57,10 @@ public:
                                                CUIUsageFlags usageFlags,
                                                CFIndex *defaultCredentialIndex,
                                                CFErrorRef *error) CF_RETURNS_RETAINED = 0;
+    /*
+     * Return provider-specific whitelisted attribute keys.
+     */
+    virtual CFSetRef getWhitelistedAttributeKeys(void) = 0;
 };
 
 class CUICredentialPersistence : public IUnknown {
@@ -101,6 +106,7 @@ typedef struct CUIProvider {
                                                             CFDictionaryRef attributes,
                                                             CFIndex *defaultCredentialIndex,
                                                             CFErrorRef *error);
+    CFSetRef (STDMETHODCALLTYPE *getWhitelistedAttributeKeys)(void *thisPointer);
 } CUIProvider;
 
 typedef struct CUICredentialPersistence {

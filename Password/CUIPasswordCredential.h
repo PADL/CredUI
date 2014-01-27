@@ -122,7 +122,7 @@ public:
     Boolean isLoginUsageScenario(void) {
         return CUIControllerGetUsageScenario(_controller) == kCUIUsageScenarioLogin;
     }
- 
+
     CUIPasswordCredential() {
         _retainCount = 1;
         _fields = NULL;

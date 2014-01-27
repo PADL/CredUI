@@ -7,7 +7,7 @@
 //
 
 #import <CredUI/CredUI.h>
-#import <CredUI/GSSPromptForCredentials.h>
+#import <GSSKitUI/GSSPromptForCredentials.h>
 #import <CredUICore/CUIAttributes.h>
 
 #import <GSSKit/GSSKit.h>

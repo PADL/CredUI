@@ -541,3 +541,66 @@ _CUIControllerShowProviders(CUIControllerRef controller)
         }
     }
 }
+
+static void
+_CUICFSetExtendApplyFunction(const void *value, void *context)
+{
+    CFMutableSetRef theSet = (CFMutableSetRef)context;
+    CFSetSetValue(theSet, value);
+}
+
+static void
+_CUICFSetExtend(CFMutableSetRef theSet, CFSetRef anotherSet)
+{
+    CFSetApplyFunction(anotherSet, _CUICFSetExtendApplyFunction, theSet);
+}
+
+static CFStringRef const _CUIDefaultWhitelistedAttributeKeys[] = {
+    kCUIAttrClass,
+    kCUIAttrSupportGSSCredential,
+    kCUIAttrNameType,
+    kCUIAttrName,
+    kCUIAttrNameDisplay,
+    kCUIAttrUUID,
+    kCUIAttrTransientExpire,
+    kCUIAttrTransientDefaultInClass,
+    kCUIAttrCredentialSecIdentity,
+    kCUIAttrCredentialSecCertificate,
+    kCUIAttrCredentialExists,
+    kCUIAttrGSSItem,
+    kCUIAttrSecKeychainItem,
+    kCUIAttrCSIdentity,
+    kCUIAttrGSSCredential,
+    kCUIAttrImageData,
+    kCUIAttrImageDataType,
+};
+
+CUI_EXPORT CFSetRef
+_CUIControllerCopyWhitelistedAttributeKeys(CUIControllerRef controller)
+{
+    static CFSetRef defaultWhitelist;
+    static dispatch_once_t onceToken;
+    CFMutableSetRef whitelist;
+
+    dispatch_once(&onceToken, ^{
+        defaultWhitelist = CFSetCreate(kCFAllocatorDefault,
+                                       (const void **)_CUIDefaultWhitelistedAttributeKeys,
+                                       sizeof(_CUIDefaultWhitelistedAttributeKeys) / sizeof(_CUIDefaultWhitelistedAttributeKeys[0]),
+                                       &kCFTypeSetCallBacks);
+    });
+
+    whitelist = CFSetCreateMutable(kCFAllocatorDefault, 0, &kCFTypeSetCallBacks);
+    _CUICFSetExtend(whitelist, defaultWhitelist);
+
+    for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
+        CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
+        CFSetRef providerWhitelist;
+
+        providerWhitelist = provider->getWhitelistedAttributeKeys();
+        if (providerWhitelist)
+            _CUICFSetExtend(whitelist, providerWhitelist);
+    }
+
+    return whitelist;
+}
+

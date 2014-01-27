@@ -77,6 +77,10 @@ public:
         return creds;
     }
 
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        return NULL;
+    }
+    
     Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
         if (CUIControllerGetUsageFlags(controller) & kCUIUsageFlagsRequireCertificates)
             return false;

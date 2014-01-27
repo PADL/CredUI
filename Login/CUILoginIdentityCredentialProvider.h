@@ -65,6 +65,10 @@ public:
                                        CFIndex *defaultCredentialIndex,
                                        CFErrorRef *error);
 
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        return NULL;
+    }
+
     // helpers    
     CSIdentityQueryRef createQuery(CFDictionaryRef attributes, CUIUsageFlags usageFlags);
     CFDictionaryRef copyAttributesForIdentity(CSIdentityRef identity, CFDictionaryRef assertedAttributes);

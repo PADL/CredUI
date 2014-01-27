@@ -55,7 +55,9 @@
 - (void)dealloc
 {
     dispatch_release(_semaphore);
+#if !__has_feature(objc_arc)
     [super dealloc];
+#endif
 }
 
 @end
@@ -123,7 +125,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     NSMutableDictionary *attributes = [@{
                                          (__bridge id)kCUIAttrNameType : (__bridge NSString *)kCUIAttrNameTypeGSSUsername,
                                          (__bridge id)kCUIAttrName : self.credential.name.displayString,
-                                         (__bridge id)kCUIAttrSupportGSSCredential : (__bridge id)kCFBooleanTrue
+                                         (__bridge id)kCUIAttrSupportGSSCredential : @YES
                                          } mutableCopy];
    
     if (self.mechanism)

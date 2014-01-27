@@ -1,11 +1,12 @@
 //
-//  CUIIdentityPickerInternalWindowController.h
+//  CUIIdentityPickerInternal.h
 //  CredUI
 //
 //  Created by Luke Howard on 1/01/2014.
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+__attribute__((visibility("default")))
 @interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
 {
     NSString *_title;
@@ -22,7 +23,6 @@
 
     NSError *_lastError;
 
-    NSPanel *_identityPickerPanel;
     NSCollectionView *_collectionView;
     NSTextField *_titleTextField;
     NSTextField *_messageTextField;
@@ -32,8 +32,10 @@
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
+    NSSet *_whitelistedAttributeKeys;
 
     NSArrayController *_credsController;
+    
     BOOL _runningModal;
     BOOL _autoLogin;
 }
@@ -55,19 +57,17 @@
 
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
 
-@property(nonatomic, retain) IBOutlet NSPanel *identityPickerPanel;
-@property(nonatomic, retain) IBOutlet NSCollectionView *collectionView;
-@property(nonatomic, retain) IBOutlet NSTextField *titleTextField;
-@property(nonatomic, retain) IBOutlet NSTextField *messageTextField;
-@property(nonatomic, retain) IBOutlet NSButton *persistCheckBox;
-@property(nonatomic, retain) IBOutlet NSButton *submitButton;
-@property(nonatomic, retain) IBOutlet NSButton *cancelButton;
+@property(assign) IBOutlet NSCollectionView *collectionView;
+@property(assign) IBOutlet NSTextField *titleTextField;
+@property(assign) IBOutlet NSTextField *messageTextField;
+@property(assign) IBOutlet NSButton *persistCheckBox;
+@property(assign) IBOutlet NSButton *submitButton;
+@property(assign) IBOutlet NSButton *cancelButton;
 
-@property(nonatomic, retain) IBOutlet NSArrayController *credsController;
+@property(nonatomic, readonly) CUIControllerRef controllerRef;
+@property(nonatomic, readonly) NSSet *whitelistedAttributeKeys;
 
-- (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
-                           attributes:(NSDictionary *)attributes
-                                flags:(CUIFlags)flags;
+@property(assign) IBOutlet NSArrayController *credsController;
 
 - (IBAction)didClickPersist:(id)sender;
 - (IBAction)didClickOK:(id)sender;
@@ -81,5 +81,12 @@
 
 - (NSInteger)runModal;
 - (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
+
+- (void)startCredentialEnumeration;
+- (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
+
+- (BOOL)configureForUsageScenario:(CUIUsageScenario)usageScenario
+                            flags:(CUIFlags)usageFlags;
+- (BOOL)isConfigured;
 
 @end

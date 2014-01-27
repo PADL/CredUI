@@ -18,6 +18,12 @@ const CFStringRef kCUIAttrCredentialBrowserIDFlags     = CFSTR("kCUIAttrCredenti
 
 const CFStringRef kCUIAttrClassBrowserID               = CFSTR("1.3.6.1.4.1.5322.24.1.17");
 
+static CFStringRef const _CUIPersonaWhitelistedAttributeKeys[] = {
+    kCUIAttrCredentialBrowserIDAssertion,
+    kCUIAttrCredentialBrowserIDIdentity,
+    kCUIAttrCredentialBrowserIDFlags,
+};
+
 extern "C" {
     void *CUIPersonaCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
 };
@@ -84,6 +90,21 @@ public:
         return creds;
     }
     
+    CFSetRef getWhitelistedAttributeKeys(void) {
+        static CFSetRef whitelist;
+        static dispatch_once_t whitelistOnceToken;
+        
+        dispatch_once(&whitelistOnceToken, ^{
+            whitelist = CFSetCreate(kCFAllocatorDefault,
+                                    (const void **)_CUIPersonaWhitelistedAttributeKeys,
+                                    sizeof(_CUIPersonaWhitelistedAttributeKeys) / sizeof(_CUIPersonaWhitelistedAttributeKeys[0]),
+                                    &kCFTypeSetCallBacks);
+            
+        });
+        
+        return whitelist;
+    }
+ 
     Boolean initWithController(CUIControllerRef controller, CFErrorRef *error) {
         if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioNetwork)
             return false;

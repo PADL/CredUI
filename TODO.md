@@ -6,3 +6,9 @@ CredUI todo
 * run identity picker in a separate process
 * securely erase strings
 
+VB
+--
+
+* GSS context
+* whitelist
+

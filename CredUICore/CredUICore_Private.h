@@ -47,14 +47,24 @@ _CUIProvidersCreate(CFAllocatorRef allocator, CUIControllerRef controller);
 CFStringRef
 _CUICopyAttrClassForAuthError(CFErrorRef authError);
 
+#ifdef __cplusplus
 extern "C" {
-
+#endif
+    
 void
 _CUICleanupPAMAttrData(pam_handle_t *pamh, void *data, int pam_end_status);
 
 Boolean
 _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *autoLogin);
 
+CUI_EXPORT CFSetRef
+_CUIControllerCopyWhitelistedAttributeKeys(CUIControllerRef controller);
+
+CUI_EXPORT CFSetRef
+_CUIControllerCopyWhitelistedAttributeClasses(CUIControllerRef controller);
+
+#ifdef __cplusplus
 }
+#endif
 
 #endif

@@ -6,19 +6,7 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
-@interface CUIIdentityPickerInfo : NSObject
-{
-    id _delegate;
-    SEL _didEndSelector;
-}
-@property(nonatomic, retain) id delegate;
-@property(nonatomic, assign) SEL didEndSelector;
-@end
-
-@implementation CUIIdentityPickerInfo
-@synthesize delegate = _delegate;
-@synthesize didEndSelector = _didEndSelector;
-@end
+static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseViewBridge";
 
 /*
  * This is a thin wrapper over CUIIdentityPickerInternal, because we might want to move
@@ -28,7 +16,32 @@
 
 @implementation CUIIdentityPicker
 
+#pragma mark - User Defaults
+
++ (void)initialize
+{
+    NSDictionary *defaults = [NSDictionary dictionaryWithObjectsAndKeys:@YES, CUIIdentityPickerUseViewBridge, nil];
+
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+}
+
++ (BOOL)useViewBridgeIdentityPicker
+{
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+
+    return [standardUserDefaults boolForKey:CUIIdentityPickerUseViewBridge];
+}
+
 #pragma mark - Initialization
+
++ allocWithZone:(NSZone *)zone
+{
+    if ([self useViewBridgeIdentityPicker] && [self isEqual:[CUIIdentityPicker class]]) {
+        return [CUIVBIdentityPicker allocWithZone:zone];
+    } else {
+        return [super allocWithZone:zone];
+    }
+}
 
 - (void)dealloc
 {
@@ -63,46 +76,32 @@
     if ((self = [super init]) == nil)
         return nil;
 
-    _reserved[0] = [[CUIIdentityPickerInternal alloc] initWithUsageScenario:usageScenario
-                                                                 attributes:attributes
-                                                                      flags:flags];
-    
+    CUIIdentityPickerInternal *identityPicker = [[CUIIdentityPickerInternal alloc] init];
+
+    if (![identityPicker configureForUsageScenario:usageScenario flags:flags]) {
+#if !__has_feature(objc_arc)
+        [identityPicker release];
+        [self release];
+#endif
+        return nil;
+    }
+
+    if (attributes)
+        identityPicker.attributes = attributes;
+
+    _reserved[0] = identityPicker;
+ 
     return self;
 }
 
 #pragma mark - Run Loop
-
-- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker
-                  returnCode:(NSInteger)returnCode
-                 contextInfo:(void *)contextInfo
-{
-    CUIIdentityPickerInfo *info = _reserved[1];
-    NSMethodSignature *signature = [info.delegate methodSignatureForSelector:info.didEndSelector];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    void *object = (__bridge void *)self;
-
-    [invocation setTarget:info.delegate];
-    [invocation setSelector:info.didEndSelector];
-    [invocation setArgument:&object atIndex:2];
-    [invocation setArgument:&returnCode atIndex:3];
-    [invocation setArgument:&contextInfo atIndex:4];
-    [invocation invoke];
-}
 
 - (void)runModalForWindow:(NSWindow *)window
             modalDelegate:(id)delegate
            didEndSelector:(SEL)didEndSelector
               contextInfo:(void *)contextInfo
 {
-    CUIIdentityPickerInfo *info = [[CUIIdentityPickerInfo alloc] init];
-
-    info.delegate = delegate;
-    info.didEndSelector = didEndSelector;
-
-#if !__has_feature(objc_arc)
-    [_reserved[1] release];
-#endif
-    _reserved[1] = info;
+    [self setModalDelegate:delegate didEndSelector:didEndSelector];
 
     [_reserved[0] runModalForWindow:window
                       modalDelegate:self

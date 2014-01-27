@@ -22,8 +22,6 @@
     }
     
 #if !__has_feature(objc_arc)
-    [_viewPrototype release];
-
     [super dealloc];
 #endif
 }
@@ -66,7 +64,13 @@
 
 - (void)setDelegate:(CUICredentialTileController *)delegate
 {
-    _delegate = delegate;
+    if (delegate != _delegate) {
+#if !__has_feature(objc_arc)
+        [_delegate release];
+        [delegate retain];
+#endif
+        _delegate = delegate;
+    }
     [self _updateSubviews];
 }
 
