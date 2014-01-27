@@ -69,8 +69,6 @@
                            attributes:(NSDictionary *)attributes
                                 flags:(CUIFlags)flags;
 
-- (void)credentialFieldDidChange:(CUICredential *)cred;
-
 - (IBAction)didClickPersist:(id)sender;
 - (IBAction)didClickOK:(id)sender;
 - (IBAction)didClickCancel:(id)sender;

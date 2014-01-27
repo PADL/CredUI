@@ -76,10 +76,7 @@ static void testSubclasses(void)
         CFRelease(cfDesc);
     }
     
-    Boolean bar;
-    
-    CUICredentialDidBecomeSelected((__bridge CUICredentialRef)foo, &bar);
-    NSLog(@"Did become selected = %d", bar);
+    CUICredentialDidBecomeSelected((__bridge CUICredentialRef)foo);
 }
 
 static void testEncodeDecode(CUICredentialRef cred)
@@ -165,8 +162,7 @@ int main(int argc, const char * argv[])
         exit(1);
     }
     
-    Boolean autoLogin = false;
-    CUICredentialDidBecomeSelected(cred, &autoLogin);
+    CUICredentialDidBecomeSelected(cred);
     
     CUICredentialFieldsApplyBlock(cred, ^(CUIFieldRef field, Boolean *stop) {
         NSString *title = (__bridge NSString *)CUIFieldGetTitle(field);

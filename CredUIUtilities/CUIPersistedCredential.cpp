@@ -69,8 +69,8 @@ public:
         return true;
     }
     
-    void didBecomeSelected(Boolean *pbAutoLogin) {
-        CUICredentialDidBecomeSelected(_credential, pbAutoLogin);
+    void didBecomeSelected(void) {
+        CUICredentialDidBecomeSelected(_credential);
     }
     
     void didBecomeDeselected(void) {

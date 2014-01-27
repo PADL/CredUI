@@ -6,6 +6,9 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+Boolean
+_CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
+
 @interface CUIIdentityPickerInternal ()
 
 @property(nonatomic, assign) CUIControllerRef controllerRef;
@@ -21,8 +24,6 @@
 
 - (void)startCredentialEnumeration;
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
-
-- (void)updateSubmitButtonForSelectedCred;
 
 @end
 
@@ -178,28 +179,28 @@
         NSArray *creds = [object content];
         NSIndexSet *indexes = [object selectionIndexes];
        
+        self.submitButton.enabled = NO;
+        
         for (index = 0; index < creds.count; index++) {
             CUICredential *cred = [creds objectAtIndex:index];
-            BOOL autoLogin = NO;
             
-            if ([indexes containsIndex:index])
-                [cred didBecomeSelected:&autoLogin];
-            else
+            if ([indexes containsIndex:index]) {
+                [self observeCredential:cred];
+                [cred didBecomeSelected];
+            } else {
                 [cred didBecomeDeselected];
-            
-            /*
-             * This test is to ensure that autoLogin is only invoked if the user explicitly
-             * selected a credential (observing a changed, not initial, value), unless there
-             * was only one credential.
-             */
-            if (autoLogin && creds.count > 1 && !self.runningModal)
-                autoLogin = NO;
-            
-            if (autoLogin)
-                [self willSubmitCredential:self.submitButton];
-            
-            [self updateSubmitButtonForSelectedCred];
+                if ([cred observationInfo])
+                    [self unobserveCredential:cred];
+            }
         }
+    } else if ([keyPath isEqualTo:(__bridge NSString *)kCUIAttrCredentialStatus]) {
+        id credStatus = [change objectForKey:NSKeyValueChangeNewKey];
+        Boolean autoLogin;
+
+        self.submitButton.enabled = _CUIIsReturnableCredentialStatus((__bridge CFTypeRef)credStatus, &autoLogin);
+
+        if (autoLogin)
+            [self willSubmitCredential:self.submitButton];
     }
 }
 
@@ -306,6 +307,22 @@
 
 #pragma mark - Credential submission
 
+#pragma mark Observation
+
+- (void)observeCredential:(CUICredential *)credential
+{
+    [credential.attributes addObserver:self
+                            forKeyPath:(__bridge NSString *)kCUIAttrCredentialStatus
+                               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
+                               context:NULL];
+}
+
+- (void)unobserveCredential:(CUICredential *)credential
+{
+    [credential.attributes removeObserver:self
+                               forKeyPath:(__bridge NSString *)kCUIAttrCredentialStatus];
+}
+
 #pragma mark Cancel submission
 
 - (void)willCancelCredential:(id)sender
@@ -358,17 +375,6 @@
     if (self.persist &&
         (self.flags & CUIFlagsExpectConfirmation) == 0)
         [self.selectedCredential savePersisted:NULL];
-}
-
-- (void)updateSubmitButtonForSelectedCred
-{
-    self.submitButton.enabled = [self.selectedCredential canSubmit];
-}
-
-- (void)credentialFieldDidChange:(CUICredential *)credential
-{
-    if ([credential isEqual:self.selectedCredential])
-        [self updateSubmitButtonForSelectedCred];
 }
 
 #pragma mark Persist

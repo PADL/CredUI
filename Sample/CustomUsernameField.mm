@@ -68,6 +68,7 @@
     NSLog(@"CustomUsernameField: setting username to %@", aValue);
 
     self.credential->setUsername((__bridge CFStringRef)[aValue copy]);
+    self.credential->updateCredentialStatus();
 }
 
 - (void)setCredential:(SampleCredential *)credential

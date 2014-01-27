@@ -68,10 +68,7 @@ public:
     
     Boolean initWithSecIdentity(SecIdentityRef identity, CUIUsageFlags usageFlags, CFErrorRef *error);
     
-    const CFStringRef getCredentialStatus(void);
-    
-    void didBecomeSelected(Boolean *pbAutoLogin) {
-        *pbAutoLogin = false;
+    void didBecomeSelected(void) {
     }
     
     void didBecomeDeselected(void) {

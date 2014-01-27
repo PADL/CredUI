@@ -19,7 +19,6 @@
 
     for (CUIField *field in credFields) {
         [field removeObserver:self.delegate forKeyPath:@"options"];
-        [field removeObserver:self.delegate forKeyPath:@"value"];
     }
     
 #if !__has_feature(objc_arc)
@@ -59,11 +58,6 @@
         [field addObserver:self.delegate
                 forKeyPath:@"options"
                    options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial
-                   context:(__bridge void *)subview];
-        
-        [field addObserver:self.delegate
-                forKeyPath:@"value"
-                   options:NSKeyValueObservingOptionNew
                    context:(__bridge void *)subview];
         
         lastview = subview;

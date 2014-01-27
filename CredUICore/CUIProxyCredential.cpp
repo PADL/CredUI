@@ -70,7 +70,7 @@ public:
         return !!_attributes;
     }
     
-    void didBecomeSelected(Boolean *pbAutoLogin) {}
+    void didBecomeSelected(void) {}
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
    

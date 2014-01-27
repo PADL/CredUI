@@ -18,7 +18,7 @@
 
 - (CUICredentialRef)_credentialRef;
 
-- (void)didBecomeSelected:(BOOL *)pbAutoLogin;
+- (void)didBecomeSelected;
 - (void)didBecomeDeselected;
 
 - (BOOL)canSubmit; //primitive

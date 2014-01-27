@@ -33,7 +33,7 @@ public:
     /*
      * Called when the user selects the credential.
      */
-    virtual void didBecomeSelected(Boolean *pbAutoLogin) = 0;
+    virtual void didBecomeSelected(void) = 0;
     virtual void didBecomeDeselected(void) = 0;
     virtual void didSubmit(void) = 0;
 
@@ -84,7 +84,7 @@ typedef struct CUICredentialContext {
     CFStringRef (STDMETHODCALLTYPE *copyDescription)(void *thisPointer);
     CFArrayRef (STDMETHODCALLTYPE *getFields)(void *thisPointer);
     CFDictionaryRef (STDMETHODCALLTYPE *getAttributes)(void *thisPointer);
-    void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer, Boolean *pbAutoLogin);
+    void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer);
     void (STDMETHODCALLTYPE *didBecomeDeselected)(void *thisPointer);
     void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
     Boolean (STDMETHODCALLTYPE *savePersisted)(void *thisPointer, CFErrorRef *error);
@@ -136,6 +136,8 @@ CUI_EXPORT const CFStringRef kCUICredentialFinished;
 CUI_EXPORT const CFStringRef kCUICredentialReturnCredentialFinished;
 // no credential made but force caller to return
 CUI_EXPORT const CFStringRef kCUICredentialReturnNoCredentialFinished;
+// credential made, do not prompt user before submitting
+CUI_EXPORT const CFStringRef kCUICredentialAutoSubmitCredentialFinished;
 
 /*
  * Enumerate credential providers with a specific set of usage flags. This is used by persistence

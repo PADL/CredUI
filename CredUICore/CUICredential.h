@@ -55,11 +55,12 @@ CUI_EXPORT CFDictionaryRef
 CUICredentialGetAttributes(CUICredentialRef cred);
   
 /*
- * Notify the credential providers that a credential was selected by the user. If on
- * return *pbAutoLogin is true, then the credential should be used immediately.
+ * Notify the credential providers that a credential was selected by the user. At
+ * this point the attributes will be observed for kCUIAttrCredentialStatus to determine
+ * if the credential can be submitted.
  */  
 CUI_EXPORT void
-CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin);
+CUICredentialDidBecomeSelected(CUICredentialRef cred);
 
 /*
  * Notify the credential provider that a credential was deselected by the user.

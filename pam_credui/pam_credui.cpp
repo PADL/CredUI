@@ -206,14 +206,19 @@ _PAMMapCUIField(CUIFieldRef field,
 {
     int messageStyle = 0;
 
+    if (messageText)
+        *messageText = NULL;
+    
     switch (CUIFieldGetClass(field)) {
         case kCUIFieldClassSmallText: {
             CFTypeRef defaultValue = CUIFieldGetDefaultValue(field);
             
-            if (defaultValue && CFGetTypeID(defaultValue) != CFStringGetTypeID())
-                return false;
-            else if (messageText)
-                *messageText = (CFStringRef)CFRetain(defaultValue);
+            if (defaultValue) {
+                if (CFGetTypeID(defaultValue) != CFStringGetTypeID())
+                    return false;
+                else if (messageText)
+                    *messageText = (CFStringRef)CFRetain(defaultValue);
+            }
             
             messageStyle = PAM_TEXT_INFO;
             break;
@@ -266,7 +271,7 @@ _PAMConvCredential(pam_handle_t *pamh,
 
     for (index = 0, cMessages = 0; index < CFArrayGetCount(fields); index++) {
         CUIFieldRef field = (CUIFieldRef)CFArrayGetValueAtIndex(fields, index);
-        CFStringRef messageText;
+        CFStringRef messageText = NULL;
         struct pam_message *message;
         int messageStyle = 0;
         
@@ -276,12 +281,16 @@ _PAMConvCredential(pam_handle_t *pamh,
         message = (struct pam_message *)calloc(1, sizeof(*message));
         if (message == NULL) {
             rc = PAM_BUF_ERR;
+            if (messageText)
+                CFRelease(messageText);
             goto cleanup;
         }
 
         message->msg_style = messageStyle;
-        if (messageText)
+        if (messageText) {
             message->msg = CUICFStringToCString(messageText);
+            CFRelease(messageText);
+        }
         messages[cMessages++] = message;
     }
  
@@ -339,6 +348,17 @@ _PAMSetTargetNameWithService(pam_handle_t *pamh, CUIControllerRef controller)
     return PAM_SUCCESS;
 }
 
+static int
+_PAMAutoLoginP(CFDictionaryRef attributes)
+{
+    CFTypeRef status = NULL;
+
+    if (attributes)
+        status = CFDictionaryGetValue(attributes, kCUIAttrCredentialStatus);
+
+    return status && CFEqual(status, kCUICredentialAutoSubmitCredentialFinished);
+}
+
 CUI_EXPORT int
 pam_select_credential(pam_handle_t *pamh, int flags)
 {
@@ -349,7 +369,6 @@ pam_select_credential(pam_handle_t *pamh, int flags)
     CFMutableArrayRef creds = NULL;
     CUICredentialRef selectedCred = NULL;
     char *user = NULL, *pass = NULL;
-    Boolean autoLogin = false;
     __block CFIndex defaultCredentialIndex = kCFNotFound;
 
     controller = CUIControllerCreate(kCFAllocatorDefault, kCUIUsageScenarioLogin, kCUIUsageFlagsConsole);
@@ -395,20 +414,20 @@ pam_select_credential(pam_handle_t *pamh, int flags)
         if (rc != PAM_SUCCESS)
             goto cleanup;
         
-        CUICredentialDidBecomeSelected(selectedCred, &autoLogin);
-        
-        if (!autoLogin) {
+        CUICredentialDidBecomeSelected(selectedCred);
+
+        credAttributes = CUICredentialGetAttributes(selectedCred);
+  
+        if (!_PAMAutoLoginP(credAttributes)) { 
             rc = _PAMConvCredential(pamh, flags, selectedCred);
             if (rc != PAM_SUCCESS)
                 goto cleanup;
         }
-        
+ 
         CUICredentialWillSubmit(selectedCred);
     } while (!CUICredentialCanSubmit(selectedCred));
     
     CUICredentialDidSubmit(selectedCred);
-    
-    credAttributes = CUICredentialGetAttributes(selectedCred);
     
     user = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(credAttributes, kCUIAttrName));
     if (user) {

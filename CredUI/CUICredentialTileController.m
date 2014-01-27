@@ -57,10 +57,6 @@
         CUIFieldOptions options = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
 
         [self updateView:view withFieldOptions:options];
-    } else if ([keyPath isEqualTo:@"value"]) {
-        CUIIdentityPickerInternal *identityPicker = (CUIIdentityPickerInternal *)[view.window delegate];
-        
-        [identityPicker credentialFieldDidChange:self.representedObject];
     }
 }
 

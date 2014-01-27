@@ -87,6 +87,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
                                                } else {
                                                    CFDictionaryRemoveValue(_attributes, kCUIAttrName);
                                                }
+                                               updateCredentialStatus();
                                            });
     }
    
@@ -100,6 +101,7 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
                                            } else {
                                                CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
                                            }
+                                           updateCredentialStatus();
                                        });
    
     /*
@@ -137,18 +139,20 @@ CUIPasswordCredential::initWithControllerAndAttributes(CUIControllerRef controll
 /*
  * Determine whether the credential is able to be submitted.
  */
-const CFStringRef
-CUIPasswordCredential::getCredentialStatus(void)
+void 
+CUIPasswordCredential::updateCredentialStatus(void)
 {
+    CFTypeRef status;
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
-   
-    if (username == NULL || CFStringGetLength(username) == 0)
-        return kCUICredentialNotFinished;
 
-    if (hasPassword())
-        return kCUICredentialReturnCredentialFinished;
+    if (username == NULL || CFStringGetLength(username) == 0)
+        status = kCUICredentialNotFinished;
+    else if (hasPassword())
+        status = kCUICredentialReturnCredentialFinished;
     else
-        return kCUICredentialNotFinished;
+        status = kCUICredentialNotFinished;
+
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, status);
 }
 
 /*

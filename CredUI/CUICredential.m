@@ -44,13 +44,9 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return (NSDictionary *)CUICredentialGetAttributes([self _credentialRef]);
 }
 
-- (void)didBecomeSelected:(BOOL *)pbAutoLogin
+- (void)didBecomeSelected
 {
-    Boolean bAutoLogin = false;
-    
-    CUICredentialDidBecomeSelected([self _credentialRef], &bAutoLogin);
-    
-    *pbAutoLogin = bAutoLogin;
+    CUICredentialDidBecomeSelected([self _credentialRef]);
 }
 
 - (void)didBecomeDeselected
@@ -191,7 +187,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     return NO;
 }
 
-- (void)didBecomeSelected:(BOOL *)pbAutoLogin
+- (void)didBecomeSelected
 {
 }
 

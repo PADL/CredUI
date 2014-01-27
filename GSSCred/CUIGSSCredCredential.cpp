@@ -105,8 +105,10 @@ public:
         CFDictionarySetValue(attrs, kCUIAttrCredentialStatus,       kCUICredentialReturnCredentialFinished);
 
         attrClass = copyAttributeClassForMechanisms(mechanisms);
-        if (attrClass)
+        if (attrClass) {
             CFDictionarySetValue(attrs, kCUIAttrClass, attrClass);
+            CFRelease(attrClass);
+        }
 
         CFUUIDRef uuid = GSSCredentialCopyUUID(gssCred);
         if (uuid) {
@@ -168,7 +170,7 @@ public:
         return true;
     }
 
-    void didBecomeSelected(Boolean *pbAutoLogin) {}
+    void didBecomeSelected(void) {}
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
    

@@ -45,6 +45,7 @@ CUI_CONST_TYPE(kCUICredentialNotFinished,              kCUICredentialNotFinished
 CUI_CONST_TYPE(kCUICredentialFinished,                 kCUICredentialFinished);
 CUI_CONST_TYPE(kCUICredentialReturnCredentialFinished, kCUICredentialReturnCredentialFinished);
 CUI_CONST_TYPE(kCUICredentialReturnNoCredentialFinished,kCUICredentialReturnNoCredentialFinished);
+CUI_CONST_TYPE(kCUICredentialAutoSubmitCredentialFinished, kCUICredentialAutoSubmitCredentialFinished);
 
 CUI_CONST_TYPE(kCUIAttrCredentialProvider,             kCUIAttrCredentialProvider);
 CUI_CONST_TYPE(kCUIAttrCredentialMetaProvider,         kCUIAttrCredentialMetaProvider);

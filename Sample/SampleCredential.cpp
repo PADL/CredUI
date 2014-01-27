@@ -97,6 +97,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
     fields[cFields++] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassEditText, CFSTR("Username"), getDefaultUsername(),
                                       ^(CUIFieldRef field, CFTypeRef value) {
                                           setUsername((CFStringRef)value);
+                                          updateCredentialStatus();
                                       });
 
 #endif /* CUSTOM_USERNAME_FIELD */
@@ -112,6 +113,7 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
                } else {
                    CFDictionaryRemoveValue(_attributes, kCUIAttrCredentialPassword);
                }
+               updateCredentialStatus();
            });
     
     /*
@@ -155,19 +157,21 @@ Boolean SampleCredential::initWithControllerAndAttributes(CUIControllerRef contr
 /*
  * Determine whether the credential is able to be submitted.
  */
-const CFStringRef SampleCredential::getCredentialStatus(void)
+void SampleCredential::updateCredentialStatus(void)
 {
+    CFTypeRef status;
     CFStringRef username = (CFStringRef)CFDictionaryGetValue(_attributes, kCUIAttrName);
 
-    /* Do we have a username? */    
-    if (username == NULL || CFStringGetLength(username) == 0)
-        return kCUICredentialNotFinished;
+    if (username == NULL || CFStringGetLength(username) == 0) {
+        status = kCUICredentialNotFinished;
+    } else {
+        CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
+        if (password)
+            status = kCUICredentialReturnCredentialFinished;
+        else
+            status = kCUICredentialNotFinished;
+    }
 
-    /* Do we have a password? */    
-    CFTypeRef password = CFDictionaryGetValue(_attributes, kCUIAttrCredentialPassword);
-    if (password)
-        return kCUICredentialReturnCredentialFinished;
-    else
-        return kCUICredentialNotFinished;
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, status);
 }
 

@@ -69,16 +69,13 @@ public:
      * The attributes serialized from the completed fields.
      */ 
     CFDictionaryRef getAttributes(void) {
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, getCredentialStatus());
-
         return _attributes;
     } 
 
     /*
      * Credential seleciton/submission notifications
      */ 
-    void didBecomeSelected(Boolean *pbAutoLogin) {
-        *pbAutoLogin = false;
+    void didBecomeSelected(void) {
     }
     
     void didBecomeDeselected(void) {
@@ -101,7 +98,7 @@ public:
     void setUsername(CFStringRef username);
     CFStringRef getDefaultUsername(void);
 
-    const CFStringRef getCredentialStatus(void);
+    void updateCredentialStatus(void);
 
     Boolean initWithControllerAndAttributes(CUIControllerRef controller,
                                             CUIUsageFlags usageFlags,

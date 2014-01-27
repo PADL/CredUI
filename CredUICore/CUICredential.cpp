@@ -157,27 +157,26 @@ CUICredentialGetAttributes(CUICredentialRef cred)
 }
 
 CUI_EXPORT void
-CUICredentialDidBecomeSelected(CUICredentialRef cred, Boolean *pbAutoLogin)
+CUICredentialDidBecomeSelected(CUICredentialRef cred)
 {
     if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
-        BOOL bAutoLogin;
-
-        CF_OBJC_VOIDCALLV(cred, "didBecomeSelected:", &bAutoLogin);
-        *pbAutoLogin = (Boolean)bAutoLogin;
+        CF_OBJC_VOIDCALLV(cred, "didBecomeSelected");
     } else if (cred->_context) {
-        cred->_context->didBecomeSelected(pbAutoLogin);
+        cred->_context->didBecomeSelected();
     }
 }
 
-static Boolean
-_CUICredentialIsReturnable(CUICredentialRef cred)
+CUI_EXPORT Boolean
+_CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *autoLogin)
 {
-    CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
-    CFTypeRef status = CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus);
-    
+    *autoLogin = false;
+
     if (status) {
+        *autoLogin = CFEqual(status, kCUICredentialAutoSubmitCredentialFinished);
+
         if (CFEqual(status, kCUICredentialReturnCredentialFinished) ||
-            CFEqual(status, kCUICredentialReturnNoCredentialFinished))
+            CFEqual(status, kCUICredentialReturnNoCredentialFinished) ||
+            *autoLogin)
             return true;
     }
     
@@ -189,7 +188,11 @@ CUICredentialCanSubmit(CUICredentialRef cred)
 {
     CF_OBJC_FUNCDISPATCHV(__CUICredentialTypeID, Boolean, cred, "canSubmit");
 
-    return _CUICredentialIsReturnable(cred);
+    CFDictionaryRef attrs = CUICredentialGetAttributes(cred);
+    CFTypeRef status = CFDictionaryGetValue(attrs, kCUIAttrCredentialStatus);
+    Boolean autoLogin;
+
+    return _CUIIsReturnableCredentialStatus(status, &autoLogin);
 }
 
 CUI_EXPORT void
