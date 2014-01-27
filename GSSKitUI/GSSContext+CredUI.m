@@ -6,11 +6,15 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-@interface GSSKitUIErrorInfo : NSObject
+@interface GSSKitUIContext : NSObject
 {
     NSError *_error;
+    dispatch_semaphore_t _semaphore;
 }
 @property(nonatomic, retain) NSError *error;
+
+- (void)signalCompletion;
+- (void)waitForCompletion;
 @end
 
 @interface NSError (GSSKitErrorHelper)
@@ -25,8 +29,35 @@
 - (BOOL)_gssPromptingNeeded;
 @end
 
-@implementation GSSKitUIErrorInfo
+@implementation GSSKitUIContext
 @synthesize error = _error;
+
+- init
+{
+    if ((self = [super init]) == nil)
+        return nil;
+
+    _semaphore = dispatch_semaphore_create(0);
+    
+    return self;
+}
+
+- (void)signalCompletion
+{
+    dispatch_semaphore_signal(_semaphore);
+}
+
+- (void)waitForCompletion
+{
+    dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER);
+}
+
+- (void)dealloc
+{
+    dispatch_release(_semaphore);
+    [super dealloc];
+}
+
 @end
 
 @interface GSSContext ()
@@ -47,13 +78,14 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
 - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
-    GSSKitUIErrorInfo *errorContainer = (__bridge GSSKitUIErrorInfo *)contextInfo;
+    GSSKitUIContext *uiContext = (__bridge GSSKitUIContext *)contextInfo;
     CUICredential *credential = identityPicker.selectedCredential;
     GSSCredential *gssCred;
     NSError *error;
     
     if (returnCode != NSModalResponseOK) {
-        errorContainer.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
+        uiContext.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
+        [uiContext signalCompletion];
         return;
     }
     
@@ -61,7 +93,8 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
     gssCred = [[GSSCredential alloc] initWithCUICredential:credential error:&error];
     if (gssCred == nil) {
-        errorContainer.error = error ? error : [NSError GSSError:GSS_S_NO_CRED];
+        uiContext.error = error ? error : [NSError GSSError:GSS_S_NO_CRED];
+        [uiContext signalCompletion];
         return;
     }
     
@@ -80,9 +113,11 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 #if !__has_feature(objc_arc)
     [gssCred release];
 #endif
+
+    [uiContext signalCompletion];
 }
 
-- (void)_runIdentityPicker:(id)errorContainer
+- (void)_runIdentityPicker:(id)uiContext
 {
     CUIIdentityPicker *identityPicker;
     NSMutableDictionary *attributes = [@{
@@ -104,7 +139,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     [identityPicker runModalForWindow:self.window
                         modalDelegate:self
                        didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
-                          contextInfo:(__bridge void *)errorContainer];
+                          contextInfo:(__bridge void *)uiContext];
     
 #if !__has_feature(objc_arc)
     [identityPicker autorelease];
@@ -115,16 +150,17 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
 
 - (BOOL)_promptForCredentials:(NSError **)error
 {
-    GSSKitUIErrorInfo *errorContainer = [[GSSKitUIErrorInfo alloc] init];
+    GSSKitUIContext *uiContext = [[GSSKitUIContext alloc] init];
+
+    uiContext.error = nil;
+    
+    [self performSelectorOnMainThread:@selector(_runIdentityPicker:) withObject:uiContext waitUntilDone:TRUE];
+    [uiContext waitForCompletion];
 
     if (error)
-        *error = [errorContainer error];
-    
-    errorContainer.error = nil;
-    
-    [self performSelectorOnMainThread:@selector(_runIdentityPicker:) withObject:errorContainer waitUntilDone:TRUE];
-    
-    return !errorContainer.error;
+        *error = [uiContext error];
+
+    return !uiContext.error;
 }
 
 - (id)initWithRequestFlags:(GSSFlags)flags
