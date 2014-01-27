@@ -74,9 +74,6 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
     fields[0] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassLargeText, NULL, CFSTR("Sign in with Persona"), NULL);
     fields[1] = CUIFieldCreate(kCFAllocatorDefault, kCUIFieldClassSubmitButton, CFSTR("Submit"), NULL,
                                ^(CUIFieldRef field, CFTypeRef value) {
-                                   // this is the willSubmit callback; CredUI only renders a single submit button
-                                   // for the network UI case
-                                   createBrowserIDAssertion(NULL);
     });
     
     _fields = CFArrayCreate(kCFAllocatorDefault, (const void **)fields, sizeof(fields) / sizeof(fields[0]), &kCFTypeArrayCallBacks);
@@ -92,7 +89,7 @@ Boolean CUIPersonaCredential::initWithControllerAndAttributes(
         CFDictionarySetValue(_attributes, kCUIAttrSupportGSSCredential, kCFBooleanTrue);
     CFDictionarySetValue(_attributes, kCUIAttrCredentialProvider, kPersonaCredentialProvider);
     CFDictionarySetValue(_attributes, kCUIAttrProviderFactoryID, kPersonaCredentialProviderFactoryID);
-    CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnNoCredentialFinished);
+    CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);
 
     return true;
 }
@@ -115,9 +112,8 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
 
 Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
 {
-    CFStringRef assertion;
-    BIDIdentity identity = BID_C_NO_IDENTITY;
-    uint32_t ulReqFlags, ulRetFlags = 0;
+    BIDError err;
+    uint32_t ulReqFlags;
 
     if (error != NULL)
         *error = NULL;
@@ -126,37 +122,30 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
     if (_contextFlags & BID_CONTEXT_GSS)
         ulReqFlags |= BID_ACQUIRE_FLAG_MUTUAL_AUTH;
 
-    assertion = BIDAssertionCreateUI(_bidContext,
-                                     _targetName,
-                                     NULL, /* channelBindings */
-                                     _defaultIdentity,
-                                     ulReqFlags,
-                                     &identity,
-                                     &ulRetFlags,
-                                     error);
-    if (assertion) {
-        ulRetFlags |= ulReqFlags;
-        
-        CFNumberRef bidFlags = CFNumberCreate(CFGetAllocator(assertion), kCFNumberSInt32Type, (void *)&ulRetFlags);
+    err = BIDAssertionCreateUIWithHandler(_bidContext,
+                                          _targetName,
+                                          NULL, /* channelBindings */
+                                          _defaultIdentity,
+                                          ulReqFlags,
+                                          NULL,
+                                          ^(CFStringRef assertion, BIDIdentity identity, CFErrorRef error) {
+          CFNumberRef bidFlags = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, (void *)&ulReqFlags);
+          
+          CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
+          CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
+          CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
+          CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialAutoSubmitCredentialFinished);
+          
+          CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
+          
+          CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
+          CFDictionarySetValue(_attributes, kCUIAttrName, subject);
+          
+          CFRelease(bidFlags);
+          CFRelease(subject);
 
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialReturnCredentialFinished);
-        
-        CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
-        
-        CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
-        CFDictionarySetValue(_attributes, kCUIAttrName, subject);
-        
-        CFRelease(bidFlags);
-        CFRelease(assertion);
-        CFRelease(identity);
-        CFRelease(subject);
-    } else {
-        CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialNotFinished);
-    }
+    });
     
-    return true;
+    return (err == BID_S_OK);
 }
 
