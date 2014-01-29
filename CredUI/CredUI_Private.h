@@ -25,7 +25,6 @@
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
 
-#import "CUIIdentityPickerInfo.h"
 #import "CUIIdentityPickerInternal.h"
 #import "CUIVBIdentityPicker.h"
 #import "CUIProxyCredential.h"

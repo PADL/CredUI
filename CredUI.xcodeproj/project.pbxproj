@@ -245,8 +245,6 @@
 		D3F68724187D7FEE00E8A080 /* GSSIsPromptingNeeded.h in Headers */ = {isa = PBXBuildFile; fileRef = D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3F68726187D87D000E8A080 /* GSSIsPromptingNeeded.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */; };
 		D3FD1124187EEDE700AD32FB /* BrowserID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FD1123187EEDE700AD32FB /* BrowserID.framework */; };
-		D3FE160C18980B6B00032EC6 /* CUIIdentityPickerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */; };
-		D3FE160D18980B6B00032EC6 /* CUIIdentityPickerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */; };
 		D3FE1617189830C700032EC6 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3FE1616189830C700032EC6 /* main.xib */; };
 /* End PBXBuildFile section */
 
@@ -803,8 +801,6 @@
 		D3F68723187D7FC100E8A080 /* GSSIsPromptingNeeded.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GSSIsPromptingNeeded.h; sourceTree = "<group>"; };
 		D3F68725187D87D000E8A080 /* GSSIsPromptingNeeded.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GSSIsPromptingNeeded.cpp; sourceTree = "<group>"; };
 		D3FD1123187EEDE700AD32FB /* BrowserID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrowserID.framework; path = "../../../Library/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug/BrowserID.framework"; sourceTree = "<group>"; };
-		D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityPickerInfo.h; sourceTree = "<group>"; };
-		D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPickerInfo.m; sourceTree = "<group>"; };
 		D3FE1616189830C700032EC6 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = main.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1212,8 +1208,6 @@
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D3416BBB189694F7009D86A9 /* CUIVBIdentityPicker.h */,
 				D3416BBC189694F7009D86A9 /* CUIVBIdentityPicker.m */,
-				D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */,
-				D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */,
 				D3BED9291874373F00623B92 /* CUIIdentityPickerInternal.h */,
 				D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */,
 				D39EB0EE187283AF00C43A24 /* CUIPromptForCredentials.h */,
@@ -1506,7 +1500,6 @@
 			files = (
 				D336E2AE182B6B0D009271CD /* CUIIdentityPicker.h in Headers */,
 				D39EB0F0187283AF00C43A24 /* CUIPromptForCredentials.h in Headers */,
-				D3FE160C18980B6B00032EC6 /* CUIIdentityPickerInfo.h in Headers */,
 				D39EB0CD18714ED200C43A24 /* CUICredential.h in Headers */,
 				D3BED8F31872F63C00623B92 /* CUIBase.h in Headers */,
 				D3BDE2581898BC80009FBF59 /* CUICredential+Coding.h in Headers */,
@@ -2092,7 +2085,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3416BCC1896A12D009D86A9 /* CUIProxyCredential.m in Sources */,
-				D3FE160D18980B6B00032EC6 /* CUIIdentityPickerInfo.m in Sources */,
 				D3BED92C1874373F00623B92 /* CUIIdentityPickerInternal.m in Sources */,
 				D39EB0C01871302100C43A24 /* CUIField.m in Sources */,
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
