@@ -19,6 +19,6 @@
 /*
  * Attempt to authenticate the user for a specific PAM service.
  */
-- (BOOL)authenticateForLoginScenario:(NSString *)service;
+- (BOOL)authenticateForLoginScenario;
 
 @end

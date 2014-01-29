@@ -8,6 +8,13 @@
 
 #import <Collaboration/Collaboration.h>
 
+@implementation CUICFCredential (CBIdentity)
+- (BOOL)authenticateForLoginScenario
+{
+    return CUICredentialAuthenticateForLoginScenario([self _credentialRef]);
+}
+@end
+
 @implementation CUICredential (CBIdentity)
 
 - (CBUserIdentity *)userIdentity
@@ -30,9 +37,9 @@
     return nil;
 }
 
-- (BOOL)authenticateForLoginScenario:(NSString *)service
+- (BOOL)authenticateForLoginScenario
 {
-    return CUICredentialAuthenticateForLoginScenario([self _credentialRef], (__bridge CFStringRef)service);
+    return [[self.attributes valueForKey:(__bridge id)kCUIAttrAuthenticatedForLoginScenario] boolValue];
 }
 
 @end

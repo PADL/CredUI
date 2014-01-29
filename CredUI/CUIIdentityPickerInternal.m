@@ -152,9 +152,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
     self.persist = !!(self.flags & CUIFlagsPersist); 
 
-    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
-    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
-    
     return YES;
 }
 
@@ -226,7 +223,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     }
 }
 
-- (void)startCredentialEnumeration
+- (void)startCredentialEnumeration:(NSWindow *)parentWindow
 {
     NSString *targetHostName;
    
@@ -240,6 +237,9 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
         self.messageTextField.stringValue = self.message;
     else
         self.messageTextField.stringValue = @"Enter your credentials";
+
+    CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)parentWindow };
+    [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
 
     self.credsController.selectsInsertedObjects = NO;
 
@@ -299,7 +299,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 {
     NSModalResponse modalResponse;
 
-    [self startCredentialEnumeration];
+    [self startCredentialEnumeration:self.window];
 
     modalResponse = [NSApp runModalForWindow:self.window];
 
@@ -311,7 +311,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 - (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
                completionHandler:(void (^)(NSModalResponse returnCode))handler
 {
-    [self startCredentialEnumeration];
+    [self startCredentialEnumeration:self.window];
 
     [sheetWindow beginSheet:self.window
      completionHandler:^(NSModalResponse returnCode) {

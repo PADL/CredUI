@@ -10,5 +10,4 @@ VB
 --
 
 * GSS context
-* whitelist
 

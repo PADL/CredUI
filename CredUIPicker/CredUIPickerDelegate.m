@@ -231,7 +231,7 @@ static void testEncodeDecode(CUICredential * cred)
     if (returnCode == NSModalResponseOK) {
         NSLog(@"Local picker did end: %@", identityPicker.selectedCredential.attributes);
         NSLog(@"CB identity: %@", identityPicker.selectedCredential.userIdentity);
-        NSLog(@"Authentication status: %d", [identityPicker.selectedCredential authenticateForLoginScenario:@"pamtest"]);
+        NSLog(@"Authentication status: %d", [identityPicker.selectedCredential authenticateForLoginScenario]);
     } else {
         NSLog(@"Local picker aborted");
     }

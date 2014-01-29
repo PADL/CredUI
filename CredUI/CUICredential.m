@@ -8,9 +8,6 @@
 
 #pragma mark - CUICFCredential concrete class
 
-@interface CUICFCredential : CUICredential
-@end
-
 @implementation CUICFCredential
 
 + (id)allocWithZone:(NSZone *)zone

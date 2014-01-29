@@ -12,6 +12,9 @@
 
 @class CUIField;
 
+@interface CUICFCredential : CUICredential
+@end
+
 @interface CUICredential ()
 
 @property(nonatomic, readonly, assign) NSArray *fields; //primitive

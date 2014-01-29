@@ -20,6 +20,7 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeyStartCredentialEnumera
 /* Phased bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyPersist;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyGSSExportedContext;
+extern NSString * const _CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle;
 
 /* Service bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode;
@@ -31,6 +32,7 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
 
 @class NSRemoteView;
 
+__attribute__((visibility("default")))
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {
     CUIUsageScenario _usageScenario;
@@ -41,5 +43,8 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
 
 @property(nonatomic, retain) NSPanel *containingPanel;
 @property(nonatomic, retain) NSRemoteView *remoteView;
+
++ (NSData *)exportGSSSecContext:(const void *)context;
++ (void *)importGSSSecContext:(NSData *)data;
 
 @end

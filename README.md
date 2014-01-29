@@ -35,9 +35,15 @@ The GSSItem and Keychain providers are ordinary providers, but they call back in
 
 The Login provider is another special type of provider, an identity provider. This behaves similarly to a persistence provider except it only stores usernames and associated metadata (such as an image), not the actual that can be used for authenticating. Identity providers are used for the kCUIUsageScenarioLogin case only and allow a user to select from an existing username.
 
+The GSSCred provider enumerates transient GSS credentials, such as Kerberos tickets.
+
 GSS-API
 -------
 
 CredUI works best with GSSKit, owing to various limitations in the current Heimdal implementation on OS X. GSSKitUI glues the two frameworks together and provides a simple interface for acquiring GSS-API contexts, prompting the user using CredUI as necessary.
 
+ViewBridge
+----------
+
+CredUI will by default run credential provider UI in a separate XPC service. This can be disabled with the CUIIdentityPickerUseViewBridge user default. Passwords will only be returned to the caller for generic credentials; for non-generic (i.e. GSS or login credentials), an opaque object is returned instead.
 

@@ -17,7 +17,8 @@ CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyStartCredentialEnu
 
 /* Phased bridge keys */
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyPersist               = @"persist";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSExportedContext    = @"context";
+CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSExportedContext    = @"GSSExportedContext";
+CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle   = @"PAMSerializedHandle";
 
 /* Service bridge keys */
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode            = @"returnCode";
@@ -118,6 +119,12 @@ static NSString * const _CUIIdentityPickerServiceName                           
 - (void)dealloc
 {
     [self unregisterObservers];
+
+    if (_usageScenario == kCUIUsageScenarioNetwork) {
+        OM_uint32 minor;
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+    }
+
 #if !__has_feature(objc_arc) 
     [_remoteView release];
     [_containingPanel release];
@@ -146,6 +153,10 @@ static NSString * const _CUIIdentityPickerServiceName                           
     id value = [change objectForKey:NSKeyValueChangeNewKey];
 
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyReturnCode]) {
+        if (_usageScenario == kCUIUsageScenarioNetwork)
+            _context = [[self class] importGSSSecContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]];
+        else
+            _context = NULL;
         [self endWithReturnCode:[value integerValue]];
         [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
     }
@@ -220,12 +231,15 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
 - (const void *)context
 {
-    return NULL;
+    return _context;
 }
 
 - (void)setContext:(const void *)context
 {
-    NSAssert(0, @"context not implemented yet");
+    if (_usageScenario == kCUIUsageScenarioNetwork) {
+        NSData *contextData = [[self class] exportGSSSecContext:context];
+        [self.remoteView.bridge setObject:contextData forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
+    } // else not much we can do
 }
 
 - (id)targetName
@@ -255,6 +269,41 @@ static NSString * const _CUIIdentityPickerServiceName                           
     NSAssert(options.count == 2, @"invalid options array");
 
     return [[options objectAtIndex:1] unsignedIntegerValue];
+}
+
+#pragma mark - Helpers
+
++ (NSData *)exportGSSSecContext:(const void *)context
+{
+    OM_uint32 major, minor;
+    gss_buffer_desc exportedContext = GSS_C_EMPTY_BUFFER;
+    NSData *data;
+
+    major = gss_export_sec_context(&minor, (gss_ctx_id_t *)&context, &exportedContext);
+    if (GSS_ERROR(major))
+        return nil;
+
+    data = [NSData dataWithBytes:exportedContext.value length:exportedContext.length];
+    gss_release_buffer(&minor, &exportedContext);
+
+    return data;
+}
+
++ (void *)importGSSSecContext:(NSData *)data
+{
+    OM_uint32 major, minor;
+    gss_ctx_id_t context = GSS_C_NO_CONTEXT;
+    gss_buffer_desc exportedContext;
+
+    if (data == nil || data.length == 0)
+        return nil;
+
+    exportedContext.length = data.length;
+    exportedContext.value = (void *)data.bytes;
+
+    major = gss_import_sec_context(&minor, &exportedContext, &context);
+
+    return context;
 }
 
 @end

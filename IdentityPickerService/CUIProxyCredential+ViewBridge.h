@@ -1,5 +1,5 @@
 //
-//  CUICredential+AutoAcquire.h
+//  CUICredential+ViewBridge.h
 //  CredUI
 //
 //  Created by Luke Howard on 27/01/2014.
@@ -9,9 +9,10 @@
 #import <CredUI/CredUI.h>
 #import <CredUI/CUIProxyCredential.h>
 
-@interface CUIProxyCredential (AutoAcquire)
+@interface CUIProxyCredential (ViewBridge)
 
 /* Acquire GSS cred and set it in attributes */
-- (BOOL)autoAcquireGSSCred:(NSError * __autoreleasing *)error;
+- (BOOL)acquireAndSetGSSCredential;
+- (BOOL)authAndSetAuthenticatedForLoginScenario;
 
 @end

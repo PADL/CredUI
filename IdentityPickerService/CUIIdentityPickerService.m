@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import <GSS/GSS.h>
+
 #import <CredUI/CredUI.h>
 #import <CredUI/CUIVBIdentityPicker.h>
 #import <CredUI/CUIProxyCredential.h>
@@ -19,23 +21,24 @@
 #import "CUIIdentityPickerListenerDelegate.h"
 #import "CUIIdentityPickerService.h"
 #import "CUIVBIdentityPickerInternal.h"
-#import "CUIProxyCredential+AutoAcquire.h"
+#import "CUIProxyCredential+ViewBridge.h"
 
 @interface CUIIdentityPickerService ()
 - (BOOL)configureIdentityPicker:(NSArray *)options;
 - (void)registerBridgeKeys;
 - (void)registerObservers;
 - (void)unregisterObservers;
-
 @end
 
 @implementation CUIIdentityPickerService
 
-@synthesize identityPicker = _identityPicker;
-
 - (void)dealloc
 {
 //    [self unregisterObservers];
+    if (_gssContext != GSS_C_NO_CONTEXT) {
+        OM_uint32 minor;
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_gssContext, GSS_C_NO_BUFFER);
+    }
 #if !__has_feature(objc_arc)
     [_identityPicker release];
     [super dealloc];
@@ -61,7 +64,7 @@
 
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration]) {
         if ([value isEqual:@YES]) {
-            [self.identityPicker startCredentialEnumeration];
+            [self.identityPicker startCredentialEnumeration:self.view.window];
         } else {
             [self.identityPicker endCredentialEnumeration:[value integerValue]];
         }
@@ -69,7 +72,12 @@
         NSAssert(self.marshal.bridgePhase == NSViewBridgePhaseConfig, @"identity picker can only be configured during config phase");
         [self configureIdentityPicker:value];
     } else if ([self.identityPicker isConfigured]) {
-        [self.identityPicker setValue:value forKey:keyPath];
+        if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]) {
+        } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle]) {
+            NSAssert([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle], @"only GSS exported contexts supported");
+        } else {
+            [self.identityPicker setValue:value forKey:keyPath];
+        }
     }
 }
 
@@ -139,6 +147,20 @@
 #endif
 
     return response;
+}
+
+@synthesize identityPicker = _identityPicker;
+
+- (void)setGSSContext:(NSData *)data
+{
+    void *context = [CUIVBIdentityPicker importGSSSecContext:data];
+
+    if (_gssContext != GSS_C_NO_CONTEXT) {
+        OM_uint32 minor;
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_gssContext, GSS_C_NO_BUFFER);
+    }
+
+    _gssContext = context;
 }
 
 @end

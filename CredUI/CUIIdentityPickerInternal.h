@@ -81,7 +81,7 @@ __attribute__((visibility("default")))
 
 - (void)beginSheetModalForWindow:(NSWindow *)sheetWindow completionHandler:(void (^)(NSModalResponse returnCode))handler;
 
-- (void)startCredentialEnumeration;
+- (void)startCredentialEnumeration:(NSWindow *)parentWindow;
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse;
 
 - (BOOL)configureForUsageScenario:(CUIUsageScenario)usageScenario

@@ -9,7 +9,7 @@
 #import "CUIVBIdentityPickerInternal.h"
 #import "CUICredential+Private.h"
 #import "CUIProxyCredential.h"
-#import "CUIProxyCredential+AutoAcquire.h"
+#import "CUIProxyCredential+ViewBridge.h"
 
 #import <CredUICore/CredUICore_Private.h>
 
@@ -46,32 +46,35 @@
     [self.bridge setObject:self.lastError forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
 }
 
-- (BOOL)bridgeSelectedCredential:(NSError * __autoreleasing *)error
+- (void)bridgeSelectedCredential
 {
     CUIProxyCredential *vbCredential;
-    BOOL ret = YES;
-
-    if (error)
-        *error = nil;
 
     vbCredential = [[CUIProxyCredential alloc] initWithCredential:self.selectedCredential
                                                         whitelist:self.whitelistedAttributeKeys
                                                           mutable:YES];
 
     if ((self.flags & CUIFlagsGenericCredentials) == 0) {
-        /* Acquire GSS cred now, because remote client may not have permission */
-        ret = [vbCredential autoAcquireGSSCred:error];
+        switch (self.usageScenario) {
+        case kCUIUsageScenarioLogin:
+            /* try to auth the user */
+            [vbCredential authAndSetAuthenticatedForLoginScenario];
+            break;
+        case kCUIUsageScenarioNetwork:
+            /* try to get creds for the user */
+            [vbCredential acquireAndSetGSSCredential];
+            break;
+        default:
+            NSAssert(self.usageScenario != kCUIUsageScenarioLogin && self.usageScenario != kCUIUsageScenarioNetwork, @"invalid usage scenario");
+            break;
+        }
     }
 
-    if (ret) {
-        [self.bridge setObject:vbCredential forKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];
-    }
+    [self.bridge setObject:vbCredential forKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];
 
 #if !__has_feature(objc_arc)
     [vbCredential release];
 #endif
-
-    return ret;
 }
 
 - (void)willSubmitCredential:(id)sender
@@ -84,10 +87,11 @@
     [self.selectedCredential willSubmit];
 
     if (self.selectedCredential)
-        [self bridgeSelectedCredential:&error];
+        [self bridgeSelectedCredential];
+    error = [self.selectedCredential.attributes objectForKey:(__bridge id)kCUIAttrCredentialError];
     if (error == nil)
         error = self.lastError;
-    [self.bridge setObject:self.lastError forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
+    [self.bridge setObject:error forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
     [self.bridge setObject:[NSNumber numberWithBool:self.persist] forKey:_CUIIdentityPickerServiceBridgeKeyPersist];
     [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseOK] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
 
