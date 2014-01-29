@@ -78,48 +78,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     return ![cuiCredentialName isEqualToName:gssCredentialName];
 }
 
-- (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
-{
-    GSSKitUIContext *uiContext = (__bridge GSSKitUIContext *)contextInfo;
-    CUICredential *credential = identityPicker.selectedCredential;
-    GSSCredential *gssCred;
-    NSError *error;
-    
-    if (returnCode != NSModalResponseOK) {
-        uiContext.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
-        [uiContext signalCompletion];
-        return;
-    }
-    
-    self.mechanism = [GSSMechanism mechanismForCUICredential:credential];
-
-    gssCred = [[GSSCredential alloc] initWithCUICredential:credential error:&error];
-    if (gssCred == nil) {
-        uiContext.error = error ? error : [NSError GSSError:GSS_S_NO_CRED];
-        [uiContext signalCompletion];
-        return;
-    }
-    
-    self.targetName = identityPicker.targetName;
-    
-    /*
-     * If the mechanism returned an error, then we need to create a new credential. If the
-     * mechanism didn't, it's a little more subtle, because the credential provider may
-     * just be updating the context with, for example, trust anchors. Only replace the
-     * context credential if the selected credential name is different.
-     */
-    if ([self.lastError _gssError] ||
-        _GSSNeedUpdateContextCredentialP(credential, self.credential))
-        self.credential = gssCred;
-    
-#if !__has_feature(objc_arc)
-    [gssCred release];
-#endif
-
-    [uiContext signalCompletion];
-}
-
-- (void)_runIdentityPicker:(id)uiContext
+- (void)_runIdentityPicker:(GSSKitUIContext *)uiContext
 {
     CUIIdentityPicker *identityPicker;
     NSMutableDictionary *attributes = [@{
@@ -140,7 +99,42 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     
     [identityPicker beginSheetModalForWindow:self.window
                            completionHandler:^(NSModalResponse returnCode) {
-        [self identityPickerDidEnd:identityPicker returnCode:returnCode contextInfo:(__bridge void *)uiContext];
+        CUICredential *credential = identityPicker.selectedCredential;
+        GSSCredential *gssCred;
+        NSError *error;
+        
+        if (returnCode != NSModalResponseOK) {
+            uiContext.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
+            [uiContext signalCompletion];
+            return;
+        }
+        
+        self.mechanism = [GSSMechanism mechanismForCUICredential:credential];
+
+        gssCred = [[GSSCredential alloc] initWithCUICredential:credential error:&error];
+        if (gssCred == nil) {
+            uiContext.error = error ? error : [NSError GSSError:GSS_S_NO_CRED];
+            [uiContext signalCompletion];
+            return;
+        }
+        
+        self.targetName = identityPicker.targetName;
+        
+        /*
+         * If the mechanism returned an error, then we need to create a new credential. If the
+         * mechanism didn't, it's a little more subtle, because the credential provider may
+         * just be updating the context with, for example, trust anchors. Only replace the
+         * context credential if the selected credential name is different.
+         */
+        if ([self.lastError _gssError] ||
+            _GSSNeedUpdateContextCredentialP(credential, self.credential))
+            self.credential = gssCred;
+        
+    #if !__has_feature(objc_arc)
+        [gssCred release];
+    #endif
+
+        [uiContext signalCompletion];
     }];
     
 #if !__has_feature(objc_arc)
