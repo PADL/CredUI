@@ -25,13 +25,12 @@ static int _CUIPAMConversation(int num_msg,
 }
 
 CUI_EXPORT Boolean
-CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringRef pamService)
+CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential)
 {
-    CF_OBJC_FUNCDISPATCHV(CUICredentialGetTypeID(), Boolean, credential, "authenticateForLoginScenario:", pamService);
+    CF_OBJC_FUNCDISPATCHV(CUICredentialGetTypeID(), Boolean, credential, "authenticateForLoginScenario");
 
     int rc = PAM_CRED_UNAVAIL;
     CFDictionaryRef attrs;
-    char *service = NULL;
     char *user = NULL;
     char *pass = NULL;
     pam_handle_t *pamh = NULL;
@@ -41,13 +40,11 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringR
     if (attrs == NULL)
         goto cleanup;
 
-    service = CUICFStringToCString(pamService);
-    
     user = CUICFStringToCString((CFStringRef)CFDictionaryGetValue(attrs, kCUIAttrName));
     if (user == NULL)
         goto cleanup;
     
-    rc = pam_start(service ? service : "login", user, &conv, &pamh);
+    rc = pam_start("CredUI", user, &conv, &pamh);
     if (rc != PAM_SUCCESS)
         goto cleanup;
     
@@ -71,8 +68,6 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential, CFStringR
         goto cleanup;
     
 cleanup:
-    if (service)
-        free(service);
     if (user)
         free(user);
     if (pass) {

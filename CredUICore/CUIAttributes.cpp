@@ -69,3 +69,5 @@ CUI_CONST_TYPE(kCUIAttrCredentialAppIdentifierACL,     kCUIAttrCredentialAppIden
 
 CUI_CONST_TYPE(kCUIAttrImageData,                      kCUIAttrImageData)
 CUI_CONST_TYPE(kCUIAttrImageDataType,                  kCUIAttrImageDataType)
+
+CUI_CONST_TYPE(kCUIAttrAuthenticatedForLoginScenario,  kCUIAttrAuthenticatedForLoginScenario)

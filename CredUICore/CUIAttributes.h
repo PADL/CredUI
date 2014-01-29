@@ -144,6 +144,11 @@ CUI_EXPORT const CFStringRef kCUIAttrCredentialAppIdentifierACL;
 CUI_EXPORT const CFStringRef kCUIAttrImageData; /* CFData */
 CUI_EXPORT const CFStringRef kCUIAttrImageDataType; /* CFStringRef */
 
+/*
+ * Set to TRUE if the credential provider validated the credential for login.
+ */
+CUI_EXPORT const CFStringRef kCUIAttrAuthenticatedForLoginScenario; /* CFBooleanRef */
+
 #ifdef __cplusplus
 }
 #endif
