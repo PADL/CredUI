@@ -66,6 +66,7 @@
             [self.identityPicker endCredentialEnumeration:[value integerValue]];
         }
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyConfigOptions]) {
+        NSAssert(self.marshal.bridgePhase == NSViewBridgePhaseConfig, @"identity picker can only be configured during config phase");
         [self configureIdentityPicker:value];
     } else if ([self.identityPicker isConfigured]) {
         [self.identityPicker setValue:value forKey:keyPath];

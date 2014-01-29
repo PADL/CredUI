@@ -1,3 +1,10 @@
+typedef NS_ENUM(unsigned char, NSViewBridgePhase) {
+    NSViewBridgePhaseInvalid        = 0,
+    NSViewBridgePhaseInit           = 1,
+    NSViewBridgePhaseConfig         = 2,
+    NSViewBridgePhaseRun            = 3
+};
+
 typedef NS_ENUM(unsigned char, NSViewBridgeKeyOwner) {
     NSViewBridgeKeyOwnerRemote = 0,
     NSViewBridgeKeyOwnerService = 1,

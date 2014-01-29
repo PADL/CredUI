@@ -1,10 +1,3 @@
-typedef NS_ENUM(unsigned char, NSViewBridgePhase) {
-    NSViewBridgePhaseInvalid        = 0,
-    NSViewBridgePhaseInit           = 1,
-    NSViewBridgePhaseConfig         = 2,
-    NSViewBridgePhaseRun            = 3
-};
-
 @class NSViewBridge;
 @class NSRemoteViewMarshal;
 
