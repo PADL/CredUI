@@ -69,7 +69,7 @@ static void testEncodeDecode(CUICredential * cred)
 - (void)identityPickerDidEndGSSIC:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
 {
     if (returnCode == NSModalResponseOK) {
-        testEncodeDecode(identityPicker.selectedCredential);
+        //testEncodeDecode(identityPicker.selectedCredential);
         NSLog(@"IC picker did end: %@", identityPicker.selectedCredential.attributes);
         (void) [self doInitAcceptGSSContextWithIdentityPicker:identityPicker];
     } else {
@@ -88,7 +88,9 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.message = @"Choose an identity";
 
     /* The target name can be a NSString, NSURL or gss_name_t */
-    self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
+    GSSName *targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
+    GSSName *personaName = [targetName mechanismName:[GSSMechanism personaMechanism]];
+    self.picker.targetName = personaName ? personaName : targetName;
 
     [self.picker beginSheetModalForWindow:self.window
                             modalDelegate:self
