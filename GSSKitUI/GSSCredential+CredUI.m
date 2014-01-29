@@ -13,7 +13,10 @@
     GSSCredential *cred = nil;
 
     cred = [cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSCredential];
-
+#if !__has_feature(objc_arc)
+    [cred retain];
+#endif
+    
     if (cred == nil) {
         GSSItem *gssItem = [cuiCredential.attributes objectForKey:(__bridge NSString *)kCUIAttrGSSItem];
         if (gssItem) {

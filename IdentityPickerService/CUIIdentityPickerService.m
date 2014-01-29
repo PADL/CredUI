@@ -129,7 +129,7 @@
 
     NSAssert(self.identityPicker, @"identityPicker initialized");
     NSAssert(self.identityPicker.window, @"identityPicker panel initialized");
-   
+
     [self.view addSubview:self.identityPicker.window.contentView];
 
     [self registerObservers];

@@ -32,7 +32,6 @@ __attribute__((visibility("default")))
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
-    NSSet *_whitelistedAttributeKeys;
 
     NSArrayController *_credsController;
     
@@ -65,7 +64,6 @@ __attribute__((visibility("default")))
 @property(assign) IBOutlet NSButton *cancelButton;
 
 @property(nonatomic, readonly) CUIControllerRef controllerRef;
-@property(nonatomic, readonly) NSSet *whitelistedAttributeKeys;
 
 @property(assign) IBOutlet NSArrayController *credsController;
 

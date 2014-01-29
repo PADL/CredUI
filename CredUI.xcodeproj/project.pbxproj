@@ -771,6 +771,7 @@
 		D3BC5F8F1884D40400034F92 /* pam_credui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pam_credui.h; path = pam_credui/pam_credui.h; sourceTree = "<group>"; };
 		D3BDE2561898BC80009FBF59 /* CUICredential+Coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Coding.h"; sourceTree = "<group>"; };
 		D3BDE2571898BC80009FBF59 /* CUICredential+Coding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUICredential+Coding.m"; sourceTree = "<group>"; };
+		D3BDE25A1898EC5F009FBF59 /* NSRemoteViewMarshal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSRemoteViewMarshal.h; path = ViewBridge/NSRemoteViewMarshal.h; sourceTree = "<group>"; };
 		D3BED8EE1872ECFF00623B92 /* CUICredential+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUICredential+Private.h"; sourceTree = "<group>"; };
 		D3BED8F21872F5FA00623B92 /* CUIBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CUIBase.h; sourceTree = "<group>"; };
 		D3BED9011873EAA700623B92 /* libobjc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libobjc.dylib; path = usr/lib/libobjc.dylib; sourceTree = SDKROOT; };
@@ -1008,6 +1009,7 @@
 			children = (
 				D305667618967BBD005EF2DB /* ViewBridge.h */,
 				D3416BCD1896AA90009D86A9 /* NSRemoteView.h */,
+				D3BDE25A1898EC5F009FBF59 /* NSRemoteViewMarshal.h */,
 				D3416BCE1896AA90009D86A9 /* NSViewBridge.h */,
 				D3416BCF1896AA90009D86A9 /* NSViewService.h */,
 				D3416BD01896AA90009D86A9 /* NSViewServiceBridge.h */,

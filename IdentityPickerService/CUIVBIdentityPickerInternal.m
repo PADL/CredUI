@@ -13,9 +13,20 @@
 
 #import <CredUICore/CredUICore_Private.h>
 
+@interface CUIVBIdentityPickerInternal ()
+- (NSSet *)whitelistedAttributeKeys;
+@end
+
 @implementation CUIVBIdentityPickerInternal
 
 #pragma mark - Initialization
+
+- (NSSet *)whitelistedAttributeKeys
+{
+    CFSetRef whitelist = _CUIControllerCopyWhitelistedAttributeKeys(self.controllerRef);
+
+    return CFBridgingRelease(whitelist);
+}
 
 - (instancetype)initWithViewBridge:(NSViewBridge *)viewBridge;
 {

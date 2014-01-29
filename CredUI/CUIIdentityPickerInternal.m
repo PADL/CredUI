@@ -12,7 +12,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 @interface CUIIdentityPickerInternal ()
 
 @property(nonatomic, assign) CUIControllerRef controllerRef;
-@property(nonatomic, retain) NSSet *whitelistedAttributeKeys;
 @property(nonatomic, assign) CUICredUIContext *credUIContext;
 @property(nonatomic, assign) CUIFlags flags;
 
@@ -67,7 +66,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     [_targetName release];
     
     [_lastError release];
-    [_whitelistedAttributeKeys release];
 
 #if 0    
     [_collectionView release];
@@ -126,15 +124,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     return (self.controllerRef != NULL);
 }
 
-- (void)initAttributeKeyWhitelist
-{
-    CFSetRef whitelist = _CUIControllerCopyWhitelistedAttributeKeys(self.controllerRef);
-    if (whitelist) {
-        self.whitelistedAttributeKeys = (__bridge NSSet *)whitelist;
-        CFRelease(whitelist);
-    }
-}
-
 - (BOOL)configureForUsageScenario:(CUIUsageScenario)usageScenario
                             flags:(CUIFlags)flags
 {
@@ -166,8 +155,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)self.window };
     [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
     
-    [self initAttributeKeyWhitelist];
-
     return YES;
 }
 
