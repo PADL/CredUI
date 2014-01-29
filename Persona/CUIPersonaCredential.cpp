@@ -139,7 +139,6 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *pError)
 
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
-          CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialAutoSubmitCredentialFinished);
 
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
 
@@ -150,6 +149,9 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *pError)
 
           CFRelease(subject);
           CFRelease(bidFlags);
+
+          /* set this last, as it acts as a semaphore to the KVO caller */
+          CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialAutoSubmitCredentialFinished);
     });
     
     return (err == BID_S_OK);
