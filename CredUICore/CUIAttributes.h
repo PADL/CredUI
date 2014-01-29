@@ -117,6 +117,12 @@ CUI_EXPORT const CFStringRef kCUIAttrStatusAutoAcquire;
 CUI_EXPORT const CFStringRef kCUIAttrStatusAutoAcquireStatus;
 CUI_EXPORT const CFStringRef kCUIAttrStatusTransient;
 
+/*
+ * kCUIAttrCredentialError is used to asynchronously return errors; this is exposed
+ * to the called as lastError.
+ */
+CUI_EXPORT const CFStringRef kCUIAttrCredentialError; /* CFErrorRef */
+
 CUI_EXPORT const CFStringRef kCUIAttrCredentialProvider;
 CUI_EXPORT const CFStringRef kCUIAttrCredentialMetaProvider;
 

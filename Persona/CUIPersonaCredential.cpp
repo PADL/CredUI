@@ -107,13 +107,13 @@ Boolean CUIPersonaCredential::createBrowserIDContext(CUIControllerRef controller
     return true;
 }
 
-Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
+Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *pError)
 {
     BIDError err;
     uint32_t ulReqFlags;
 
-    if (error != NULL)
-        *error = NULL;
+    if (pError != NULL)
+        *pError = NULL;
     
     assert(_targetName != NULL);
     
@@ -128,23 +128,28 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *error)
                                           ulReqFlags,
                                           NULL,
                                           ^(CFStringRef assertion, BIDIdentity identity, CFErrorRef error) {
+          if (error != NULL) {
+              CFDictionarySetValue(_attributes, kCUIAttrCredentialError, error);
+              return;
+          }
+
+          assert(identity != BID_C_NO_IDENTITY);
+
+          CFNumberRef bidFlags = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, (void *)&ulReqFlags);
+
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDAssertion, assertion);
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDIdentity, identity);
           CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialAutoSubmitCredentialFinished);
 
-          CFNumberRef bidFlags = CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, (void *)&ulReqFlags);
           CFDictionarySetValue(_attributes, kCUIAttrCredentialBrowserIDFlags, bidFlags);
+
+          CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
+          
+          CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
+          CFDictionarySetValue(_attributes, kCUIAttrName, subject);
+
+          CFRelease(subject);
           CFRelease(bidFlags);
-
-          if (identity != BID_C_NO_IDENTITY) {
-              CFStringRef subject = (CFStringRef)BIDIdentityCopyAttributeValue(identity, kBIDIdentitySubjectKey);
-          
-              CFDictionarySetValue(_attributes, kCUIAttrNameType, kCUIAttrNameTypeGSSUsername);
-              CFDictionarySetValue(_attributes, kCUIAttrName, subject);
-
-              CFRelease(subject);
-          }
-          
     });
     
     return (err == BID_S_OK);

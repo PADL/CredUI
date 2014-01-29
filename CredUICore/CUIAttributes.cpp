@@ -40,6 +40,8 @@ CUI_CONST_TYPE(kCUIAttrStatusTransient,                kCUIAttrStatusTransient);
 
 CUI_CONST_TYPE(kCUIAttrStatusAutoAcquireStatus,        kCUIAttrStatusAutoAcquireStatus);
 
+CUI_CONST_TYPE(kCUIAttrCredentialError,                kCUIAttrCredentialError);
+
 CUI_CONST_TYPE(kCUIAttrCredentialStatus,               kCUIAttrCredentialStatus);
 CUI_CONST_TYPE(kCUICredentialNotFinished,              kCUICredentialNotFinished);
 CUI_CONST_TYPE(kCUICredentialFinished,                 kCUICredentialFinished);

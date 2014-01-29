@@ -263,7 +263,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
                 self.credsController.selectionIndex = [self.credsController.arrangedObjects count] - 1;
         } else if (error) {
             NSLog(@"CUIControllerEnumerateCredentials: %@", error);
-            self.lastError = CFBridgingRelease(CFRetain(error));
+            self.lastError = (__bridge NSError *)error;
         }
     });
     
@@ -288,8 +288,17 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 {
     self.runningModal = NO;
 
-    if (modalResponse == NSModalResponseOK)
-        [self didSubmitCredential];
+    if (modalResponse == NSModalResponseOK) {
+        /* Propagate asynchronous errors from credential */
+        NSError *credError = [self.selectedCredential.attributes objectForKey:(__bridge id)kCUIAttrCredentialError];
+
+        if (credError) {
+            modalResponse = NSModalResponseAbort;
+            self.lastError = credError;
+        } else {
+            [self didSubmitCredential];
+        }
+    }
 
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
 
