@@ -21,7 +21,6 @@
 #import "CUIIdentityPickerListenerDelegate.h"
 #import "CUIIdentityPickerService.h"
 #import "CUIVBIdentityPickerInternal.h"
-#import "CUIProxyCredential+ViewBridge.h"
 
 @interface CUIIdentityPickerService ()
 - (BOOL)configureIdentityPicker:(NSArray *)options;

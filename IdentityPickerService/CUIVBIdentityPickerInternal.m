@@ -94,8 +94,6 @@
     [self.bridge setObject:error forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
     [self.bridge setObject:[NSNumber numberWithBool:self.persist] forKey:_CUIIdentityPickerServiceBridgeKeyPersist];
     [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseOK] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
-
-    NSLog(@"Sending credential: %@", [[self.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential] attributes]);
 }
 
 #pragma mark - Accessors
