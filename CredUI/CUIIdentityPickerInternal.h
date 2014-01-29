@@ -80,7 +80,8 @@ __attribute__((visibility("default")))
 - (void)setCredUIContext:(CUICredUIContext *)uic properties:(CUICredUIContextProperties)props;
 
 - (NSInteger)runModal;
-- (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
+
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow completionHandler:(void (^)(NSModalResponse returnCode))handler;
 
 - (void)startCredentialEnumeration;
 - (void)endCredentialEnumeration:(NSModalResponse)modalResponse;

@@ -38,10 +38,10 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     [identityPicker->_reserved[0] setCredUIContext:uiContext properties:kCUICredUIContextPropertyAll & ~(kCUICredUIContextPropertyParentWindow)];
 
     if (uiContext && uiContext->parentWindow) {
-        [identityPicker runModalForWindow:(__bridge NSWindow *)uiContext->parentWindow
-                            modalDelegate:nil
-                           didEndSelector:NULL
-                              contextInfo:NULL];
+        [identityPicker beginSheetModalForWindow:(__bridge NSWindow *)uiContext->parentWindow
+                                   modalDelegate:nil
+                                  didEndSelector:NULL
+                                     contextInfo:NULL];
     }
     
     modalSession = [NSApp beginModalSessionForWindow:[identityPicker->_reserved[0] window]];

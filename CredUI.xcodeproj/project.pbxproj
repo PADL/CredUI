@@ -247,8 +247,6 @@
 		D3FD1124187EEDE700AD32FB /* BrowserID.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3FD1123187EEDE700AD32FB /* BrowserID.framework */; };
 		D3FE160C18980B6B00032EC6 /* CUIIdentityPickerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */; };
 		D3FE160D18980B6B00032EC6 /* CUIIdentityPickerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */; };
-		D3FE160F18980DC600032EC6 /* CUIIdentityPicker+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FE160E18980DC600032EC6 /* CUIIdentityPicker+Private.m */; };
-		D3FE161118980E6600032EC6 /* CUIIdentityPicker+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D3FE161018980E6600032EC6 /* CUIIdentityPicker+Private.h */; };
 		D3FE1617189830C700032EC6 /* main.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3FE1616189830C700032EC6 /* main.xib */; };
 /* End PBXBuildFile section */
 
@@ -807,8 +805,6 @@
 		D3FD1123187EEDE700AD32FB /* BrowserID.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrowserID.framework; path = "../../../Library/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug/BrowserID.framework"; sourceTree = "<group>"; };
 		D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIIdentityPickerInfo.h; sourceTree = "<group>"; };
 		D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUIIdentityPickerInfo.m; sourceTree = "<group>"; };
-		D3FE160E18980DC600032EC6 /* CUIIdentityPicker+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CUIIdentityPicker+Private.m"; sourceTree = "<group>"; };
-		D3FE161018980E6600032EC6 /* CUIIdentityPicker+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CUIIdentityPicker+Private.h"; sourceTree = "<group>"; };
 		D3FE1616189830C700032EC6 /* main.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = main.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1216,8 +1212,6 @@
 				D336E2AD182B6B0D009271CD /* CUIIdentityPicker.m */,
 				D3416BBB189694F7009D86A9 /* CUIVBIdentityPicker.h */,
 				D3416BBC189694F7009D86A9 /* CUIVBIdentityPicker.m */,
-				D3FE161018980E6600032EC6 /* CUIIdentityPicker+Private.h */,
-				D3FE160E18980DC600032EC6 /* CUIIdentityPicker+Private.m */,
 				D3FE160A18980B6B00032EC6 /* CUIIdentityPickerInfo.h */,
 				D3FE160B18980B6B00032EC6 /* CUIIdentityPickerInfo.m */,
 				D3BED9291874373F00623B92 /* CUIIdentityPickerInternal.h */,
@@ -1519,7 +1513,6 @@
 				D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */,
 				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
-				D3FE161118980E6600032EC6 /* CUIIdentityPicker+Private.h in Headers */,
 				D3416BBD189694F7009D86A9 /* CUIVBIdentityPicker.h in Headers */,
 				D3416BCB1896A12D009D86A9 /* CUIProxyCredential.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
@@ -2099,7 +2092,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D3416BCC1896A12D009D86A9 /* CUIProxyCredential.m in Sources */,
-				D3FE160F18980DC600032EC6 /* CUIIdentityPicker+Private.m in Sources */,
 				D3FE160D18980B6B00032EC6 /* CUIIdentityPickerInfo.m in Sources */,
 				D3BED92C1874373F00623B92 /* CUIIdentityPickerInternal.m in Sources */,
 				D39EB0C01871302100C43A24 /* CUIField.m in Sources */,

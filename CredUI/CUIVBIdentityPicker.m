@@ -168,17 +168,13 @@ static NSString * const _CUIIdentityPickerServiceName                           
     [self.remoteView advanceToRunPhaseIfNeeded];
 }
 
-- (void)runModalForWindow:(NSWindow *)window
-            modalDelegate:(id)delegate
-           didEndSelector:(SEL)didEndSelector
-              contextInfo:(void *)contextInfo
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
+               completionHandler:(void (^)(NSModalResponse returnCode))handler
 {
-    [self setModalDelegate:delegate didEndSelector:didEndSelector];
-
     [self prepareForCredentialEnumeration];
-    [window beginSheet:self.containingPanel
+    [sheetWindow beginSheet:self.containingPanel
      completionHandler:^(NSModalResponse returnCode) {
-        [self identityPickerDidEnd:self returnCode:returnCode contextInfo:contextInfo];
+        handler(returnCode);
      }];
 }
 

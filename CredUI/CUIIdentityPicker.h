@@ -8,6 +8,7 @@
 
 #import <Foundation/NSObject.h>
 #import <CredUI/CUIPromptForCredentials.h>
+#import <AppKit/NSApplication.h> //NSModalResponse
 
 @class NSString;
 @class NSDictionary;
@@ -77,6 +78,7 @@ __attribute__((visibility("default")))
  * The didEndSelector should have the following signature:
  *  - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
  */
-- (void)runModalForWindow:(NSWindow *)window modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow completionHandler:(void (^)(NSModalResponse returnCode))handler;
 
 @end

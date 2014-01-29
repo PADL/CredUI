@@ -96,17 +96,30 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
 
 #pragma mark - Run Loop
 
-- (void)runModalForWindow:(NSWindow *)window
-            modalDelegate:(id)delegate
-           didEndSelector:(SEL)didEndSelector
-              contextInfo:(void *)contextInfo
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
+                   modalDelegate:(id)delegate
+                  didEndSelector:(SEL)didEndSelector
+                     contextInfo:(void *)contextInfo
 {
-    [self setModalDelegate:delegate didEndSelector:didEndSelector];
+    [self beginSheetModalForWindow:sheetWindow
+                 completionHandler:^(NSModalResponse modalResponse) {
+        NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        const void *object = (__bridge const void *)self;
 
-    [_reserved[0] runModalForWindow:window
-                      modalDelegate:self
-                     didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
-                        contextInfo:contextInfo];
+        [invocation setTarget:delegate];
+        [invocation setSelector:didEndSelector];
+        [invocation setArgument:&object atIndex:2];
+        [invocation setArgument:&modalResponse atIndex:3];
+        [invocation setArgument:(void **)&contextInfo atIndex:4];
+        [invocation invoke];
+    }];
+}
+
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
+               completionHandler:(void (^)(NSModalResponse returnCode))handler
+{
+    [_reserved[0] beginSheetModalForWindow:sheetWindow completionHandler:handler];
 }
 
 - (NSInteger)runModal

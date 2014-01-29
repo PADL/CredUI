@@ -138,17 +138,16 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     identityPicker.context = self._gssContext;
     identityPicker.authError = self.lastError;
     
-    [identityPicker runModalForWindow:self.window
-                        modalDelegate:self
-                       didEndSelector:@selector(identityPickerDidEnd:returnCode:contextInfo:)
-                          contextInfo:(__bridge void *)uiContext];
+    [identityPicker beginSheetModalForWindow:self.window
+                           completionHandler:^(NSModalResponse returnCode) {
+        [self identityPickerDidEnd:identityPicker returnCode:returnCode contextInfo:(__bridge void *)uiContext];
+    }];
     
 #if !__has_feature(objc_arc)
     [identityPicker autorelease];
     [attributes release];
 #endif
 }
-
 
 - (BOOL)_promptForCredentials:(NSError **)error
 {

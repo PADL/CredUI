@@ -321,29 +321,15 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     return modalResponse;
 }
 
-- (void)runModalForWindow:(NSWindow *)window
-            modalDelegate:(id)delegate
-           didEndSelector:(SEL)didEndSelector
-              contextInfo:(void *)contextInfo
+- (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
+               completionHandler:(void (^)(NSModalResponse returnCode))handler
 {
     [self startCredentialEnumeration];
 
-    [window beginSheet:self.window
+    [sheetWindow beginSheet:self.window
      completionHandler:^(NSModalResponse returnCode) {
         [self endCredentialEnumeration:returnCode];
-
-        if (delegate) {
-            NSMethodSignature *signature = [delegate methodSignatureForSelector:didEndSelector];
-            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-            void *object = (__bridge void *)self;
-
-            [invocation setTarget:delegate];
-            [invocation setSelector:didEndSelector];
-            [invocation setArgument:&object atIndex:2];
-            [invocation setArgument:&returnCode atIndex:3];
-            [invocation setArgument:(void **)&contextInfo atIndex:4];
-            [invocation invoke];
-        }
+        handler(returnCode);
     }];
 }
 

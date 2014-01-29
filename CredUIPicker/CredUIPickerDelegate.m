@@ -90,10 +90,10 @@ static void testEncodeDecode(CUICredential * cred)
     /* The target name can be a NSString, NSURL or gss_name_t */
     self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
 
-    [self.picker runModalForWindow:self.window
-                     modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndGSSIC:returnCode:contextInfo:)
-                       contextInfo:NULL];
+    [self.picker beginSheetModalForWindow:self.window
+                            modalDelegate:self
+                           didEndSelector:@selector(identityPickerDidEndGSSIC:returnCode:contextInfo:)
+                              contextInfo:NULL];
 }
 
 #pragma mark - GSS Item picker
@@ -142,10 +142,10 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.targetName = [NSURL URLWithString:@"http://www.padl.com"];
 //    self.picker.persist = YES;
     
-    [self.picker runModalForWindow:self.window
-                     modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndGSSItem:returnCode:contextInfo:)
-                       contextInfo:NULL];
+    [self.picker beginSheetModalForWindow:self.window
+                            modalDelegate:self
+                           didEndSelector:@selector(identityPickerDidEndGSSItem:returnCode:contextInfo:)
+                              contextInfo:NULL];
 
 }
 
@@ -164,10 +164,10 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.message = @"Choose an identity";
     self.picker.targetName = [NSURL URLWithString:@"https://www.padl.com"];
     
-    [self.picker runModalForWindow:self.window
-                     modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndGeneric:returnCode:contextInfo:)
-                       contextInfo:NULL];
+    [self.picker beginSheetModalForWindow:self.window
+                            modalDelegate:self
+                           didEndSelector:@selector(identityPickerDidEndGeneric:returnCode:contextInfo:)
+                              contextInfo:NULL];
 }
 
 #pragma mark - GSS fallback picker
@@ -220,10 +220,10 @@ static void testEncodeDecode(CUICredential * cred)
     /* The target name can be a NSString, NSURL or gss_name_t */
     self.picker.targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
     
-    [self.picker runModalForWindow:self.window
-                     modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndCert:returnCode:contextInfo:)
-                       contextInfo:NULL];
+    [self.picker beginSheetModalForWindow:self.window
+                            modalDelegate:self
+                           didEndSelector:@selector(identityPickerDidEndCert:returnCode:contextInfo:)
+                              contextInfo:NULL];
 }
 
 - (void)identityPickerDidEndLocal:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
@@ -245,10 +245,10 @@ static void testEncodeDecode(CUICredential * cred)
     self.picker.message = @"Choose an identity";
     
 #if 0
-    [self.picker runModalForWindow:self.window
-                     modalDelegate:self
-                    didEndSelector:@selector(identityPickerDidEndLocal:returnCode:contextInfo:)
-                       contextInfo:NULL];
+    [self.picker beginSheetModalForWindow:self.window
+                            modalDelegate:self
+                           didEndSelector:@selector(identityPickerDidEndLocal:returnCode:contextInfo:)
+                              contextInfo:NULL];
 #else
     NSModalResponse modalResponse = [self.picker runModal];
     [self identityPickerDidEndLocal:self.picker returnCode:modalResponse contextInfo:NULL];
