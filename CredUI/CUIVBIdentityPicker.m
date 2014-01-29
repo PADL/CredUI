@@ -7,7 +7,7 @@
 //
 
 /* Remote bridge keys */
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyConfigOptions = @"usageScenarioAndFlags";
+CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyConfigOptions         = @"usageScenarioAndFlags";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyTitle                 = @"title";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyMessage               = @"message";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyAttributes            = @"attributes";
@@ -23,15 +23,6 @@ CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSExportedContext
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode            = @"returnCode";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyLastError             = @"lastError";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential    = @"selectedCredential";
-
-#if 0
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSCredential         = @"GSSCredential";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSItem               = @"GSSItem";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSCredentialUUID     = @"GSSCredentialUUID";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSItemUUID           = @"GSSItemUUID";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyGSSName               = @"GSSName";
-CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyBOOL                  = @"BOOL";
-#endif
 
 static NSString * const _CUIIdentityPickerServiceName                               = @"com.padl.CredUI.xpc.IdentityPickerService";
 
