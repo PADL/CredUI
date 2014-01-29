@@ -573,6 +573,8 @@ static CFStringRef const _CUIDefaultWhitelistedAttributeKeys[] = {
     kCUIAttrGSSCredential,
     kCUIAttrImageData,
     kCUIAttrImageDataType,
+    kCUIAttrCredentialError,
+    kCUIAttrAuthenticatedForLoginScenario
 };
 
 CUI_EXPORT CFSetRef
