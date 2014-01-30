@@ -26,18 +26,8 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
 @implementation CUIIdentityPickerInternal
 
-@synthesize title = _title;
-@synthesize message = _message;
-@synthesize attributes = _attributes;
-@synthesize authError = _authError;
 @synthesize persist = _persist;
-@synthesize context = _context;
-@synthesize targetName = _targetName;
-
 @synthesize flags = _flags;
-@synthesize usageScenario = _usageScenario;
-@synthesize usageFlags = _usageFlags;
-
 @synthesize lastError = _lastError;
 
 @synthesize collectionView = _collectionView;
@@ -48,9 +38,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 @synthesize cancelButton = _cancelButton;
 
 @synthesize credUIContext = _credUIContext;
-
 @synthesize credsController = _credsController;
-
 @synthesize runningModal = _runningModal;
 
 - (void)dealloc
@@ -59,25 +47,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
         CFRelease(_controllerRef);
     
 #if !__has_feature(objc_arc)
-    [_title release];
-    [_message release];
-    [_attributes release];
-    [_authError release];
-    [_targetName release];
-    
     [_lastError release];
-
-#if 0    
-    [_collectionView release];
-    [_titleTextField release];
-    [_messageTextField release];
-    [_persistCheckBox release];
-    [_submitButton release];
-    [_cancelButton release];
-
-    [_credsController release];
-#endif
-
     [super dealloc];
 #endif
 }
