@@ -35,4 +35,15 @@ CFStringRef
 CUICopyAttrClassForGSSOID(gss_OID oid);
 #endif /* __cplusplus */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+gss_name_t
+CUICopyGSSNameForAttributes(CFDictionaryRef attributes);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* CredUI_GSSUtilities_h */

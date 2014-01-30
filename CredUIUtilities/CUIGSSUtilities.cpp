@@ -181,3 +181,24 @@ CUICopyAttrClassForGSSOID(gss_OID oid)
     return attrClass;
 }
 
+gss_name_t
+CUICopyGSSNameForAttributes(CFDictionaryRef attributes)
+{
+    gss_name_t name = GSS_C_NO_NAME;
+    gss_const_OID oid = GSS_C_NO_OID;
+    
+    CFTypeRef type = CFDictionaryGetValue(attributes, kCUIAttrNameType);
+    CFTypeRef value = CFDictionaryGetValue(attributes, kCUIAttrName);
+    
+    if (type == NULL || CFEqual(type, kCUIAttrNameTypeGSSUsername))
+        oid = GSS_C_NT_USER_NAME;
+    else if (CFEqual(type, kCUIAttrNameTypeGSSHostBasedService))
+        oid = GSS_C_NT_HOSTBASED_SERVICE;
+    else if (CFEqual(type, kCUIAttrNameTypeGSSExportedName))
+        oid = GSS_C_NT_EXPORT_NAME;
+    
+    if (oid != GSS_C_NO_OID && value != NULL)
+        name = GSSCreateName(value, oid, NULL);
+    
+    return name;
+}

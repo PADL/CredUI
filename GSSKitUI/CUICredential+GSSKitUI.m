@@ -74,24 +74,7 @@
 
 - (gss_name_t)copyGSSName CF_RETURNS_RETAINED
 {
-    gss_name_t name = GSS_C_NO_NAME;
-    gss_const_OID oid = GSS_C_NO_OID;
-    
-    id type = [self.attributes objectForKey:(__bridge NSString *)kCUIAttrNameType];
-    id value = [self.attributes objectForKey:(__bridge NSString *)kCUIAttrName];
-    
-    if (type == nil ||
-        [type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSUsername])
-        oid = GSS_C_NT_USER_NAME;
-    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSHostBasedService])
-        oid = GSS_C_NT_HOSTBASED_SERVICE;
-    else if ([type isEqual:(__bridge NSString *)kCUIAttrNameTypeGSSExportedName])
-        oid = GSS_C_NT_EXPORT_NAME;
-    
-    if (oid != GSS_C_NO_OID && value != nil)
-        name = GSSCreateName((__bridge CFStringRef)value, oid, NULL);
-    
-    return name;
+    return CUICopyGSSNameForAttributes((__bridge CFDictionaryRef)self.attributes);
 }
 
 - (gss_cred_id_t)acquireGSSCredential:(NSError * __autoreleasing *)error CF_RETURNS_RETAINED
