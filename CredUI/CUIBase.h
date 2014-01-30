@@ -39,12 +39,4 @@ typedef NS_OPTIONS(NSUInteger, CUIFlags) {
     CUIFlagsExcludeTransientCredentials = 0x02000000
 };
 
-/* CredUI context, used for C APIs */
-typedef struct __CUICredUIContext {
-    CFIndex version;
-    CFTypeRef parentWindow;
-    CFStringRef messageText;
-    CFStringRef titleText;
-} CUICredUIContext;
-
 #endif /* CredUI_CUIBase_h */
