@@ -246,7 +246,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
 {
     switch (_usageScenario) {
         case kCUIUsageScenarioNetwork: {
-            NSData *contextData = _CUIExportGSSSecContext(context);
+            NSData *contextData = _CUIExportGSSSecContext((void **)&context);
             [self.remoteView.bridge setObject:contextData forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
             break;
         }
@@ -289,13 +289,13 @@ static NSString * const _CUIIdentityPickerServiceName                           
 #pragma mark - Helpers
 
 CUI_EXPORT NSData *
-_CUIExportGSSSecContext(const void *context)
+_CUIExportGSSSecContext(void **context)
 {
     OM_uint32 major, minor;
     gss_buffer_desc exportedContext = GSS_C_EMPTY_BUFFER;
     NSData *data;
 
-    major = gss_export_sec_context(&minor, (gss_ctx_id_t *)&context, &exportedContext);
+    major = gss_export_sec_context(&minor, (gss_ctx_id_t *)context, &exportedContext);
     if (GSS_ERROR(major))
         return nil;
 

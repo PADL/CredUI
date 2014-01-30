@@ -35,7 +35,7 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
 CUI_EXPORT void *
 _CUIImportGSSSecContext(NSData *data);
 CUI_EXPORT NSData *
-_CUIExportGSSSecContext(const void *context);
+_CUIExportGSSSecContext(void **context);
 
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {

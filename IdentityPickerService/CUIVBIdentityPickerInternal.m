@@ -111,7 +111,7 @@
     [self.bridge setObject:[NSNumber numberWithBool:self.persist] forKey:_CUIIdentityPickerServiceBridgeKeyPersist];
     [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseOK] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
     if (self.usageScenario == kCUIUsageScenarioNetwork && self.context) {
-        NSData *exportedContext = _CUIExportGSSSecContext(self.context);
+        NSData *exportedContext = _CUIExportGSSSecContext(&_context);
         if (exportedContext)
             [self.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
     }
