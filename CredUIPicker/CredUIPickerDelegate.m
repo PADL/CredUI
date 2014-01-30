@@ -176,8 +176,8 @@ static void testEncodeDecode(CUICredential * cred)
 
 - (IBAction)gssAuthWithIdentityPickerFallback:(id)sender
 {
-    GSSName *targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
     GSSMechanism *mechanism = [GSSMechanism personaMechanism];
+    GSSName *targetName = [[GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"] mechanismName:mechanism];
     GSSCredential *cred = [GSSCredential credentialWithName:@"lukeh@padl.com" mechanism:mechanism];
     
     GSSContext *initiatorCtx;
@@ -193,7 +193,7 @@ static void testEncodeDecode(CUICredential * cred)
     initiatorCtx.promptForCredentials = YES;
     initiatorCtx.window = self.window;
    
-   [self doInitAcceptGSSContext:initiatorCtx];
+    [self doInitAcceptGSSContext:initiatorCtx];
 
 #if !__has_feature(objc_arc)
     [initiatorCtx release];
