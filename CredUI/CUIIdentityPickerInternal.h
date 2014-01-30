@@ -10,6 +10,9 @@ __attribute__((visibility("default")))
 @interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
 {
     BOOL _persist;
+    BOOL _runningModal;
+    BOOL _autoLogin;
+
     CUIFlags _flags;
     NSError *_lastError;
 
@@ -24,9 +27,6 @@ __attribute__((visibility("default")))
     CUICredUIContext *_credUIContext;
 
     __weak NSArrayController *_credsController;
-    
-    BOOL _runningModal;
-    BOOL _autoLogin;
 }
 
 @property(nonatomic, assign) BOOL persist;
