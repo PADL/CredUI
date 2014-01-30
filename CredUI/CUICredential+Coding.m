@@ -38,7 +38,7 @@
                                                                [NSArray class],
                                                                [NSDictionary class],
                                                                [NSSet class],
-                                                            nil];
+                                                               nil];
 
         /* these will only be available if GSSKit is linked */
         gssClassNames = [NSArray arrayWithObjects:@"GSSItem",
