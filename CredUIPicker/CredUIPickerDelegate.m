@@ -31,15 +31,15 @@
 /*
  * Test encoding/decoding of credentials
  */
-static void testEncodeDecode(CUICredential * cred)
+void testEncodeDecode(id object)
 {
-    NSString *filePath = @"/tmp/somecred";
+    NSString *filePath = @"/tmp/testEncodeDecode.dat";
     
-    [NSKeyedArchiver archiveRootObject:cred toFile:filePath];
+    [NSKeyedArchiver archiveRootObject:object toFile:filePath];
     
-    id reconstitutedCred = [NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:filePath]];
+    id object2 = [NSKeyedUnarchiver unarchiveObjectWithData:[NSData dataWithContentsOfFile:filePath]];
     
-    NSLog(@"reconstitutedCred: %@", reconstitutedCred);
+    NSLog(@"reconstituted object: %@", object2);
 }
 
 - (void)pickerWithFlags:(CUIFlags)flags

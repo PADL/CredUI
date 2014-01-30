@@ -99,12 +99,16 @@
         
         if (initiatorCtx.lastError.code)
             NSLog(@"Initiator error: %@", initiatorCtx.lastError);
-        else
+        else {
             NSLog(@"Initiator succeeded!");
+            testEncodeDecode(initiatorCtx);
+        }
         if (acceptorCtx.lastError.code)
             NSLog(@"Acceptor error: %@", acceptorCtx.lastError);
-        else
+        else {
             NSLog(@"Acceptor succeeded! Initiator name is %@", acceptorCtx.initiatorName.displayString);
+            testEncodeDecode(acceptorCtx);
+        }
     });
 }
 

@@ -28,3 +28,5 @@
 - (IBAction)showIdentityPickerLocal:(id)sender;
 
 @end
+
+void testEncodeDecode(id object);
