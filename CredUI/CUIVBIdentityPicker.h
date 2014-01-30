@@ -32,7 +32,11 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
 
 @class NSRemoteView;
 
-__attribute__((visibility("default")))
+CUI_EXPORT void *
+_CUIImportGSSSecContext(NSData *data);
+CUI_EXPORT NSData *
+_CUIExportGSSSecContext(const void *context);
+
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {
     CUIUsageScenario _usageScenario;
@@ -43,8 +47,5 @@ __attribute__((visibility("default")))
 
 @property(nonatomic, retain) NSPanel *containingPanel;
 @property(nonatomic, retain) NSRemoteView *remoteView;
-
-+ (NSData *)exportGSSSecContext:(const void *)context;
-+ (void *)importGSSSecContext:(NSData *)data;
 
 @end

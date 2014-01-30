@@ -152,7 +152,7 @@
 
 - (void)setGSSContext:(NSData *)data
 {
-    void *context = [CUIVBIdentityPicker importGSSSecContext:data];
+    void *context = _CUIImportGSSSecContext(data);
 
     if (_gssContext != GSS_C_NO_CONTEXT) {
         OM_uint32 minor;
