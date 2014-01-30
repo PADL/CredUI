@@ -18,10 +18,10 @@
 				D344388C187F7D9000562318 /* PBXTargetDependency */,
 				D3443890187F7D9000562318 /* PBXTargetDependency */,
 				D3443892187F7D9000562318 /* PBXTargetDependency */,
+				D3529823188EBCB300FCB03D /* PBXTargetDependency */,
 				D3443894187F7D9000562318 /* PBXTargetDependency */,
 				D3443898187F7D9000562318 /* PBXTargetDependency */,
 				D35891061883CDD30093F5B6 /* PBXTargetDependency */,
-				D3529823188EBCB300FCB03D /* PBXTargetDependency */,
 				D3BC5F891884D3C800034F92 /* PBXTargetDependency */,
 			);
 			name = CredUIBase;
@@ -2600,7 +2600,6 @@
 				);
 				INFOPLIST_FILE = "IdentityPickerService/IdentityPickerService-Info.plist";
 				MACH_O_TYPE = mh_execute;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "com.padl.CredUI.xpc.$(TARGET_NAME:rfc1034identifier)";
 				WRAPPER_EXTENSION = xpc;
 			};
@@ -2761,7 +2760,6 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -3216,7 +3214,6 @@
 				);
 				INFOPLIST_FILE = "GSSCred/GSSCred-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
 			};

@@ -23,17 +23,17 @@ __attribute__((visibility("default")))
 
     NSError *_lastError;
 
-    NSCollectionView *_collectionView;
-    NSTextField *_titleTextField;
-    NSTextField *_messageTextField;
-    NSButton *_persistCheckBox;
-    NSButton *_submitButton;
-    NSButton *_cancelButton;
+    __weak NSCollectionView *_collectionView;
+    __weak NSTextField *_titleTextField;
+    __weak NSTextField *_messageTextField;
+    __weak NSButton *_persistCheckBox;
+    __weak NSButton *_submitButton;
+    __weak NSButton *_cancelButton;
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
 
-    NSArrayController *_credsController;
+    __weak NSArrayController *_credsController;
     
     BOOL _runningModal;
     BOOL _autoLogin;
@@ -56,16 +56,16 @@ __attribute__((visibility("default")))
 
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
 
-@property(assign) IBOutlet NSCollectionView *collectionView;
-@property(assign) IBOutlet NSTextField *titleTextField;
-@property(assign) IBOutlet NSTextField *messageTextField;
-@property(assign) IBOutlet NSButton *persistCheckBox;
-@property(assign) IBOutlet NSButton *submitButton;
-@property(assign) IBOutlet NSButton *cancelButton;
+@property(nonatomic, weak) IBOutlet NSCollectionView *collectionView;
+@property(nonatomic, weak) IBOutlet NSTextField *titleTextField;
+@property(nonatomic, weak) IBOutlet NSTextField *messageTextField;
+@property(nonatomic, weak) IBOutlet NSButton *persistCheckBox;
+@property(nonatomic, weak) IBOutlet NSButton *submitButton;
+@property(nonatomic, weak) IBOutlet NSButton *cancelButton;
 
 @property(nonatomic, readonly) CUIControllerRef controllerRef;
 
-@property(assign) IBOutlet NSArrayController *credsController;
+@property(nonatomic, weak) IBOutlet NSArrayController *credsController;
 
 - (IBAction)didClickPersist:(id)sender;
 - (IBAction)didClickOK:(id)sender;

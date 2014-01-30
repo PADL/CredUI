@@ -11,14 +11,14 @@
 
 @interface CUICredentialTile : NSView
 {
-    NSView *_viewPrototype;
+    __weak NSView *_viewPrototype;
     CUICredential *_credential;
     CUICredentialTileController *_delegate;
     BOOL _selected;
 }
 
-@property (assign) IBOutlet NSView *viewPrototype;
-@property (readonly) CUICredential *credential;
+@property (nonatomic, weak) IBOutlet NSView *viewPrototype;
+@property (nonatomic, readonly) CUICredential *credential;
 @property (nonatomic, retain) CUICredentialTileController *delegate;
 @property (nonatomic, assign) BOOL selected;
 

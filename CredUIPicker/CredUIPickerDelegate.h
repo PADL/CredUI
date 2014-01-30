@@ -13,11 +13,11 @@
 
 @interface CredUIPickerDelegate : NSObject <NSApplicationDelegate>
 {
-    NSWindow *_window;
+    __weak NSWindow *_window;
     CUIIdentityPicker *_picker;
 }
 
-@property (assign) IBOutlet NSWindow *window;
+@property (nonatomic, weak) IBOutlet NSWindow *window;
 @property (nonatomic, strong) CUIIdentityPicker *picker;
 
 - (IBAction)showIdentityPickerGSSIC:(id)sender;

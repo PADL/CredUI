@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-    dispatch_release(_semaphore);
 #if !__has_feature(objc_arc)
+    dispatch_release(_semaphore);
     [super dealloc];
 #endif
 }
