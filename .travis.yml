@@ -5,7 +5,7 @@ before_install:
 
 install:
     - cd PADL/GSSKit
-    - DSTROOT=/ sudo xcodebuild install
+    - sudo xcodebuild install DSTROOT=/
     - cd ../..
 
 xcode_project: CredUI.xcodeproj
