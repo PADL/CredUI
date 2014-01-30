@@ -24,6 +24,13 @@ CredUI
 
 A Cocoa wrapper for CredUICore that displays a (presently not particularly great looking) interface. The CUIIdentityPicker class is the principal way to use this API, although functions are also supplied. The identity picker can run as a modal panel or a sheet. Once finished, it provides a CUICredential object which can be used directly or to acquire a GSS-API credential handle.
 
+Credential usage & types
+------------------------
+
+CredUI can be used for credential acquisition for network authentication (kCUIUsageScenarioNetwork) or interactive login authentication (kCUIUsageScenarioLogin). Providers may elect to support either or both usage scenarios.
+
+CredUI deals in two types of credentials: generic and non-generic credentials, chosen by a flag and initialization time (CUIFlagsGenericCredentials for CredUI, and kCUIUsageFlagsGeneric for CredUICore). Providers may elect to support either or both types. Non-generic credentials are designed to be used with GSS-API (kCUIUsageScenarioNetwork) or system logon (kCUIUsageScenarioLogin), and the password may not be available to the application, only a GSS credential (kCUIAttrGSSCredential) or authentication result (kCUIAttrAuthenticatedForLoginScenario).
+
 Providers
 ---------
 
