@@ -1,8 +1,11 @@
 language: objective-c
 
 before_install:
-    git clone --depth=1 --branch=master git://github.com/PADL/GSSKit.git PADL/GSSKit
-    (cd PADL/GSSKit; sudo xcodebuild install)
+    - git clone --depth=1 --branch=master git://github.com/PADL/GSSKit.git PADL/GSSKit
+
+install:
+    - cd PADL/GSSKit
+    - sudo xcodebuild install
 
 xcode_project: CredUI.xcodeproj
 xcode_scheme: CredUIBase
