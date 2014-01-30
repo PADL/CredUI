@@ -32,11 +32,12 @@
         static NSArray *gssClassNames;
 
         builtinClasses = [[NSMutableSet alloc] initWithObjects:[NSString class],
-                                                            [NSNumber class],
-                                                            [NSUUID class],
-                                                            [NSArray class],
-                                                            [NSDictionary class],
-                                                            [NSSet class],
+                                                               [NSData class],
+                                                               [NSNumber class],
+                                                               [NSUUID class],
+                                                               [NSArray class],
+                                                               [NSDictionary class],
+                                                               [NSSet class],
                                                             nil];
 
         /* these will only be available if GSSKit is linked */
