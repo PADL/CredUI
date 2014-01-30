@@ -308,7 +308,7 @@ _CUIExportGSSSecContext(const void *context)
 CUI_EXPORT void *
 _CUIImportGSSSecContext(NSData *data)
 {
-    OM_uint32 major, minor;
+    OM_uint32 minor;
     gss_ctx_id_t context = GSS_C_NO_CONTEXT;
     gss_buffer_desc exportedContext;
 
@@ -318,7 +318,7 @@ _CUIImportGSSSecContext(NSData *data)
     exportedContext.length = data.length;
     exportedContext.value = (void *)data.bytes;
 
-    major = gss_import_sec_context(&minor, &exportedContext, &context);
+    gss_import_sec_context(&minor, &exportedContext, &context);
 
     return context;
 }
