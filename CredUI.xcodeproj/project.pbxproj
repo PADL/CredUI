@@ -16,6 +16,7 @@
 			dependencies = (
 				D344388E187F7D9000562318 /* PBXTargetDependency */,
 				D344388C187F7D9000562318 /* PBXTargetDependency */,
+				D3BBF5A5189A0E9D00A4B99F /* PBXTargetDependency */,
 				D3443890187F7D9000562318 /* PBXTargetDependency */,
 				D3443892187F7D9000562318 /* PBXTargetDependency */,
 				D3529823188EBCB300FCB03D /* PBXTargetDependency */,
@@ -538,6 +539,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
+		};
+		D3BBF5A4189A0E9D00A4B99F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D305667A18968B6B005EF2DB;
+			remoteInfo = IdentityPickerService;
 		};
 		D3BC5F881884D3C800034F92 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2440,6 +2448,11 @@
 			isa = PBXTargetDependency;
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D3AA9640187514AB003852C5 /* PBXContainerItemProxy */;
+		};
+		D3BBF5A5189A0E9D00A4B99F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D305667A18968B6B005EF2DB /* IdentityPickerService */;
+			targetProxy = D3BBF5A4189A0E9D00A4B99F /* PBXContainerItemProxy */;
 		};
 		D3BC5F891884D3C800034F92 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
