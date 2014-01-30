@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+//#define CUI_DYNAMIC_CLASSES 1
+
 @implementation CUICredential (Coding)
 
 #pragma mark Secure Coding
@@ -91,13 +93,20 @@
 - (void)encodeWithCoder:(NSCoder *)coder
 {
     BOOL bGenericCreds = [[self.attributes objectForKey:(__bridge id)kCUIAttrClass] isEqual:(__bridge id)kCUIAttrClassGeneric];
-    NSMutableSet *codeableClassNames = [[NSMutableSet alloc] init];
     NSMutableDictionary *codeableAttrs = [[NSMutableDictionary alloc] init];
+#if CUI_DYNAMIC_CLASSES
+    NSMutableSet *codeableClassNames = [[NSMutableSet alloc] init];
     
     [[[self class] builtinClasses] enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
         [codeableClassNames addObject:NSStringFromClass(obj)];
     }];
-    
+
+    [coder encodeObject:codeableClassNames forKey:@"classes"];
+# if !__has_feature(objc_arc)
+    [codeableClassNames release];
+# endif
+#endif /* CUI_DYNAMIC_CLASSES */
+
     [self.attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         BOOL bWhitelisted, bCodeable;
         
@@ -106,9 +115,11 @@
             bWhitelisted = bGenericCreds;
         else
             bWhitelisted = [self isWhitelistedAttributeKey:key];
-        
+
+#if CUI_DYNAMIC_CLASSES
         if (![[self class] isBuiltinClass:[obj class]])
             [codeableClassNames addObject:NSStringFromClass([obj class])];
+#endif
         
         bCodeable = [obj conformsToProtocol:@protocol(NSSecureCoding)];
        
@@ -122,12 +133,9 @@
             [codeableAttrs setObject:obj forKey:key];
     }];
     
-    [coder encodeObject:codeableClassNames forKey:@"classes"];
     [coder encodeObject:codeableAttrs forKey:@"attributes"];
-    
 #if !__has_feature(objc_arc)
     [codeableAttrs release];
-    [codeableClassNames release];
 #endif
 }
 
@@ -135,13 +143,11 @@
 {
     NSDictionary *credAttributes;
     NSMutableDictionary *transformedCredAttributes;
-    NSMutableSet *codeableClasses;
     id credential;
 
-    // XXX is this insecure? should we restrict to builtin classes?    
+#if CUI_DYNAMIC_CLASSES
     NSSet *codeableClassNames = [coder decodeObjectOfClasses:[[self class] builtinClasses] forKey:@"classes"];
-    
-    codeableClasses = [[NSMutableSet alloc] init];
+    NSMutableSet *codeableClasses = [[NSMutableSet alloc] init];
     [codeableClasses addObject:[NSDictionary class]];
     
     [codeableClassNames enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
@@ -149,7 +155,13 @@
         if (class)
             [codeableClasses addObject:class];
     }];
-    
+# if !__has_feature(objc_arc)
+    [codeableClasses autorelease];
+# endif
+#else
+    NSSet *codeableClasses = [[self class] builtinClasses];
+#endif /* CUI_DYNAMIC_CLASSES */
+ 
     credAttributes = [coder decodeObjectOfClasses:codeableClasses forKey:@"attributes"];
     if (credAttributes == nil)
         return nil;
@@ -167,7 +179,6 @@
     
 #if !__has_feature(objc_arc)
     [transformedCredAttributes release];
-    [codeableClasses release];
 #endif
     
     return credential;
