@@ -23,11 +23,13 @@
 @interface CUIVBIdentityPickerInternal : CUIIdentityPickerInternal
 {
     NSViewBridge *_bridge;
+    void *_context;
 }
 
 - (instancetype)initWithViewBridge:(NSViewBridge *)viewBridge;
+- (void)setGSSExportedContext:(NSData *)contextData;
+- (void)setPAMSerializedHandle:(NSData *)handleData;
 
 @property(nonatomic, retain) NSViewBridge *bridge;
-@property(nonatomic, retain) NSData *GSSExportedContext;
 
 @end

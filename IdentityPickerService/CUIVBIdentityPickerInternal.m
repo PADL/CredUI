@@ -38,6 +38,18 @@
     return self;
 }
 
+- (void)dealloc
+{
+    OM_uint32 minor;
+
+    if (self.usageScenario == kCUIUsageScenarioNetwork && _context != GSS_C_NO_CONTEXT)
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+
+#if !__has_feature(objc_arc)
+    [super dealloc];
+#endif
+}
+
 #pragma mark - Credential submission overrides
 
 - (void)willCancelCredential:(id)sender
@@ -93,20 +105,34 @@
     [self.bridge setObject:error forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
     [self.bridge setObject:[NSNumber numberWithBool:self.persist] forKey:_CUIIdentityPickerServiceBridgeKeyPersist];
     [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseOK] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
+    if (self.usageScenario == kCUIUsageScenarioNetwork && self.context) {
+        NSData *exportedContext = _CUIExportGSSSecContext(self.context);
+        if (exportedContext)
+            [self.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
+    }
 }
 
 #pragma mark - Accessors
 
 @synthesize bridge = _bridge;
 
-- (NSData *)GSSExportedContext
-{
-    return nil;
-}
-
 - (void)setGSSExportedContext:(NSData *)exportedContext
 {
-    NSAssert(exportedContext == nil, @"setting of an exported context is not yet implemented");
+    OM_uint32 minor;
+
+    NSAssert(self.usageScenario == kCUIUsageScenarioNetwork, @"GSS context can only be set for kCUIUsageScenarioNetwork");
+
+    if (_context != GSS_C_NO_CONTEXT)
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+
+    _context = _CUIImportGSSSecContext(exportedContext);
+    [super setContext:_context];
+}
+
+- (void)setPAMSerializedHandle:(NSData *)handleData
+{
+    NSAssert(self.usageScenario == kCUIUsageScenarioLogin, @"PAM handle can only be set for kCUIUsageScenarioLogin");
+    NSAssert(0, @"PAM support not implemented yet for bridge");
 }
 
 @end

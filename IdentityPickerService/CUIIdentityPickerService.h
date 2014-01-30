@@ -13,11 +13,8 @@
 @interface CUIIdentityPickerService : NSViewService
 {
     CUIIdentityPickerInternal *_identityPicker;
-    void *_gssContext;
 }
 
 @property(nonatomic, retain) CUIIdentityPickerInternal *identityPicker;
-
-- (void)setGSSContext:(NSData *)data;
 
 @end

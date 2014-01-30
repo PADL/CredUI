@@ -120,9 +120,14 @@ static NSString * const _CUIIdentityPickerServiceName                           
 {
     [self unregisterObservers];
 
-    if (_usageScenario == kCUIUsageScenarioNetwork) {
-        OM_uint32 minor;
-        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+    switch (_usageScenario) {
+        case kCUIUsageScenarioNetwork: {
+            OM_uint32 minor;
+            gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+            break;
+        }
+        default:
+            break;
     }
 
 #if !__has_feature(objc_arc) 
@@ -153,10 +158,13 @@ static NSString * const _CUIIdentityPickerServiceName                           
     id value = [change objectForKey:NSKeyValueChangeNewKey];
 
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyReturnCode]) {
-        if (_usageScenario == kCUIUsageScenarioNetwork)
+        switch (_usageScenario) {
+        case kCUIUsageScenarioNetwork:
             _context = _CUIImportGSSSecContext([self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]);
-        else
-            _context = NULL;
+            break;
+        default:
+            break;
+        }
         [self endWithReturnCode:[value integerValue]];
         [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
     }
@@ -236,10 +244,15 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
 - (void)setContext:(const void *)context
 {
-    if (_usageScenario == kCUIUsageScenarioNetwork) {
-        NSData *contextData = _CUIExportGSSSecContext(context);
-        [self.remoteView.bridge setObject:contextData forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
-    } // else not much we can do
+    switch (_usageScenario) {
+        case kCUIUsageScenarioNetwork: {
+            NSData *contextData = _CUIExportGSSSecContext(context);
+            [self.remoteView.bridge setObject:contextData forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (id)targetName
@@ -299,7 +312,7 @@ _CUIImportGSSSecContext(NSData *data)
     gss_ctx_id_t context = GSS_C_NO_CONTEXT;
     gss_buffer_desc exportedContext;
 
-    if (data == nil || data.length == 0)
+    if (!data.length)
         return nil;
 
     exportedContext.length = data.length;

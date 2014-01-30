@@ -8,8 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import <GSS/GSS.h>
-
 #import <CredUI/CredUI.h>
 #import <CredUI/CUIVBIdentityPicker.h>
 #import <CredUI/CUIProxyCredential.h>
@@ -34,10 +32,6 @@
 - (void)dealloc
 {
 //    [self unregisterObservers];
-    if (_gssContext != GSS_C_NO_CONTEXT) {
-        OM_uint32 minor;
-        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_gssContext, GSS_C_NO_BUFFER);
-    }
 #if !__has_feature(objc_arc)
     [_identityPicker release];
     [super dealloc];
@@ -71,12 +65,7 @@
         NSAssert(self.marshal.bridgePhase == NSViewBridgePhaseConfig, @"identity picker can only be configured during config phase");
         [self configureIdentityPicker:value];
     } else if ([self.identityPicker isConfigured]) {
-        if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]) {
-        } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle]) {
-            NSAssert([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle], @"only GSS exported contexts supported");
-        } else {
-            [self.identityPicker setValue:value forKey:keyPath];
-        }
+        [self.identityPicker setValue:value forKey:keyPath];
     }
 }
 
@@ -149,17 +138,5 @@
 }
 
 @synthesize identityPicker = _identityPicker;
-
-- (void)setGSSContext:(NSData *)data
-{
-    void *context = _CUIImportGSSSecContext(data);
-
-    if (_gssContext != GSS_C_NO_CONTEXT) {
-        OM_uint32 minor;
-        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_gssContext, GSS_C_NO_BUFFER);
-    }
-
-    _gssContext = context;
-}
 
 @end
