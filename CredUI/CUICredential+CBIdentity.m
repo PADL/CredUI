@@ -15,6 +15,13 @@
 }
 @end
 
+@implementation CUIProxyCredential (CBIdentity)
+- (BOOL)authenticateForLoginScenario
+{
+    return [[self.attributes valueForKey:(__bridge id)kCUIAttrAuthenticatedForLoginScenario] boolValue];
+}
+@end
+
 @implementation CUICredential (CBIdentity)
 
 - (CBUserIdentity *)userIdentity
@@ -39,7 +46,7 @@
 
 - (BOOL)authenticateForLoginScenario
 {
-    return [[self.attributes valueForKey:(__bridge id)kCUIAttrAuthenticatedForLoginScenario] boolValue];
+    return NO;
 }
 
 @end
