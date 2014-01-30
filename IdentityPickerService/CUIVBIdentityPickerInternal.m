@@ -81,7 +81,6 @@
 {
     NSError *error = nil;
 
-    NSLog(@"willSubmitCredential: %@", self.selectedCredential);
     self.submitButton.state = NSOnState; // in case cred was submitted without clicking
 
     [self.selectedCredential willSubmit];
