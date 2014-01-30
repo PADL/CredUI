@@ -137,6 +137,18 @@ static NSString * const _CUIIdentityPickerServiceName                           
 #endif
 }
 
+- (void)setGSSExportedContext:(NSData *)exportedContext
+{
+    OM_uint32 minor;
+
+    NSAssert(_usageScenario == kCUIUsageScenarioNetwork, @"GSS context can only be set for kCUIUsageScenarioNetwork");
+
+    if (_context != GSS_C_NO_CONTEXT)
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+
+    _context = _CUIImportGSSSecContext(exportedContext);
+}
+
 #pragma mark - KVO
 
 - (void)endWithReturnCode:(NSModalResponse)returnCode
@@ -160,7 +172,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyReturnCode]) {
         switch (_usageScenario) {
         case kCUIUsageScenarioNetwork:
-            _context = _CUIImportGSSSecContext([self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]);
+            [self setGSSExportedContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext]];
             break;
         default:
             break;
@@ -248,6 +260,10 @@ static NSString * const _CUIIdentityPickerServiceName                           
         case kCUIUsageScenarioNetwork: {
             NSData *contextData = _CUIExportGSSSecContext((void **)&context);
             [self.remoteView.bridge setObject:contextData forKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext];
+#if 0
+            // because we killed the context, import it again
+            _context = _CUIImportGSSSecContext(contextData);
+#endif
             break;
         }
         default:
