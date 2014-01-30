@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <CredUI/CUIContextBoxing.h>
+
 @interface GSSKitUIContext : NSObject
 {
     NSError *_error;
@@ -62,8 +64,7 @@
 
 @end
 
-@interface GSSContext ()
-@property(nonatomic, readonly) gss_ctx_id_t _gssContext;
+@interface GSSContext () <CUIContextBoxing>
 @end
 
 @implementation GSSContext (CredUI)
@@ -94,7 +95,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     
     identityPicker.title = @"Identity Picker";
     identityPicker.targetName = [self.targetName mechanismName:self.mechanism]; //canon mech
-    identityPicker.context = self._gssContext;
+    identityPicker.contextBox = self;
     identityPicker.authError = self.lastError;
     
     [identityPicker beginSheetModalForWindow:self.window
@@ -103,6 +104,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
         GSSCredential *gssCred;
         NSError *error;
         
+        // must match call to [self _underlyingGssContextTakingOwnership]
         if (returnCode != NSModalResponseOK) {
             uiContext.error = identityPicker.lastError ? identityPicker.lastError : [NSError GSSError:GSS_S_UNAVAILABLE];
             [uiContext signalCompletion];

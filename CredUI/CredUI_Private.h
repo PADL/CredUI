@@ -25,8 +25,9 @@
 #import "CUICredentialTile.h"
 #import "CUICredentialTileController.h"
 
-#import "CUIIdentityPickerInternal.h"
+#import "CUIContextBoxing.h"
 #import "CUIVBIdentityPicker.h"
+#import "CUIIdentityPickerInternal.h"
 #import "CUIProxyCredential.h"
 
 #import "NSBundle+CredUI.h"
@@ -44,7 +45,7 @@ NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
 /* Used by GSSKitUI */
 CUI_EXPORT Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
-                         CFTypeRef contextHandle,
+                         void **context,
                          CUICredUIContext *uiContext,
                          CFErrorRef authError,
                          CFDictionaryRef inCredAttributes,

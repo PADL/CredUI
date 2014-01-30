@@ -19,7 +19,7 @@ extern "C" {
 
 CUI_EXPORT Boolean
 GSSPromptForCredentials(gss_const_name_t targetName,
-                        const gss_ctx_id_t gssContextHandle,
+                        gss_ctx_id_t *gssContextHandle,
                         CUICredUIContext *uiContext,
                         CFErrorRef authError,
                         CFDictionaryRef inCredAttributes,

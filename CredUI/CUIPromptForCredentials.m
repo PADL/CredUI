@@ -6,9 +6,69 @@
 //  Copyright (c) 2013 PADL Software Pty Ltd. All rights reserved.
 //
 
+@interface CUIPromptForCredentialsContextBox : NSObject <CUIContextBoxing>
+{
+@public
+    void **_context;
+}
+@end
+
+@implementation CUIPromptForCredentialsContextBox
+- (void)setContext:(void *)context
+{
+    *_context = context;
+}
+
+- (void *)context
+{
+    return *_context;
+}
+
+- (NSData *)exportContext
+{
+    NSData *data;
+    OM_uint32 major, minor;
+    gss_buffer_desc exportedContext = GSS_C_EMPTY_BUFFER;
+    gss_ctx_id_t context = self.context;
+    
+    major = gss_export_sec_context(&minor, &context, &exportedContext);
+    if (GSS_ERROR(major))
+        return nil;
+    
+    data = [NSData dataWithBytes:exportedContext.value length:exportedContext.length];
+    gss_release_buffer(&minor, &exportedContext);
+    
+    self.context = GSS_C_NO_CONTEXT;
+    
+    return data;
+}
+
+- (BOOL)importContext:(NSData *)data
+{
+    OM_uint32 major, minor;
+    gss_buffer_desc exportedContext;
+    void *context = GSS_C_NO_CONTEXT;
+    
+    if (!data.length)
+        return NO;
+    
+    exportedContext.length = data.length;
+    exportedContext.value = (void *)data.bytes;
+    
+    major = gss_import_sec_context(&minor, &exportedContext, (gss_ctx_id_t *)&context);
+    if (GSS_ERROR(major))
+        return NO;
+    
+    self.context = context;
+    
+    return YES;
+}
+
+@end
+
 CUI_EXPORT Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
-                         const void *context,
+                         void **context,
                          CUICredUIContext *uiContext,
                          CFErrorRef authError,
                          CFDictionaryRef inCredAttributes,
@@ -20,6 +80,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithUsageScenario:kCUIUsageScenarioNetwork
                                                                               attributes:(__bridge NSDictionary *)inCredAttributes
                                                                                    flags:flags];
+    CUIPromptForCredentialsContextBox *contextBox = [[CUIPromptForCredentialsContextBox alloc] init];
     CUICredential *selectedCredential;
     NSModalSession modalSession;
     NSModalResponse modalResponse;
@@ -28,9 +89,11 @@ _CUIPromptForCredentials(CFTypeRef targetName,
         *error = NULL;
     if (identityPicker == nil)
         return false;
-    
+   
+    contextBox->_context = context;
+ 
     identityPicker.targetName = (__bridge id)targetName;
-    identityPicker.context = context;
+    identityPicker.contextBox = contextBox;
     identityPicker.authError = (__bridge NSError *)authError;
     identityPicker.persist = *pfSave;
  
@@ -61,6 +124,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
         *error = (CFErrorRef)CFBridgingRetain(identityPicker.lastError);
     
 #if !__has_feature(objc_arc)
+    [contextBox release];
     [identityPicker release];
 #endif
     
@@ -70,7 +134,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
 CUI_EXPORT Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
-                        const void *reserved,
+                        void **reserved,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,

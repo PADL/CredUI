@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#import <GSS/GSS.h>
+
 #import <CredUI/CredUI.h>
 #import <CredUI/CUIVBIdentityPicker.h>
 #import <CredUI/CUIProxyCredential.h>
@@ -45,6 +47,8 @@
     CUIUsageScenario usageScenario = [[options objectAtIndex:0] unsignedIntegerValue];
     CUIFlags flags = [[options objectAtIndex:1] unsignedIntegerValue];
 
+    self.identityPicker.contextBox = self;
+
     return [self.identityPicker configureForUsageScenario:usageScenario flags:flags];
 }
 
@@ -64,6 +68,9 @@
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyConfigOptions]) {
         NSAssert(self.marshal.bridgePhase == NSViewBridgePhaseConfig, @"identity picker can only be configured during config phase");
         [self configureIdentityPicker:value];
+    } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyExportedContext]) {
+        BOOL bImportedContext = [self importContext:value];
+        NSAssert(bImportedContext, @"failed to import GSS context");
     } else if ([self.identityPicker isConfigured]) {
         [self.identityPicker setValue:value forKey:keyPath];
     }
@@ -80,7 +87,7 @@
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration defaultObject:nil owner:NSViewBridgeKeyOwnerRemote];
 
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyPersist                  defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
-    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyGSSExportedContext       defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
+    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyExportedContext          defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
 
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyReturnCode               defaultObject:nil owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyLastError                defaultObject:nil owner:NSViewBridgeKeyOwnerService];
@@ -138,5 +145,68 @@
 }
 
 @synthesize identityPicker = _identityPicker;
+
+- (CUIUsageScenario)usageScenario
+{
+    return self.identityPicker.usageScenario;
+}
+
+- (void *)context
+{
+    return _context;
+}
+
+- (void)setContext:(void *)aContext
+{
+    NSAssert(self.usageScenario == kCUIUsageScenarioNetwork, @"context transferring only supported for kCUIUsageScenarioNetwork");
+
+    if (aContext != _context) {
+        OM_uint32 minor;
+        gss_delete_sec_context(&minor, (gss_ctx_id_t *)&_context, GSS_C_NO_BUFFER);
+        _context = aContext;
+    }
+}
+
+- (NSData *)exportContext
+{
+    NSData *data;
+    OM_uint32 major, minor;
+    gss_buffer_desc exportedContext = GSS_C_EMPTY_BUFFER;
+    gss_ctx_id_t context = self.context;
+
+    NSAssert(self.usageScenario == kCUIUsageScenarioNetwork, @"context transferring only supported for kCUIUsageScenarioNetwork");
+
+    major = gss_export_sec_context(&minor, &context, &exportedContext);
+    if (GSS_ERROR(major))
+        return nil;
+
+    data = [NSData dataWithBytes:exportedContext.value length:exportedContext.length];
+    gss_release_buffer(&minor, &exportedContext);
+
+    self.context = GSS_C_NO_CONTEXT;
+
+    return data;
+}
+
+- (BOOL)importContext:(NSData *)data
+{
+    OM_uint32 major, minor;
+    gss_buffer_desc exportedContext;
+    void *context = GSS_C_NO_CONTEXT;
+
+    if (!data.length)
+        return NO;
+
+    exportedContext.length = data.length;
+    exportedContext.value = (void *)data.bytes;
+
+    major = gss_import_sec_context(&minor, &exportedContext, (gss_ctx_id_t *)&context);
+    if (GSS_ERROR(major))
+        return NO;
+
+    self.context = context;
+
+    return YES;
+}
 
 @end

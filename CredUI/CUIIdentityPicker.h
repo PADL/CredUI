@@ -42,9 +42,6 @@ __attribute__((visibility("default")))
 /* Target name to display to user, one of NSString, NSURL or gss_name_t */
 @property(nonatomic, copy) id targetName;
 
-/* GSS or PAM context handle, depending on usage scenario */
-@property(nonatomic, assign) const void *context;
-
 /* The credential that was picked */
 @property(nonatomic, retain, readonly) CUICredential *selectedCredential;
 /* The last error from credential selection */

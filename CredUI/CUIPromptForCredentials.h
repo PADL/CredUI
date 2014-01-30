@@ -30,7 +30,7 @@ typedef struct __CUICredUIContext {
 CUI_EXPORT Boolean
 CUIPromptForCredentials(CUICredUIContext *uiContext,
                         CFStringRef targetName,
-                        const void *reserved,
+                        void **reserved,
                         CFErrorRef authError,
                         CFStringRef username,
                         CFStringRef password,

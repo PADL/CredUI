@@ -7,6 +7,7 @@
 //
 
 #import <ViewBridge/ViewBridge.h>
+#import <CredUI/CUIContextBoxing.h>
 
 /* Remote bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyConfigOptions;
@@ -19,8 +20,7 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeyStartCredentialEnumera
 
 /* Phased bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyPersist;
-extern NSString * const _CUIIdentityPickerServiceBridgeKeyGSSExportedContext;
-extern NSString * const _CUIIdentityPickerServiceBridgeKeyPAMSerializedHandle;
+extern NSString * const _CUIIdentityPickerServiceBridgeKeyExportedContext;
 
 /* Service bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode;
@@ -32,20 +32,16 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
 
 @class NSRemoteView;
 
-CUI_EXPORT void *
-_CUIImportGSSSecContext(NSData *data);
-CUI_EXPORT NSData *
-_CUIExportGSSSecContext(void **context);
-
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {
     CUIUsageScenario _usageScenario;
     NSPanel *_containingPanel;
     NSRemoteView *_remoteView;
-    const void *_context;
+    id <CUIContextBoxing> _contextBox;
 }
 
 @property(nonatomic, retain) NSPanel *containingPanel;
 @property(nonatomic, retain) NSRemoteView *remoteView;
+@property(nonatomic, retain) id <CUIContextBoxing> contextBox;
 
 @end

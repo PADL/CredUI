@@ -29,6 +29,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 @synthesize persist = _persist;
 @synthesize flags = _flags;
 @synthesize lastError = _lastError;
+@synthesize contextBox = _contextBox;
 
 @synthesize collectionView = _collectionView;
 @synthesize titleTextField = _titleTextField;
@@ -48,6 +49,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     
 #if !__has_feature(objc_arc)
     [_lastError release];
+    [_contextBox release];
     [super dealloc];
 #endif
 }
@@ -210,6 +212,8 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
     CUICredUIContext uic = { .version = 0, .parentWindow = (__bridge CFTypeRef)parentWindow };
     [self setCredUIContext:&uic properties:kCUICredUIContextPropertyParentWindow];
+
+    CUIControllerSetContext(self.controllerRef, self.contextBox.context);
 
     self.credsController.selectsInsertedObjects = NO;
 
@@ -450,16 +454,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     CUIControllerSetAuthError(self.controllerRef, (__bridge CFErrorRef)someError);
 }
 
-- (const void *)context
-{
-    return CUIControllerGetContext(self.controllerRef);
-}
-
-- (void)setContext:(const void *)aContext
-{
-    CUIControllerSetContext(self.controllerRef, aContext);
-}
-
 - (id)targetName
 {
     return (__bridge id)CUIControllerGetTargetName(self.controllerRef);
@@ -491,3 +485,4 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 }
 
 @end
+

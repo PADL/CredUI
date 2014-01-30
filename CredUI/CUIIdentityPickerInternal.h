@@ -7,7 +7,7 @@
 //
 
 __attribute__((visibility("default")))
-@interface CUIIdentityPickerInternal : NSWindowController  <NSWindowDelegate>
+@interface CUIIdentityPickerInternal : NSWindowController <NSWindowDelegate>
 {
     BOOL _persist;
     BOOL _runningModal;
@@ -15,6 +15,7 @@ __attribute__((visibility("default")))
 
     CUIFlags _flags;
     NSError *_lastError;
+    id <CUIContextBoxing> _contextBox;
 
     __weak NSCollectionView *_collectionView;
     __weak NSTextField *_titleTextField;
@@ -39,7 +40,7 @@ __attribute__((visibility("default")))
 @property(nonatomic, copy) NSString *message;
 @property(nonatomic, copy) NSDictionary *attributes;
 @property(nonatomic, copy) NSError *authError;
-@property(nonatomic, assign) const void *context;
+@property(nonatomic, retain) id <CUIContextBoxing> contextBox;
 @property(nonatomic, copy) id targetName;
 @property(nonatomic, retain, readonly) NSString *targetDisplayName;
 
@@ -78,3 +79,4 @@ __attribute__((visibility("default")))
 - (BOOL)isConfigured;
 
 @end
+

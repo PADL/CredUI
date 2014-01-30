@@ -235,6 +235,7 @@
 		D3BED92C1874373F00623B92 /* CUIIdentityPickerInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BED92A1874373F00623B92 /* CUIIdentityPickerInternal.m */; };
 		D3CA6F24188EB5AD000319B4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3CA6F2A188EB5AD000319B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3CA6F28188EB5AD000319B4 /* InfoPlist.strings */; };
+		D3CD817C189A588B00549505 /* CUIContextBoxing.h in Headers */ = {isa = PBXBuildFile; fileRef = D3CD817B189A588B00549505 /* CUIContextBoxing.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D3CECCF2187ADFF30006EB36 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB02E186ED50800C43A24 /* CoreFoundation.framework */; };
 		D3CECCF8187ADFF30006EB36 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D3CECCF6187ADFF30006EB36 /* InfoPlist.strings */; };
 		D3CECCFF187AE0350006EB36 /* SampleCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3CECCFD187AE0350006EB36 /* SampleCredential.cpp */; };
@@ -792,6 +793,7 @@
 		D3CA6F27188EB5AD000319B4 /* GSSCred-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GSSCred-Info.plist"; sourceTree = "<group>"; };
 		D3CA6F29188EB5AD000319B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D3CA6F2B188EB5AD000319B4 /* GSSCred-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GSSCred-Prefix.pch"; sourceTree = "<group>"; };
+		D3CD817B189A588B00549505 /* CUIContextBoxing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUIContextBoxing.h; sourceTree = "<group>"; };
 		D3CECCF1187ADFF30006EB36 /* Sample.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Sample.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3CECCF5187ADFF30006EB36 /* Sample-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sample-Info.plist"; sourceTree = "<group>"; };
 		D3CECCF7187ADFF30006EB36 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1201,6 +1203,7 @@
 			children = (
 				D336E284182B51A6009271CD /* Supporting Files */,
 				D336E28A182B51A6009271CD /* CredUI.h */,
+				D3CD817B189A588B00549505 /* CUIContextBoxing.h */,
 				D3BED8F21872F5FA00623B92 /* CUIBase.h */,
 				D39EAFFF186ED0FC00C43A24 /* CredUI_Private.h */,
 				D39EB0BD1871302100C43A24 /* CUIField.h */,
@@ -1521,6 +1524,7 @@
 				D3BDE2581898BC80009FBF59 /* CUICredential+Coding.h in Headers */,
 				D3A80AC4187AE5F500968AFF /* CUIField+UIFactory.h in Headers */,
 				D3BED8F01872ECFF00623B92 /* CUICredential+Private.h in Headers */,
+				D3CD817C189A588B00549505 /* CUIContextBoxing.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
 				D358910F1883D6AC0093F5B6 /* CUICredential+CBIdentity.h in Headers */,
 				D3416BBD189694F7009D86A9 /* CUIVBIdentityPicker.h in Headers */,
