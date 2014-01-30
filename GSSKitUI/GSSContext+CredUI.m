@@ -93,7 +93,7 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
     identityPicker = [[CUIIdentityPicker alloc] initWithUsageScenario:kCUIUsageScenarioNetwork attributes:attributes];
     
     identityPicker.title = @"Identity Picker";
-    identityPicker.targetName = self.targetName;
+    identityPicker.targetName = [self.targetName mechanismName:self.mechanism]; //canon mech
     identityPicker.context = self._gssContext;
     identityPicker.authError = self.lastError;
     

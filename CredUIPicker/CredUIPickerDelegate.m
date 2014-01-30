@@ -177,7 +177,7 @@ static void testEncodeDecode(CUICredential * cred)
 - (IBAction)gssAuthWithIdentityPickerFallback:(id)sender
 {
     GSSMechanism *mechanism = [GSSMechanism personaMechanism];
-    GSSName *targetName = [[GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"] mechanismName:mechanism];
+    GSSName *targetName = [GSSName nameWithHostBasedService:@"host" withHostName:@"rand.mit.de.padl.com"];
     GSSCredential *cred = [GSSCredential credentialWithName:@"lukeh@padl.com" mechanism:mechanism];
     
     GSSContext *initiatorCtx;
