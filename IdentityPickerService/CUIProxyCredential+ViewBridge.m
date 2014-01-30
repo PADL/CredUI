@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
-#import <GSSKit/GSSKit.h>
+#import <CredUI/CredUI.h>
 #import <GSSKitUI/GSSKitUI.h>
-
-#import <CredUICore/CUIAttributes.h>
-#import <CredUI/CUICredential+CBIdentity.h>
+#import <CredUICore/CredUICore.h>
 
 #import "CUIProxyCredential+ViewBridge.h"
 
@@ -27,15 +25,6 @@
         [(NSMutableDictionary *)self.attributes setObject:error forKey:(__bridge id)kCUIAttrCredentialError];
 
     return !!gssCred;
-}
-
-- (BOOL)authAndSetAuthenticatedForLoginScenario
-{
-    BOOL bAuthenticated = [self authenticateForLoginScenario];
-
-    [(NSMutableDictionary *)self.attributes setObject:[NSNumber numberWithBool:bAuthenticated] forKey:(__bridge id)kCUIAttrAuthenticatedForLoginScenario];
-
-    return bAuthenticated;
 }
 
 @end

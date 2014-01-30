@@ -44,7 +44,7 @@ CUICredentialAuthenticateForLoginScenario(CUICredentialRef credential)
     if (user == NULL)
         goto cleanup;
     
-    rc = pam_start("CredUI", user, &conv, &pamh);
+    rc = pam_start("login", user, &conv, &pamh);
     if (rc != PAM_SUCCESS)
         goto cleanup;
     

@@ -13,6 +13,5 @@
 
 /* Acquire GSS cred and set it in attributes */
 - (BOOL)acquireAndSetGSSCredential;
-- (BOOL)authAndSetAuthenticatedForLoginScenario;
 
 @end

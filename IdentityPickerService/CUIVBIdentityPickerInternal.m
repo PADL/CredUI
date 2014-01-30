@@ -6,9 +6,12 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <CredUI/CredUI.h>
+#import <CredUI/CUICredential+Private.h>
+#import <CredUI/CUICredential+CBIdentity.h>
+#import <CredUI/CUIProxyCredential.h>
+
 #import "CUIVBIdentityPickerInternal.h"
-#import "CUICredential+Private.h"
-#import "CUIProxyCredential.h"
 #import "CUIProxyCredential+ViewBridge.h"
 
 #import <CredUICore/CredUICore_Private.h>
@@ -70,7 +73,9 @@
         switch (self.usageScenario) {
         case kCUIUsageScenarioLogin:
             /* try to auth the user */
-            [vbCredential authAndSetAuthenticatedForLoginScenario];
+            [(NSMutableDictionary *)vbCredential.attributes
+             setObject:[NSNumber numberWithBool:[self.selectedCredential authenticateForLoginScenario]]
+                forKey:(__bridge id)kCUIAttrAuthenticatedForLoginScenario];
             break;
         case kCUIUsageScenarioNetwork:
             /* try to get creds for the user */
