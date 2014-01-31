@@ -200,7 +200,8 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     NSString *targetHostName;
    
     NSAssert(self.isConfigured, @"must configure identity picker before use");
- 
+    NSAssert(!self.runningModal, @"only one identity picker instance can run at a time");
+    
     if (self.title)
         self.titleTextField.stringValue = self.title;
     else if ((targetHostName = self.targetHostName))
@@ -262,9 +263,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     }
 
     [self.collectionView removeObserver:self forKeyPath:@"selectionIndexes"];
-
-    if (modalResponse != NSModalResponseOK)
-        self.credsController = nil; /* so selectedCredential will return nil */
 }    
 
 #pragma mark - Run Loop
