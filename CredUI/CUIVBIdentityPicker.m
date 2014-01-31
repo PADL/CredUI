@@ -33,13 +33,6 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
 @implementation CUIVBIdentityPicker
 
-#pragma mark - Properties
-
-@synthesize containingPanel = _containingPanel;
-@synthesize remoteView = _remoteView;
-@synthesize contextBox = _contextBox;
-@synthesize invocationReplyDict = _invocationReplyDict;
-
 #pragma mark - Initialization
 
 - (NSPanel *)_newContainingPanel
@@ -55,6 +48,25 @@ static NSString * const _CUIIdentityPickerServiceName                           
                                                     defer:YES];
 
     return panel;
+}
+
+- (NSRemoteView *)_newRemoteView
+{
+    NSRemoteView *remoteView = [[NSRemoteView alloc] init];
+
+    if (remoteView == nil)
+        return nil;
+
+    remoteView.serviceName = _CUIIdentityPickerServiceName;
+    remoteView.serviceSubclassName = @"CUIIdentityPickerService";
+    remoteView.trustsServiceKeyEvents = YES;    
+
+    NSAssert(remoteView.bridge != nil, @"view bridge uninitialized");
+
+    remoteView.bridge.kvoBuddy = self;
+    remoteView.delegate = self;
+
+    return remoteView;
 }
 
 - (void)registerObservers
@@ -77,46 +89,47 @@ static NSString * const _CUIIdentityPickerServiceName                           
     }];
 }
 
+- (BOOL)configureRemoteViewForUsageScenario:(CUIUsageScenario)usageScenario
+                                      flags:(CUIFlags)flags
+{
+    NSRemoteView *remoteView;
+
+    remoteView = [self _newRemoteView];
+    if (remoteView == nil)
+        return NO;
+
+    self.remoteView = remoteView;
+#if !__has_feature(objc_arc) 
+    [remoteView release];
+#endif
+
+    [self registerObservers];
+
+    NSArray *options = [NSArray arrayWithObjects:[NSNumber numberWithUnsignedInteger:usageScenario], 
+                                                 [NSNumber numberWithUnsignedInteger:flags],
+                                                 nil];
+    [remoteView.bridge setObject:options forKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
+
+    self.containingPanel.contentView = self.remoteView;
+    self.invocationReplyDict = [NSMutableDictionary dictionary];
+
+    return YES;
+}
+
 - (instancetype)initWithUsageScenario:(CUIUsageScenario)usageScenario
                            attributes:(NSDictionary *)attributes
                                 flags:(CUIFlags)flags
 {
     if ((self = [super initWithUsageScenario:usageScenario attributes:attributes flags:flags]) == nil)
         return nil;
-    
-    _remoteView = [[NSRemoteView alloc] init];
-    if (_remoteView == nil)
-        return nil;
 
-    _usageScenario = usageScenario;
-
-    NSAssert(self.remoteView != nil, @"remoteView uninitialized");
-
-    self.remoteView.serviceName = _CUIIdentityPickerServiceName;
-    self.remoteView.serviceSubclassName = @"CUIIdentityPickerService";
-    self.remoteView.trustsServiceKeyEvents = YES;    
-
-    NSAssert(self.remoteView.bridge != nil, @"view bridge uninitialized");
-  
     NSPanel *panel = [self _newContainingPanel];
-    panel.contentView = self.remoteView;
     self.containingPanel = panel;
 #if !__has_feature(objc_arc) 
     [panel release];
 #endif
 
-    self.remoteView.bridge.kvoBuddy = self;
-    self.remoteView.delegate = self;
-
-    NSArray *options = [NSArray arrayWithObjects:[NSNumber numberWithUnsignedInteger:usageScenario], 
-                                                 [NSNumber numberWithUnsignedInteger:flags],
-                                                 nil];
-
-    [self.remoteView.bridge setObject:options forKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
-
-    [self registerObservers];
-
-    self.invocationReplyDict = [NSMutableDictionary dictionary];
+    [self configureRemoteViewForUsageScenario:usageScenario flags:flags];
 
     return self;
 }
@@ -142,7 +155,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
 {
     [self unregisterObservers];
 
-#if !__has_feature(objc_arc) 
+#if !__has_feature(objc_arc)
     [_remoteView release];
     [_containingPanel release];
     [_contextBox release];
@@ -161,7 +174,6 @@ static NSString * const _CUIIdentityPickerServiceName                           
         [NSApp stopModalWithCode:returnCode];
     }
     [self.containingPanel orderOut:nil];
-    self.containingPanel.contentView = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -174,7 +186,9 @@ static NSString * const _CUIIdentityPickerServiceName                           
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyReturnCode]) {
         CUIProxyCredential *proxyCredential = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];
         proxyCredential.identityPicker = self;
-        [self.contextBox importContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyExportedContext]];
+        id exportedContext = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyExportedContext];
+        if (![exportedContext isKindOfClass:[NSNull class]])
+            [self.contextBox importContext:exportedContext];
         [self endWithReturnCode:[value integerValue]];
         [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocationReply]) {
@@ -194,9 +208,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
     [self.remoteView.bridge setObject:@YES forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
 
     NSData *exportedContext = [self.contextBox exportContext];
-    if (exportedContext)
-        [self.remoteView.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyExportedContext];
-
+    [self.remoteView.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyExportedContext];
     [self.remoteView advanceToRunPhaseIfNeeded];
 }
 
@@ -217,6 +229,27 @@ static NSString * const _CUIIdentityPickerServiceName                           
 }
 
 #pragma mark - Accessors
+
+- (CUIUsageScenario)usageScenario
+{
+    NSArray *options = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
+    NSAssert(options.count == 2, @"invalid options array");
+
+    return [[options objectAtIndex:0] unsignedIntegerValue];
+}
+
+- (CUIFlags)flags
+{
+    NSArray *options = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
+    NSAssert(options.count == 2, @"invalid options array");
+
+    return [[options objectAtIndex:1] unsignedIntegerValue];
+}
+
+@synthesize remoteView = _remoteView;
+@synthesize containingPanel = _containingPanel;
+@synthesize contextBox = _contextBox;
+@synthesize invocationReplyDict = _invocationReplyDict;
 
 - (NSString *)title
 {
@@ -279,14 +312,5 @@ static NSString * const _CUIIdentityPickerServiceName                           
     return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyLastError];
 }
 
-- (CUIFlags)flags
-{
-    NSArray *options = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
-
-    NSAssert(options.count == 2, @"invalid options array");
-
-    return [[options objectAtIndex:1] unsignedIntegerValue];
-}
-        
 @end
 

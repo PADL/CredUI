@@ -37,13 +37,13 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeyInvocationReply;
 
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {
-    CUIUsageScenario _usageScenario;
     NSPanel *_containingPanel;
     NSRemoteView *_remoteView;
     id <CUIContextBoxing> _contextBox;
     NSMutableDictionary *_invocationReplyDict;
 }
 
+@property(nonatomic, readonly) CUIUsageScenario usageScenario;
 @property(nonatomic, retain) NSPanel *containingPanel;
 @property(nonatomic, retain) NSRemoteView *remoteView;
 @property(nonatomic, retain) id <CUIContextBoxing> contextBox;
