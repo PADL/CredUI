@@ -83,7 +83,9 @@
         if ([value isEqual:@YES]) {
             [self.identityPicker startCredentialEnumeration:self.view.window];
         } else {
-            [self.identityPicker endCredentialEnumeration:[value integerValue]];
+            NSModalResponse modalResponse = [[self.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyReturnCode] integerValue];
+            [self.identityPicker endCredentialEnumeration:modalResponse];
+            [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseStop] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
         }
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyConfigOptions]) {
         NSAssert(self.marshal.bridgePhase == NSViewBridgePhaseConfig, @"identity picker can only be configured during config phase");
@@ -112,7 +114,7 @@
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyPersist                  defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyExportedContext          defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
 
-    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyReturnCode               defaultObject:nil owner:NSViewBridgeKeyOwnerService];
+    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyReturnCode               defaultObject:[NSNumber numberWithInteger:NSModalResponseStop] owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyLastError                defaultObject:nil owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential       defaultObject:nil owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyInvocationReply          defaultObject:nil owner:NSViewBridgeKeyOwnerService];
