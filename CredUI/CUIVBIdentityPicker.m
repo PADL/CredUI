@@ -179,7 +179,11 @@ static NSString * const _CUIIdentityPickerServiceName                           
         [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocationReply]) {
         void (^replyBlock)(NSError *) = [self.invocationReplyDict objectForKey:[value invocationID]];
-        replyBlock([value error]);
+        NSAssert(replyBlock != nil, ([NSString stringWithFormat:@"no valid reply block for invocation %@", [[value invocationID] UUIDString]]));
+        if (replyBlock) {
+            replyBlock([value error]);
+            [self.invocationReplyDict removeObjectForKey:[value invocationID]];
+        }
     }
 }
 
