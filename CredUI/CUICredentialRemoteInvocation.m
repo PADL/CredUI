@@ -53,7 +53,7 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<CUICredentialRemoteInvocation %p{credentialID = \"%@\", invocationID = \"%@\", selector = \"%@\"}>",
-            self, credentialID.UUIDString, invocationID.UUIDString, selector];
+            self, self.credentialID.UUIDString, self.invocationID.UUIDString, self.selector];
 }
 
 @end

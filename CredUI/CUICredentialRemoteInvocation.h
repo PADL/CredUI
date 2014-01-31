@@ -12,10 +12,10 @@
 
 @interface CUICredentialRemoteInvocation : NSObject <NSSecureCoding>
 {
-    NSUUID *invocationID;
-    NSUUID *credentialID;
-    NSString *selector;
-    NSError *error;
+    NSUUID *_invocationID;
+    NSUUID *_credentialID;
+    NSString *_selector;
+    NSError *_error;
 }
 
 @property(nonatomic, assign) BOOL isReply;
