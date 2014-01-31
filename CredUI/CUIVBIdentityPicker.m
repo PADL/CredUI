@@ -149,6 +149,8 @@ static NSString * const _CUIIdentityPickerServiceName                           
     id value = [change objectForKey:NSKeyValueChangeNewKey];
 
     if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyReturnCode]) {
+        CUIProxyCredential *proxyCredential = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];
+        proxyCredential.identityPicker = self;
         [self.contextBox importContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyExportedContext]];
         [self endWithReturnCode:[value integerValue]];
         [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];

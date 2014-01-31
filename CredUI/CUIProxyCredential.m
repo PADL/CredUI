@@ -17,6 +17,7 @@
 
 @synthesize attributes = _attributes;
 @synthesize whitelist = _whitelist;
+@synthesize identityPicker = _identityPicker;
 
 - (instancetype)initWithAttributes:(NSDictionary *)attributes mutable:(BOOL)isMutable
 {
@@ -52,6 +53,7 @@
 #if !__has_feature(objc_arc)
     [_attributes release];
     [_whitelist release];
+    [_identityPicker release];
     [super dealloc];
 #endif
 }

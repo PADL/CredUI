@@ -9,6 +9,7 @@
 #import <CredUI/CredUI.h>
 #import <CredUI/CUICredential+Private.h>
 #import <CredUI/CUICredential+CBIdentity.h>
+#import <CredUI/CUICredential+Coding.h>
 #import <CredUI/CUIProxyCredential.h>
 #import <CredUI/CUIContextBoxing.h>
 
@@ -54,6 +55,23 @@
     [self.bridge setObject:self.lastError forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
 }
 
+- (CUICredential *)credentialWithUUID:(NSUUID *)nsUuid
+{
+    id cfUuid = [CUICredential CFUUIDFromNSUUID:nsUuid];
+    __block CUICredential *credential = nil;
+
+    [self.credsController.arrangedObjects enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        CUICredential *cred = obj;
+
+        if ([[[cred attributes] objectForKey:(__bridge id)kCUIAttrUUID] isEqual:cfUuid]) {
+            credential = obj;
+            *stop = YES;
+        }
+    }];
+
+    return credential;
+}
+
 - (void)bridgeSelectedCredential
 {
     CUIProxyCredential *vbCredential;
@@ -79,6 +97,14 @@
             /* not sure what to do for other usage scenarios, yet */
             break;
         }
+    }
+
+    /*
+     * Ensure credential has a UUID in case we need to refer to it later.
+     */
+    if ([vbCredential.attributes objectForKey:(__bridge id)kCUIAttrUUID] == nil) {
+        id credUuid = CFBridgingRelease(CFUUIDCreate(kCFAllocatorDefault));
+        [(NSMutableDictionary *)vbCredential.attributes setObject:credUuid forKey:(__bridge id)kCUIAttrUUID];
     }
 
     [self.bridge setObject:vbCredential forKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];

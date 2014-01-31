@@ -10,4 +10,7 @@
 
 - (BOOL)isWhitelistedAttributeKey:(NSString *)key;
 
++ (id)CFUUIDFromNSUUID:(NSUUID *)nsUuid;
++ (NSUUID *)NSUUIDFromCFUUID:(CFUUIDRef)cfUuid;
+
 @end

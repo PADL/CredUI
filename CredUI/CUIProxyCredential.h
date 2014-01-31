@@ -11,9 +11,11 @@ __attribute__((visibility("default")))
 {
     NSMutableDictionary *_attributes;
     NSSet *_whitelist;
+    CUIIdentityPicker *_identityPicker;
 }
 
 @property(nonatomic, readonly) NSSet *whitelist;
+@property(nonatomic, retain) CUIIdentityPicker *identityPicker;
 
 - (instancetype)initWithAttributes:(NSDictionary *)credential mutable:(BOOL)isMutable;
 - (instancetype)initWithCredential:(CUICredential *)credential whitelist:(NSSet *)whitelist mutable:(BOOL)isMutable;
