@@ -153,7 +153,10 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *pError)
           /* set this last, as it acts as a semaphore to the KVO caller */
           CFDictionarySetValue(_attributes, kCUIAttrCredentialStatus, kCUICredentialAutoSubmitCredentialFinished);
     });
-    
+   
+    if (err != BID_S_OK && pError != NULL)
+        *pError = mapBrowserIDError(err);
+ 
     return (err == BID_S_OK);
 }
 
