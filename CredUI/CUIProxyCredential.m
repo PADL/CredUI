@@ -89,25 +89,21 @@
 
 - (void)invoke:(SEL)selector withReply:(void (^)(NSError *))replyBlock
 {
-    CUIVBIdentityPicker *identityPicker = (CUIVBIdentityPicker *)self.identityPicker;
-
-    [identityPicker credentialInvocation:self
-                            selector:NSStringFromSelector(selector)
-                           withReply:^(NSError *anError) {
+    [self.identityPicker credentialInvocation:self
+                                     selector:NSStringFromSelector(selector)
+                                    withReply:^(NSError *anError) {
         replyBlock(anError);
     }];
 }
 
 - (void)savePersisted:(void (^)(NSError *))replyBlock
 {
-    if ([self.identityPicker isKindOfClass:[CUIVBIdentityPicker class]])
-        [self invoke:_cmd withReply:replyBlock];
+    [self invoke:_cmd withReply:replyBlock];
 }
 
 - (void)deletePersisted:(void (^)(NSError *))replyBlock
 {
-    if ([self.identityPicker isKindOfClass:[CUIVBIdentityPicker class]])
-        [self invoke:_cmd withReply:replyBlock];
+    [self invoke:_cmd withReply:replyBlock];
 }
 
 @end
