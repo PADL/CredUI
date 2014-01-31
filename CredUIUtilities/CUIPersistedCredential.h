@@ -25,8 +25,8 @@
  */
 class CUICredentialPersistenceEx : public CUICredentialPersistence {
 public:
-    virtual Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error) = 0;
-    virtual Boolean deleteCredential(CUICredentialRef credential, CFErrorRef *error) = 0;
+    virtual void updateCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef)) = 0;
+    virtual void deleteCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef)) = 0;
 };
 
 /*

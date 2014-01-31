@@ -6,8 +6,13 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+@protocol CUIProxyCredentialRemoteInvocation
+- (void)savePersisted:(void (^)(NSError *))replyBlock;
+- (void)deletePersisted:(void (^)(NSError *))replyBlock;
+@end
+
 __attribute__((visibility("default")))
-@interface CUIProxyCredential : CUICredential <NSSecureCoding>
+@interface CUIProxyCredential : CUICredential <NSSecureCoding, CUIProxyCredentialRemoteInvocation>
 {
     NSMutableDictionary *_attributes;
     NSSet *_whitelist;

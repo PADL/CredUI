@@ -66,32 +66,14 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
     CUICredentialDidSubmit([self _credentialRef]);
 }
 
-- (BOOL)savePersisted:(NSError * __autoreleasing *)error
+- (void)savePersisted:(void (^)(NSError *))replyBlock
 {
-    BOOL ret;
-    
-    if (error)
-        *error = nil;
-    
-    ret = CUICredentialSavePersisted([self _credentialRef], (CFErrorRef *)error);
-    if (error)
-        [NSMakeCollectable(*error) autorelease];
-    
-    return ret;
+    return CUICredentialSavePersisted([self _credentialRef], (void (^)(CFErrorRef))replyBlock);
 }
 
-- (BOOL)deletePersisted:(NSError * __autoreleasing *)error
+- (void)deletePersisted:(void (^)(NSError *))replyBlock
 {
-    BOOL ret;
-    
-    if (error)
-        *error = nil;
-    
-    ret = CUICredentialDeletePersisted([self _credentialRef], (CFErrorRef *)error);
-    if (error)
-        [NSMakeCollectable(*error) autorelease];
-    
-    return ret;
+    return CUICredentialDeletePersisted([self _credentialRef], (void (^)(CFErrorRef))replyBlock);
 }
 
 - (NSArray *)fields
@@ -137,14 +119,14 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 #pragma mark Default methods
 
-- (BOOL)savePersisted:(NSError * __autoreleasing *)error
+- (void)savePersisted:(void (^)(NSError *))replyBlock
 {
-    return NO;
+    replyBlock(nil);
 }
 
-- (BOOL)deletePersisted:(NSError * __autoreleasing *)error
+- (void)deletePersisted:(void (^)(NSError *))replyBlock
 {
-    return NO;
+    replyBlock(nil);
 }
 
 - (void)didBecomeSelected
@@ -161,6 +143,11 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - (void)didSubmit
 {
+}
+
+- (NSUUID *)UUID
+{
+    return [[self class] NSUUIDFromCFUUID:(__bridge CFUUIDRef)[self.attributes objectForKey:(__bridge id)kCUIAttrUUID]];
 }
 
 @end

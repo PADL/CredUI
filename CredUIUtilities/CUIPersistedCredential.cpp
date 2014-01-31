@@ -83,18 +83,18 @@ public:
         CUICredentialDidSubmit(_credential);
     }
     
-    Boolean savePersisted(CFErrorRef *error) {
-        if (!CUICredentialSavePersisted(_credential, error))
-            return false;
-        
-        return _persistence->updateCredential(_credential, error);
+    void savePersisted(void (^completionHandler)(CFErrorRef)) {
+        CUICredentialSavePersisted(_credential, ^(CFErrorRef error) {
+            if (error == NULL)
+                _persistence->updateCredential(_credential, completionHandler);
+        });
     }
     
-    Boolean deletePersisted(CFErrorRef *error) {
-        if (!CUICredentialDeletePersisted(_credential, error))
-            return false;
-        
-        return _persistence->deleteCredential(_credential, error);
+    void deletePersisted(void (^completionHandler)(CFErrorRef)) {
+        CUICredentialDeletePersisted(_credential, ^(CFErrorRef error) {
+            if (error == NULL)
+                _persistence->deleteCredential(_credential, completionHandler);
+        });
     }
     
     CUIPersistedCredential() {

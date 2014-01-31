@@ -29,7 +29,6 @@
     tmpAttributes = isMutable ? [attributes mutableCopy] : [attributes copy];
     
     self.attributes = tmpAttributes;
-    self.whitelist = nil;
  
 #if !__has_feature(objc_arc)
     [tmpAttributes release];
@@ -86,6 +85,29 @@
     return [NSString stringWithFormat:@"<CUIProxyCredential %p{name = \"%@\"}>",
                                       self,
                                       [self.attributes objectForKey:(__bridge id)kCUIAttrName]];
+}
+
+- (void)invoke:(SEL)selector withReply:(void (^)(NSError *))replyBlock
+{
+    CUIVBIdentityPicker *identityPicker = (CUIVBIdentityPicker *)self.identityPicker;
+
+    [identityPicker credentialInvocation:self
+                            selector:NSStringFromSelector(selector)
+                           withReply:^(NSError *anError) {
+        replyBlock(anError);
+    }];
+}
+
+- (void)savePersisted:(void (^)(NSError *))replyBlock
+{
+    if ([self.identityPicker isKindOfClass:[CUIVBIdentityPicker class]])
+        [self invoke:_cmd withReply:replyBlock];
+}
+
+- (void)deletePersisted:(void (^)(NSError *))replyBlock
+{
+    if ([self.identityPicker isKindOfClass:[CUIVBIdentityPicker class]])
+        [self invoke:_cmd withReply:replyBlock];
 }
 
 @end

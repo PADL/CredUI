@@ -113,10 +113,10 @@ public:
         return hasPassword(_attributes);
     }
  
-    Boolean savePersisted(CFErrorRef *error);
+    void savePersisted(void (^completionHandler)(CFErrorRef));
     
-    Boolean deletePersisted(CFErrorRef *error) {
-        return true;
+    void deletePersisted(void (^completionHandler)(CFErrorRef)) {
+        completionHandler(NULL);
     }
    
     Boolean isLoginUsageScenario(void) {

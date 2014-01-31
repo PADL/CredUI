@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import <Cocoa/Cocoa.h>
 
 #import <GSS/GSS.h>
@@ -17,6 +19,7 @@
 #import <CredUICore/CredUICore.h>
 
 #import <CredUI/CUIIdentityPickerInternal.h>
+#import <CredUI/CUICredentialRemoteInvocation.h>
 
 #import "CUIIdentityPickerListenerDelegate.h"
 #import "CUIIdentityPickerService.h"
@@ -52,6 +55,24 @@
     return [self.identityPicker configureForUsageScenario:usageScenario flags:flags];
 }
 
+- (void)handleCredentialRemoteInvocation:(CUICredentialRemoteInvocation *)remoteInvocation
+{
+    CUICredential *credential = [self.identityPicker credentialWithUUID:remoteInvocation.credentialID];
+    NSAssert(credential != nil, ([NSString stringWithFormat:@"no credential for UUID %@", remoteInvocation.credentialID.UUIDString]));
+
+    SEL selector = NSSelectorFromString(remoteInvocation.selector);
+    NSAssert(protocol_getMethodDescription(@protocol(CUIProxyCredentialRemoteInvocation), selector, YES, YES).name != NULL,
+             ([NSString stringWithFormat:@"selector %@ must conform to CUIProxyCredentialRemoteInvocation protocol (invocation %@/%@)",
+             remoteInvocation.selector, remoteInvocation.invocationID.UUIDString, remoteInvocation.credentialID.UUIDString]));
+
+    [credential performSelector:selector withObject:^(NSError *error) {
+        NSLog(@"handling invocation: %@ error: %@", remoteInvocation, error);
+        remoteInvocation.error = error;
+    }];
+
+    [self.bridge setObject:remoteInvocation forKey:_CUIIdentityPickerServiceBridgeKeyInvocationReply];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change
@@ -71,6 +92,8 @@
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyExportedContext]) {
         BOOL bImportedContext = [self importContext:value];
         NSAssert(bImportedContext, @"failed to import GSS context");
+    } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocation]) {
+        [self handleCredentialRemoteInvocation:value];
     } else if ([self.identityPicker isConfigured]) {
         [self.identityPicker setValue:value forKey:keyPath];
     }
@@ -85,6 +108,7 @@
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyAuthError                defaultObject:nil owner:NSViewBridgeKeyOwnerRemote];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyTargetName               defaultObject:nil owner:NSViewBridgeKeyOwnerRemote];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration defaultObject:nil owner:NSViewBridgeKeyOwnerRemote];
+    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyInvocation                defaultObject:nil owner:NSViewBridgeKeyOwnerRemote];
 
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyPersist                  defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyExportedContext          defaultObject:nil owner:NSViewBridgeKeyOwnerPhased];
@@ -92,6 +116,7 @@
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyReturnCode               defaultObject:nil owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyLastError                defaultObject:nil owner:NSViewBridgeKeyOwnerService];
     [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential       defaultObject:nil owner:NSViewBridgeKeyOwnerService];
+    [self.bridge registerKey:_CUIIdentityPickerServiceBridgeKeyInvocationReply          defaultObject:nil owner:NSViewBridgeKeyOwnerService];
 }
 
 - (void)registerObservers
@@ -117,7 +142,7 @@
 - (NSUInteger)awakeFromRemoteView
 {
     NSUInteger response;
-    CUIIdentityPickerInternal *identityPicker;
+    CUIVBIdentityPickerInternal *identityPicker;
 
     response = [super awakeFromRemoteView];
     

@@ -29,6 +29,7 @@
 #import "CUIVBIdentityPicker.h"
 #import "CUIIdentityPickerInternal.h"
 #import "CUIProxyCredential.h"
+#import "CUICredentialRemoteInvocation.h"
 
 #import "NSBundle+CredUI.h"
 

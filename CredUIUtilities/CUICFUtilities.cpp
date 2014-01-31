@@ -31,3 +31,24 @@ CUICFStringToCString(CFStringRef string)
     
     return s;
 }
+
+CFErrorRef
+CUICFErrorCreate(CFIndex errorCode)
+{
+    if (errorCode == 0)
+        return NULL;
+    else
+        return CFErrorCreate(kCFAllocatorDefault, CFSTR("com.padl.CredUI"), errorCode, NULL);
+}
+
+void
+CUICFErrorComplete(void (^completionHandler)(CFErrorRef), OSStatus errorCode)
+{
+    CFErrorRef errorRef = CUICFErrorCreate(errorCode);
+
+    completionHandler(errorRef);
+
+    if (errorRef)
+        CFRelease(errorRef);
+}
+

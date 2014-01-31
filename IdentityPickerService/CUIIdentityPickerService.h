@@ -9,15 +9,15 @@
 #import <ViewBridge/ViewBridge.h>
 #import <CredUI/CUIContextBoxing.h>
 
-@class CUIIdentityPickerInternal;
+@class CUIVBIdentityPickerInternal;
 
 @interface CUIIdentityPickerService : NSViewService <CUIContextBoxing>
 {
-    CUIIdentityPickerInternal *_identityPicker;
+    CUIVBIdentityPickerInternal *_identityPicker;
     void *_context;
 }
 
 @property(nonatomic, readonly) CUIUsageScenario usageScenario;
-@property(nonatomic, retain) CUIIdentityPickerInternal *identityPicker;
+@property(nonatomic, retain) CUIVBIdentityPickerInternal *identityPicker;
 
 @end

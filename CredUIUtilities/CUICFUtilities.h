@@ -14,4 +14,10 @@
 char *
 CUICFStringToCString(CFStringRef string);
 
+CFErrorRef
+CUICFErrorCreate(CFIndex errorCode);
+
+void
+CUICFErrorComplete(void (^completionHandler)(CFErrorRef), OSStatus errorCode);
+
 #endif /* CredUI_CUICFUtilities_h */

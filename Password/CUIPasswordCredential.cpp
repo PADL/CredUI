@@ -158,34 +158,34 @@ CUIPasswordCredential::updateCredentialStatus(void)
 /*
  * If the user wants this credential to be persisted, do so here.
  */
-Boolean
-CUIPasswordCredential::savePersisted(CFErrorRef *error)
+void
+CUIPasswordCredential::savePersisted(void (^completionHandler)(CFErrorRef))
 {
-    Boolean ret = false;
     CUICredentialPersistence *persistence;
     CFTypeRef attrClass;
     CFBundleRef bundle;
     CFStringRef factorySelector;
     CFTypeRef factoryIDString;
     
-    if (error)
-        *error = NULL;
-
     /*
      * Login credentials cannot be saved (XXX this should be enforced at a higher layer).
      *
      * Persisted credentials are updated by the persistence credential provider, we do not
      * need to do anything here.
      */
-    if (isLoginUsageScenario())
-        return false;
-    else if (CUIIsPersistedCredential(_attributes))
-        return true;
+    assert(!isLoginUsageScenario());
+    
+    if (CUIIsPersistedCredential(_attributes)) {
+        completionHandler(NULL);
+        return;
+    }
 
-    attrClass = CFDictionaryGetValue(_attributes, kCUIAttrClass); 
-    if (attrClass == NULL)
-        return false;
-
+    attrClass = CFDictionaryGetValue(_attributes, kCUIAttrClass);
+    if (attrClass == NULL) {
+        completionHandler(NULL); // XXX
+        return;
+    }
+    
     bundle = CFBundleGetBundleWithIdentifier(kPasswordCredentialProvider);
     if (CFEqual(attrClass, kCUIAttrClassGeneric))
         factorySelector = CFSTR("CUIGenericPersistenceProviderFactory");
@@ -199,12 +199,10 @@ CUIPasswordCredential::savePersisted(CFErrorRef *error)
         if (factoryID) {
             persistence = CUIControllerCreatePersistenceForFactoryID(_controller, factoryID);
             if (persistence) {
-                ret = persistence->addCredentialWithAttributes(_attributes, error);
+                persistence->addCredentialWithAttributes(_attributes, completionHandler);
                 persistence->Release();
             }
             CFRelease(factoryID);
         }
     }
-
-    return ret;
 }

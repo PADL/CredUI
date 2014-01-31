@@ -28,4 +28,6 @@
 - (void)willSubmit;
 - (void)didSubmit;
 
+- (NSUUID *)UUID;
+
 @end

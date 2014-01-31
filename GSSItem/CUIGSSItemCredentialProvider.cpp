@@ -16,6 +16,7 @@
 #include "CUIProviderUtilities.h"
 #include "CUIPersistedCredential.h"
 #include "CUIGSSItemCredentialProvider.h"
+#include "CUIGSSUtilities.h"
 
 extern "C" {
     void *CUIGSSItemCredentialProviderFactory(CFAllocatorRef allocator, CFUUIDRef typeID);
@@ -176,65 +177,72 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
     return creds;
 }
 
-Boolean
-CUIGSSItemCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
+void
+CUIGSSItemCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attributes, void (^completionHandler)(CFErrorRef))
 {
     CFDictionaryRef gssItemAttributes;
-    Boolean ret = false;
     GSSItemRef item = NULL;
- 
-    if (error)
-        *error = NULL;
+    CFErrorRef error = NULL;
     
     gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
-    if (gssItemAttributes == NULL)
-        return false;
-    
-    item = GSSItemAdd(gssItemAttributes, error);
-    if (item) {
-        ret = true;
-        CFRelease(item);
+    if (gssItemAttributes == NULL) {
+        CUIGSSErrorComplete(completionHandler, GSS_S_NO_CRED);
+        return;
     }
     
-    CFRelease(gssItemAttributes);
-    
-    return ret;
+    item = GSSItemAdd(gssItemAttributes, &error);
+    completionHandler(error);
+    if (item)
+        CFRelease(item);
+    if (error)
+        CFRelease(error);
+    if (gssItemAttributes)
+        CFRelease(gssItemAttributes);
 }
 
-Boolean
-CUIGSSItemCredentialProvider::updateCredential(CUICredentialRef credential, CFErrorRef *error)
+void
+CUIGSSItemCredentialProvider::updateCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef))
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     CFDictionaryRef gssItemAttributes = NULL;
-    Boolean ret;
     GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItem);
+    CFErrorRef error = NULL;
     
-    if (item == NULL)
-        return false;
+    if (item == NULL) {
+        CUIGSSErrorComplete(completionHandler, GSS_S_NO_CRED);
+        return;
+    }
     
     gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
-    if (gssItemAttributes == NULL)
-        return false;
+    if (gssItemAttributes == NULL) {
+        CUIGSSErrorComplete(completionHandler, GSS_S_NO_CRED);
+        return;
+    }
     
     /*
      * There's a bug in Heimdal, if the keychain item already exists it will
      * create a new one, not update it, which will fail. Whoops.
      */
-    ret = GSSItemUpdate(item->keys, gssItemAttributes, error);
+    GSSItemUpdate(item->keys, gssItemAttributes, &error);
+    completionHandler(error);
     
+    if (error)
+        CFRelease(error);
     if (gssItemAttributes)
         CFRelease(gssItemAttributes);
-    
-    return ret;
 }
 
-Boolean
-CUIGSSItemCredentialProvider::deleteCredential(CUICredentialRef credential, CFErrorRef *error)
+void
+CUIGSSItemCredentialProvider::deleteCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef))
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
     GSSItemRef item = (GSSItemRef)CFDictionaryGetValue(attributes, kCUIAttrGSSItem);
+    CFErrorRef error = NULL;
     
-    return GSSItemDeleteItem(item, error);
+    GSSItemDeleteItem(item, &error);
+    completionHandler(error);
+    if (error)
+        CFRelease(error);
 }
 
 __attribute__((visibility("default"))) void *

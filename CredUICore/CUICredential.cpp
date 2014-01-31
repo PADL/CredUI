@@ -294,40 +294,26 @@ CUICredentialFindFirstFieldWithClass(CUICredentialRef cred, CUIFieldClass fieldC
     return theField;
 }
 
-CUI_EXPORT Boolean
-CUICredentialSavePersisted(CUICredentialRef cred, CFErrorRef *error)
+CUI_EXPORT void
+CUICredentialSavePersisted(CUICredentialRef cred, void (^completionHandler)(CFErrorRef))
 {
-    Boolean bRet = false;
-    
-    if (error)
-        *error = NULL;
-
     if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
-        CF_OBJC_VOIDCALLV(cred, "savePersisted:", error);
-        if (error && *error)
-            CFRetain(*error);
+        CF_OBJC_VOIDCALLV(cred, "savePersisted:", completionHandler);
     } else if (cred->_context) {
-        bRet = cred->_context->savePersisted(error);
+        cred->_context->savePersisted(completionHandler);
+    } else {
+        completionHandler(NULL);
     }
-
-    return bRet;
 }
 
-CUI_EXPORT Boolean
-CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error)
+CUI_EXPORT void
+CUICredentialDeletePersisted(CUICredentialRef cred, void (^completionHandler)(CFErrorRef))
 {
-    Boolean bRet = false;
-    
-    if (error)
-        *error = NULL;
-    
     if (CF_IS_OBJC(__CUICredentialTypeID, cred)) {
-        CF_OBJC_VOIDCALLV(cred, "deletePersisted:", error);
-        if (error && *error)
-            CFRetain(*error);
+        CF_OBJC_VOIDCALLV(cred, "deletePersisted:", completionHandler);
     } else if (cred->_context) {
-        bRet = cred->_context->deletePersisted(error);
+        cred->_context->deletePersisted(completionHandler);
+    } else {
+        completionHandler(NULL);
     }
-    
-    return bRet;
 }

@@ -75,7 +75,10 @@
 		D3207E45187C24E500DC2694 /* CUICertificateCredential.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3207E43187C24E500DC2694 /* CUICertificateCredential.cpp */; };
 		D3207E48187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3207E46187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp */; };
 		D3207E49187C304500DC2694 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D39EB051186F113A00C43A24 /* CoreServices.framework */; };
+		D32476B6189BC44000A08C80 /* CUICredentialRemoteInvocation.h in Headers */ = {isa = PBXBuildFile; fileRef = D32476B4189BC44000A08C80 /* CUICredentialRemoteInvocation.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D32476B7189BC44000A08C80 /* CUICredentialRemoteInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = D32476B5189BC44000A08C80 /* CUICredentialRemoteInvocation.m */; };
 		D32517C3187A8F77000AFF9E /* GSS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D336E2A9182B51DD009271CD /* GSS.framework */; };
+		D3256050189BE4B1003F120B /* Heimdal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D352982D188F935700FCB03D /* Heimdal.framework */; };
 		D32662C518752D8A004C1F57 /* libCredUIUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCredUIUtilities.a */; };
 		D32662C818752D98004C1F57 /* libCredUIUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCredUIUtilities.a */; };
 		D32662CC187530C3004C1F57 /* libCredUIUtilities.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D3AA965518752BCB003852C5 /* libCredUIUtilities.a */; };
@@ -633,6 +636,8 @@
 		D3207E44187C24E500DC2694 /* CUICertificateCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICertificateCredential.h; sourceTree = "<group>"; };
 		D3207E46187C24EE00DC2694 /* CUICertificateCredentialProvider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CUICertificateCredentialProvider.cpp; sourceTree = "<group>"; };
 		D3207E47187C24EE00DC2694 /* CUICertificateCredentialProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICertificateCredentialProvider.h; sourceTree = "<group>"; };
+		D32476B4189BC44000A08C80 /* CUICredentialRemoteInvocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CUICredentialRemoteInvocation.h; sourceTree = "<group>"; };
+		D32476B5189BC44000A08C80 /* CUICredentialRemoteInvocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CUICredentialRemoteInvocation.m; sourceTree = "<group>"; };
 		D32662D31875403F004C1F57 /* Keychain.credprovider */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Keychain.credprovider; sourceTree = BUILT_PRODUCTS_DIR; };
 		D32662D71875403F004C1F57 /* Keychain-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Keychain-Info.plist"; sourceTree = "<group>"; };
 		D32662D91875403F004C1F57 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1013,6 +1018,7 @@
 				D32662C518752D8A004C1F57 /* libCredUIUtilities.a in Frameworks */,
 				D3AA964318751521003852C5 /* CredUICore.framework in Frameworks */,
 				D3AA96421875151C003852C5 /* GSS.framework in Frameworks */,
+				D3256050189BE4B1003F120B /* Heimdal.framework in Frameworks */,
 				D3F67B0D187513A1006B36C3 /* CoreFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1235,6 +1241,8 @@
 				D3D36E92188A43B100C7E892 /* CUICredentialTile.xib */,
 				D3D36E94188A4AF400C7E892 /* NSBundle+CredUI.h */,
 				D3D36E95188A4AF400C7E892 /* NSBundle+CredUI.m */,
+				D32476B4189BC44000A08C80 /* CUICredentialRemoteInvocation.h */,
+				D32476B5189BC44000A08C80 /* CUICredentialRemoteInvocation.m */,
 			);
 			path = CredUI;
 			sourceTree = "<group>";
@@ -1527,6 +1535,7 @@
 				D3CD817C189A588B00549505 /* CUIContextBoxing.h in Headers */,
 				D39EB0BF1871302100C43A24 /* CUIField.h in Headers */,
 				D358910F1883D6AC0093F5B6 /* CUICredential+CBIdentity.h in Headers */,
+				D32476B6189BC44000A08C80 /* CUICredentialRemoteInvocation.h in Headers */,
 				D3416BBD189694F7009D86A9 /* CUIVBIdentityPicker.h in Headers */,
 				D3416BCB1896A12D009D86A9 /* CUIProxyCredential.h in Headers */,
 				D39EB0BA18704B3100C43A24 /* CUICredentialTileController.h in Headers */,
@@ -2110,6 +2119,7 @@
 				D336E2AF182B6B0D009271CD /* CUIIdentityPicker.m in Sources */,
 				D3BDE2591898BC80009FBF59 /* CUICredential+Coding.m in Sources */,
 				D3A80AC5187AE5F500968AFF /* CUIField+UIFactory.m in Sources */,
+				D32476B7189BC44000A08C80 /* CUICredentialRemoteInvocation.m in Sources */,
 				D39EB0F1187283AF00C43A24 /* CUIPromptForCredentials.m in Sources */,
 				D3D36E97188A4AF400C7E892 /* NSBundle+CredUI.m in Sources */,
 				D39EB0BB18704B3100C43A24 /* CUICredentialTileController.m in Sources */,
@@ -3298,6 +3308,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3316,6 +3330,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;

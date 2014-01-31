@@ -27,6 +27,8 @@
 
 - (instancetype)initWithViewBridge:(NSViewBridge *)viewBridge;
 
+- (CUICredential *)credentialWithUUID:(NSUUID *)nsUuid;
+
 @property(nonatomic, retain) NSViewBridge *bridge;
 
 @end

@@ -62,9 +62,9 @@ public:
         return NULL;
     }
     
-    Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error);
-    Boolean updateCredential(CUICredentialRef credential, CFErrorRef *error);
-    Boolean deleteCredential(CUICredentialRef credential, CFErrorRef *error);
+    void addCredentialWithAttributes(CFDictionaryRef attributes, void (^completionHandler)(CFErrorRef));
+    void updateCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef));
+    void deleteCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef));
     CFTypeRef extractPassword(CFDictionaryRef attributes, CFErrorRef *error) {
         return NULL;
     }

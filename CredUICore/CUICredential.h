@@ -96,15 +96,15 @@ CUICredentialFieldsApplyBlock(CUICredentialRef cred, void (^cb)(CUIFieldRef, Boo
  * Ask the credential provider to persist this credential. If the credential is already
  * persisted, updates it.
  */
-CUI_EXPORT Boolean
-CUICredentialSavePersisted(CUICredentialRef cred, CFErrorRef *error);
+CUI_EXPORT void
+CUICredentialSavePersisted(CUICredentialRef cred, void (^completionHandler)(CFErrorRef));
 
 /*
  * Ask the credential provider to delete this persisted credential. If the credential is not
  * persisted, behaviour is undefined.
  */
-CUI_EXPORT Boolean
-CUICredentialDeletePersisted(CUICredentialRef cred, CFErrorRef *error);
+CUI_EXPORT void
+CUICredentialDeletePersisted(CUICredentialRef cred, void (^completionHandler)(CFErrorRef));
 
 #ifdef __cplusplus
 }

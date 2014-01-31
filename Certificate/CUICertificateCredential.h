@@ -76,13 +76,13 @@ public:
     
     void didSubmit(void) {
     }
-    
-    Boolean savePersisted(CFErrorRef *error) {
-        return true;
+   
+    void savePersisted(void (^completionHandler)(CFErrorRef)) {
+        completionHandler(NULL);
     }
     
-    Boolean deletePersisted(CFErrorRef *error) {
-        return true;
+    void deletePersisted(void (^completionHandler)(CFErrorRef)) {
+        completionHandler(NULL);
     }
 
     CUICertificateCredential() {

@@ -14,6 +14,7 @@ CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyAttributes        
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyAuthError             = @"authError";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyTargetName            = @"targetName";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration = @"startCredentialEnumeration";
+CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyInvocation            = @"invocation";
 
 /* Phased bridge keys */
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyPersist               = @"persist";
@@ -23,6 +24,7 @@ CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyExportedContext   
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode            = @"returnCode";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyLastError             = @"lastError";
 CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential    = @"selectedCredential";
+CUI_EXPORT NSString * const _CUIIdentityPickerServiceBridgeKeyInvocationReply       = @"invocationReply";
 
 static NSString * const _CUIIdentityPickerServiceName                               = @"com.padl.CredUI.xpc.IdentityPickerService";
 
@@ -36,6 +38,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
 @synthesize containingPanel = _containingPanel;
 @synthesize remoteView = _remoteView;
 @synthesize contextBox = _contextBox;
+@synthesize invocationReplyDict = _invocationReplyDict;
 
 #pragma mark - Initialization
 
@@ -113,7 +116,26 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
     [self registerObservers];
 
+    self.invocationReplyDict = [NSMutableDictionary dictionary];
+
     return self;
+}
+
+- (void)credentialInvocation:(CUIProxyCredential *)credential
+                    selector:(NSString *)selector
+                   withReply:(void (^)(NSError *))replyBlock
+{
+    CUICredentialRemoteInvocation *invocation = [[CUICredentialRemoteInvocation alloc] init];
+
+    invocation.credentialID = credential.UUID;
+    invocation.selector = selector;
+
+    [self.remoteView.bridge setObject:invocation forKey:_CUIIdentityPickerServiceBridgeKeyInvocation];
+    [self.invocationReplyDict setObject:[replyBlock copy] forKey:invocation.invocationID];
+
+#if !__has_feature(objc_arc) 
+    [invocation release];
+#endif
 }
 
 - (void)dealloc
@@ -124,6 +146,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
     [_remoteView release];
     [_containingPanel release];
     [_contextBox release];
+    [_invocationReplyDict release];
     [super dealloc];
 #endif
 }
@@ -153,7 +176,9 @@ static NSString * const _CUIIdentityPickerServiceName                           
         proxyCredential.identityPicker = self;
         [self.contextBox importContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyExportedContext]];
         [self endWithReturnCode:[value integerValue]];
-        [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
+    } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocationReply]) {
+        void (^replyBlock)(NSError *) = [self.invocationReplyDict objectForKey:[value invocationID]];
+        replyBlock([value error]);
     }
 }
 
@@ -257,6 +282,6 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
     return [[options objectAtIndex:1] unsignedIntegerValue];
 }
-
+        
 @end
 

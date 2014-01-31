@@ -166,17 +166,24 @@ CUIConfirmCredentials(CUICredentialRef credRef,
                       CFErrorRef *error)
 {
     CUICredential *credential = (__bridge CUICredential *)credRef;
-    Boolean ret = true;
-    NSError *nsError = nil;
-
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    __block Boolean ret = true;
+    
     if (error)
         *error = NULL;
     
     if (fSave) {
-        ret = [credential savePersisted:&nsError];
-        if (error)
+        [credential savePersisted:^(NSError *nsError) {
             *error = (CFErrorRef)CFBridgingRetain(nsError);
+            ret = !!nsError;
+            dispatch_semaphore_signal(semaphore);
+        }];
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     }
+    
+#if !__has_feature(objc_arc)
+    dispatch_release(semaphore);
+#endif
     
     return ret;
 }

@@ -31,12 +31,15 @@
     dispatch_once(&onceToken, ^{
         static NSArray *gssClassNames;
 
-        builtinClasses = [[NSMutableSet alloc] initWithObjects:[NSString class],
+        builtinClasses = [[NSMutableSet alloc] initWithObjects:[NSArray class],
                                                                [NSData class],
+                                                               [NSURL class],
+                                                               [NSDate class],
                                                                [NSNumber class],
-                                                               [NSUUID class],
-                                                               [NSArray class],
+                                                               [NSError class],
+                                                               [NSString class],
                                                                [NSDictionary class],
+                                                               [NSUUID class],
                                                                [NSSet class],
                                                                nil];
 

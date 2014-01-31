@@ -174,12 +174,12 @@ public:
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
    
-    Boolean savePersisted(CFErrorRef *) {
-        return false;
+    void savePersisted(void (^completionHandler)(CFErrorRef)) {
+        completionHandler(NULL); // XXX
     }
     
-    Boolean deletePersisted(CFErrorRef *) {
-        return false;
+    void deletePersisted(void (^completionHandler)(CFErrorRef)) {
+        completionHandler(NULL); // XXX
     }
 
     CUIGSSCredCredential() {

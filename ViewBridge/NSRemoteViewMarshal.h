@@ -1,9 +1,10 @@
 @protocol NSRemoteViewMarshal
-- (void)setRemoteObject:(id)object forKey:(NSString *)key withReply:(id)block;
+- (void)setRemoteObject:(id)object forKey:(NSString *)key withReply:(void (^)(NSError *error))block;
+- (void)registerBridgeKey:(NSString *)key defaultObject:(id)defaultObject owner:(NSViewBridgeKeyOwner)owner withReply:(void (^)(NSError *error))block;
 @end
 
 @interface NSRemoteViewMarshal : NSObject <NSRemoteViewMarshal>
-@property(readonly) NSViewBridge *bridge; // @synthesize bridge=_bridge;
-@property(readonly) NSRemoteView *view; // @synthesize view=_view;
+@property(readonly) NSViewBridge *bridge;
+@property(readonly) NSRemoteView *view;
 @property(readonly) BOOL isInvalid;
 @end

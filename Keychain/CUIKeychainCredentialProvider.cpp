@@ -12,6 +12,7 @@
 
 #include <CredUICore/CredUICore.h>
 
+#include "CUICFUtilities.h"
 #include "CUIProviderUtilities.h"
 #include "CUIPersistedCredential.h"
 #include "CUIKeychainCredentialProvider.h"
@@ -182,11 +183,11 @@ CUIKeychainCredentialProvider::createQuery(CFDictionaryRef attributes)
     return query;
 }
 
-Boolean
-CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error)
+void
+CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attributes, void (^completionHandler)(CFErrorRef))
 {
     CFMutableDictionaryRef keychainAttrs;
-    OSStatus osret;
+    OSStatus err;
     CFTypeRef itemRef = NULL;
     CFTypeRef targetName = CUIControllerGetTargetName(_controller);
     
@@ -194,15 +195,18 @@ CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attri
         targetName = kCredUI;
     
     keychainAttrs = createKeychainAttributesFromCUIAttributes(attributes, targetName);
-    if (keychainAttrs == NULL)
-        return false;
-    
+    if (keychainAttrs == NULL) {
+        CUICFErrorComplete(completionHandler, errSecItemNotFound);
+        return;
+    }
+ 
     CFStringRef description = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("CredUI password for %@"),
                                                        CFDictionaryGetValue(attributes, kCUIAttrName));
     
     if (description == NULL) {
         CFRelease(keychainAttrs);
-        return false;
+        CUICFErrorComplete(completionHandler, errSecMemoryError);
+        return;
     }
     
     CFDictionarySetValue(keychainAttrs, kSecAttrDescription, description);
@@ -211,57 +215,56 @@ CUIKeychainCredentialProvider::addCredentialWithAttributes(CFDictionaryRef attri
     
     if (!setPasswordAttr(keychainAttrs, attributes)) {
         CFRelease(keychainAttrs);
-        return false;
+        CUICFErrorComplete(completionHandler, errSecMemoryError);
+        return;
     }
     
-    osret = SecItemAdd(keychainAttrs, &itemRef);
-    
+    err = SecItemAdd(keychainAttrs, &itemRef);
+    CUICFErrorComplete(completionHandler, err);
+
     if (itemRef)
         CFRelease(itemRef);
     
     CFRelease(keychainAttrs);
-    
-    return !osret;
 }
 
-Boolean
-CUIKeychainCredentialProvider::updateCredential(CUICredentialRef credential, CFErrorRef *error)
+void
+CUIKeychainCredentialProvider::updateCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef))
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
-    Boolean ret = false;
     CFMutableDictionaryRef keychainAttrs = createKeychainAttributesFromCUIAttributes(attributes, NULL);
     CFDictionaryRef query = createQuery(attributes);
+    OSStatus err;
     
     if (keychainAttrs && query &&
         setPasswordAttr(keychainAttrs, attributes)) {
-        ret = (SecItemUpdate(query, keychainAttrs) == errSecSuccess);
+        err = SecItemUpdate(query, keychainAttrs);
+        CUICFErrorComplete(completionHandler, err);
     } else {
-        ret = false;
+        CUICFErrorComplete(completionHandler, errSecItemNotFound);
     }
     
     if (query)
         CFRelease(query);
     if (keychainAttrs)
         CFRelease(keychainAttrs);
-    
-    return ret;
 }
 
-Boolean
-CUIKeychainCredentialProvider::deleteCredential(CUICredentialRef credential, CFErrorRef *error)
+void
+CUIKeychainCredentialProvider::deleteCredential(CUICredentialRef credential, void (^completionHandler)(CFErrorRef))
 {
     CFDictionaryRef attributes = CUICredentialGetAttributes(credential);
-    Boolean ret;
     CFDictionaryRef query = createQuery(attributes);
-    
-    if (query == NULL)
-        return false;
-    
-    ret = (SecItemDelete(query) == errSecSuccess);
-    
+    OSStatus err;
+ 
+    if (query == NULL) {
+        CUICFErrorComplete(completionHandler, errSecItemNotFound);
+        return;
+    }
+
+    err = SecItemDelete(query);
+    CUICFErrorComplete(completionHandler, err);
     CFRelease(query);
-    
-    return ret;
 }
 
 CFTypeRef

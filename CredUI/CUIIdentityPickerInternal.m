@@ -361,7 +361,8 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
     
     if (self.persist &&
         (self.flags & CUIFlagsExpectConfirmation) == 0)
-        [self.selectedCredential savePersisted:NULL];
+        [self.selectedCredential savePersisted:^(NSError *error) {
+        }];
 }
 
 #pragma mark Persist

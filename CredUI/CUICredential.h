@@ -22,11 +22,11 @@ __attribute__((visibility("default")))
  * it should be persisted. The application should only call this if
  * CUIFlagsExpectConfirmation was set, otherwise CredUI will do it.
  */
-- (BOOL)savePersisted:(NSError * __autoreleasing *)error;
+- (void)savePersisted:(void (^)(NSError *))replyBlock;
 
 /*
  * If the credential was persisted, deletes it.
  */
-- (BOOL)deletePersisted:(NSError * __autoreleasing *)error;
+- (void)deletePersisted:(void (^)(NSError *))replyBlock;
 
 @end

@@ -161,6 +161,25 @@ CUICopyGSSOIDForAttrClass(CFStringRef attrClass, gss_OID_desc &oidBuf)
     return oid;
 }
 
+/*
+ * XXX This unfortunately is very brittle. It would be much simpler if
+ * the class strings were OIDs.
+ */
+CFStringRef
+CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid)
+{
+    if (errMechName) {
+        if (CFEqual(errMechName, CFSTR("krb5")))
+            return kCUIAttrClassKerberos;
+        else if (CFEqual(errMechName, CFSTR("ntlm")))
+            return kCUIAttrClassNTLM;
+        else if (CFEqual(errMechName, CFSTR("iakerb")))
+            return kCUIAttrClassIAKerb;
+    }
+    
+    return errMechOid;
+}
+
 CFStringRef
 CUICopyAttrClassForGSSOID(gss_OID oid)
 {
@@ -201,4 +220,42 @@ CUICopyGSSNameForAttributes(CFDictionaryRef attributes)
         name = GSSCreateName(value, oid, NULL);
     
     return name;
+}
+
+CFStringRef kGSSMajorErrorCode = CFSTR("kGSSMajorError");
+CFStringRef kGSSMinorErrorCode = CFSTR("kGSSMinorError");
+CFStringRef kGSSMechanismOID   = CFSTR("kGSSMechanismOID");
+CFStringRef kGSSMechanism      = CFSTR("kGSSMechanism");
+
+CFErrorRef
+CUIGSSErrorCreate(OM_uint32 major, OM_uint32 minor, gss_OID mechanism)
+{
+    if (major == GSS_S_COMPLETE)
+        return NULL;
+
+    CFErrorRef error;
+    CFDictionaryRef userInfo = NULL; // XXX
+    
+    error = CFErrorCreate(kCFAllocatorDefault, CFSTR("org.h5l.GSS"), major, userInfo);
+
+    return error;
+}
+
+void
+CUIGSSErrorComplete(void (^completionHandler)(CFErrorRef), OM_uint32 major, OM_uint32 minor, gss_OID mechanism)
+{
+    CFErrorRef errorRef = CUIGSSErrorCreate(major, minor, mechanism);
+
+    completionHandler(errorRef);
+
+    if (errorRef)
+        CFRelease(errorRef);
+}
+
+Boolean
+CUIIsGSSError(CFErrorRef error)
+{
+    CFStringRef domain = error ? CFErrorGetDomain(error) : NULL;
+    
+    return domain && CFEqual(domain, CFSTR("org.h5l.GSS"));
 }

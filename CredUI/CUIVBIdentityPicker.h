@@ -17,6 +17,7 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeyAttributes;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyAuthError;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyTargetName;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration;
+extern NSString * const _CUIIdentityPickerServiceBridgeKeyInvocation;
 
 /* Phased bridge keys */
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyPersist;
@@ -26,11 +27,13 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeyExportedContext;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyReturnCode;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeyLastError;
 extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
+extern NSString * const _CUIIdentityPickerServiceBridgeKeyInvocationReply;
 
 @protocol CUIIdentityPickerProxyProtocol
 @end
 
 @class NSRemoteView;
+@class CUIProxyCredential;
 
 @interface CUIVBIdentityPicker : CUIIdentityPicker <NSViewBridgeKVOBuddy, NSRemoteViewDelegate>
 {
@@ -38,10 +41,16 @@ extern NSString * const _CUIIdentityPickerServiceBridgeKeySelectedCredential;
     NSPanel *_containingPanel;
     NSRemoteView *_remoteView;
     id <CUIContextBoxing> _contextBox;
+    NSMutableDictionary *_invocationReplyDict;
 }
 
 @property(nonatomic, retain) NSPanel *containingPanel;
 @property(nonatomic, retain) NSRemoteView *remoteView;
 @property(nonatomic, retain) id <CUIContextBoxing> contextBox;
+@property(nonatomic, retain) NSMutableDictionary *invocationReplyDict;
+
+- (void)credentialInvocation:(CUIProxyCredential *)credential
+                    selector:(NSString *)selector
+                   withReply:(void (^)(NSError *))replyBlock;
 
 @end

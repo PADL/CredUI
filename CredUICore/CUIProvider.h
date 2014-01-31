@@ -37,8 +37,8 @@ public:
     virtual void didBecomeDeselected(void) = 0;
     virtual void didSubmit(void) = 0;
 
-    virtual Boolean savePersisted(CFErrorRef *error) = 0;
-    virtual Boolean deletePersisted(CFErrorRef *error) = 0;
+    virtual void savePersisted(void (^completionHandler)(CFErrorRef)) = 0;
+    virtual void deletePersisted(void (^completionHandler)(CFErrorRef)) = 0;
 
 };
 
@@ -73,7 +73,7 @@ public:
      * CUIControllerCreatePersistenceForFactoryID() with the desired
      * persistence provider's factory ID.
      */
-    virtual Boolean addCredentialWithAttributes(CFDictionaryRef attributes, CFErrorRef *error) = 0;
+    virtual void addCredentialWithAttributes(CFDictionaryRef attributes, void (^completionHandler)(CFErrorRef)) = 0;
 
     /*
      * Persistence providers typically do not make a password available in
@@ -92,8 +92,8 @@ typedef struct CUICredentialContext {
     void (STDMETHODCALLTYPE *didBecomeSelected)(void *thisPointer);
     void (STDMETHODCALLTYPE *didBecomeDeselected)(void *thisPointer);
     void (STDMETHODCALLTYPE *didSubmit)(void *thisPointer);
-    Boolean (STDMETHODCALLTYPE *savePersisted)(void *thisPointer, CFErrorRef *error);
-    Boolean (STDMETHODCALLTYPE *deletePersisted)(void *thisPointer, CFErrorRef *error);
+    void (STDMETHODCALLTYPE *savePersisted)(void *thisPointer, void (^completionHandler)(CFErrorRef));
+    void (STDMETHODCALLTYPE *deletePersisted)(void *thisPointer, void (^completionHandler)(CFErrorRef));
 } CUICredentialContext;
 
 typedef struct CUIProvider {

@@ -12,47 +12,20 @@
 #define GSS_S_PROMPTING_NEEDED (1 << (GSS_C_SUPPLEMENTARY_OFFSET + 5))
 #endif
 
-static Boolean
-_CUIIsGSSError(CFErrorRef error)
-{
-    CFStringRef domain = error ? CFErrorGetDomain(error) : NULL;
-    
-    return domain && CFEqual(domain, CFSTR("org.h5l.GSS"));
-}
-
-/*
- * XXX This unfortunately is very brittle. It would be much simpler if
- * the class strings were OIDs.
- */
-static CFStringRef
-_CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid)
-{
-    if (errMechName) {
-        if (CFEqual(errMechName, CFSTR("krb5")))
-            return kCUIAttrClassKerberos;
-        else if (CFEqual(errMechName, CFSTR("ntlm")))
-            return kCUIAttrClassNTLM;
-        else if (CFEqual(errMechName, CFSTR("iakerb")))
-            return kCUIAttrClassIAKerb;
-    }
-    
-    return errMechOid;
-}
-
 CFStringRef
 _CUICopyAttrClassForAuthError(CFErrorRef authError)
 {
     CFStringRef mechClass = NULL;
     
-    if (!_CUIIsGSSError(authError))
+    if (!CUIIsGSSError(authError))
         return NULL;
     
     CFDictionaryRef userInfo = CFErrorCopyUserInfo(authError);
     if (userInfo) {
-        CFStringRef mechOid = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanismOID"));
-        CFStringRef mechName = (CFStringRef)CFDictionaryGetValue(userInfo, CFSTR("kGSSMechanism"));
+        CFStringRef mechOid = (CFStringRef)CFDictionaryGetValue(userInfo, kGSSMechanismOID);
+        CFStringRef mechName = (CFStringRef)CFDictionaryGetValue(userInfo, kGSSMechanism);
         
-        mechClass = _CUIAttrClassForMech(mechName, mechOid);
+        mechClass = CUIAttrClassForMech(mechName, mechOid);
         if (mechClass)
             CFRetain(mechClass);
         
@@ -67,7 +40,7 @@ GSSIsPromptingNeeded(CFErrorRef authError)
 {
     CFIndex major;
     
-    if (!_CUIIsGSSError(authError))
+    if (!CUIIsGSSError(authError))
         return false;
     
     major = CFErrorGetCode(authError);

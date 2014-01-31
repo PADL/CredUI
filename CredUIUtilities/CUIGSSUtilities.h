@@ -33,6 +33,24 @@ CUICreateStringWithGSSOID(gss_OID oid);
 
 CFStringRef
 CUICopyAttrClassForGSSOID(gss_OID oid);
+
+CFStringRef
+CUIAttrClassForMech(CFStringRef errMechName, CFStringRef errMechOid);
+
+Boolean
+CUIIsGSSError(CFErrorRef error);
+
+CFErrorRef
+CUIGSSErrorCreate(OM_uint32 major = 0, OM_uint32 minor = 0, gss_OID mechanism = GSS_C_NO_OID);
+
+void
+CUIGSSErrorComplete(void (^completionHandler)(CFErrorRef), OM_uint32 major = 0, OM_uint32 minor = 0, gss_OID mechanism = GSS_C_NO_OID);
+
+extern CFStringRef kGSSMajorErrorCode;
+extern CFStringRef kGSSMinorErrorCode;
+extern CFStringRef kGSSMechanismOID;
+extern CFStringRef kGSSMechanism;
+
 #endif /* __cplusplus */
 
 #ifdef __cplusplus
