@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 PADL Software Pty Ltd. All rights reserved.
 //
 
+#include <AppKit/AppKit.h>
+
 #include <CredUI/CredUI.h>
 #include <CredUI/CUIField.h>
 
