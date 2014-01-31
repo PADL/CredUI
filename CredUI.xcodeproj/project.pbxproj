@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
+		D3347549189C5E82003BE617 /* CredUIProviders */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = D334754A189C5E82003BE617 /* Build configuration list for PBXAggregateTarget "CredUIProviders" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D334755E189C5EA5003BE617 /* PBXTargetDependency */,
+				D334754E189C5E94003BE617 /* PBXTargetDependency */,
+				D3347550189C5E94003BE617 /* PBXTargetDependency */,
+				D3347552189C5E94003BE617 /* PBXTargetDependency */,
+				D3347554189C5E94003BE617 /* PBXTargetDependency */,
+				D3347556189C5E94003BE617 /* PBXTargetDependency */,
+				D3347558189C5E94003BE617 /* PBXTargetDependency */,
+				D334755A189C5E94003BE617 /* PBXTargetDependency */,
+			);
+			name = CredUIProviders;
+			productName = CredUIProviders;
+		};
 		D3443887187F7D7900562318 /* CredUIBase */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = D344388A187F7D7A00562318 /* Build configuration list for PBXAggregateTarget "CredUIBase" */;
@@ -16,13 +34,8 @@
 			dependencies = (
 				D344388E187F7D9000562318 /* PBXTargetDependency */,
 				D344388C187F7D9000562318 /* PBXTargetDependency */,
+				D334755C189C5E9F003BE617 /* PBXTargetDependency */,
 				D3BBF5A5189A0E9D00A4B99F /* PBXTargetDependency */,
-				D3443890187F7D9000562318 /* PBXTargetDependency */,
-				D3443892187F7D9000562318 /* PBXTargetDependency */,
-				D3529823188EBCB300FCB03D /* PBXTargetDependency */,
-				D3443894187F7D9000562318 /* PBXTargetDependency */,
-				D3443898187F7D9000562318 /* PBXTargetDependency */,
-				D35891061883CDD30093F5B6 /* PBXTargetDependency */,
 				D3BC5F891884D3C800034F92 /* PBXTargetDependency */,
 			);
 			name = CredUIBase;
@@ -327,6 +340,69 @@
 			remoteGlobalIDString = D3B094351877EFBA006DB1DE;
 			remoteInfo = GSSKitUI;
 		};
+		D334754D189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB02C186ED50800C43A24;
+			remoteInfo = Password;
+		};
+		D334754F189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
+			remoteInfo = GSSItem;
+		};
+		D3347551189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D32662D21875403F004C1F57;
+			remoteInfo = Keychain;
+		};
+		D3347553189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3207E30187C240C00DC2694;
+			remoteInfo = Certificate;
+		};
+		D3347555189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D35890F01883C1C20093F5B6;
+			remoteInfo = Login;
+		};
+		D3347557189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3CECCF0187ADFF30006EB36;
+			remoteInfo = Sample;
+		};
+		D3347559189C5E94003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3CA6F22188EB5AD000319B4;
+			remoteInfo = GSSCred;
+		};
+		D334755B189C5E9F003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3347549189C5E82003BE617;
+			remoteInfo = CredUIProviders;
+		};
+		D334755D189C5EA5003BE617 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D336E271182B51A6009271CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39EB004186ED2B200C43A24;
+			remoteInfo = CredUICore;
+		};
 		D339EC6718851A960028BDBB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D336E271182B51A6009271CD /* Project object */;
@@ -361,34 +437,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
-		};
-		D344388F187F7D9000562318 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D39EB02C186ED50800C43A24;
-			remoteInfo = Password;
-		};
-		D3443891187F7D9000562318 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3F67B0B187513A1006B36C3;
-			remoteInfo = GSSItem;
-		};
-		D3443893187F7D9000562318 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D32662D21875403F004C1F57;
-			remoteInfo = Keychain;
-		};
-		D3443897187F7D9000562318 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3207E30187C240C00DC2694;
-			remoteInfo = Certificate;
 		};
 		D344389D187F7DB800562318 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -452,20 +500,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = D39EB004186ED2B200C43A24;
 			remoteInfo = CredUICore;
-		};
-		D3529822188EBCB300FCB03D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D3CA6F22188EB5AD000319B4;
-			remoteInfo = GSSCred;
-		};
-		D35891051883CDD30093F5B6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D336E271182B51A6009271CD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D35890F01883C1C20093F5B6;
-			remoteInfo = Login;
 		};
 		D35891071883CDFB0093F5B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1120,6 +1154,21 @@
 			name = CoreFoundation;
 			sourceTree = "<group>";
 		};
+		D3347548189C5D5B003BE617 /* Providers */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB030186ED50800C43A24 /* Password */,
+				D3207E33187C240C00DC2694 /* Certificate */,
+				D3CA6F25188EB5AD000319B4 /* GSSCred */,
+				D3F67B0E187513A1006B36C3 /* GSSItem */,
+				D32662D51875403F004C1F57 /* Keychain */,
+				D35890F31883C1C30093F5B6 /* Login */,
+				D39EB0D51872441300C43A24 /* Persona */,
+				D3CECCF3187ADFF30006EB36 /* Sample */,
+			);
+			path = Providers;
+			sourceTree = "<group>";
+		};
 		D336E270182B51A6009271CD = {
 			isa = PBXGroup;
 			children = (
@@ -1128,20 +1177,13 @@
 				D32E7BE8187ED04900F5BDF0 /* CoreFoundation */,
 				D39EB007186ED2B200C43A24 /* CredUICore */,
 				D336E283182B51A6009271CD /* CredUI */,
+				D3347548189C5D5B003BE617 /* Providers */,
 				D3B094381877EFBA006DB1DE /* GSSKitUI */,
-				D39EB030186ED50800C43A24 /* Password */,
-				D3F67B0E187513A1006B36C3 /* GSSItem */,
-				D32662D51875403F004C1F57 /* Keychain */,
-				D39EB0D51872441300C43A24 /* Persona */,
-				D3CECCF3187ADFF30006EB36 /* Sample */,
+				D305667E18968B6B005EF2DB /* IdentityPickerService */,
 				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
 				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
-				D3207E33187C240C00DC2694 /* Certificate */,
-				D35890F31883C1C30093F5B6 /* Login */,
 				D3BC5F7F1884D38000034F92 /* pam_credui */,
 				D339EC8818862BBA0028BDBB /* pamtest */,
-				D3CA6F25188EB5AD000319B4 /* GSSCred */,
-				D305667E18968B6B005EF2DB /* IdentityPickerService */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -1945,23 +1987,24 @@
 				D3AA965418752BCB003852C5 /* CredUIUtilities */,
 				D39EB004186ED2B200C43A24 /* CredUICore */,
 				D336E279182B51A6009271CD /* CredUI */,
+				D3B094351877EFBA006DB1DE /* GSSKitUI */,
+				D305667A18968B6B005EF2DB /* IdentityPickerService */,
 				D39EB02C186ED50800C43A24 /* Password */,
 				D3F67B0B187513A1006B36C3 /* GSSItem */,
 				D32662D21875403F004C1F57 /* Keychain */,
 				D3207E30187C240C00DC2694 /* Certificate */,
 				D35890F01883C1C20093F5B6 /* Login */,
+				D3CA6F22188EB5AD000319B4 /* GSSCred */,
+				D3CECCF0187ADFF30006EB36 /* Sample */,
+				D3347549189C5E82003BE617 /* CredUIProviders */,
 				D3BC5F831884D3B200034F92 /* pam_credui */,
 				D3443887187F7D7900562318 /* CredUIBase */,
-				D3CECCF0187ADFF30006EB36 /* Sample */,
-				D3B094351877EFBA006DB1DE /* GSSKitUI */,
 				D39EB060186FB1DA00C43A24 /* CredUIPicker */,
 				D39EB091186FB90400C43A24 /* CredUIEnumerate */,
 				D3443899187F7DA800562318 /* CredUISamples */,
 				D39EB0D21872441300C43A24 /* Persona */,
 				D34438A3187F7E1500562318 /* CredUIEverything */,
 				D339EC8618862BBA0028BDBB /* pamtest */,
-				D3CA6F22188EB5AD000319B4 /* GSSCred */,
-				D305667A18968B6B005EF2DB /* IdentityPickerService */,
 			);
 		};
 /* End PBXProject section */
@@ -2308,6 +2351,51 @@
 			target = D3B094351877EFBA006DB1DE /* GSSKitUI */;
 			targetProxy = D32C21B81898BB6600A0A37E /* PBXContainerItemProxy */;
 		};
+		D334754E189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB02C186ED50800C43A24 /* Password */;
+			targetProxy = D334754D189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D3347550189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
+			targetProxy = D334754F189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D3347552189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D32662D21875403F004C1F57 /* Keychain */;
+			targetProxy = D3347551189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D3347554189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3207E30187C240C00DC2694 /* Certificate */;
+			targetProxy = D3347553189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D3347556189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D35890F01883C1C20093F5B6 /* Login */;
+			targetProxy = D3347555189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D3347558189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3CECCF0187ADFF30006EB36 /* Sample */;
+			targetProxy = D3347557189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D334755A189C5E94003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3CA6F22188EB5AD000319B4 /* GSSCred */;
+			targetProxy = D3347559189C5E94003BE617 /* PBXContainerItemProxy */;
+		};
+		D334755C189C5E9F003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3347549189C5E82003BE617 /* CredUIProviders */;
+			targetProxy = D334755B189C5E9F003BE617 /* PBXContainerItemProxy */;
+		};
+		D334755E189C5EA5003BE617 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39EB004186ED2B200C43A24 /* CredUICore */;
+			targetProxy = D334755D189C5EA5003BE617 /* PBXContainerItemProxy */;
+		};
 		D339EC6818851A960028BDBB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D3AA965418752BCB003852C5 /* CredUIUtilities */;
@@ -2332,26 +2420,6 @@
 			isa = PBXTargetDependency;
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D344388D187F7D9000562318 /* PBXContainerItemProxy */;
-		};
-		D3443890187F7D9000562318 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D39EB02C186ED50800C43A24 /* Password */;
-			targetProxy = D344388F187F7D9000562318 /* PBXContainerItemProxy */;
-		};
-		D3443892187F7D9000562318 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3F67B0B187513A1006B36C3 /* GSSItem */;
-			targetProxy = D3443891187F7D9000562318 /* PBXContainerItemProxy */;
-		};
-		D3443894187F7D9000562318 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D32662D21875403F004C1F57 /* Keychain */;
-			targetProxy = D3443893187F7D9000562318 /* PBXContainerItemProxy */;
-		};
-		D3443898187F7D9000562318 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3207E30187C240C00DC2694 /* Certificate */;
-			targetProxy = D3443897187F7D9000562318 /* PBXContainerItemProxy */;
 		};
 		D344389E187F7DB800562318 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2397,16 +2465,6 @@
 			isa = PBXTargetDependency;
 			target = D39EB004186ED2B200C43A24 /* CredUICore */;
 			targetProxy = D352981D188EB75E00FCB03D /* PBXContainerItemProxy */;
-		};
-		D3529823188EBCB300FCB03D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D3CA6F22188EB5AD000319B4 /* GSSCred */;
-			targetProxy = D3529822188EBCB300FCB03D /* PBXContainerItemProxy */;
-		};
-		D35891061883CDD30093F5B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D35890F01883C1C20093F5B6 /* Login */;
-			targetProxy = D35891051883CDD30093F5B6 /* PBXContainerItemProxy */;
 		};
 		D35891081883CDFB0093F5B6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2656,12 +2714,12 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Certificate/Certificate-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Certificate/Certificate-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Certificate/Certificate-Info.plist";
+				INFOPLIST_FILE = "Providers/Certificate/Certificate-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -2673,8 +2731,8 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Certificate/Certificate-Prefix.pch";
-				INFOPLIST_FILE = "Certificate/Certificate-Info.plist";
+				GCC_PREFIX_HEADER = "Providers/Certificate/Certificate-Prefix.pch";
+				INFOPLIST_FILE = "Providers/Certificate/Certificate-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -2686,12 +2744,12 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Keychain/Keychain-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Keychain/Keychain-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "Keychain/Keychain-Info.plist";
+				INFOPLIST_FILE = "Providers/Keychain/Keychain-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -2703,11 +2761,25 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Keychain/Keychain-Prefix.pch";
-				INFOPLIST_FILE = "Keychain/Keychain-Info.plist";
+				GCC_PREFIX_HEADER = "Providers/Providers/Keychain/Keychain-Prefix.pch";
+				INFOPLIST_FILE = "Providers/Keychain/Keychain-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
+			};
+			name = Release;
+		};
+		D334754B189C5E82003BE617 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D334754C189C5E82003BE617 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -2906,13 +2978,13 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Login/Login-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Login/Login-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Login/Login-Info.plist";
+				INFOPLIST_FILE = "Providers/Login/Login-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -2924,9 +2996,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Login/Login-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Login/Login-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Login/Login-Info.plist";
+				INFOPLIST_FILE = "Providers/Login/Login-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -2992,13 +3064,13 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Password/Password-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Password/Password-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Password/Password-Info.plist";
+				INFOPLIST_FILE = "Providers/Password/Password-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3010,9 +3082,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Password/Password-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Password/Password-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Password/Password-Info.plist";
+				INFOPLIST_FILE = "Providers/Password/Password-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3105,7 +3177,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Persona/Persona-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Persona/Persona-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -3116,7 +3188,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				INFOPLIST_FILE = "Persona/Persona-Info.plist";
+				INFOPLIST_FILE = "Providers/Persona/Persona-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3133,14 +3205,14 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/BrowserID-gioyksxmtmbmgnejmhhcejqvvmxh/Build/Products/Debug",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Persona/Persona-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Persona/Persona-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				INFOPLIST_FILE = "Persona/Persona-Info.plist";
+				INFOPLIST_FILE = "Providers/Persona/Persona-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3242,12 +3314,12 @@
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GSSCred/GSSCred-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/GSSCred/GSSCred-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "GSSCred/GSSCred-Info.plist";
+				INFOPLIST_FILE = "Providers/GSSCred/GSSCred-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3264,8 +3336,8 @@
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GSSCred/GSSCred-Prefix.pch";
-				INFOPLIST_FILE = "GSSCred/GSSCred-Info.plist";
+				GCC_PREFIX_HEADER = "Providers/GSSCred/GSSCred-Prefix.pch";
+				INFOPLIST_FILE = "Providers/GSSCred/GSSCred-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3277,13 +3349,13 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Sample/Sample-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Sample/Sample-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Sample/Sample-Info.plist";
+				INFOPLIST_FILE = "Providers/Sample/Sample-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3295,9 +3367,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Sample/Sample-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/Sample/Sample-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "Sample/Sample-Info.plist";
+				INFOPLIST_FILE = "Providers/Sample/Sample-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3313,13 +3385,13 @@
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/GSSItem/GSSItem-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "GSSItem/GSSItem-Info.plist";
+				INFOPLIST_FILE = "Providers/GSSItem/GSSItem-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3335,9 +3407,9 @@
 					"$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GSSItem/GSSItem-Prefix.pch";
+				GCC_PREFIX_HEADER = "Providers/GSSItem/GSSItem-Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INFOPLIST_FILE = "GSSItem/GSSItem-Info.plist";
+				INFOPLIST_FILE = "Providers/GSSItem/GSSItem-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/CredentialProviders";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = credprovider;
@@ -3373,6 +3445,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		D334754A189C5E82003BE617 /* Build configuration list for PBXAggregateTarget "CredUIProviders" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D334754B189C5E82003BE617 /* Debug */,
+				D334754C189C5E82003BE617 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		D336E274182B51A6009271CD /* Build configuration list for PBXProject "CredUI" */ = {
 			isa = XCConfigurationList;
