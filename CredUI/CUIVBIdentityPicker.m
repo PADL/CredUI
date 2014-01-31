@@ -176,6 +176,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
         proxyCredential.identityPicker = self;
         [self.contextBox importContext:[self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyExportedContext]];
         [self endWithReturnCode:[value integerValue]];
+        [self.remoteView.bridge setObject:@NO forKey:_CUIIdentityPickerServiceBridgeKeyStartCredentialEnumeration];
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocationReply]) {
         void (^replyBlock)(NSError *) = [self.invocationReplyDict objectForKey:[value invocationID]];
         replyBlock([value error]);
