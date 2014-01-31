@@ -22,8 +22,11 @@ extern "C" {
     
 typedef CF_ENUM(CFIndex, CUIUsageScenario) {
     kCUIUsageScenarioInvalid = 0,
-    kCUIUsageScenarioLogin,                             /* loginwindow, unimplemented */
-    kCUIUsageScenarioNetwork                            /* GSS or other network caller */
+    kCUIUsageScenarioLogin,                             /* interactive login */
+    kCUIUsageScenarioUnlock,                            /* screensaver unlock */
+    kCUIUsageScenarioChangePassword,                    /* change password */
+    kCUIUsageScenarioNetwork,                           /* GSS or other network caller */
+    kCUIUsageScenarioSSO                                /* future use */
 };
 
 typedef CF_OPTIONS(CFIndex, CUIUsageFlags) {

@@ -27,7 +27,7 @@ A Cocoa wrapper for CredUICore that displays a (presently not particularly great
 Credential usage & types
 ------------------------
 
-CredUI can be used for credential acquisition for network authentication (kCUIUsageScenarioNetwork) or interactive login authentication (kCUIUsageScenarioLogin). Providers may elect to support either or both usage scenarios.
+CredUI can be used for credential acquisition for network authentication (kCUIUsageScenarioNetwork) or interactive login authentication (kCUIUsageScenarioLogin). (There are also scenarios defined for screensaver unlock and password changing, but they are not yet implemented.) Providers will typically only support a subset of scenarios.
 
 CredUI deals in two types of credentials: generic and non-generic credentials, chosen by a flag and initialization time (CUIFlagsGenericCredentials for CredUI, and kCUIUsageFlagsGeneric for CredUICore). Providers may elect to support either or both types. Non-generic credentials are designed to be used with GSS-API (kCUIUsageScenarioNetwork) or system logon (kCUIUsageScenarioLogin), and the password may not be available to the application, only a GSS credential (kCUIAttrGSSCredential) or authentication result (kCUIAttrAuthenticatedForLoginScenario).
 

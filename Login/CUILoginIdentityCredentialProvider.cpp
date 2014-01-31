@@ -126,7 +126,10 @@ CUILoginIdentityCredentialProvider::copyMatchingCredentials(CFDictionaryRef attr
 Boolean CUILoginIdentityCredentialProvider::initWithController(CUIControllerRef controller,
                                                                CFErrorRef *error)
 {
-    if (CUIControllerGetUsageScenario(controller) != kCUIUsageScenarioLogin)
+    CUIUsageScenario usageScenario = CUIControllerGetUsageScenario(controller);
+
+    if (usageScenario != kCUIUsageScenarioLogin &&
+        usageScenario != kCUIUsageScenarioUnlock)
         return false;
 
     _authority = CSGetLocalIdentityAuthority();

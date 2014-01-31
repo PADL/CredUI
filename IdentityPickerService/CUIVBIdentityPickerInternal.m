@@ -46,13 +46,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-#if !__has_feature(objc_arc)
-    [super dealloc];
-#endif
-}
-
 #pragma mark - Credential submission overrides
 
 - (void)willCancelCredential:(id)sender
@@ -72,6 +65,7 @@
     if ((self.flags & CUIFlagsGenericCredentials) == 0) {
         switch (self.usageScenario) {
         case kCUIUsageScenarioLogin:
+        case kCUIUsageScenarioUnlock:
             /* try to auth the user */
             [(NSMutableDictionary *)vbCredential.attributes
              setObject:[NSNumber numberWithBool:[self.selectedCredential authenticateForLoginScenario]]
@@ -82,7 +76,7 @@
             [vbCredential acquireAndSetGSSCredential];
             break;
         default:
-            NSAssert(self.usageScenario != kCUIUsageScenarioLogin && self.usageScenario != kCUIUsageScenarioNetwork, @"invalid usage scenario");
+            /* not sure what to do for other usage scenarios, yet */
             break;
         }
     }

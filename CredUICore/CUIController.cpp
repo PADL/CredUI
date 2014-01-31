@@ -51,6 +51,34 @@ static void _CUIControllerDeallocate(CFTypeRef cf)
         CFRelease(controller->_targetName);
 }
 
+static CFStringRef _CUIControllerGetUsageScenarioString(CUIUsageScenario usageScenario)
+{
+    CFStringRef string;
+
+    switch (usageScenario) {
+        case kCUIUsageScenarioLogin:
+            string = CFSTR("Login");
+            break;
+        case kCUIUsageScenarioUnlock:
+            string = CFSTR("Unlock");
+            break;
+        case kCUIUsageScenarioChangePassword:
+            string = CFSTR("ChangePassword");
+            break;
+        case kCUIUsageScenarioNetwork:
+            string = CFSTR("Network");
+            break;
+        case kCUIUsageScenarioSSO:
+            string = CFSTR("SSO");
+            break;
+        default:
+            string = NULL;
+            break;
+    }
+
+    return string;
+}
+
 static CFStringRef _CUIControllerCopyDescription(CFTypeRef cf)
 {
     CUIControllerRef controller = (CUIControllerRef)cf;
@@ -58,7 +86,7 @@ static CFStringRef _CUIControllerCopyDescription(CFTypeRef cf)
     return CFStringCreateWithFormat(CFGetAllocator(cf), NULL,
                                     CFSTR("<CUIController %p>{usage = %@, usageFlags = %08x}"),
                                     controller,
-                                    controller->_usageScenario == kCUIUsageScenarioLogin ? CFSTR("Login") : CFSTR("Network"),
+                                    _CUIControllerGetUsageScenarioString(controller->_usageScenario),
                                     (unsigned)controller->_usageFlags);
 }
 
@@ -88,6 +116,13 @@ CUIControllerGetTypeID(void)
     return _CUIControllerTypeID;
 }
 
+static Boolean
+_CUIValidateUsageScenario(CUIUsageScenario usageScenario)
+{
+    return (usageScenario > kCUIUsageScenarioInvalid &&
+            usageScenario <= kCUIUsageScenarioSSO);
+}
+
 CUI_EXPORT CUIControllerRef
 CUIControllerCreate(CFAllocatorRef allocator,
                     CUIUsageScenario usageScenario,
@@ -95,9 +130,9 @@ CUIControllerCreate(CFAllocatorRef allocator,
 {
     CUIControllerRef controller;
 
-    assert (usageScenario == kCUIUsageScenarioLogin || usageScenario == kCUIUsageScenarioNetwork);
+    assert(_CUIValidateUsageScenario(usageScenario));
    
-    if (usageScenario != kCUIUsageScenarioLogin && usageScenario != kCUIUsageScenarioNetwork)
+    if (!_CUIValidateUsageScenario(usageScenario))
         return NULL;
  
     controller = (CUIControllerRef)_CFRuntimeCreateInstance(allocator,
@@ -287,25 +322,6 @@ _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
     
     return didEnumerate;
 }
-
-#if 0
-static CFDictionaryRef
-_CUIControllerCreateAttributesFromContext(CUIControllerRef controller)
-{
-    CFMutableDictionaryRef attributes = NULL;
-    
-    switch (CUIControllerGetUsageScenario(controller)) {
-        case kCUIUsageScenarioLogin:
-            break;
-        case kCUIUsageScenarioNetwork:
-            break;
-        default:
-            break;
-    }
-    
-    return attributes;
-}
-#endif
 
 static Boolean
 _CUIControllerCopyAttributesAdjustedForAuthError(CUIControllerRef controller,

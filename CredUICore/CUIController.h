@@ -27,7 +27,7 @@ CUIControllerGetTypeID(void);
  * Creates a new CredUI controller. Controllers are used to enumerate credentials
  * vended by credential providers. The usage scenario refers to whether the caller
  * is performing a local login (kCUIUsageScenarioLogin) or a network authentication
- * (kCUIUsageScenarioNetwork).
+ * (kCUIUsageScenarioNetwork), or some other kind of login.
  *
  * Credential providers are dynamically loaded from /Library/CredentialProviders
  * and are COM plugins that implement CUICredentialContext.

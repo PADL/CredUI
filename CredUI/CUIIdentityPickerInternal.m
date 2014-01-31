@@ -103,7 +103,7 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
 
     NSAssert(self.runningModal == NO, @"cannot configure identity picker during run loop");
 
-    if (usageScenario == kCUIUsageScenarioLogin) {
+    if (usageScenario != kCUIUsageScenarioNetwork) {
         /* Make sure login credentails can never be persisted */
         flags &= ~(CUIFlagsPersist);
         flags |= CUIFlagsDoNotPersist;
