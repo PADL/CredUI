@@ -175,11 +175,11 @@ public:
     void didSubmit(void) {}
    
     void savePersisted(void (^completionHandler)(CFErrorRef)) {
-        completionHandler(NULL); // XXX
+        CUIGSSErrorComplete(completionHandler, GSS_S_UNAVAILABLE);
     }
     
     void deletePersisted(void (^completionHandler)(CFErrorRef)) {
-        completionHandler(NULL); // XXX
+        CUIGSSErrorComplete(completionHandler, GSS_S_UNAVAILABLE);
     }
 
     CUIGSSCredCredential() {
