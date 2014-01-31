@@ -17,13 +17,6 @@
 extern "C" {
 #endif
 
-typedef struct __CUICredUIContext {
-    CFIndex version;
-    CFTypeRef parentWindow;
-    CFStringRef messageText;
-    CFStringRef titleText;
-} CUICredUIContext;
-
 /*
  * Prompt the user for credentials.
  */

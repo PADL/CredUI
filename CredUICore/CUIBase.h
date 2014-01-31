@@ -52,7 +52,6 @@ typedef CF_OPTIONS(CFIndex, CUICredUIContextProperties) {
     kCUICredUIContextPropertyAll            = 0xf
 };
 
-#ifndef CredUI_PromptForCredentials_h
 typedef struct __CUICredUIContext {
     /*
      * Version of structure, must be zero.
@@ -77,7 +76,6 @@ typedef struct __CUICredUIContext {
      */
     CFStringRef titleText;
 } CUICredUIContext;
-#endif /* !CredUI_PromptForCredentials_h */
 
 #ifdef __cplusplus
 }
