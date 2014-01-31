@@ -1169,6 +1169,16 @@
 			path = Providers;
 			sourceTree = "<group>";
 		};
+		D334755F189C600F003BE617 /* Sample */ = {
+			isa = PBXGroup;
+			children = (
+				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
+				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
+				D339EC8818862BBA0028BDBB /* pamtest */,
+			);
+			path = Sample;
+			sourceTree = "<group>";
+		};
 		D336E270182B51A6009271CD = {
 			isa = PBXGroup;
 			children = (
@@ -1180,10 +1190,8 @@
 				D3347548189C5D5B003BE617 /* Providers */,
 				D3B094381877EFBA006DB1DE /* GSSKitUI */,
 				D305667E18968B6B005EF2DB /* IdentityPickerService */,
-				D39EB063186FB1DA00C43A24 /* CredUIPicker */,
-				D39EB093186FB90400C43A24 /* CredUIEnumerate */,
 				D3BC5F7F1884D38000034F92 /* pam_credui */,
-				D339EC8818862BBA0028BDBB /* pamtest */,
+				D334755F189C600F003BE617 /* Sample */,
 				D336E27C182B51A6009271CD /* Frameworks */,
 				D336E27B182B51A6009271CD /* Products */,
 			);
@@ -3101,7 +3109,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CredUIPicker/CredUIPicker-Prefix.pch";
+				GCC_PREFIX_HEADER = "Sample/CredUIPicker/CredUIPicker-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -3112,7 +3120,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				INFOPLIST_FILE = "CredUIPicker/CredUIPicker-Info.plist";
+				INFOPLIST_FILE = "Sample/CredUIPicker/CredUIPicker-Info.plist";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -3129,13 +3137,13 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/GSSKit-gorgnkjcbbccyxegvbwbgpqudmes/Build/Products/Debug",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CredUIPicker/CredUIPicker-Prefix.pch";
+				GCC_PREFIX_HEADER = "Sample/CredUIPicker/CredUIPicker-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					/usr/local/include,
 				);
-				INFOPLIST_FILE = "CredUIPicker/CredUIPicker-Info.plist";
+				INFOPLIST_FILE = "Sample/CredUIPicker/CredUIPicker-Info.plist";
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -3453,6 +3461,7 @@
 				D334754C189C5E82003BE617 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D336E274182B51A6009271CD /* Build configuration list for PBXProject "CredUI" */ = {
 			isa = XCConfigurationList;
