@@ -69,6 +69,8 @@ public:
     Boolean createBrowserIDContext(CUIControllerRef controller, CFErrorRef *error);
     Boolean createBrowserIDAssertion(CFErrorRef *error);
 
+    CFErrorRef mapBrowserIDError(BIDError err);
+
     Boolean initWithControllerAndAttributes(CUIControllerRef controller,
                                             CFDictionaryRef attributes,
                                             CFErrorRef *error);
@@ -80,9 +82,7 @@ public:
     void didBecomeDeselected(void) {}
     void didSubmit(void) {}
  
-    void savePersisted(void (^completionHandler)(CFErrorRef)) {
-        completionHandler(NULL); // XXX
-    }
+    void savePersisted(void (^completionHandler)(CFErrorRef));
 
     void deletePersisted(void (^completionHandler)(CFErrorRef)) {
         completionHandler(NULL);

@@ -156,3 +156,44 @@ Boolean CUIPersonaCredential::createBrowserIDAssertion(CFErrorRef *pError)
     
     return (err == BID_S_OK);
 }
+
+CFErrorRef CUIPersonaCredential::mapBrowserIDError(BIDError err)
+{
+    CFErrorRef cfError = NULL;
+    CFDictionaryRef cfDict = NULL;
+    const char *szErr = NULL;
+    CFAllocatorRef allocator = (_bidContext == BID_C_NO_CONTEXT) ? kCFAllocatorDefault : CFGetAllocator(_bidContext);
+
+    BIDErrorToString(err, &szErr);
+
+    if (szErr != NULL) {
+        CFStringRef errDesc;
+
+        errDesc = CFStringCreateWithCString(allocator, szErr, kCFStringEncodingASCII);
+        cfDict = CFDictionaryCreate(allocator,
+                                    (const void **)&kCFErrorDescriptionKey,
+                                    (const void **)&errDesc,
+                                    1,
+                                    &kCFTypeDictionaryKeyCallBacks,
+                                    &kCFTypeDictionaryValueCallBacks);
+        CFRelease(errDesc);
+    }
+
+    cfError = CFErrorCreate(allocator, CFSTR("com.padl.BrowserID"), err, cfDict);
+
+    if (cfDict != NULL)
+        CFRelease(cfDict);
+
+    return cfError;
+}
+
+void CUIPersonaCredential::savePersisted(void (^completionHandler)(CFErrorRef))
+{
+    CFErrorRef error = mapBrowserIDError(BID_S_INVALID_USAGE);
+
+    completionHandler(error);
+
+    if (error)
+        CFRelease(error);
+}
+
