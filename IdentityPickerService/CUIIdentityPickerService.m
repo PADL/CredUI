@@ -55,7 +55,7 @@
     return [self.identityPicker configureForUsageScenario:usageScenario flags:flags];
 }
 
-- (void)handleCredentialRemoteInvocation:(CUICredentialRemoteInvocation *)remoteInvocation
+- (void)credentialRemoteInvocation:(CUICredentialRemoteInvocation *)remoteInvocation
 {
     CUICredential *credential = [self.identityPicker credentialWithUUID:remoteInvocation.credentialID];
     NSAssert(credential != nil, ([NSString stringWithFormat:@"no credential for UUID %@", remoteInvocation.credentialID.UUIDString]));
@@ -67,9 +67,8 @@
 
     [credential performSelector:selector withObject:^(NSError *error) {
         remoteInvocation.error = error;
+        [self.bridge setObject:remoteInvocation forKey:_CUIIdentityPickerServiceBridgeKeyInvocationReply];
     }];
-
-    [self.bridge setObject:remoteInvocation forKey:_CUIIdentityPickerServiceBridgeKeyInvocationReply];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -94,7 +93,7 @@
         BOOL bImportedContext = [self importContext:value];
         NSAssert(bImportedContext, @"failed to import GSS context");
     } else if ([keyPath isEqual:_CUIIdentityPickerServiceBridgeKeyInvocation]) {
-        [self handleCredentialRemoteInvocation:value];
+        [self credentialRemoteInvocation:value];
     } else if ([self.identityPicker isConfigured]) {
         [self.identityPicker setValue:value forKey:keyPath];
     }

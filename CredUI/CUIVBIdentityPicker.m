@@ -196,8 +196,8 @@ static NSString * const _CUIIdentityPickerServiceName                           
         void (^replyBlock)(NSError *) = [self.invocationReplyDict objectForKey:[value invocationID]];
         NSAssert(replyBlock != nil, ([NSString stringWithFormat:@"no valid reply block for invocation %@", [[value invocationID] UUIDString]]));
         if (replyBlock) {
-            replyBlock([value error]);
             [self.invocationReplyDict removeObjectForKey:[value invocationID]];
+            replyBlock([value error]);
         }
     }
 }
