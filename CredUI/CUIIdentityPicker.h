@@ -71,11 +71,15 @@ __attribute__((visibility("default")))
 - (NSInteger)runModal;
 
 /*
- * Run the Identity Picker as a sheet.  The didEndSelector will be invoked after the return value is known but before the sheet is dismissed.
+ * Run the Identity Picker as a sheet.
  * The didEndSelector should have the following signature:
  *  - (void)identityPickerDidEnd:(CUIIdentityPicker *)identityPicker returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
  */
 - (void)beginSheetModalForWindow:(NSWindow *)sheetWindow modalDelegate:(id)delegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo;
+
+/*
+ * Run the Identity Picker as a sheet.
+ */
 - (void)beginSheetModalForWindow:(NSWindow *)sheetWindow completionHandler:(void (^)(NSModalResponse returnCode))handler;
 
 @end
