@@ -66,7 +66,6 @@
              remoteInvocation.selector, remoteInvocation.invocationID.UUIDString, remoteInvocation.credentialID.UUIDString]));
 
     [credential performSelector:selector withObject:^(NSError *error) {
-        NSLog(@"handling invocation: %@ error: %@", remoteInvocation, error);
         remoteInvocation.error = error;
     }];
 
