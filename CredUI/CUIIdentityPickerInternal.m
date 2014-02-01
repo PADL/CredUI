@@ -255,7 +255,6 @@ _CUIIsReturnableCredentialStatus(CFTypeRef status, Boolean *);
         NSError *credError = [self.selectedCredential.attributes objectForKey:(__bridge id)kCUIAttrCredentialError];
 
         if (credError) {
-            modalResponse = NSModalResponseAbort;
             self.lastError = credError;
         } else {
             [self didSubmitCredential];

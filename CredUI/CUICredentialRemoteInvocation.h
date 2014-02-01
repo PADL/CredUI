@@ -18,7 +18,6 @@
     NSError *_error;
 }
 
-@property(nonatomic, assign) BOOL isReply;
 @property(nonatomic, readonly) NSUUID *invocationID;
 @property(nonatomic, retain) NSUUID *credentialID;
 @property(nonatomic, retain) NSString *selector;

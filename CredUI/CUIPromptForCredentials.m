@@ -80,7 +80,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     CUIIdentityPicker *identityPicker = [[CUIIdentityPicker alloc] initWithUsageScenario:kCUIUsageScenarioNetwork
                                                                               attributes:(__bridge NSDictionary *)inCredAttributes
                                                                                    flags:flags];
-    CUIPromptForCredentialsContextBox *contextBox = [[CUIPromptForCredentialsContextBox alloc] init];
+    CUIPromptForCredentialsContextBox *contextBox;
     CUICredential *selectedCredential;
     NSModalSession modalSession;
     NSModalResponse modalResponse;
@@ -90,6 +90,7 @@ _CUIPromptForCredentials(CFTypeRef targetName,
     if (identityPicker == nil)
         return false;
    
+    contextBox = [[CUIPromptForCredentialsContextBox alloc] init];
     contextBox->_context = context;
  
     identityPicker.targetName = (__bridge id)targetName;

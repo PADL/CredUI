@@ -139,15 +139,17 @@ static NSString * const _CUIIdentityPickerServiceName                           
                    withReply:(void (^)(NSError *))replyBlock
 {
     CUICredentialRemoteInvocation *invocation = [[CUICredentialRemoteInvocation alloc] init];
-
+    void (^replyBlockCopy)(NSError *) = [replyBlock copy];
+    
     invocation.credentialID = credential.UUID;
     invocation.selector = selector;
 
     [self.remoteView.bridge setObject:invocation forKey:_CUIIdentityPickerServiceBridgeKeyInvocation];
-    [self.invocationReplyDict setObject:[replyBlock copy] forKey:invocation.invocationID];
+    [self.invocationReplyDict setObject:replyBlockCopy forKey:invocation.invocationID];
 
 #if !__has_feature(objc_arc) 
     [invocation release];
+    [replyBlockCopy release];
 #endif
 }
 
