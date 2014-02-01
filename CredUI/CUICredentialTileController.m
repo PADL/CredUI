@@ -29,8 +29,14 @@
     [super setRepresentedObject:representedObject];
     
     if (representedObject) {
-        CUICredentialTile *tile = (CUICredentialTile *)self.view;
-        tile.delegate = self;
+        /* Informal protocol allowing CUICredential subclasses to override view */
+        if ([representedObject respondsToSelector:@selector(view)]) {
+            self.view = [representedObject view];
+        } else {
+            NSAssert([self.view isKindOfClass:[CUICredentialTile class]], @"credential tile must override -view or be of CUICredentialTile class");
+            CUICredentialTile *tile = (CUICredentialTile *)self.view;
+            tile.delegate = self;
+        }
     }
 }
 
