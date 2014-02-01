@@ -132,9 +132,9 @@ _GSSNeedUpdateContextCredentialP(CUICredential *cuiCredential,
             _GSSNeedUpdateContextCredentialP(credential, self.credential))
             self.credential = gssCred;
         
-    #if !__has_feature(objc_arc)
+#if !__has_feature(objc_arc)
         [gssCred release];
-    #endif
+#endif
 
         [uiContext signalCompletion];
     }];
