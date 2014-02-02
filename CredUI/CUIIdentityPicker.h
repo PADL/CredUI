@@ -20,7 +20,7 @@ __attribute__((visibility("default")))
 @interface CUIIdentityPicker : NSObject
 {
     @package
-    id _reserved[2];
+    id _reserved;
 }
 
 /* Title and message of CredUI window */

@@ -8,6 +8,9 @@
 
 static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseViewBridge";
 
+#undef _identityPicker
+#define _identityPicker _reserved
+
 /*
  * This is a thin wrapper over CUIIdentityPickerInternal, because we might want to move
  * the guts into another process sometime. And it lets us hide instance variables on
@@ -46,8 +49,7 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
 - (void)dealloc
 {
 #if !__has_feature(objc_arc)
-    [_reserved[0] release];
-    [_reserved[1] release];
+    [_identityPicker release];
 
     [super dealloc];
 #endif
@@ -89,7 +91,7 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
     if (attributes)
         identityPicker.attributes = attributes;
 
-    _reserved[0] = identityPicker;
+    _identityPicker = identityPicker;
  
     return self;
 }
@@ -119,12 +121,12 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
 - (void)beginSheetModalForWindow:(NSWindow *)sheetWindow
                completionHandler:(void (^)(NSModalResponse returnCode))handler
 {
-    [_reserved[0] beginSheetModalForWindow:sheetWindow completionHandler:handler];
+    [_identityPicker beginSheetModalForWindow:sheetWindow completionHandler:handler];
 }
 
 - (NSInteger)runModal
 {
-    return [_reserved[0] runModal];
+    return [_identityPicker runModal];
 }
 
 #pragma mark - Accessors
@@ -134,8 +136,8 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
     return [NSString stringWithFormat:@"<%@ %p{targetName = \"%@\", selectedCredential = %@, flags = 0x%08x}>",
             [self.class description],
             self,
-            [_reserved[0] targetDisplayName],
-            [_reserved[0] selectedCredential],
+            [_identityPicker targetDisplayName],
+            [_identityPicker selectedCredential],
             (unsigned int)self.flags];
 }
 
@@ -152,22 +154,22 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
 
 - (BOOL)persist
 {
-    return [self->_reserved[0] persist];
+    return [self->_identityPicker persist];
 }
 
 - (void)setPersist:(BOOL)persist
 {
-    [self->_reserved[0] setPersist:persist];
+    [self->_identityPicker setPersist:persist];
 }
 
 static void _CUIIdentityPickerForwardPropertySetter(CUIIdentityPicker *self, SEL _cmd, id arg)
 {
-    [self->_reserved[0] performSelector:_cmd withObject:arg];
+    [self->_identityPicker performSelector:_cmd withObject:arg];
 }
 
 static id _CUIIdentityPickerForwardPropertyGetter(CUIIdentityPicker *self, SEL _cmd)
 {
-    return [self->_reserved[0] performSelector:_cmd];
+    return [self->_identityPicker performSelector:_cmd];
 }
 
 NSString *_CUIIdentityPickerPropertyForSelector(SEL aSEL)
