@@ -38,7 +38,7 @@ static NSString * const _CUIIdentityPickerServiceName                           
 - (NSPanel *)_newContainingPanel
 {
     /* superclass panel only for dimensions */
-    NSWindow *templatePanel = [_reserved[0] window];
+    NSWindow *templatePanel = [_reserved window];
 
     NSAssert(templatePanel != nil, @"superclass panel uninitialized");
 
