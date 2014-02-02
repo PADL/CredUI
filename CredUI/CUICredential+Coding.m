@@ -43,7 +43,10 @@
                                                                [NSSet class],
                                                                nil];
 
-        /* these will only be available if GSSKit is linked */
+        /*
+         * these will only be available if GSSKit is linked (although at this point
+         * keeping CredUI independent of GSSKit is perhaps a futile exercise).
+         */
         gssClassNames = [NSArray arrayWithObjects:@"GSSItem",
                                                   @"GSSCredential",
                                                   @"GSSName",

@@ -43,6 +43,10 @@ extern "C" {
 extern void
 NSRequestConcreteImplementation(id self, SEL _cmd, Class absClass);
 
+NSString *_CUIIdentityPickerPropertyForSelector(SEL aSEL);
+
+BOOL _CUIIdentityPickerIsValidProperty(SEL aSEL);
+
 /* Used by GSSKitUI */
 CUI_EXPORT Boolean
 _CUIPromptForCredentials(CFTypeRef targetName,
