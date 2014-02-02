@@ -233,6 +233,11 @@ static NSString * const _CUIIdentityPickerServiceName                           
 
 #pragma mark - Accessors
 
+@synthesize remoteView = _remoteView;
+@synthesize containingPanel = _containingPanel;
+@synthesize contextBox = _contextBox;
+@synthesize invocationReplyDict = _invocationReplyDict;
+
 - (CUIUsageScenario)usageScenario
 {
     NSArray *options = [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
@@ -249,40 +254,14 @@ static NSString * const _CUIIdentityPickerServiceName                           
     return [[options objectAtIndex:1] unsignedIntegerValue];
 }
 
-@synthesize remoteView = _remoteView;
-@synthesize containingPanel = _containingPanel;
-@synthesize contextBox = _contextBox;
-@synthesize invocationReplyDict = _invocationReplyDict;
-
-- (NSString *)title
-{
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyTitle];
-}
-
-- (void)setTitle:(NSString *)title
-{
-    [self.remoteView.bridge setObject:title forKey:_CUIIdentityPickerServiceBridgeKeyTitle];
-}
-
-- (NSDictionary *)attributes
-{
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyAttributes];
-}
-
-- (void)setAttributes:(NSDictionary *)attributes
-{
-    [self.remoteView.bridge setObject:attributes forKey:_CUIIdentityPickerServiceBridgeKeyAttributes];
-}
-
-- (NSError *)authError
-{
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyAuthError];
-}
-
-- (void)setAuthError:(NSError *)authError
-{
-    [self.remoteView.bridge setObject:authError forKey:_CUIIdentityPickerServiceBridgeKeyAuthError];
-}
+@dynamic title;
+@dynamic message;
+@dynamic attributes;
+@dynamic authError;
+@dynamic flags;
+@dynamic targetName;
+@dynamic selectedCredential;
+@dynamic lastError;
 
 - (BOOL)persist
 {
@@ -295,25 +274,42 @@ static NSString * const _CUIIdentityPickerServiceName                           
                                forKey: _CUIIdentityPickerServiceBridgeKeyPersist];
 }
 
-- (id)targetName
+static void _CUIVBIdentityPickerForwardPropertySetter(CUIVBIdentityPicker *self, SEL _cmd, id arg)
 {
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyTargetName];
+    NSString *propertyName = _CUIIdentityPickerPropertyForSelector(_cmd);
+    NSViewBridgeKeyOwner owner = [self.remoteView.bridge ownerForKey:propertyName];
+
+    NSAssert([self.remoteView.bridge hasKey:propertyName], ([NSString stringWithFormat:@"remoteView missing property %@", propertyName]));
+    NSAssert(owner == NSViewBridgeKeyOwnerRemote || owner == NSViewBridgeKeyOwnerPhased, @"can only set properties that are remote or phased");
+
+    [self.remoteView.bridge setObject:arg forKey:propertyName];
 }
 
-- (void)setTargetName:(id)targetName
+static id _CUIVBIdentityPickerForwardPropertyGetter(CUIVBIdentityPicker *self, SEL _cmd)
 {
-    [self.remoteView.bridge setObject:targetName forKey:_CUIIdentityPickerServiceBridgeKeyTargetName];
+    NSString *propertyName = _CUIIdentityPickerPropertyForSelector(_cmd);
+
+    NSAssert([self.remoteView.bridge hasKey:propertyName], ([NSString stringWithFormat:@"remoteView missing property %@", propertyName]));
+    
+    return [self.remoteView.bridge objectForKey:propertyName];
 }
 
-- (CUICredential *)selectedCredential
++ (BOOL)resolveInstanceMethod:(SEL)aSEL
 {
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeySelectedCredential];
-}
+    BOOL bResolves;
+    
+    /* forward all properties to bridge */
+    if (_CUIIdentityPickerIsValidProperty(aSEL)) {
+        if ([NSStringFromSelector(aSEL) hasPrefix:@"set"])
+            class_addMethod(self, aSEL, (IMP)_CUIVBIdentityPickerForwardPropertySetter, "v@:@");
+        else if (class_getProperty([self class], sel_getName(aSEL)))
+            class_addMethod(self, aSEL, (IMP)_CUIVBIdentityPickerForwardPropertyGetter, "@@:");
+        bResolves = YES;
+    } else {
+        bResolves = [super resolveInstanceMethod:aSEL];
+    }
 
-- (NSError *)lastError
-{
-    return [self.remoteView.bridge objectForKey:_CUIIdentityPickerServiceBridgeKeyLastError];
+    return bResolves;
 }
 
 @end
-

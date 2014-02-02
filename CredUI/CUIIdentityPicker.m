@@ -139,31 +139,73 @@ static NSString *const CUIIdentityPickerUseViewBridge = @"CUIIdentityPickerUseVi
             (unsigned int)self.flags];
 }
 
-#define FORWARD_PROPERTY_RO(type, getter)                               \
-- (type)getter                                                          \
-{                                                                       \
-    return ((CUIIdentityPickerInternal *)_reserved[0]).getter;          \
-}                                                                       \
+#pragma mark - Forwarding accessors
 
-#define FORWARD_PROPERTY(type, setter, getter)                          \
-                                                                        \
-FORWARD_PROPERTY_RO(type, getter)                                       \
-                                                                        \
-- (void)setter:(type)arg                                                \
-{                                                                       \
-    ((CUIIdentityPickerInternal *)_reserved[0]).getter = arg;           \
-}                                                                        
+@dynamic title;
+@dynamic message;
+@dynamic attributes;
+@dynamic authError;
+@dynamic flags;
+@dynamic targetName;
+@dynamic selectedCredential;
+@dynamic lastError;
 
-FORWARD_PROPERTY(NSString *,            setTitle,               title)
-FORWARD_PROPERTY(NSString *,            setMessage,             message)
-FORWARD_PROPERTY(NSDictionary *,        setAttributes,          attributes)
-FORWARD_PROPERTY(NSError *,             setAuthError,           authError)
-FORWARD_PROPERTY(BOOL,                  setPersist,             persist)
-FORWARD_PROPERTY(id,                    setTargetName,          targetName)
-FORWARD_PROPERTY(id <CUIContextBoxing>, setContextBox,          contextBox)
+- (BOOL)persist
+{
+    return [self->_reserved[0] persist];
+}
 
-FORWARD_PROPERTY_RO(CUICredential *,    selectedCredential)
-FORWARD_PROPERTY_RO(NSError *,          lastError)
-FORWARD_PROPERTY_RO(CUIFlags,           flags)
+- (void)setPersist:(BOOL)persist
+{
+    [self->_reserved[0] setPersist:persist];
+}
+
+static void _CUIIdentityPickerForwardPropertySetter(CUIIdentityPicker *self, SEL _cmd, id arg)
+{
+    [self->_reserved[0] performSelector:_cmd withObject:arg];
+}
+
+static id _CUIIdentityPickerForwardPropertyGetter(CUIIdentityPicker *self, SEL _cmd)
+{
+    return [self->_reserved[0] performSelector:_cmd];
+}
+
+NSString *_CUIIdentityPickerPropertyForSelector(SEL aSEL)
+{
+    NSString *methodName = NSStringFromSelector(aSEL);
+    NSString *propertyName;
+
+    if ([methodName hasPrefix:@"set"]) {
+        NSString *firstLetter = [[methodName substringWithRange:NSMakeRange(3, 1)] lowercaseString];
+        propertyName = [firstLetter stringByAppendingString:[methodName substringWithRange:NSMakeRange(4, [methodName length] - 5)]];
+    } else {
+        propertyName = methodName;
+    }
+
+    return propertyName;
+}
+
+BOOL _CUIIdentityPickerIsValidProperty(SEL aSEL)
+{
+    return !!class_getProperty([CUIIdentityPicker class], [_CUIIdentityPickerPropertyForSelector(aSEL) UTF8String]);
+}
+
++ (BOOL)resolveInstanceMethod:(SEL)aSEL
+{
+    BOOL bResolves = [super resolveInstanceMethod:aSEL];
+
+    if (!bResolves && _CUIIdentityPickerIsValidProperty(aSEL)) {
+        NSAssert([CUIIdentityPickerInternal instancesRespondToSelector:aSEL],
+                 ([NSString stringWithFormat:@"CUIIdentityPickerInternal must support associated class property %@", NSStringFromSelector(aSEL)]));
+
+        if ([NSStringFromSelector(aSEL) hasPrefix:@"set"])
+            class_addMethod(self, aSEL, (IMP)_CUIIdentityPickerForwardPropertySetter, "v@:@");
+        else if (class_getProperty(self, sel_getName(aSEL)))
+            class_addMethod(self, aSEL, (IMP)_CUIIdentityPickerForwardPropertyGetter, "@@:");
+        bResolves = YES;
+    }
+
+    return bResolves;
+}
 
 @end
