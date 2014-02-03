@@ -7,6 +7,7 @@
 //
 
 @class NSDictionary;
+@class NSError;
 
 __attribute__((visibility("default")))
 @interface CUICredential : NSObject
