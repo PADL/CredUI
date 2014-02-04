@@ -10,7 +10,7 @@
 @class NSError;
 
 __attribute__((visibility("default")))
-@interface CUICredential : NSObject
+@interface CUICredential : NSObject <NSCopying>
 
 /*
  * Returns the set of CredUI attributes associated with this credential.
