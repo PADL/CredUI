@@ -132,6 +132,8 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
     if (attributes)
         gssItemAttributes = createGSSItemAttributesFromCUIAttributes(attributes);
     
+    usageFlags |= kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds | kCUIUsageFlagsExcludeTransientCreds;
+
     items = GSSItemCopyMatching(gssItemAttributes, error);
     if (items) {
         for (CFIndex index = 0; index < CFArrayGetCount(items); index++) {
@@ -145,7 +147,7 @@ CUIGSSItemCredentialProvider::copyMatchingCredentials(CFDictionaryRef attributes
             CFDictionarySetValue(cuiAttributes, kCUIAttrPersistenceFactoryID, kGSSItemCredentialProviderFactoryID);
  
             _CUIControllerEnumerateCredentialsWithFlags(_controller,
-                                                        usageFlags | kCUIUsageFlagsKeepUsername | kCUIUsageFlagsExcludePersistedCreds,
+                                                        usageFlags,
                                                         cuiAttributes,
                                                         ^(CUICredentialRef cred, Boolean isDefault, CFErrorRef err) {
                         CUICredentialRef wrappedCred;

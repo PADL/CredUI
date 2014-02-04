@@ -278,6 +278,27 @@ _CUIControllerEnumerateMatchingCredentialsForProvider(CUIControllerRef controlle
     return enumContext.didEnumerate;
 }
 
+static Boolean
+_CUIControllerProviderMatch(CFDictionaryRef providerAttributes,
+                            CFDictionaryRef assertedAttributes,
+                            CFStringRef key,
+                            CUIUsageFlags usageFlags,
+                            CUIUsageFlags usageFlagIndicatingExclusion)
+{
+    CFTypeRef providerID = CFDictionaryGetValue(providerAttributes, key);
+
+    if (providerID && usageFlagIndicatingExclusion &&
+        (usageFlags & usageFlagIndicatingExclusion))
+        return false;
+
+    CFTypeRef assertedID = assertedAttributes ? CFDictionaryGetValue(assertedAttributes, key) : NULL;
+
+    if (providerID && assertedID && !CFEqual(providerID, assertedID))
+        return false;
+
+    return true;
+}
+
 CUI_EXPORT Boolean
 _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
                                             CUIUsageFlags extraUsageFlags,
@@ -300,13 +321,14 @@ _CUIControllerEnumerateCredentialsWithFlags(CUIControllerRef controller,
     for (CFIndex index = 0; index < CFArrayGetCount(controller->_providers); index++) {
         CFDictionaryRef providerAttributes = (CFDictionaryRef)CFArrayGetValueAtIndex(controller->_providerAttributes, index);
         CUIProvider *provider = (CUIProvider *)CFArrayGetValueAtIndex(controller->_providers, index);
-       
-        if ((CFDictionaryGetValue(providerAttributes, kCUIAttrPersistenceFactoryID) &&
-             (usageFlags & kCUIUsageFlagsExcludePersistedCreds)) ||
-            (CFDictionaryGetValue(providerAttributes, kCUIAttrIdentityFactoryID) &&
-             (usageFlags & kCUIUsageFlagsExcludeIdentityCreds)))
+
+        if (!_CUIControllerProviderMatch(providerAttributes, attributes, kCUIAttrPersistenceFactoryID, usageFlags, kCUIUsageFlagsExcludePersistedCreds) ||
+            !_CUIControllerProviderMatch(providerAttributes, attributes, kCUIAttrIdentityFactoryID, usageFlags, kCUIUsageFlagsExcludeIdentityCreds))
             continue;
-        
+
+        if (!_CUIControllerProviderMatch(providerAttributes, attributes, kCUIAttrProviderFactoryID, usageFlags, 0))
+            continue;
+
         didEnumerate |= _CUIControllerEnumerateMatchingCredentialsForProvider(controller,
                                                                               usageFlags,
                                                                               attributes,
