@@ -21,7 +21,7 @@
  * In the future, we should make both GSS and PAM context handles
  * CoreFoundation types, and bridge them to support NSSecureCoding. At
  * that point, we can make this kludge go away (although they will
- * still have to be passed as [in, out] parameters.
+ * still have to be passed by reference).
  */
 @protocol CUIContextBoxing <NSObject>
 
