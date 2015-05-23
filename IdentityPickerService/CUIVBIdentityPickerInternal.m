@@ -129,9 +129,12 @@
         error = self.lastError;
     [self.bridge setObject:error forKey:_CUIIdentityPickerServiceBridgeKeyLastError];
     [self.bridge setObject:[NSNumber numberWithBool:self.persist] forKey:_CUIIdentityPickerServiceBridgeKeyPersist];
-    NSData *exportedContext = self.contextBox.exportContext;
-    if (exportedContext)
-        [self.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyExportedContext];
+
+    if (self.usageScenario == kCUIUsageScenarioNetwork) {
+        NSData *exportedContext = self.contextBox.exportContext;
+        if (exportedContext)
+            [self.bridge setObject:exportedContext forKey:_CUIIdentityPickerServiceBridgeKeyExportedContext];
+    }
 
     [self.bridge setObject:[NSNumber numberWithInteger:NSModalResponseOK] forKey:_CUIIdentityPickerServiceBridgeKeyReturnCode];
 }
