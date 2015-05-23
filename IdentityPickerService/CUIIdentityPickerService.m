@@ -234,4 +234,9 @@
     return YES;
 }
 
+- (NSString *)nibName
+{
+    return @"main";
+}
+
 @end
