@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.padl.CredUI.Providers.CertificateCredentialProvider</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -40,12 +40,12 @@
 	</dict>
 	<key>CFPlugInUnloadFunction</key>
 	<string></string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2014 PADL Software Pty Ltd. All rights reserved.</string>
 	<key>CUISupportedClasses</key>
-        <array>
+	<array>
 		<string>kCUIAttrClassIAKerb</string>
 		<string>kCUIAttrClassGeneric</string>
 	</array>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2014 PADL Software Pty Ltd. All rights reserved.</string>
 </dict>
 </plist>

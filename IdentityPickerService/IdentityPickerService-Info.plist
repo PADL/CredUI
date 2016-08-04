@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -24,12 +24,12 @@
 	<true/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014 PADL Software Pty Ltd. All rights reserved.</string>
+	<key>NSMainNibFile</key>
+	<string>main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSViewServiceApplication</string>
 	<key>NSSupportsAutomaticGraphicsSwitching</key>
 	<true/>
-        <key>NSMainNibFile</key>
-        <string>main</string>
 	<key>XPCService</key>
 	<dict>
 		<key>JoinExistingSession</key>
