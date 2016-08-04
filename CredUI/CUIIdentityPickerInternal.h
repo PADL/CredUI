@@ -17,17 +17,17 @@ __attribute__((visibility("default")))
     NSError *_lastError;
     id <CUIContextBoxing> _contextBox;
 
-    __weak NSCollectionView *_collectionView;
-    __weak NSTextField *_titleTextField;
-    __weak NSTextField *_messageTextField;
-    __weak NSButton *_persistCheckBox;
-    __weak NSButton *_submitButton;
-    __weak NSButton *_cancelButton;
+    NSCollectionView *_collectionView;
+    NSTextField *_titleTextField;
+    NSTextField *_messageTextField;
+    NSButton *_persistCheckBox;
+    NSButton *_submitButton;
+    NSButton *_cancelButton;
 
     CUIControllerRef _controllerRef;
     CUICredUIContext *_credUIContext;
 
-    __weak NSArrayController *_credsController;
+    NSArrayController *_credsController;
 }
 
 @property(nonatomic, assign) BOOL persist;

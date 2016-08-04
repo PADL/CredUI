@@ -11,7 +11,7 @@
 
 @interface CUICredentialTile : NSView
 {
-    __weak NSView *_viewPrototype;
+    NSView *_viewPrototype;
     CUICredential *_credential;
     CUICredentialTileController *_delegate;
     BOOL _selected;
