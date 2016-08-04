@@ -32,6 +32,7 @@ CF_CLASSIMPLEMENTATION(CUICFCredential)
 
 - init
 {
+    [super init];
     NSAssert(0, @"CUICFCredential can only be instantiated through CredUICore");
     return nil;
 }

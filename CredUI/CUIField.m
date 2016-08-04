@@ -36,6 +36,7 @@ CF_CLASSIMPLEMENTATION(CUICFField)
 
 - init
 {
+    [super init];
     NSAssert(0, @"CUICFField can only be instantiated through CredUICore");
     return nil;
 }
