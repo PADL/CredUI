@@ -13,7 +13,7 @@
 
 @interface CredUIPickerDelegate : NSObject <NSApplicationDelegate>
 {
-    NSWindow *_window;
+    __weak NSWindow *_window;
     CUIIdentityPicker *_picker;
 }
 
