@@ -23,7 +23,10 @@
     return (id)placeholderCred;
 }
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-implementations"
 CF_CLASSIMPLEMENTATION(CUICFCredential)
+#pragma clang diagnostic pop
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)theKey
 {
