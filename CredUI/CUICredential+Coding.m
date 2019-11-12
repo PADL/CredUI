@@ -41,6 +41,7 @@
                                                                [NSDictionary class],
                                                                [NSUUID class],
                                                                [NSSet class],
+                                                               [CUIProxyCredential class], // for use in remote views
                                                                nil];
 
         /*

@@ -1,5 +1,5 @@
 @protocol NSRemoteViewMarshal
-- (void)setRemoteObject:(id)object forKey:(NSString *)key withReply:(void (^)(NSError *error))block;
+- (void)setRemoteObject:(NSObject<NSSecureCoding> *)object forKey:(NSString *)key withReply:(void (^)(NSError *error))block;
 - (void)registerBridgeKey:(NSString *)key defaultObject:(id)defaultObject owner:(NSViewBridgeKeyOwner)owner withReply:(void (^)(NSError *error))block;
 @end
 

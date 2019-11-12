@@ -35,4 +35,6 @@
 - (void)retreatToConfigPhase;
 - (void)invalidate;
 
+- (NSXPCConnection *)serviceMarshalConnection;
+
 @end
