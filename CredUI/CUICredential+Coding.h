@@ -13,4 +13,6 @@
 + (id)CFUUIDFromNSUUID:(NSUUID *)nsUuid;
 + (NSUUID *)NSUUIDFromCFUUID:(CFUUIDRef)cfUuid;
 
++ (NSSet *)builtinClasses;
+
 @end

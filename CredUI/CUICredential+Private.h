@@ -31,8 +31,3 @@
 - (NSUUID *)UUID;
 
 @end
-
-@interface CUICredential (Coding)
-+ (NSSet *)builtinClasses;
-@end
-
