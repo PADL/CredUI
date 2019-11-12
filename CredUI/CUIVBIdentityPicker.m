@@ -110,8 +110,8 @@ static NSString * const _CUIIdentityPickerServiceName                           
                                                  nil];
     [remoteView.bridge setObject:options forKey:_CUIIdentityPickerServiceBridgeKeyConfigOptions];
 
-    NSXPCInterface *remoteMarshal = [[remoteView serviceMarshalConnection] exportedInterface];
-    [remoteMarshal setClasses:[CUICredential builtinClasses] forSelector:@selector(setRemoteObject:forKey:withReply:) argumentIndex:0 ofReply:NO];
+    NSXPCInterface *marshalInterface = [[remoteView serviceMarshalConnection] exportedInterface];
+    [marshalInterface setClasses:[CUICredential builtinClasses] forSelector:@selector(setRemoteObject:forKey:withReply:) argumentIndex:0 ofReply:NO];
 
     self.containingPanel.contentView = self.remoteView;
     self.invocationReplyDict = [NSMutableDictionary dictionary];
